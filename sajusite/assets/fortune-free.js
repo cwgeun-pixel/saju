@@ -578,26 +578,25 @@ function switchTab(tabId, results) {
 async function runFortune(preInput = null) {
   const errorEl = document.getElementById('gf-error');
   const bodyEl  = document.getElementById('gf-body');
+
+  // 입력값을 innerHTML 교체 전에 먼저 읽어야 함
+  let year, month, day, hour, minute, gender, unknownTime;
+  if (preInput) {
+    ({ year, month, day, hour, minute, gender, unknownTime } = preInput);
+  } else {
+    year       = parseInt(document.getElementById('gf-year')?.value   || '');
+    month      = parseInt(document.getElementById('gf-month')?.value  || '');
+    day        = parseInt(document.getElementById('gf-day')?.value    || '');
+    unknownTime = document.getElementById('gf-unknown')?.checked ?? false;
+    hour       = unknownTime ? 12 : parseInt(document.getElementById('gf-hour')?.value || '12');
+    minute     = 0;
+    gender     = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
+  }
+
   if (errorEl) { errorEl.textContent=''; errorEl.classList.add('hidden'); }
   if (bodyEl) bodyEl.innerHTML = '<p class="text-sm text-muted-foreground animate-pulse py-4 text-center">계산 중… 잠시만 기다려주세요.</p>';
 
   try {
-    let year, month, day, hour, minute, gender, unknownTime;
-
-    if (preInput) {
-      // 메인 폼에서 자동 추출한 데이터 사용
-      ({ year, month, day, hour, minute, gender, unknownTime } = preInput);
-    } else {
-      // 폴백: 직접 입력 폼에서 읽기
-      year    = parseInt(document.getElementById('gf-year')?.value   || '');
-      month   = parseInt(document.getElementById('gf-month')?.value  || '');
-      day     = parseInt(document.getElementById('gf-day')?.value    || '');
-      unknownTime = document.getElementById('gf-unknown')?.checked ?? false;
-      hour    = unknownTime ? 12 : parseInt(document.getElementById('gf-hour')?.value || '12');
-      minute  = 0;
-      gender  = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
-    }
-
     if (!year||!month||!day) throw new Error('생년월일을 입력해주세요.');
     if (year<1900||year>2100) throw new Error('올바른 연도를 입력해주세요.');
 
@@ -643,9 +642,11 @@ async function runFortune(preInput = null) {
 
   } catch (e) {
     console.error(e);
-    const err = document.getElementById('gf-error');
-    if (err) { err.textContent=e.message||'계산 중 오류가 발생했습니다.'; err.classList.remove('hidden'); }
-    if (bodyEl && bodyEl.querySelector('.animate-pulse')) bodyEl.innerHTML = inputHtml();
+    if (bodyEl) {
+      bodyEl.innerHTML = inputHtml();
+      const err = document.getElementById('gf-error');
+      if (err) { err.textContent=e.message||'계산 중 오류가 발생했습니다.'; err.classList.remove('hidden'); }
+    }
   }
 }
 
