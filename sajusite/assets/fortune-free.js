@@ -890,14 +890,14 @@ document.addEventListener('click', e => {
   }
   const btn = e.target.closest('button');
   if (btn && btn.textContent.includes('명식 산출하기')) {
-    // React가 폼을 언마운트하기 전에 즉시 캡처
+    // capture 단계에서 React보다 먼저 실행 — 폼이 아직 DOM에 존재함
     const captured = captureMainFormInput();
     if (captured) {
       try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
     }
     setTimeout(() => tryAutoRun().catch(console.error), 800);
   }
-});
+}, true);
 
 new MutationObserver(mount).observe(document.body, { childList:true, subtree:true });
 mount();
