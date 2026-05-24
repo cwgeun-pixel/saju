@@ -68,7 +68,6 @@ const SIHAU_LABEL = { '化祿':'화록(번영)', '化權':'화권(권력)', '化
 
 // ─── 점성학 상수 ──────────────────────────────────────────────
 
-// ZODIAC_KO 가 배열이 아닐 경우를 대비해 직접 정의
 const SIGN_KO = ['양자리','황소자리','쌍둥이자리','게자리','사자자리','처녀자리','천칭자리','전갈자리','사수자리','염소자리','물병자리','물고기자리'];
 const SIGN_EMOJI = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 
@@ -129,6 +128,55 @@ function gauge(pct, color) {
 }
 function getMainStars(palace) {
   return (palace?.stars||[]).filter(s => MAIN_STARS.has(s.name));
+}
+
+// ─── 메인 폼 데이터 자동 추출 ────────────────────────────────
+// 메인 React 앱의 Radix UI Select 값을 읽어서 재입력 없이 자동 계산
+
+function captureMainFormInput() {
+  // Radix Select 트리거는 role="combobox" 버튼으로 렌더링됨
+  const triggers = [...document.querySelectorAll('button[role="combobox"]')];
+
+  let year = null, month = null, day = null, hour = 12, minute = 0,
+      gender = 'M', unknownTime = false;
+
+  for (const btn of triggers) {
+    const txt = btn.textContent.trim();
+    let m;
+    if      ((m = txt.match(/^(\d{4})년$/)))   year  = +m[1];
+    else if ((m = txt.match(/^(\d{1,2})월$/))) month = +m[1];
+    else if ((m = txt.match(/^(\d{1,2})일$/))) day   = +m[1];
+    else if ((m = txt.match(/^(\d{1,2})시$/))) {
+      // disabled 상태이면 시간 모름
+      if (btn.disabled || btn.hasAttribute('data-disabled')) unknownTime = true;
+      else hour = +m[1];
+    }
+    else if ((m = txt.match(/^(\d{2})분$/)))   minute = +m[1];
+  }
+
+  // 시간 모름 스위치(role="switch") 체크
+  const sw = document.querySelector('button[role="switch"]');
+  if (sw && sw.getAttribute('data-state') === 'checked') {
+    unknownTime = true;
+    hour = 12;
+  }
+
+  // 성별: Radix ToggleGroup 아이템은 role="radio" 버튼
+  const radioItems = [...document.querySelectorAll('button[role="radio"]')];
+  for (const btn of radioItems) {
+    if (btn.getAttribute('data-state') === 'on') {
+      const txt = btn.textContent.trim();
+      if (txt === '여' || txt.includes('여성') || txt === '女') gender = 'F';
+      break;
+    }
+  }
+  // 네이티브 라디오 버튼 폴백
+  if (document.querySelector('input[type="radio"][value="F"]:checked')) gender = 'F';
+
+  if (!year || !month || !day) return null;
+  if (year < 1900 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+  return { year, month, day, hour: unknownTime ? 12 : hour, minute, gender, unknownTime };
 }
 
 // ─── 사주 기반 렌더 ───────────────────────────────────────────
@@ -409,7 +457,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
   </div>`;
 }
 
-// ─── 입력 폼 & 패널 ───────────────────────────────────────────
+// ─── 입력 폼 (자동 추출 실패 시 폴백) ─────────────────────────
 
 function inputHtml() {
   return `<div class="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
@@ -440,6 +488,8 @@ function inputHtml() {
   </div>`;
 }
 
+// ─── 패널 생성 ────────────────────────────────────────────────
+
 function createPanel() {
   const el = document.createElement('div');
   el.id = 'honcheon-fortune-panel';
@@ -450,7 +500,9 @@ function createPanel() {
       <h3 class="font-serif-display text-xl">🔮 무료 운세</h3>
       <p class="text-sm text-muted-foreground mt-1">사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)</p>
     </div>
-    <div id="gf-body">${inputHtml()}</div>
+    <div id="gf-body">
+      <p class="text-sm text-muted-foreground text-center py-6 animate-pulse">운세를 계산하는 중입니다…</p>
+    </div>
   </div>`;
   return el;
 }
@@ -488,8 +540,6 @@ function createTabs() {
   return el;
 }
 
-// ─── 멤버십 패널 ──────────────────────────────────────────────
-
 function createMembershipPanel() {
   const el = document.createElement('div');
   el.id = 'honcheon-membership-panel';
@@ -512,62 +562,69 @@ function switchTab(tabId, results) {
       active ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`;
   });
 
-  // 기존 React 렌더링 결과는 탭에 관계없이 숨김 (멤버십 전용)
   Array.from(results.children).forEach(child => {
     const id = child.id;
     if (id === 'honcheon-fortune-tabs') return;
-    if (id === 'honcheon-fortune-panel')    { child.style.display = tabId==='fortune'    ? '' : 'none'; return; }
-    if (id === 'honcheon-membership-panel') { child.style.display = tabId==='detail'     ? '' : 'none'; return; }
+    if (id === 'honcheon-fortune-panel')    { child.style.display = tabId==='fortune' ? '' : 'none'; return; }
+    if (id === 'honcheon-membership-panel') { child.style.display = tabId==='detail'  ? '' : 'none'; return; }
     if (id === 'honcheon-ai-panel')         { child.style.display = 'none'; return; }
-    if (id === 'honcheon-gunghap-panel')    { child.style.display = tabId==='detail'     ? '' : 'none'; return; }
-    // 나머지 React 콘텐츠: 멤버십 탭에서만 표시
+    if (id === 'honcheon-gunghap-panel')    { child.style.display = tabId==='detail'  ? '' : 'none'; return; }
     child.style.display = tabId==='detail' ? '' : 'none';
   });
 }
 
 // ─── 계산 실행 ────────────────────────────────────────────────
 
-async function runFortune() {
+async function runFortune(preInput = null) {
   const errorEl = document.getElementById('gf-error');
   const bodyEl  = document.getElementById('gf-body');
   if (errorEl) { errorEl.textContent=''; errorEl.classList.add('hidden'); }
   if (bodyEl) bodyEl.innerHTML = '<p class="text-sm text-muted-foreground animate-pulse py-4 text-center">계산 중… 잠시만 기다려주세요.</p>';
 
   try {
-    const year    = parseInt(document.getElementById('gf-year')?.value   || '');
-    const month   = parseInt(document.getElementById('gf-month')?.value  || '');
-    const day     = parseInt(document.getElementById('gf-day')?.value    || '');
-    const unknown = document.getElementById('gf-unknown')?.checked ?? false;
-    const hour    = unknown ? 12 : parseInt(document.getElementById('gf-hour')?.value || '12');
-    const gender  = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
+    let year, month, day, hour, minute, gender, unknownTime;
+
+    if (preInput) {
+      // 메인 폼에서 자동 추출한 데이터 사용
+      ({ year, month, day, hour, minute, gender, unknownTime } = preInput);
+    } else {
+      // 폴백: 직접 입력 폼에서 읽기
+      year    = parseInt(document.getElementById('gf-year')?.value   || '');
+      month   = parseInt(document.getElementById('gf-month')?.value  || '');
+      day     = parseInt(document.getElementById('gf-day')?.value    || '');
+      unknownTime = document.getElementById('gf-unknown')?.checked ?? false;
+      hour    = unknownTime ? 12 : parseInt(document.getElementById('gf-hour')?.value || '12');
+      minute  = 0;
+      gender  = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
+    }
 
     if (!year||!month||!day) throw new Error('생년월일을 입력해주세요.');
     if (year<1900||year>2100) throw new Error('올바른 연도를 입력해주세요.');
 
-    // 1. 사주 계산
-    const saju = calculateSaju({ year, month, day, hour, minute:0, gender, unknownTime:unknown });
-
-    // 2. 자미두수 계산
+    const saju  = calculateSaju({ year, month, day, hour, minute, gender, unknownTime });
     const ziwei = createChart(year, month, day, hour, 0, gender==='M');
 
-    // 3. 점성학 계산 (출생 + 오늘 트랜짓)
     const [natalChart, transitChart] = await Promise.all([
-      calculateNatal({ year, month, day, hour, minute:0, unknownTime:unknown }),
+      calculateNatal({ year, month, day, hour, minute, unknownTime }),
       (()=>{ const t=new Date(); return calculateNatal({ year:t.getFullYear(), month:t.getMonth()+1, day:t.getDate(), hour:12, minute:0 }); })()
     ]);
 
-    // 오늘 날짜 간지
     const today = new Date();
     const [yp, mp, dp] = getFourPillars(today.getFullYear(), today.getMonth()+1, today.getDate(), 12, 0, false);
 
+    const sourceLabel = preInput
+      ? `<span class="text-xs text-muted-foreground">${year}년 ${month}월 ${day}일 · ${gender==='F'?'여':'남'}</span>`
+      : '';
+
     if (bodyEl) bodyEl.innerHTML = `<div class="space-y-5">
+      ${sourceLabel ? `<div class="flex justify-end">${sourceLabel}</div>` : ''}
       ${renderSajuToday(saju, yp, mp, dp)}
       ${renderZodiac(saju)}
       ${renderSajuMonthly(saju, mp, gender)}
       <hr class="border-dashed" />
       ${renderZiweiSection(ziwei)}
       <hr class="border-dashed" />
-      ${renderNatalSection(natalChart, transitChart, unknown)}
+      ${renderNatalSection(natalChart, transitChart, unknownTime)}
       <hr class="border-dashed" />
       ${renderCalendar(saju)}
       <div class="flex justify-center pt-1">
@@ -592,6 +649,19 @@ async function runFortune() {
   }
 }
 
+// 메인 폼 데이터를 자동 추출해서 운세 계산
+async function tryAutoRun() {
+  const bodyEl = document.getElementById('gf-body');
+  if (!bodyEl) return;
+  const input = captureMainFormInput();
+  if (input) {
+    await runFortune(input);
+  } else {
+    // 자동 추출 실패 시 입력 폼 표시
+    bodyEl.innerHTML = inputHtml();
+  }
+}
+
 // ─── 마운트 ───────────────────────────────────────────────────
 
 function mount() {
@@ -607,7 +677,6 @@ function mount() {
   results.appendChild(panel);
   results.appendChild(membership);
 
-  // 기본: 무료 운세 탭 활성화
   switchTab('fortune', results);
 
   tabs.addEventListener('click', e => {
@@ -615,10 +684,24 @@ function mount() {
     if (btn) switchTab(btn.dataset.tab, results);
   });
 
-  document.addEventListener('click', e => {
-    if (e.target.id==='gf-calc' || e.target.closest('#gf-calc')) runFortune().catch(console.error);
-  });
+  // 패널이 마운트되면 메인 폼 데이터를 자동으로 읽어서 운세 계산
+  tryAutoRun().catch(console.error);
 }
+
+// ─── 글로벌 이벤트 ───────────────────────────────────────────
+
+document.addEventListener('click', e => {
+  // 직접 입력 폼의 계산 버튼
+  if (e.target.id==='gf-calc' || e.target.closest('#gf-calc')) {
+    runFortune(null).catch(console.error);
+    return;
+  }
+  // 메인 폼 "명식 산출하기" 재클릭 → 새 데이터로 자동 갱신
+  const btn = e.target.closest('button');
+  if (btn && btn.textContent.includes('명식 산출하기')) {
+    setTimeout(() => tryAutoRun().catch(console.error), 800);
+  }
+});
 
 new MutationObserver(mount).observe(document.body, { childList:true, subtree:true });
 mount();
