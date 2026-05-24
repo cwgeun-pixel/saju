@@ -464,20 +464,35 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
 // ─── 입력 폼 (자동 추출 실패 시 폴백) ─────────────────────────
 
 function inputHtml() {
+  const curYear = new Date().getFullYear();
+  const yearOpts = Array.from({length: curYear - 1899}, (_, i) => curYear - i)
+    .map(y => `<option value="${y}">${y}년</option>`).join('');
+  const monthOpts = Array.from({length:12}, (_,i) =>
+    `<option value="${i+1}">${i+1}월</option>`).join('');
+  const dayOpts = Array.from({length:31}, (_,i) =>
+    `<option value="${i+1}">${i+1}일</option>`).join('');
+  const hourOpts = `<option value="">시간 모름</option>` +
+    Array.from({length:24}, (_,i) => `<option value="${i}">${i}시</option>`).join('');
+
   return `<div class="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
-    <p class="text-sm text-amber-800 font-medium">생년월일시를 입력하면 사주 · 자미두수 · 점성학 무료 운세를 확인합니다. (회원가입 불필요)</p>
+    <p class="text-sm text-amber-800 font-medium">생년월일시를 선택하면 사주 · 자미두수 · 점성학 무료 운세를 확인합니다. (회원가입 불필요)</p>
     <div class="flex flex-wrap gap-2">
-      <input id="gf-year"  type="number" placeholder="출생년도" min="1900" max="2100"
-        class="w-24 h-9 rounded-lg border border-input bg-white px-2 text-sm" />
-      <input id="gf-month" type="number" placeholder="월" min="1" max="12"
-        class="w-14 h-9 rounded-lg border border-input bg-white px-2 text-sm" />
-      <input id="gf-day"   type="number" placeholder="일" min="1" max="31"
-        class="w-14 h-9 rounded-lg border border-input bg-white px-2 text-sm" />
-      <input id="gf-hour"  type="number" placeholder="시(0-23)" min="0" max="23"
-        class="w-24 h-9 rounded-lg border border-input bg-white px-2 text-sm" />
-      <label class="flex items-center gap-1.5 text-sm self-center">
-        <input id="gf-unknown" type="checkbox" /> 시간 미상
-      </label>
+      <select id="gf-year"
+        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+        <option value="">출생 연도</option>${yearOpts}
+      </select>
+      <select id="gf-month"
+        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+        <option value="">월</option>${monthOpts}
+      </select>
+      <select id="gf-day"
+        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+        <option value="">일</option>${dayOpts}
+      </select>
+      <select id="gf-hour"
+        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+        ${hourOpts}
+      </select>
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-1.5 text-sm"><input type="radio" name="gf-gender" value="M" checked /> 남</label>
@@ -588,13 +603,14 @@ async function runFortune(preInput = null) {
   if (preInput) {
     ({ year, month, day, hour, minute, gender, unknownTime } = preInput);
   } else {
-    year       = parseInt(document.getElementById('gf-year')?.value   || '');
-    month      = parseInt(document.getElementById('gf-month')?.value  || '');
-    day        = parseInt(document.getElementById('gf-day')?.value    || '');
-    unknownTime = document.getElementById('gf-unknown')?.checked ?? false;
-    hour       = unknownTime ? 12 : parseInt(document.getElementById('gf-hour')?.value || '12');
-    minute     = 0;
-    gender     = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
+    year        = parseInt(document.getElementById('gf-year')?.value   || '');
+    month       = parseInt(document.getElementById('gf-month')?.value  || '');
+    day         = parseInt(document.getElementById('gf-day')?.value    || '');
+    const hourVal = document.getElementById('gf-hour')?.value;
+    unknownTime = !hourVal;
+    hour        = unknownTime ? 12 : parseInt(hourVal);
+    minute      = 0;
+    gender      = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
   }
 
   if (errorEl) { errorEl.textContent=''; errorEl.classList.add('hidden'); }
