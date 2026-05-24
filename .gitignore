@@ -1,0 +1,18 @@
+# Claude Code 내부 설정
+.claude/
+
+# 로컬 개발용 중복 폴더 (실제 배포 파일은 sajusite/ 에 있음)
+saju-main/
+
+# 환경변수
+.env
+.env.local
+.env.*.local
+
+# 로그
+*.log
+*.err
+
+# OS
+.DS_Store
+Thumbs.db
