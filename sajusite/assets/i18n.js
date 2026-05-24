@@ -325,6 +325,7 @@
       lang = select.value;
       localStorage.setItem("honcheon.lang", lang);
       translateTree(document.body);
+      document.dispatchEvent(new CustomEvent("honcheon:langchange", { detail: { lang } }));
     });
     wrap.appendChild(select);
     document.body.appendChild(wrap);
