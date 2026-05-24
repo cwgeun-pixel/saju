@@ -391,21 +391,25 @@ function renderZiweiSection(chart) {
 
 // ─── 점성학 기반 렌더 ─────────────────────────────────────────
 
+// calculateNatal은 sign을 문자열("Aries" 등)로 반환하므로 인덱스로 변환
+const SIGN_NAMES = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const toSignIdx = s => typeof s === 'number' ? s : SIGN_NAMES.indexOf(s);
+
 function renderNatalSection(natalChart, transitChart, unknownTime) {
   const findPlanet = (chart, id) => chart.planets?.find(p => p.id === id);
-  const signName = s => SIGN_KO[s] ?? (Array.isArray(ZODIAC_KO) ? ZODIAC_KO[s] : '알 수 없음');
+  const signName = s => SIGN_KO[toSignIdx(s)] ?? ZODIAC_KO[s] ?? '알 수 없음';
 
   const sun     = findPlanet(natalChart, 'Sun');
   const moon    = findPlanet(natalChart, 'Moon');
-  const asc     = !unknownTime && natalChart.houses ? natalChart.houses[0] : null;
+  const ascObj  = !unknownTime ? (natalChart.angles?.asc ?? null) : null;
   const jupiter = findPlanet(transitChart, 'Jupiter');
   const venus   = findPlanet(transitChart, 'Venus');
 
-  const ascBlock = asc != null ? `
+  const ascBlock = ascObj != null ? `
     <div class="flex items-start gap-3 py-2 border-b border-gray-50">
       <div class="w-8 text-center text-lg shrink-0">⬆️</div>
       <div><div class="text-sm font-semibold">상승궁 (ASC)</div>
-        <div class="text-xs text-muted-foreground">${SIGN_EMOJI[Math.floor(asc/30)%12]} ${signName(Math.floor(asc/30)%12)}</div>
+        <div class="text-xs text-muted-foreground">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
         <p class="text-xs text-gray-600 mt-0.5">타인에게 비치는 첫인상과 외면적 태도</p>
       </div>
     </div>` : '';
@@ -422,16 +426,16 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
       ${sun ? `<div class="flex items-start gap-3 py-3">
         <div class="w-8 text-center text-xl shrink-0">☀️</div>
         <div><div class="text-sm font-semibold">태양 별자리 <span class="font-normal text-muted-foreground text-xs">핵심 정체성</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[sun.sign]} ${signName(sun.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${SUN_DESC[sun.sign]||''}</p>
+          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(sun.sign)]} ${signName(sun.sign)}</div>
+          <p class="text-xs text-gray-600 mt-0.5">${SUN_DESC[toSignIdx(sun.sign)]||''}</p>
         </div>
       </div>` : ''}
 
       ${moon ? `<div class="flex items-start gap-3 py-3">
         <div class="w-8 text-center text-xl shrink-0">🌙</div>
         <div><div class="text-sm font-semibold">달 별자리 <span class="font-normal text-muted-foreground text-xs">감성·본능</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[moon.sign]} ${signName(moon.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${MOON_DESC[moon.sign]||''}</p>
+          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(moon.sign)]} ${signName(moon.sign)}</div>
+          <p class="text-xs text-gray-600 mt-0.5">${MOON_DESC[toSignIdx(moon.sign)]||''}</p>
         </div>
       </div>` : ''}
 
@@ -440,16 +444,16 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
       ${jupiter ? `<div class="flex items-start gap-3 py-3">
         <div class="w-8 text-center text-xl shrink-0">♃</div>
         <div><div class="text-sm font-semibold">목성 현재 위치 <span class="font-normal text-muted-foreground text-xs">올해 성장 영역</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[jupiter.sign]} ${signName(jupiter.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${JUPITER_DESC[jupiter.sign]||''}</p>
+          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(jupiter.sign)]} ${signName(jupiter.sign)}</div>
+          <p class="text-xs text-gray-600 mt-0.5">${JUPITER_DESC[toSignIdx(jupiter.sign)]||''}</p>
         </div>
       </div>` : ''}
 
       ${venus ? `<div class="flex items-start gap-3 py-3">
         <div class="w-8 text-center text-xl shrink-0">♀</div>
         <div><div class="text-sm font-semibold">금성 현재 위치 <span class="font-normal text-muted-foreground text-xs">이번달 애정·재물 에너지</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[venus.sign]} ${signName(venus.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${VENUS_DESC[venus.sign]||''}</p>
+          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(venus.sign)]} ${signName(venus.sign)}</div>
+          <p class="text-xs text-gray-600 mt-0.5">${VENUS_DESC[toSignIdx(venus.sign)]||''}</p>
         </div>
       </div>` : ''}
 
