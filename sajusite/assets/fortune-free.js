@@ -1,4 +1,4 @@
-// 무료 운세 패널 — 사주 · 자미두수 · 점성학 세 시스템 통합
+// 무료 운세 패널 — 사주 · 자미두수 · 점성학 세 시스템 통합 (다크 테마)
 import { calculateSaju } from './orrery-core/saju.js';
 import { getFourPillars, analyzePillarRelations } from './orrery-core/pillars.js';
 import { createChart } from './orrery-core/ziwei.js';
@@ -31,22 +31,22 @@ const ELEMENT_LUCKY = {
 const STEM_ELEM  = {'甲':'목','乙':'목','丙':'화','丁':'화','戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'};
 const STEM_KR    = {'甲':'갑','乙':'을','丙':'병','丁':'정','戊':'무','己':'기','庚':'경','辛':'신','壬':'임','癸':'계'};
 const BRANCH_KR  = {'子':'자','丑':'축','寅':'인','卯':'묘','辰':'진','巳':'사','午':'오','未':'미','申':'신','酉':'유','戌':'술','亥':'해'};
+const BRANCH_ELEM = {'子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화','午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'};
 const DAY_KR     = ['일','월','화','수','목','금','토'];
 const WEALTH_SIP = new Set(['偏財','正財']);
 const LOVE_SIP_F = new Set(['偏官','正官']);
 const R_SCORE    = {'合':2,'沖':-2,'破':-1,'害':-1,'刑':-1.5,'怨嗔':-3,'鬼門':0};
 const LEVELS = [
-  { min:85, label:'대길(大吉)', color:'#b45309', bg:'#fef3c7', emoji:'⭐' },
-  { min:70, label:'길(吉)',     color:'#15803d', bg:'#dcfce7', emoji:'✨' },
-  { min:48, label:'평(平)',     color:'#1d4ed8', bg:'#dbeafe', emoji:'🌀' },
-  { min:30, label:'소흉(小凶)', color:'#7c3aed', bg:'#f3e8ff', emoji:'⚡' },
-  { min: 0, label:'흉(凶)',     color:'#dc2626', bg:'#fee2e2', emoji:'⚠️' },
+  { min:85, label:'대길(大吉)', color:'#f59e0b', bg:'#fef3c7', emoji:'⭐' },
+  { min:70, label:'길(吉)',     color:'#22c55e', bg:'#dcfce7', emoji:'✨' },
+  { min:48, label:'평(平)',     color:'#60a5fa', bg:'#dbeafe', emoji:'🌀' },
+  { min:30, label:'소흉(小凶)', color:'#a78bfa', bg:'#f3e8ff', emoji:'⚡' },
+  { min: 0, label:'흉(凶)',     color:'#f87171', bg:'#fee2e2', emoji:'⚠️' },
 ];
 
 // ─── 자미두수 상수 ────────────────────────────────────────────
 
 const MAIN_STARS = new Set(['紫微','天機','太陽','武曲','天同','廉貞','天府','太陰','貪狼','巨門','天相','天梁','七殺','破軍']);
-
 const STAR_DESC = {
   '紫微':{ fate:'리더십과 권위를 지닌 고귀한 운명',  wealth:'귀인의 도움으로 재물이 모임',     love:'존중받는 파트너십, 고귀한 인연' },
   '天機':{ fate:'영리하고 변화 많은 두뇌형 운명',    wealth:'지략과 정보로 재물을 창출',        love:'변화 많은 인연, 지적 매력으로 끌림' },
@@ -63,13 +63,14 @@ const STAR_DESC = {
   '七殺':{ fate:'강력하고 돌파력 있는 독립적 운명',  wealth:'도전적 방식으로 재물 획득',        love:'강렬하고 독립적인 연애 스타일' },
   '破軍':{ fate:'개척하고 변화를 만드는 선구자적 운명', wealth:'파괴와 재창조로 새 기회 창출', love:'기존을 깨고 새로운 인연 형성' },
 };
-
 const SIHAU_LABEL = { '化祿':'화록(번영)', '化權':'화권(권력)', '化科':'화과(명예)', '化忌':'화기(주의)' };
 
 // ─── 점성학 상수 ──────────────────────────────────────────────
 
 const SIGN_KO = ['양자리','황소자리','쌍둥이자리','게자리','사자자리','처녀자리','천칭자리','전갈자리','사수자리','염소자리','물병자리','물고기자리'];
 const SIGN_EMOJI = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const SIGN_NAMES = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const toSignIdx = s => typeof s === 'number' ? s : SIGN_NAMES.indexOf(s);
 
 const SUN_DESC = [
   '개척과 도전을 즐기는 불꽃 같은 에너지','안정과 감각적 풍요를 추구하는 현실적 성향',
@@ -104,6 +105,39 @@ const VENUS_DESC = [
   '독특하고 친구 같은 관계가 발전하는 시기','로맨틱하고 영적인 사랑 에너지의 계절',
 ];
 
+// ─── 12운성 ───────────────────────────────────────────────────
+
+const SIJUNSEONG_TABLE = {
+  '甲':['亥','子','丑','寅','卯','辰','巳','午','未','申','酉','戌'],
+  '乙':['午','巳','辰','卯','寅','丑','子','亥','戌','酉','申','未'],
+  '丙':['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'],
+  '丁':['酉','申','未','午','巳','辰','卯','寅','丑','子','亥','戌'],
+  '戊':['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'],
+  '己':['酉','申','未','午','巳','辰','卯','寅','丑','子','亥','戌'],
+  '庚':['巳','午','未','申','酉','戌','亥','子','丑','寅','卯','辰'],
+  '辛':['子','亥','戌','酉','申','未','午','巳','辰','卯','寅','丑'],
+  '壬':['申','酉','戌','亥','子','丑','寅','卯','辰','巳','午','未'],
+  '癸':['卯','寅','丑','子','亥','戌','酉','申','未','午','巳','辰'],
+};
+const SJS_NAMES = ['장생','목욕','관대','임관','제왕','쇠','병','사','묘','절','태','양'];
+const SJS_EMOJI = ['🌱','🛁','🎓','👔','👑','📉','🤒','💀','⚰️','❄️','🥚','🌿'];
+const SJS_DESC  = [
+  '생명력이 솟구치는 시작의 기운',  '감수성이 예민하고 배움이 깊은 단계',
+  '성장과 도약을 준비하는 단계',    '실력을 발휘하며 활약하는 단계',
+  '최고의 전성기, 강한 에너지',     '활동이 서서히 줄어드는 단계',
+  '주의가 필요하며 조심해야 할 시기','완전한 끝맺음, 전환점의 단계',
+  '저장과 안식, 내면 정리의 단계',  '에너지 소멸, 새 출발을 준비하는 단계',
+  '새 생명의 씨앗, 잉태의 단계',    '보호와 양육을 받으며 성장하는 단계',
+];
+
+function getSijunseong(stem, branch) {
+  const table = SIJUNSEONG_TABLE[stem];
+  if (!table) return null;
+  const idx = table.indexOf(branch);
+  if (idx < 0) return null;
+  return { name:SJS_NAMES[idx], emoji:SJS_EMOJI[idx], desc:SJS_DESC[idx] };
+}
+
 // ─── 공통 유틸 ────────────────────────────────────────────────
 
 function relScore(rels) { return rels.reduce((s,r) => s+(R_SCORE[r.type]||0), 0); }
@@ -121,134 +155,48 @@ function getLucky(ganzi) {
   return { ...info, number: info.numbers[ganzi[1].charCodeAt(0)%2], elem };
 }
 function ganziStr(g) { return `${STEM_KR[g[0]]||g[0]}${BRANCH_KR[g[1]]||g[1]}`; }
-function gauge(pct, color) {
-  return `<div class="relative h-2.5 bg-gray-100 rounded-full overflow-hidden mt-1.5">
-    <div class="absolute inset-y-0 left-0 rounded-full" style="width:${pct}%;background:${color}"></div>
-  </div>`;
-}
 function getMainStars(palace) {
   return (palace?.stars||[]).filter(s => MAIN_STARS.has(s.name));
 }
-
-// ─── 메인 폼 데이터 자동 추출 ────────────────────────────────
-// 메인 React 앱의 Radix UI Select 값을 읽어서 재입력 없이 자동 계산
-
-function captureMainFormInput() {
-  // Radix Select 트리거는 role="combobox" 버튼으로 렌더링됨
-  const triggers = [...document.querySelectorAll('button[role="combobox"]')];
-
-  let year = null, month = null, day = null, hour = 12, minute = 0,
-      gender = 'M', unknownTime = false;
-
-  for (const btn of triggers) {
-    const txt = btn.textContent.trim();
-    let m;
-    if      ((m = txt.match(/^(\d{4})년$/)))   year  = +m[1];
-    else if ((m = txt.match(/^(\d{1,2})월$/))) month = +m[1];
-    else if ((m = txt.match(/^(\d{1,2})일$/))) day   = +m[1];
-    else if ((m = txt.match(/^(\d{1,2})시$/))) {
-      // disabled 상태이면 시간 모름
-      if (btn.disabled || btn.hasAttribute('data-disabled')) unknownTime = true;
-      else hour = +m[1];
-    }
-    else if ((m = txt.match(/^(\d{2})분$/)))   minute = +m[1];
+function computeElements(saju) {
+  const c = {'목':0,'화':0,'토':0,'금':0,'수':0};
+  for (const p of saju.pillars) {
+    if (STEM_ELEM[p.pillar.stem]) c[STEM_ELEM[p.pillar.stem]]++;
+    if (BRANCH_ELEM[p.pillar.branch]) c[BRANCH_ELEM[p.pillar.branch]]++;
   }
-
-  // 시간 모름 스위치(role="switch") 체크
-  const sw = document.querySelector('button[role="switch"]');
-  if (sw && sw.getAttribute('data-state') === 'checked') {
-    unknownTime = true;
-    hour = 12;
-  }
-
-  // 성별: Radix ToggleGroup 아이템은 role="radio" 버튼
-  const radioItems = [...document.querySelectorAll('button[role="radio"]')];
-  for (const btn of radioItems) {
-    if (btn.getAttribute('data-state') === 'on') {
-      const txt = btn.textContent.trim();
-      if (txt === '여' || txt.includes('여성') || txt === '女') gender = 'F';
-      break;
-    }
-  }
-  // 네이티브 라디오 버튼 폴백
-  if (document.querySelector('input[type="radio"][value="F"]:checked')) gender = 'F';
-
-  if (!year || !month || !day) return null;
-  if (year < 1900 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
-
-  return { year, month, day, hour: unknownTime ? 12 : hour, minute, gender, unknownTime };
+  return c;
 }
 
-// ─── 사주 기반 렌더 ───────────────────────────────────────────
+// ─── 용신 분석 ───────────────────────────────────────────────
 
-function renderSajuToday(saju, yp, mp, dp) {
-  const raw = compareToNatal(saju.pillars, dp)
-            + compareToNatal(saju.pillars, mp)*0.5
-            + compareToNatal(saju.pillars, yp)*0.3;
-  const pct = toPct(raw, 3);
-  const lv  = getLevel(pct);
-  const lk  = getLucky(dp);
-  const DESC = {
-    '대길(大吉)':'하는 일마다 순탄하게 풀리는 날입니다. 새로운 시작이나 중요한 결정에 최적이며 기다리던 소식이 올 수 있습니다.',
-    '길(吉)':    '기운이 좋은 날입니다. 계획한 일들이 차례로 진행되고 주변의 도움을 받기 쉬우니 적극적으로 행동해 보세요.',
-    '평(平)':    '평온하게 흘러가는 날입니다. 무리한 새 시도보다 기존 일을 꼼꼼히 마무리하는 것이 좋습니다.',
-    '소흉(小凶)':'약간의 주의가 필요한 날입니다. 중요한 결정이나 큰 지출은 미루고 차분하게 현재 상황을 점검하세요.',
-    '흉(凶)':    '에너지 소모가 클 수 있는 날입니다. 충동적인 행동을 자제하고 안정을 취하세요.',
+function computeYongShin(saju) {
+  const dayMaster = saju.pillars[2]?.pillar?.stem;
+  const dayElem   = STEM_ELEM[dayMaster] || '토';
+  const elems     = computeElements(saju);
+
+  const GENERATES   = {'목':'화','화':'토','토':'금','금':'수','수':'목'};
+  const GENERATED_BY = {'화':'목','토':'화','금':'토','수':'금','목':'수'};
+  const CONTROLS    = {'목':'토','화':'금','토':'수','금':'목','수':'화'};
+
+  const support = (elems[dayElem]||0) + (elems[GENERATED_BY[dayElem]]||0);
+  const total   = Object.values(elems).reduce((a,b)=>a+b,0) || 8;
+  const isStrong = support >= 4;
+  const isWeak   = support <= 2;
+
+  const yong = isStrong ? CONTROLS[dayElem]    : GENERATED_BY[dayElem];
+  const hee  = isStrong ? GENERATES[CONTROLS[dayElem]] : dayElem;
+  const gi   = isStrong ? GENERATED_BY[dayElem] : CONTROLS[dayElem];
+
+  return {
+    type:    isStrong ? '신강(身强)' : isWeak ? '신약(身弱)' : '중화(中和)',
+    gauge:   Math.max(10, Math.min(90, (support / total) * 100 * 1.2)),
+    dayElem, yong, hee, gi, elems, total, isStrong, isWeak,
   };
-  return `<div class="rounded-xl overflow-hidden border shadow-sm" style="background:linear-gradient(135deg,${lv.bg} 0%,#fff 55%)">
-    <div class="p-5 space-y-4">
-      <div class="flex items-center justify-between">
-        <h4 class="font-semibold">🌅 오늘의 운세 <span class="text-xs font-normal text-muted-foreground ml-1">사주</span></h4>
-        <span class="text-xs text-muted-foreground">${ganziStr(yp)}년 ${ganziStr(mp)}월 ${ganziStr(dp)}일</span>
-      </div>
-      <div class="flex items-center gap-5">
-        <div class="text-center shrink-0 w-20">
-          <div class="text-5xl">${lv.emoji}</div>
-          <div class="text-base font-bold mt-1" style="color:${lv.color}">${lv.label}</div>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between text-xs text-muted-foreground">\
-            <span>운세 지수</span><span class="font-semibold">${Math.round(pct)}점</span>
-          </div>
-          ${gauge(pct, lv.color)}
-          <p class="text-xs leading-5 mt-2 text-gray-700">${DESC[lv.label]||DESC['평(平)']}</p>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100 text-center">
-        <div><div class="text-xs text-muted-foreground mb-1">행운의 색</div>
-          <div class="flex items-center justify-center gap-1">
-            <div class="w-4 h-4 rounded-full border border-white shadow" style="background:${lk.hex}"></div>
-            <span class="text-sm font-medium">${lk.color}</span>
-          </div>
-        </div>
-        <div><div class="text-xs text-muted-foreground mb-1">행운의 방향</div>
-          <div class="text-sm font-medium">${lk.direction}</div></div>
-        <div><div class="text-xs text-muted-foreground mb-1">행운의 숫자</div>
-          <div class="text-sm font-medium">${lk.number}</div></div>
-      </div>
-    </div>
-  </div>`;
 }
 
-function renderZodiac(saju) {
-  const b = saju.pillars[3].pillar.branch;
-  const z = ZODIAC_ANIMAL[b];
-  if (!z) return '';
-  const s = saju.pillars[3].pillar.stem;
-  return `<div class="rounded-xl border bg-white shadow-sm p-5 flex items-start gap-4">
-    <div class="text-5xl shrink-0">${z.emoji}</div>
-    <div class="flex-1 min-w-0">
-      <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-xl font-bold">${z.animal}띠 (${b})</span>
-        <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5 text-gray-600">${s}${b}年</span>
-      </div>
-      <div class="text-xs text-muted-foreground mt-0.5">${z.years}년생</div>
-      <p class="text-sm leading-6 mt-2 text-gray-700">${z.trait}</p>
-    </div>
-  </div>`;
-}
+// ─── 기본 운세 점수 계산 ─────────────────────────────────────
 
-function renderSajuMonthly(saju, mp, gender) {
+function computeBasicScores(saju, mp, dp, gender) {
   function calcW(g) {
     let s = compareToNatal(saju.pillars, g);
     saju.pillars.forEach(p => {
@@ -271,192 +219,419 @@ function renderSajuMonthly(saju, mp, gender) {
     });
     return s;
   }
-  const wPct = toPct(calcW(mp), 3.5), wLv = getLevel(wPct);
-  const lPct = toPct(calcL(mp), 3.5), lLv = getLevel(lPct);
-  const wDesc = wPct>=70?'재물 흐름이 원활합니다. 투자나 중요한 재정 결정에 유리한 시기입니다.':wPct>=48?'지출을 점검하고 무리하지 않으면 안정적으로 유지됩니다.':'재물 누수가 생길 수 있습니다. 충동적인 지출을 삼가세요.';
-  const lDesc = lPct>=70?'감정 흐름이 좋습니다. 마음을 표현하기 좋은 시기입니다.':lPct>=48?'차분하게 관계를 가꾸면 좋습니다.':'오해나 갈등에 주의하고 감정 표현에 신중하세요.';
-  function card(emoji, title, pct, color, lv, desc) {
-    return `<div class="rounded-xl border bg-white shadow-sm p-4 space-y-2">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2"><span class="text-lg">${emoji}</span>
-          <span class="font-semibold text-sm">${title}</span>
-          <span class="text-xs text-muted-foreground">사주</span>
-        </div>
-        <span class="text-xs font-bold" style="color:${lv.color}">${lv.label}</span>
-      </div>
-      <div><div class="flex justify-between text-xs text-muted-foreground mb-1">
-        <span>지수</span><span class="font-semibold">${Math.round(pct)}점</span>
-      </div>${gauge(pct, color)}</div>
-      <p class="text-xs leading-5 text-gray-600">${desc}</p>
-    </div>`;
+  const CAREER_SIP = new Set(gender==='F' ? ['偏財','正財'] : ['偏官','正官','食神','傷官']);
+  function calcC(g) {
+    let s = compareToNatal(saju.pillars, g);
+    saju.pillars.forEach(p => {
+      if (CAREER_SIP.has(p.stemSipsin)||CAREER_SIP.has(p.branchSipsin)) {
+        const r = analyzePillarRelations(p.pillar.ganzi, g);
+        if ([...r.stem,...r.branch].some(x=>x.type==='合')) s += 2.5;
+      }
+    });
+    return s;
   }
-  return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-    ${card('💰','이번달 재물운',wPct,'#d97706',wLv,wDesc)}
-    ${card('💕','이번달 애정운',lPct,'#ec4899',lLv,lDesc)}
+
+  const elems  = computeElements(saju);
+  const vals   = Object.values(elems);
+  const mean   = vals.reduce((a,b)=>a+b,0)/5;
+  const balance = 1 - vals.reduce((s,v)=>s+Math.abs(v-mean),0) / (mean*5||1);
+  const dayRaw = compareToNatal(saju.pillars, dp);
+
+  return {
+    성향:   Math.max(30, Math.min(95, toPct(balance*2.5, 12))),
+    애정운: toPct(calcL(mp), 3.5),
+    직업운: toPct(calcC(mp), 3.2),
+    재물운: toPct(calcW(mp), 3.5),
+    건강운: toPct(dayRaw * balance, 3),
+  };
+}
+
+// ─── 메인 폼 데이터 자동 추출 ────────────────────────────────
+
+function captureMainFormInput() {
+  const triggers = [...document.querySelectorAll('button[role="combobox"]')];
+  let year=null, month=null, day=null, hour=12, minute=0, gender='M', unknownTime=false;
+
+  for (const btn of triggers) {
+    const txt = btn.textContent.trim(); let m;
+    if      ((m=txt.match(/^(\d{4})년$/)))   year  = +m[1];
+    else if ((m=txt.match(/^(\d{1,2})월$/))) month = +m[1];
+    else if ((m=txt.match(/^(\d{1,2})일$/))) day   = +m[1];
+    else if ((m=txt.match(/^(\d{1,2})시$/))) {
+      if (btn.disabled||btn.hasAttribute('data-disabled')) unknownTime=true;
+      else hour = +m[1];
+    }
+    else if ((m=txt.match(/^(\d{2})분$/)))   minute = +m[1];
+  }
+
+  const sw = document.querySelector('button[role="switch"]');
+  if (sw && sw.getAttribute('data-state')==='checked') { unknownTime=true; hour=12; }
+
+  const radioItems = [...document.querySelectorAll('button[role="radio"]')];
+  for (const btn of radioItems) {
+    if (btn.getAttribute('data-state')==='on') {
+      const txt = btn.textContent.trim();
+      if (txt==='여'||txt.includes('여성')||txt==='女') gender='F';
+      break;
+    }
+  }
+  if (document.querySelector('input[type="radio"][value="F"]:checked')) gender='F';
+
+  if (!year||!month||!day) return null;
+  if (year<1900||year>2100||month<1||month>12||day<1||day>31) return null;
+  return { year, month, day, hour:unknownTime?12:hour, minute, gender, unknownTime };
+}
+
+// ─── 다크 테마 렌더 헬퍼 ─────────────────────────────────────
+
+const D = {
+  wrap:   'background:#12151f;border-radius:14px;padding:20px;',
+  card:   'background:#1a1d2e;border:1px solid #252840;border-radius:12px;padding:16px;',
+  hdr:    'color:#e2e8f0;font-weight:700;font-size:15px;',
+  sub:    'color:#7a82a8;font-size:12px;',
+  txt:    'color:#c8cee8;font-size:13px;line-height:1.7;',
+  muted:  'color:#565d80;font-size:11px;',
+};
+
+function dGauge(pct, color) {
+  return `<div style="height:5px;background:#1f2340;border-radius:3px;overflow:hidden;margin-top:5px">
+    <div style="height:100%;width:${pct}%;background:${color};border-radius:3px"></div>
   </div>`;
 }
 
-function renderCalendar(saju) {
+function scoreColor(pct) {
+  return pct >= 70 ? '#34d399' : pct >= 45 ? '#fbbf24' : '#f87171';
+}
+
+function scoreBadge(pct) {
+  const c = scoreColor(pct);
+  return `<span style="background:${c}1a;color:${c};font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid ${c}40">${Math.round(pct)}점</span>`;
+}
+
+function sectionHeader(letter, title, subtitle) {
+  return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+    <span style="background:#7c6af71a;color:#9d8ff5;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #7c6af730">${letter}</span>
+    <span style="${D.hdr}">${title}</span>
+    <span style="${D.sub}">${subtitle}</span>
+  </div>`;
+}
+
+// ─── A. 기본 운세 ─────────────────────────────────────────────
+
+function renderBasicFortune(saju, yp, mp, dp, gender) {
+  const scores = computeBasicScores(saju, mp, dp, gender);
+  const b = saju.pillars[3].pillar.branch;
+  const z = ZODIAC_ANIMAL[b];
+  const dayMaster = saju.pillars[2]?.pillar?.stem || '';
+
+  const CATEGORIES = [
+    { key:'성향',   emoji:'🌟', color:'#9d8ff5', desc:'타고난 기질과 성격의 흐름' },
+    { key:'애정운', emoji:'💗', color:'#f472b6', desc:'감정과 인연의 에너지' },
+    { key:'직업운', emoji:'💼', color:'#60a5fa', desc:'사회적 활동과 성취 흐름' },
+    { key:'재물운', emoji:'💰', color:'#fbbf24', desc:'재물과 기회의 흐름' },
+    { key:'건강운', emoji:'🌿', color:'#34d399', desc:'몸과 마음의 균형 에너지' },
+  ];
+
+  const cards = CATEGORIES.map(cat => {
+    const pct = scores[cat.key];
+    const lv  = getLevel(pct);
+    return `<div style="${D.card}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-size:18px">${cat.emoji}</span>
+          <span style="color:#dde1f2;font-weight:600;font-size:13px">${cat.key}</span>
+        </div>
+        ${scoreBadge(pct)}
+      </div>
+      ${dGauge(pct, cat.color)}
+      <div style="${D.sub};margin-top:6px">${cat.desc} · ${lv.label}</div>
+    </div>`;
+  }).join('');
+
+  const zodiacBlock = z ? `
+    <div style="${D.card};display:flex;align-items:center;gap:14px;margin-top:10px">
+      <span style="font-size:36px">${z.emoji}</span>
+      <div>
+        <div style="color:#dde1f2;font-weight:700;font-size:14px">${z.animal}띠 · ${dayMaster}일간</div>
+        <div style="${D.sub};margin-top:2px">${z.years}년생</div>
+        <div style="${D.txt};margin-top:5px">${z.trait}</div>
+      </div>
+    </div>` : '';
+
+  return `<div style="${D.wrap}">
+    ${sectionHeader('A', '기본 운세', '사주 원국 기반')}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
+      ${cards}
+    </div>
+    ${zodiacBlock}
+  </div>`;
+}
+
+// ─── B. 오늘의 운세 + 럭키 캘린더 ───────────────────────────
+
+function renderDailyCalendar(saju, yp, mp, dp) {
+  const raw = compareToNatal(saju.pillars, dp)
+            + compareToNatal(saju.pillars, mp)*0.5
+            + compareToNatal(saju.pillars, yp)*0.3;
+  const todayPct = toPct(raw, 3);
+  const todayLv  = getLevel(todayPct);
+  const lk = getLucky(dp);
+
   const today = new Date();
   const cells = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i=0; i<7; i++) {
     const d = new Date(today); d.setDate(today.getDate()+i);
-    const y=d.getFullYear(), m=d.getMonth()+1, day=d.getDate(), dow=DAY_KR[d.getDay()];
-    const dowColor = d.getDay()===0?'color:#ef4444':d.getDay()===6?'color:#3b82f6':'color:#6b7280';
-    let dp; try { [,,dp]=getFourPillars(y,m,day,12,0,false); } catch { continue; }
-    const pct=toPct(compareToNatal(saju.pillars,dp),4), lv=getLevel(pct), lk=getLucky(dp);
-    const stars='★'.repeat(Math.round(pct/20))+'☆'.repeat(5-Math.round(pct/20));
-    const ring=i===0?'box-shadow:0 0 0 2px #818cf8':'', bg=i===0?`background:${lv.bg}`:'background:#fff';
-    cells.push(`<div class="rounded-xl border text-center p-2 space-y-0.5" style="${bg};${ring}">
-      <div class="text-xs font-medium" style="${dowColor}">${dow}</div>
-      <div class="text-lg font-bold ${i===0?'text-indigo-600':''}">${day}${i===0?'<div style="font-size:9px;color:#818cf8;margin-top:-4px">오늘</div>':''}</div>
-      <div class="text-xs font-mono text-gray-500">${ganziStr(dp)}</div>
-      <div class="text-xs font-medium" style="color:${lv.color}">${lv.emoji}</div>
-      <div class="text-xs" style="color:${lv.color};letter-spacing:-1px">${stars}</div>
-      <div class="flex justify-center">
-        <div class="w-4 h-4 rounded-full border border-white shadow-sm" style="background:${lk.hex}" title="${lk.color}"></div>
-      </div>
+    const y=d.getFullYear(), m=d.getMonth()+1, dy=d.getDate(), dow=DAY_KR[d.getDay()];
+    const dowCol = d.getDay()===0?'#f87171':d.getDay()===6?'#60a5fa':'#7a82a8';
+    let dayP; try { [,,dayP]=getFourPillars(y,m,dy,12,0,false); } catch { continue; }
+    const p2=toPct(compareToNatal(saju.pillars,dayP),4), lv2=getLevel(p2), lk2=getLucky(dayP);
+    const isToday = i===0;
+    const border = isToday ? 'border:1px solid #7c6af780;' : 'border:1px solid #252840;';
+    const bg     = isToday ? 'background:#1e1b40;' : 'background:#1a1d2e;';
+    cells.push(`<div style="${bg}${border}border-radius:10px;padding:8px 4px;text-align:center">
+      <div style="font-size:11px;color:${dowCol};font-weight:600">${dow}</div>
+      <div style="font-size:18px;font-weight:700;color:${isToday?'#a78bfa':'#dde1f2'};margin:2px 0">${dy}</div>
+      ${isToday?'<div style="font-size:9px;color:#9d8ff5;margin-top:-4px">오늘</div>':''}
+      <div style="font-size:10px;color:#565d80;font-family:monospace">${ganziStr(dayP)}</div>
+      <div style="font-size:14px;margin-top:2px">${lv2.emoji}</div>
+      <div style="width:10px;height:10px;border-radius:50%;background:${lk2.hex};margin:3px auto 0;border:1px solid #ffffff20"></div>
     </div>`);
   }
-  return `<div class="rounded-xl border bg-white shadow-sm overflow-hidden">
-    <div class="px-4 py-3 border-b flex items-center justify-between">
-      <h4 class="font-semibold text-sm">📅 럭키 캘린더</h4>
-      <span class="text-xs text-muted-foreground">오늘 포함 7일 · 사주</span>
+
+  const TODAY_DESC = {
+    '대길(大吉)':'하는 일마다 순탄하게 풀리는 날입니다. 새로운 시작이나 중요한 결정에 최적입니다.',
+    '길(吉)':    '기운이 좋은 날입니다. 계획한 일들이 진행되고 주변의 도움을 받기 쉬운 시기입니다.',
+    '평(平)':    '평온하게 흘러가는 날입니다. 무리한 새 시도보다 기존 일을 꼼꼼히 마무리하세요.',
+    '소흉(小凶)':'약간의 주의가 필요한 날입니다. 중요한 결정이나 큰 지출은 미루는 것이 좋습니다.',
+    '흉(凶)':    '에너지 소모가 클 수 있는 날입니다. 충동적인 행동을 자제하고 안정을 취하세요.',
+  };
+
+  return `<div style="${D.wrap}">
+    ${sectionHeader('B', '오늘의 운세', '일진 분석')}
+    <div style="${D.card};display:flex;align-items:center;gap:16px;margin-bottom:10px">
+      <div style="text-align:center;min-width:60px">
+        <div style="font-size:38px">${todayLv.emoji}</div>
+        <div style="color:${scoreColor(todayPct)};font-weight:700;font-size:13px;margin-top:2px">${todayLv.label}</div>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="${D.sub}">운세 지수</span>
+          <span style="color:${scoreColor(todayPct)};font-weight:700;font-size:13px">${Math.round(todayPct)}점</span>
+        </div>
+        ${dGauge(todayPct, scoreColor(todayPct))}
+        <p style="${D.txt};margin-top:8px">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
+      </div>
     </div>
-    <div class="p-3 grid grid-cols-7 gap-1.5">${cells.join('')}</div>
-    <div class="px-4 py-2 border-t text-xs text-muted-foreground flex gap-x-3 flex-wrap">
-      <span>⭐대길 ✨길 🌀평 ⚡소흉 ⚠️흉</span>
-      <span class="ml-auto">● 행운의 색</span>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+      <div style="${D.card};text-align:center">
+        <div style="${D.sub};margin-bottom:4px">행운의 색</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:5px">
+          <div style="width:12px;height:12px;border-radius:50%;background:${lk.hex};border:1px solid #ffffff20"></div>
+          <span style="color:#dde1f2;font-size:13px;font-weight:600">${lk.color}</span>
+        </div>
+      </div>
+      <div style="${D.card};text-align:center">
+        <div style="${D.sub};margin-bottom:4px">행운의 방향</div>
+        <div style="color:#dde1f2;font-size:13px;font-weight:600">${lk.direction}</div>
+      </div>
+      <div style="${D.card};text-align:center">
+        <div style="${D.sub};margin-bottom:4px">행운의 숫자</div>
+        <div style="color:#dde1f2;font-size:13px;font-weight:600">${lk.number}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${cells.join('')}</div>
+    <div style="${D.muted};margin-top:8px;text-align:center">⭐대길 ✨길 🌀평 ⚡소흉 ⚠️흉 · ● 행운의 색</div>
+  </div>`;
+}
+
+// ─── C. 용신 분석 ─────────────────────────────────────────────
+
+function renderYongShin(saju) {
+  const ys = computeYongShin(saju);
+  const ELEM_KO  = {'목':'木 목','화':'火 화','토':'土 토','금':'金 금','수':'水 수'};
+  const ELEM_CLR = {'목':'#34d399','화':'#f87171','토':'#fbbf24','금':'#94a3b8','수':'#60a5fa'};
+  const total = ys.total || 8;
+
+  const elemBars = Object.entries(ys.elems).map(([e, cnt]) => {
+    const pct = Math.round((cnt/total)*100);
+    return `<div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="color:${ELEM_CLR[e]};font-size:12px;font-weight:600">${ELEM_KO[e]}</span>
+        <span style="${D.sub}">${cnt}개 · ${pct}%</span>
+      </div>
+      ${dGauge(pct, ELEM_CLR[e])}
+    </div>`;
+  }).join('');
+
+  function yongCard(label, elem, role, desc) {
+    const c = ELEM_CLR[elem] || '#7a82a8';
+    const roleDesc = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
+    return `<div style="${D.card};border-left:3px solid ${c}">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span style="color:${c};font-weight:700;font-size:12px">${role}</span>
+        <span style="background:${c}1a;color:${c};font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid ${c}30">${elem ? ELEM_KO[elem] : '-'}</span>
+      </div>
+      <div style="${D.sub}">${roleDesc}</div>
+    </div>`;
+  }
+
+  const gaugeLeft  = Math.max(5, Math.min(90, 100-ys.gauge));
+  const gaugeRight = 100 - gaugeLeft;
+
+  return `<div style="${D.wrap}">
+    ${sectionHeader('C', '용신 분석', '일간 강약과 오행 균형')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="${D.card}">
+        <div style="${D.sub};margin-bottom:8px">일간 강약</div>
+        <div style="color:#dde1f2;font-weight:700;font-size:15px;margin-bottom:8px">${ys.type}</div>
+        <div style="display:flex;height:6px;border-radius:3px;overflow:hidden">
+          <div style="background:#60a5fa;width:${gaugeLeft}%"></div>
+          <div style="background:#f87171;width:${gaugeRight}%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span style="color:#60a5fa;font-size:10px">신약</span>
+          <span style="color:#f87171;font-size:10px">신강</span>
+        </div>
+      </div>
+      <div style="${D.card}">
+        <div style="${D.sub};margin-bottom:8px">오행 분포</div>
+        ${elemBars}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      ${yongCard('용신', ys.yong, '용신', '')}
+      ${yongCard('희신', ys.hee,  '희신', '')}
+      ${yongCard('기신', ys.gi,   '기신', '')}
     </div>
   </div>`;
 }
 
-// ─── 자미두수 기반 렌더 ───────────────────────────────────────
+// ─── D. 12운성 ────────────────────────────────────────────────
+
+function renderSijunseong(saju) {
+  const dayMaster = saju.pillars[2]?.pillar?.stem;
+  if (!dayMaster) return '';
+  const PILLAR_NAMES = ['년주','월주','일주','시주'];
+  const cards = saju.pillars.map((p, i) => {
+    const sjs = getSijunseong(dayMaster, p.pillar.branch);
+    if (!sjs) return '';
+    return `<div style="${D.card};text-align:center">
+      <div style="${D.sub};margin-bottom:4px">${PILLAR_NAMES[i]}</div>
+      <div style="font-family:monospace;color:#9d8ff5;font-weight:700;font-size:14px;margin-bottom:6px">${p.pillar.ganzi}</div>
+      <div style="font-size:26px;margin-bottom:4px">${sjs.emoji}</div>
+      <div style="color:#dde1f2;font-weight:700;font-size:13px;margin-bottom:4px">${sjs.name}</div>
+      <div style="${D.sub};font-size:11px;line-height:1.5">${sjs.desc}</div>
+    </div>`;
+  }).join('');
+
+  return `<div style="${D.wrap}">
+    ${sectionHeader('D', '12운성', '일간 기준 · 사주 각 기둥의 생명 단계')}
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      ${cards}
+    </div>
+  </div>`;
+}
+
+// ─── E. 자미두수 ──────────────────────────────────────────────
 
 function renderZiweiSection(chart) {
-  function palaceCard(palaceName, label, desc) {
+  function palaceCard(palaceName, emoji, label) {
     const palace = chart.palaces[palaceName];
     if (!palace) return '';
     const mains = getMainStars(palace);
     if (mains.length === 0) {
-      return `<div class="rounded-xl border bg-white shadow-sm p-4">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-sm font-semibold">${label}</span>
-          <span class="text-xs text-muted-foreground">${palace.ganZhi}</span>
+      return `<div style="${D.card}">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+          <span style="font-size:16px">${emoji}</span>
+          <span style="color:#dde1f2;font-weight:600;font-size:13px">${label}</span>
+          <span style="${D.sub}">${palace.ganZhi}</span>
         </div>
-        <p class="text-xs text-gray-500">${desc}</p>
-        <p class="text-xs text-muted-foreground mt-1">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
+        <p style="${D.sub}">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
       </div>`;
     }
     const starCards = mains.map(s => {
-      const info = STAR_DESC[s.name] || { fate: s.name, wealth: '', love: '' };
-      const siHua = s.siHua ? `<span class="ml-1 text-xs px-1.5 py-0.5 rounded-full ${s.siHua==='化忌'?'bg-red-100 text-red-700':'bg-amber-100 text-amber-700'}">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
-      const bright = s.brightness ? `<span class="text-xs text-muted-foreground">(${s.brightness})</span>` : '';
+      const info = STAR_DESC[s.name] || { fate:s.name, wealth:'', love:'' };
       const content = palaceName==='命宮' ? info.fate : palaceName==='財帛' ? info.wealth : info.love;
-      return `<div class="flex items-start gap-2">
-        <span class="text-lg shrink-0">${palaceName==='命宮'?'🌟':palaceName==='財帛'?'💰':'💕'}</span>
-        <div><div class="flex items-center gap-1 flex-wrap">
-          <span class="font-semibold text-sm">${s.name} ${bright}</span>${siHua}
-        </div>
-        <p class="text-xs leading-5 text-gray-700 mt-0.5">${content}</p>
+      const siHua = s.siHua
+        ? `<span style="background:${s.siHua==='化忌'?'#f871711a':'#fbbf241a'};color:${s.siHua==='化忌'?'#f87171':'#fbbf24'};font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
+      const bright = s.brightness ? `<span style="${D.sub}"> (${s.brightness})</span>` : '';
+      return `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #1f2340">
+        <span style="font-size:16px;flex-shrink:0">${emoji}</span>
+        <div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap">
+            <span style="color:#dde1f2;font-weight:600;font-size:13px">${s.name}</span>${bright}${siHua}
+          </div>
+          <p style="${D.txt};margin-top:3px">${content}</p>
         </div>
       </div>`;
     }).join('');
-    return `<div class="rounded-xl border bg-white shadow-sm p-4 space-y-3">
-      <div class="flex items-center gap-2">
-        <span class="text-sm font-semibold">${label}</span>
-        <span class="text-xs text-muted-foreground bg-gray-100 rounded px-1.5">${palace.ganZhi} ${palaceName}</span>
+
+    return `<div style="${D.card}">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+        <span style="font-size:16px">${emoji}</span>
+        <span style="color:#dde1f2;font-weight:600;font-size:13px">${label}</span>
+        <span style="background:#7c6af71a;color:#9d8ff5;font-size:10px;padding:1px 6px;border-radius:6px">${palace.ganZhi} ${palaceName}</span>
       </div>
       ${starCards}
     </div>`;
   }
 
   const wu = chart.wuXingJu;
-  return `<div class="rounded-xl border overflow-hidden shadow-sm">
-    <div class="px-5 py-4 border-b" style="background:linear-gradient(135deg,#eef2ff,#fff)">
-      <h4 class="font-semibold flex items-center gap-2">
-        🌌 자미두수로 보는 운세
-        <span class="text-xs font-normal text-muted-foreground">${wu?.name||''} · 명반 분석</span>
-      </h4>
-    </div>
-    <div class="p-4 space-y-3">
-      ${palaceCard('命宮', '🌟 기본 운명 (명궁)', '타고난 운명과 성격의 근간')}
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        ${palaceCard('財帛', '💰 재물 성향 (재백궁)', '재물을 대하는 방식과 재물복')}
-        ${palaceCard('夫妻', '💕 인연 성향 (부처궁)', '이성과 파트너십을 대하는 방식')}
+  return `<div style="${D.wrap}">
+    ${sectionHeader('E', '자미두수', `${wu?.name||'명반'} · 3개 핵심 궁 분석`)}
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${palaceCard('命宮','🌟','기본 운명 (명궁)')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        ${palaceCard('財帛','💰','재물 성향 (재백궁)')}
+        ${palaceCard('夫妻','💗','인연 성향 (부처궁)')}
       </div>
     </div>
   </div>`;
 }
 
-// ─── 점성학 기반 렌더 ─────────────────────────────────────────
-
-// calculateNatal은 sign을 문자열("Aries" 등)로 반환하므로 인덱스로 변환
-const SIGN_NAMES = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const toSignIdx = s => typeof s === 'number' ? s : SIGN_NAMES.indexOf(s);
+// ─── F. 점성학 ────────────────────────────────────────────────
 
 function renderNatalSection(natalChart, transitChart, unknownTime) {
-  const findPlanet = (chart, id) => chart.planets?.find(p => p.id === id);
-  const signName = s => SIGN_KO[toSignIdx(s)] ?? ZODIAC_KO[s] ?? '알 수 없음';
+  const find = (chart, id) => chart?.planets?.find(p=>p.id===id);
+  const signName = s => SIGN_KO[toSignIdx(s)] ?? ZODIAC_KO?.[s] ?? '알 수 없음';
 
-  const sun     = findPlanet(natalChart, 'Sun');
-  const moon    = findPlanet(natalChart, 'Moon');
-  const ascObj  = !unknownTime ? (natalChart.angles?.asc ?? null) : null;
-  const jupiter = findPlanet(transitChart, 'Jupiter');
-  const venus   = findPlanet(transitChart, 'Venus');
+  const sun     = find(natalChart, 'Sun');
+  const moon    = find(natalChart, 'Moon');
+  const ascObj  = !unknownTime ? (natalChart?.angles?.asc ?? null) : null;
+  const jupiter = find(transitChart, 'Jupiter');
+  const venus   = find(transitChart, 'Venus');
 
-  const ascBlock = ascObj != null ? `
-    <div class="flex items-start gap-3 py-2 border-b border-gray-50">
-      <div class="w-8 text-center text-lg shrink-0">⬆️</div>
-      <div><div class="text-sm font-semibold">상승궁 (ASC)</div>
-        <div class="text-xs text-muted-foreground">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
-        <p class="text-xs text-gray-600 mt-0.5">타인에게 비치는 첫인상과 외면적 태도</p>
+  function planetRow(iconTxt, title, subtitle, sign, descArr) {
+    if (!sign && sign !== 0) return '';
+    const idx = toSignIdx(sign);
+    const desc = descArr[idx] || '';
+    return `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
+      <div style="font-size:20px;flex-shrink:0;width:28px;text-align:center">${iconTxt}</div>
+      <div>
+        <div style="color:#dde1f2;font-weight:600;font-size:13px">${title} <span style="${D.sub}">${subtitle}</span></div>
+        <div style="font-weight:700;font-size:14px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
+        <p style="${D.txt};margin:0">${desc}</p>
       </div>
-    </div>` : '';
+    </div>`;
+  }
 
-  return `<div class="rounded-xl border overflow-hidden shadow-sm">
-    <div class="px-5 py-4 border-b" style="background:linear-gradient(135deg,#fdf4ff,#fff)">
-      <h4 class="font-semibold flex items-center gap-2">
-        🔭 점성학으로 보는 운세
-        <span class="text-xs font-normal text-muted-foreground">서양 천궁도 분석</span>
-      </h4>
+  const ascRow = ascObj ? `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
+    <div style="font-size:20px;flex-shrink:0;width:28px;text-align:center">⬆️</div>
+    <div>
+      <div style="color:#dde1f2;font-weight:600;font-size:13px">상승궁 (ASC) <span style="${D.sub}">첫인상·외면</span></div>
+      <div style="font-weight:700;font-size:14px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
+      <p style="${D.txt};margin:0">타인에게 비치는 첫인상과 외면적 태도를 나타냅니다.</p>
     </div>
-    <div class="p-4 space-y-0 divide-y divide-gray-50">
+  </div>` : '';
 
-      ${sun ? `<div class="flex items-start gap-3 py-3">
-        <div class="w-8 text-center text-xl shrink-0">☀️</div>
-        <div><div class="text-sm font-semibold">태양 별자리 <span class="font-normal text-muted-foreground text-xs">핵심 정체성</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(sun.sign)]} ${signName(sun.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${SUN_DESC[toSignIdx(sun.sign)]||''}</p>
-        </div>
-      </div>` : ''}
-
-      ${moon ? `<div class="flex items-start gap-3 py-3">
-        <div class="w-8 text-center text-xl shrink-0">🌙</div>
-        <div><div class="text-sm font-semibold">달 별자리 <span class="font-normal text-muted-foreground text-xs">감성·본능</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(moon.sign)]} ${signName(moon.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${MOON_DESC[toSignIdx(moon.sign)]||''}</p>
-        </div>
-      </div>` : ''}
-
-      ${ascBlock}
-
-      ${jupiter ? `<div class="flex items-start gap-3 py-3">
-        <div class="w-8 text-center text-xl shrink-0">♃</div>
-        <div><div class="text-sm font-semibold">목성 현재 위치 <span class="font-normal text-muted-foreground text-xs">올해 성장 영역</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(jupiter.sign)]} ${signName(jupiter.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${JUPITER_DESC[toSignIdx(jupiter.sign)]||''}</p>
-        </div>
-      </div>` : ''}
-
-      ${venus ? `<div class="flex items-start gap-3 py-3">
-        <div class="w-8 text-center text-xl shrink-0">♀</div>
-        <div><div class="text-sm font-semibold">금성 현재 위치 <span class="font-normal text-muted-foreground text-xs">이번달 애정·재물 에너지</span></div>
-          <div class="text-sm font-bold mt-0.5">${SIGN_EMOJI[toSignIdx(venus.sign)]} ${signName(venus.sign)}</div>
-          <p class="text-xs text-gray-600 mt-0.5">${VENUS_DESC[toSignIdx(venus.sign)]||''}</p>
-        </div>
-      </div>` : ''}
-
+  return `<div style="${D.wrap}">
+    ${sectionHeader('F', '점성학', '서양 천궁도 분석')}
+    <div style="${D.card}">
+      ${planetRow('☀️', '태양 별자리', '핵심 정체성', sun?.sign, SUN_DESC)}
+      ${planetRow('🌙', '달 별자리',   '감성·본능',   moon?.sign, MOON_DESC)}
+      ${ascRow}
+      ${planetRow('♃', '목성 현재 위치', '올해 성장 영역', jupiter?.sign, JUPITER_DESC)}
+      ${planetRow('♀', '금성 현재 위치', '이번달 애정·재물', venus?.sign, VENUS_DESC)}
     </div>
   </div>`;
 }
@@ -467,43 +642,42 @@ function inputHtml() {
   const curYear = new Date().getFullYear();
   const yearOpts = Array.from({length: curYear - 1899}, (_, i) => curYear - i)
     .map(y => `<option value="${y}">${y}년</option>`).join('');
-  const monthOpts = Array.from({length:12}, (_,i) =>
-    `<option value="${i+1}">${i+1}월</option>`).join('');
-  const dayOpts = Array.from({length:31}, (_,i) =>
-    `<option value="${i+1}">${i+1}일</option>`).join('');
-  const hourOpts = `<option value="">시간 모름</option>` +
-    Array.from({length:24}, (_,i) => `<option value="${i}">${i}시</option>`).join('');
+  const monthOpts = Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}월</option>`).join('');
+  const dayOpts   = Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}일</option>`).join('');
+  const hourOpts  = `<option value="">시간 모름</option>` +
+    Array.from({length:24},(_,i)=>`<option value="${i}">${i}시</option>`).join('');
 
-  return `<div class="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
-    <p class="text-sm text-amber-800 font-medium">생년월일시를 선택하면 사주 · 자미두수 · 점성학 무료 운세를 확인합니다. (회원가입 불필요)</p>
-    <div class="flex flex-wrap gap-2">
-      <select id="gf-year"
-        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+  return `<div style="background:#1a1d2e;border:1px solid #fbbf2440;border-radius:12px;padding:18px">
+    <p style="color:#fbbf24;font-weight:600;font-size:14px;margin-bottom:12px">
+      생년월일시를 선택하면 사주·자미두수·점성학 무료 운세를 확인합니다.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+      <select id="gf-year" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
         <option value="">출생 연도</option>${yearOpts}
       </select>
-      <select id="gf-month"
-        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+      <select id="gf-month" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
         <option value="">월</option>${monthOpts}
       </select>
-      <select id="gf-day"
-        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+      <select id="gf-day" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
         <option value="">일</option>${dayOpts}
       </select>
-      <select id="gf-hour"
-        class="h-9 rounded-lg border border-input bg-white px-2 text-sm">
+      <select id="gf-hour" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
         ${hourOpts}
       </select>
     </div>
-    <div class="flex gap-4">
-      <label class="flex items-center gap-1.5 text-sm"><input type="radio" name="gf-gender" value="M" checked /> 남</label>
-      <label class="flex items-center gap-1.5 text-sm"><input type="radio" name="gf-gender" value="F" /> 여</label>
+    <div style="display:flex;gap:16px;margin-bottom:14px">
+      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:13px;cursor:pointer">
+        <input type="radio" name="gf-gender" value="M" checked /> 남성
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:13px;cursor:pointer">
+        <input type="radio" name="gf-gender" value="F" /> 여성
+      </label>
     </div>
     <button id="gf-calc" type="button"
-      class="w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
-      style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+      style="width:100%;border-radius:8px;padding:11px;font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,#7c6af7,#5b4ef0)">
       🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)
     </button>
-    <div id="gf-error" class="text-xs text-red-500 hidden"></div>
+    <div id="gf-error" style="color:#f87171;font-size:12px;margin-top:8px;display:none"></div>
   </div>`;
 }
 
@@ -512,27 +686,26 @@ function inputHtml() {
 function createPanel() {
   const el = document.createElement('div');
   el.id = 'honcheon-fortune-panel';
-  el.className = 'space-y-4';
   el.style.display = 'none';
-  el.innerHTML = `<div class="rounded-lg border bg-card p-4 md:p-6 shadow-soft space-y-4">
-    <div>
-      <h3 class="font-serif-display text-xl">🔮 무료 운세</h3>
-      <p class="text-sm text-muted-foreground mt-1">사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)</p>
+  el.innerHTML = `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
+    <div style="margin-bottom:16px">
+      <h3 style="color:#e2e8f0;font-size:18px;font-weight:700;margin:0">🔮 무료 운세</h3>
+      <p style="color:#7a82a8;font-size:13px;margin:4px 0 0">사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)</p>
     </div>
     <div id="gf-body">
-      <p class="text-sm text-muted-foreground text-center py-6 animate-pulse">운세를 계산하는 중입니다…</p>
+      <p style="color:#7a82a8;font-size:13px;text-align:center;padding:24px 0">운세를 계산하는 중입니다…</p>
     </div>
   </div>`;
   return el;
 }
 
 function membershipCard() {
-  return `<div class="rounded-lg border bg-card p-4 md:p-6 shadow-soft">
-    <div class="rounded-xl border-2 border-dashed border-amber-300 bg-amber-50 p-6 text-center space-y-3">
-      <div class="text-4xl">🔐</div>
-      <div class="text-lg font-bold text-amber-800">멤버십 전용 상세 분석</div>
-      <p class="text-sm text-amber-700">사주팔자 · 자미두수 · 천궁도 전체 결과를<br/>PDF로 정리하여 제공합니다.</p>
-      <div class="text-xs text-amber-600 space-y-1">
+  return `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
+    <div style="border:2px dashed #fbbf2460;border-radius:12px;background:#fbbf240a;padding:24px;text-align:center">
+      <div style="font-size:36px;margin-bottom:10px">🔐</div>
+      <div style="color:#fbbf24;font-weight:700;font-size:16px;margin-bottom:8px">멤버십 전용 상세 분석</div>
+      <p style="color:#d97706;font-size:13px;margin-bottom:14px">사주팔자 · 자미두수 · 천궁도 전체 결과를<br/>PDF로 정리하여 제공합니다.</p>
+      <div style="color:#b45309;font-size:12px;line-height:2">
         <div>✅ 8글자 원국 전체 해석</div>
         <div>✅ 대운 흐름 · 세운 분석</div>
         <div>✅ 자미두수 12궁 상세 해석</div>
@@ -546,14 +719,14 @@ function membershipCard() {
 function createTabs() {
   const el = document.createElement('div');
   el.id = 'honcheon-fortune-tabs';
-  el.className = 'flex rounded-xl border bg-muted p-1 gap-1';
+  el.style.cssText = 'display:flex;border-radius:12px;background:#1a1d2e;padding:4px;gap:4px;border:1px solid #252840';
   el.innerHTML = `
     <button data-tab="fortune"
-      class="flex-1 rounded-lg px-4 py-2 text-sm font-medium bg-background shadow-sm text-foreground transition-colors">
+      style="flex:1;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;background:#7c6af7;color:#fff;border:none;cursor:pointer;transition:all 0.2s">
       🔮 무료 운세
     </button>
     <button data-tab="detail"
-      class="flex-1 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+      style="flex:1;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:500;background:transparent;color:#7a82a8;border:none;cursor:pointer;transition:all 0.2s">
       🔐 멤버십 상세 분석
     </button>`;
   return el;
@@ -570,24 +743,23 @@ function createMembershipPanel() {
 // ─── 탭 전환 ─────────────────────────────────────────────────
 
 function switchTab(tabId, results) {
-  const fortunePanel    = document.getElementById('honcheon-fortune-panel');
-  const membershipPanel = document.getElementById('honcheon-membership-panel');
-  const tabs            = document.getElementById('honcheon-fortune-tabs');
+  const tabs = document.getElementById('honcheon-fortune-tabs');
   if (!tabs) return;
 
   tabs.querySelectorAll('button').forEach(btn => {
     const active = btn.dataset.tab === tabId;
-    btn.className = `flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-      active ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`;
+    btn.style.background = active ? '#7c6af7' : 'transparent';
+    btn.style.color = active ? '#fff' : '#7a82a8';
+    btn.style.fontWeight = active ? '600' : '500';
   });
 
   Array.from(results.children).forEach(child => {
     const id = child.id;
     if (id === 'honcheon-fortune-tabs') return;
-    if (id === 'honcheon-fortune-panel')    { child.style.display = tabId==='fortune' ? '' : 'none'; return; }
-    if (id === 'honcheon-membership-panel') { child.style.display = tabId==='detail'  ? '' : 'none'; return; }
+    if (id === 'honcheon-fortune-panel')    { child.style.display = tabId==='fortune'?'':'none'; return; }
+    if (id === 'honcheon-membership-panel') { child.style.display = tabId==='detail' ?'':'none'; return; }
     if (id === 'honcheon-ai-panel')         { child.style.display = 'none'; return; }
-    if (id === 'honcheon-gunghap-panel')    { child.style.display = tabId==='detail'  ? '' : 'none'; return; }
+    if (id === 'honcheon-gunghap-panel')    { child.style.display = tabId==='detail' ?'':'none'; return; }
     child.style.display = tabId==='detail' ? '' : 'none';
   });
 }
@@ -598,7 +770,6 @@ async function runFortune(preInput = null) {
   const errorEl = document.getElementById('gf-error');
   const bodyEl  = document.getElementById('gf-body');
 
-  // 입력값을 innerHTML 교체 전에 먼저 읽어야 함
   let year, month, day, hour, minute, gender, unknownTime;
   if (preInput) {
     ({ year, month, day, hour, minute, gender, unknownTime } = preInput);
@@ -613,8 +784,8 @@ async function runFortune(preInput = null) {
     gender      = document.querySelector('input[name="gf-gender"]:checked')?.value ?? 'M';
   }
 
-  if (errorEl) { errorEl.textContent=''; errorEl.classList.add('hidden'); }
-  if (bodyEl) bodyEl.innerHTML = '<p class="text-sm text-muted-foreground animate-pulse py-4 text-center">계산 중… 잠시만 기다려주세요.</p>';
+  if (errorEl) { errorEl.textContent=''; errorEl.style.display='none'; }
+  if (bodyEl) bodyEl.innerHTML = '<p style="color:#7a82a8;font-size:13px;text-align:center;padding:24px 0">계산 중… 잠시만 기다려주세요.</p>';
 
   try {
     if (!year||!month||!day) throw new Error('생년월일을 입력해주세요.');
@@ -631,27 +802,25 @@ async function runFortune(preInput = null) {
     const today = new Date();
     const [yp, mp, dp] = getFourPillars(today.getFullYear(), today.getMonth()+1, today.getDate(), 12, 0, false);
 
-    const sourceLabel = preInput
-      ? `<span class="text-xs text-muted-foreground">${year}년 ${month}월 ${day}일 · ${gender==='F'?'여':'남'}</span>`
+    const infoLine = preInput
+      ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">${year}년 ${month}월 ${day}일 · ${gender==='F'?'여':'남'}</span></div>`
       : '';
 
-    if (bodyEl) bodyEl.innerHTML = `<div class="space-y-5">
-      ${sourceLabel ? `<div class="flex justify-end">${sourceLabel}</div>` : ''}
-      ${renderSajuToday(saju, yp, mp, dp)}
-      ${renderZodiac(saju)}
-      ${renderSajuMonthly(saju, mp, gender)}
-      <hr class="border-dashed" />
+    if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px">
+      ${infoLine}
+      ${renderBasicFortune(saju, yp, mp, dp, gender)}
+      ${renderDailyCalendar(saju, yp, mp, dp)}
+      ${renderYongShin(saju)}
+      ${renderSijunseong(saju)}
       ${renderZiweiSection(ziwei)}
-      <hr class="border-dashed" />
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
-      <hr class="border-dashed" />
-      ${renderCalendar(saju)}
-      <div class="flex justify-center pt-1">
-        <button id="gf-reset" type="button" class="text-xs text-muted-foreground underline hover:text-foreground">
+      <div style="text-align:center;padding:4px 0">
+        <button id="gf-reset" type="button"
+          style="color:#565d80;font-size:12px;text-decoration:underline;background:none;border:none;cursor:pointer">
           다른 생년월일로 다시 보기
         </button>
       </div>
-      <p class="text-xs text-center text-muted-foreground pb-2">
+      <p style="${D.muted};text-align:center;padding-bottom:4px">
         ※ 사주·자미두수·점성학 원국과 현재 날짜를 기반으로 자동 계산됩니다. 참고용으로 활용하세요.
       </p>
     </div>`;
@@ -665,12 +834,11 @@ async function runFortune(preInput = null) {
     if (bodyEl) {
       bodyEl.innerHTML = inputHtml();
       const err = document.getElementById('gf-error');
-      if (err) { err.textContent=e.message||'계산 중 오류가 발생했습니다.'; err.classList.remove('hidden'); }
+      if (err) { err.textContent=e.message||'계산 중 오류가 발생했습니다.'; err.style.display='block'; }
     }
   }
 }
 
-// 메인 폼 데이터를 자동 추출해서 운세 계산
 async function tryAutoRun() {
   const bodyEl = document.getElementById('gf-body');
   if (!bodyEl) return;
@@ -678,7 +846,6 @@ async function tryAutoRun() {
   if (input) {
     await runFortune(input);
   } else {
-    // 자동 추출 실패 시 입력 폼 표시
     bodyEl.innerHTML = inputHtml();
   }
 }
@@ -705,19 +872,16 @@ function mount() {
     if (btn) switchTab(btn.dataset.tab, results);
   });
 
-  // 패널이 마운트되면 메인 폼 데이터를 자동으로 읽어서 운세 계산
   tryAutoRun().catch(console.error);
 }
 
 // ─── 글로벌 이벤트 ───────────────────────────────────────────
 
 document.addEventListener('click', e => {
-  // 직접 입력 폼의 계산 버튼
   if (e.target.id==='gf-calc' || e.target.closest('#gf-calc')) {
     runFortune(null).catch(console.error);
     return;
   }
-  // 메인 폼 "명식 산출하기" 재클릭 → 새 데이터로 자동 갱신
   const btn = e.target.closest('button');
   if (btn && btn.textContent.includes('명식 산출하기')) {
     setTimeout(() => tryAutoRun().catch(console.error), 800);
