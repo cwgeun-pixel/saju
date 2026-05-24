@@ -287,10 +287,10 @@ function captureMainFormInput() {
 const D = {
   wrap:   'background:#12151f;border-radius:14px;padding:20px;',
   card:   'background:#1a1d2e;border:1px solid #252840;border-radius:12px;padding:16px;',
-  hdr:    'color:#e2e8f0;font-weight:700;font-size:15px;',
-  sub:    'color:#7a82a8;font-size:12px;',
-  txt:    'color:#c8cee8;font-size:13px;line-height:1.7;',
-  muted:  'color:#565d80;font-size:11px;',
+  hdr:    'color:#e2e8f0;font-weight:700;font-size:22px;',
+  sub:    'color:#7a82a8;font-size:18px;',
+  txt:    'color:#c8cee8;font-size:20px;line-height:1.7;',
+  muted:  'color:#565d80;font-size:16px;',
 };
 
 function dGauge(pct, color) {
@@ -305,12 +305,12 @@ function scoreColor(pct) {
 
 function scoreBadge(pct) {
   const c = scoreColor(pct);
-  return `<span style="background:${c}1a;color:${c};font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid ${c}40">${Math.round(pct)}점</span>`;
+  return `<span style="background:${c}1a;color:${c};font-size:16px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid ${c}40">${Math.round(pct)}점</span>`;
 }
 
 function sectionHeader(letter, title, subtitle) {
   return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-    <span style="background:#7c6af71a;color:#9d8ff5;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #7c6af730">${letter}</span>
+    <span style="background:#7c6af71a;color:#9d8ff5;font-size:16px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #7c6af730">${letter}</span>
     <span style="${D.hdr}">${title}</span>
     <span style="${D.sub}">${subtitle}</span>
   </div>`;
@@ -338,8 +338,8 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
     return `<div style="${D.card}">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:7px">
-          <span style="font-size:18px">${cat.emoji}</span>
-          <span style="color:#dde1f2;font-weight:600;font-size:13px">${cat.key}</span>
+          <span style="font-size:27px">${cat.emoji}</span>
+          <span style="color:#dde1f2;font-weight:600;font-size:20px">${cat.key}</span>
         </div>
         ${scoreBadge(pct)}
       </div>
@@ -350,9 +350,9 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
 
   const zodiacBlock = z ? `
     <div style="${D.card};display:flex;align-items:center;gap:14px;margin-top:10px">
-      <span style="font-size:36px">${z.emoji}</span>
+      <span style="font-size:54px">${z.emoji}</span>
       <div>
-        <div style="color:#dde1f2;font-weight:700;font-size:14px">${z.animal}띠 · ${dayMaster}일간</div>
+        <div style="color:#dde1f2;font-weight:700;font-size:21px">${z.animal}띠 · ${dayMaster}일간</div>
         <div style="${D.sub};margin-top:2px">${z.years}년생</div>
         <div style="${D.txt};margin-top:5px">${z.trait}</div>
       </div>
@@ -389,11 +389,11 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     const border = isToday ? 'border:1px solid #7c6af780;' : 'border:1px solid #252840;';
     const bg     = isToday ? 'background:#1e1b40;' : 'background:#1a1d2e;';
     cells.push(`<div style="${bg}${border}border-radius:10px;padding:8px 4px;text-align:center">
-      <div style="font-size:11px;color:${dowCol};font-weight:600">${dow}</div>
-      <div style="font-size:18px;font-weight:700;color:${isToday?'#a78bfa':'#dde1f2'};margin:2px 0">${dy}</div>
-      ${isToday?'<div style="font-size:9px;color:#9d8ff5;margin-top:-4px">오늘</div>':''}
-      <div style="font-size:10px;color:#565d80;font-family:monospace">${ganziStr(dayP)}</div>
-      <div style="font-size:14px;margin-top:2px">${lv2.emoji}</div>
+      <div style="font-size:16px;color:${dowCol};font-weight:600">${dow}</div>
+      <div style="font-size:27px;font-weight:700;color:${isToday?'#a78bfa':'#dde1f2'};margin:2px 0">${dy}</div>
+      ${isToday?'<div style="font-size:14px;color:#9d8ff5;margin-top:-4px">오늘</div>':''}
+      <div style="font-size:15px;color:#565d80;font-family:monospace">${ganziStr(dayP)}</div>
+      <div style="font-size:21px;margin-top:2px">${lv2.emoji}</div>
       <div style="width:10px;height:10px;border-radius:50%;background:${lk2.hex};margin:3px auto 0;border:1px solid #ffffff20"></div>
     </div>`);
   }
@@ -410,13 +410,13 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     ${sectionHeader('B', '오늘의 운세', '일진 분석')}
     <div style="${D.card};display:flex;align-items:center;gap:16px;margin-bottom:10px">
       <div style="text-align:center;min-width:60px">
-        <div style="font-size:38px">${todayLv.emoji}</div>
-        <div style="color:${scoreColor(todayPct)};font-weight:700;font-size:13px;margin-top:2px">${todayLv.label}</div>
+        <div style="font-size:57px">${todayLv.emoji}</div>
+        <div style="color:${scoreColor(todayPct)};font-weight:700;font-size:20px;margin-top:2px">${todayLv.label}</div>
       </div>
       <div style="flex:1">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
           <span style="${D.sub}">운세 지수</span>
-          <span style="color:${scoreColor(todayPct)};font-weight:700;font-size:13px">${Math.round(todayPct)}점</span>
+          <span style="color:${scoreColor(todayPct)};font-weight:700;font-size:20px">${Math.round(todayPct)}점</span>
         </div>
         ${dGauge(todayPct, scoreColor(todayPct))}
         <p style="${D.txt};margin-top:8px">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
@@ -427,16 +427,16 @@ function renderDailyCalendar(saju, yp, mp, dp) {
         <div style="${D.sub};margin-bottom:4px">행운의 색</div>
         <div style="display:flex;align-items:center;justify-content:center;gap:5px">
           <div style="width:12px;height:12px;border-radius:50%;background:${lk.hex};border:1px solid #ffffff20"></div>
-          <span style="color:#dde1f2;font-size:13px;font-weight:600">${lk.color}</span>
+          <span style="color:#dde1f2;font-size:20px;font-weight:600">${lk.color}</span>
         </div>
       </div>
       <div style="${D.card};text-align:center">
         <div style="${D.sub};margin-bottom:4px">행운의 방향</div>
-        <div style="color:#dde1f2;font-size:13px;font-weight:600">${lk.direction}</div>
+        <div style="color:#dde1f2;font-size:20px;font-weight:600">${lk.direction}</div>
       </div>
       <div style="${D.card};text-align:center">
         <div style="${D.sub};margin-bottom:4px">행운의 숫자</div>
-        <div style="color:#dde1f2;font-size:13px;font-weight:600">${lk.number}</div>
+        <div style="color:#dde1f2;font-size:20px;font-weight:600">${lk.number}</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${cells.join('')}</div>
@@ -456,7 +456,7 @@ function renderYongShin(saju) {
     const pct = Math.round((cnt/total)*100);
     return `<div style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-        <span style="color:${ELEM_CLR[e]};font-size:12px;font-weight:600">${ELEM_KO[e]}</span>
+        <span style="color:${ELEM_CLR[e]};font-size:18px;font-weight:600">${ELEM_KO[e]}</span>
         <span style="${D.sub}">${cnt}개 · ${pct}%</span>
       </div>
       ${dGauge(pct, ELEM_CLR[e])}
@@ -468,8 +468,8 @@ function renderYongShin(saju) {
     const roleDesc = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
     return `<div style="${D.card};border-left:3px solid ${c}">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-        <span style="color:${c};font-weight:700;font-size:12px">${role}</span>
-        <span style="background:${c}1a;color:${c};font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid ${c}30">${elem ? ELEM_KO[elem] : '-'}</span>
+        <span style="color:${c};font-weight:700;font-size:18px">${role}</span>
+        <span style="background:${c}1a;color:${c};font-size:16px;padding:1px 7px;border-radius:10px;border:1px solid ${c}30">${elem ? ELEM_KO[elem] : '-'}</span>
       </div>
       <div style="${D.sub}">${roleDesc}</div>
     </div>`;
@@ -483,14 +483,14 @@ function renderYongShin(saju) {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
       <div style="${D.card}">
         <div style="${D.sub};margin-bottom:8px">일간 강약</div>
-        <div style="color:#dde1f2;font-weight:700;font-size:15px;margin-bottom:8px">${ys.type}</div>
+        <div style="color:#dde1f2;font-weight:700;font-size:22px;margin-bottom:8px">${ys.type}</div>
         <div style="display:flex;height:6px;border-radius:3px;overflow:hidden">
           <div style="background:#60a5fa;width:${gaugeLeft}%"></div>
           <div style="background:#f87171;width:${gaugeRight}%"></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:4px">
-          <span style="color:#60a5fa;font-size:10px">신약</span>
-          <span style="color:#f87171;font-size:10px">신강</span>
+          <span style="color:#60a5fa;font-size:15px">신약</span>
+          <span style="color:#f87171;font-size:15px">신강</span>
         </div>
       </div>
       <div style="${D.card}">
@@ -517,10 +517,10 @@ function renderSijunseong(saju) {
     if (!sjs) return '';
     return `<div style="${D.card};text-align:center">
       <div style="${D.sub};margin-bottom:4px">${PILLAR_NAMES[i]}</div>
-      <div style="font-family:monospace;color:#9d8ff5;font-weight:700;font-size:14px;margin-bottom:6px">${p.pillar.ganzi}</div>
-      <div style="font-size:26px;margin-bottom:4px">${sjs.emoji}</div>
-      <div style="color:#dde1f2;font-weight:700;font-size:13px;margin-bottom:4px">${sjs.name}</div>
-      <div style="${D.sub};font-size:11px;line-height:1.5">${sjs.desc}</div>
+      <div style="font-family:monospace;color:#9d8ff5;font-weight:700;font-size:21px;margin-bottom:6px">${p.pillar.ganzi}</div>
+      <div style="font-size:39px;margin-bottom:4px">${sjs.emoji}</div>
+      <div style="color:#dde1f2;font-weight:700;font-size:20px;margin-bottom:4px">${sjs.name}</div>
+      <div style="${D.sub};font-size:16px;line-height:1.5">${sjs.desc}</div>
     </div>`;
   }).join('');
 
@@ -542,8 +542,8 @@ function renderZiweiSection(chart) {
     if (mains.length === 0) {
       return `<div style="${D.card}">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-          <span style="font-size:16px">${emoji}</span>
-          <span style="color:#dde1f2;font-weight:600;font-size:13px">${label}</span>
+          <span style="font-size:24px">${emoji}</span>
+          <span style="color:#dde1f2;font-weight:600;font-size:20px">${label}</span>
           <span style="${D.sub}">${palace.ganZhi}</span>
         </div>
         <p style="${D.sub}">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
@@ -553,13 +553,13 @@ function renderZiweiSection(chart) {
       const info = STAR_DESC[s.name] || { fate:s.name, wealth:'', love:'' };
       const content = palaceName==='命宮' ? info.fate : palaceName==='財帛' ? info.wealth : info.love;
       const siHua = s.siHua
-        ? `<span style="background:${s.siHua==='化忌'?'#f871711a':'#fbbf241a'};color:${s.siHua==='化忌'?'#f87171':'#fbbf24'};font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
+        ? `<span style="background:${s.siHua==='化忌'?'#f871711a':'#fbbf241a'};color:${s.siHua==='化忌'?'#f87171':'#fbbf24'};font-size:15px;padding:1px 6px;border-radius:8px;margin-left:4px">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
       const bright = s.brightness ? `<span style="${D.sub}"> (${s.brightness})</span>` : '';
       return `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #1f2340">
-        <span style="font-size:16px;flex-shrink:0">${emoji}</span>
+        <span style="font-size:24px;flex-shrink:0">${emoji}</span>
         <div>
           <div style="display:flex;align-items:center;flex-wrap:wrap">
-            <span style="color:#dde1f2;font-weight:600;font-size:13px">${s.name}</span>${bright}${siHua}
+            <span style="color:#dde1f2;font-weight:600;font-size:20px">${s.name}</span>${bright}${siHua}
           </div>
           <p style="${D.txt};margin-top:3px">${content}</p>
         </div>
@@ -568,9 +568,9 @@ function renderZiweiSection(chart) {
 
     return `<div style="${D.card}">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-        <span style="font-size:16px">${emoji}</span>
-        <span style="color:#dde1f2;font-weight:600;font-size:13px">${label}</span>
-        <span style="background:#7c6af71a;color:#9d8ff5;font-size:10px;padding:1px 6px;border-radius:6px">${palace.ganZhi} ${palaceName}</span>
+        <span style="font-size:24px">${emoji}</span>
+        <span style="color:#dde1f2;font-weight:600;font-size:20px">${label}</span>
+        <span style="background:#7c6af71a;color:#9d8ff5;font-size:15px;padding:1px 6px;border-radius:6px">${palace.ganZhi} ${palaceName}</span>
       </div>
       ${starCards}
     </div>`;
@@ -606,20 +606,20 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     const idx = toSignIdx(sign);
     const desc = descArr[idx] || '';
     return `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
-      <div style="font-size:20px;flex-shrink:0;width:28px;text-align:center">${iconTxt}</div>
+      <div style="font-size:30px;flex-shrink:0;width:28px;text-align:center">${iconTxt}</div>
       <div>
-        <div style="color:#dde1f2;font-weight:600;font-size:13px">${title} <span style="${D.sub}">${subtitle}</span></div>
-        <div style="font-weight:700;font-size:14px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
+        <div style="color:#dde1f2;font-weight:600;font-size:20px">${title} <span style="${D.sub}">${subtitle}</span></div>
+        <div style="font-weight:700;font-size:21px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
         <p style="${D.txt};margin:0">${desc}</p>
       </div>
     </div>`;
   }
 
   const ascRow = ascObj ? `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
-    <div style="font-size:20px;flex-shrink:0;width:28px;text-align:center">⬆️</div>
+    <div style="font-size:30px;flex-shrink:0;width:28px;text-align:center">⬆️</div>
     <div>
-      <div style="color:#dde1f2;font-weight:600;font-size:13px">상승궁 (ASC) <span style="${D.sub}">첫인상·외면</span></div>
-      <div style="font-weight:700;font-size:14px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
+      <div style="color:#dde1f2;font-weight:600;font-size:20px">상승궁 (ASC) <span style="${D.sub}">첫인상·외면</span></div>
+      <div style="font-weight:700;font-size:21px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
       <p style="${D.txt};margin:0">타인에게 비치는 첫인상과 외면적 태도를 나타냅니다.</p>
     </div>
   </div>` : '';
@@ -648,36 +648,36 @@ function inputHtml() {
     Array.from({length:24},(_,i)=>`<option value="${i}">${i}시</option>`).join('');
 
   return `<div style="background:#1a1d2e;border:1px solid #fbbf2440;border-radius:12px;padding:18px">
-    <p style="color:#fbbf24;font-weight:600;font-size:14px;margin-bottom:12px">
+    <p style="color:#fbbf24;font-weight:600;font-size:21px;margin-bottom:12px">
       생년월일시를 선택하면 사주·자미두수·점성학 무료 운세를 확인합니다.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-      <select id="gf-year" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
+      <select id="gf-year" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
         <option value="">출생 연도</option>${yearOpts}
       </select>
-      <select id="gf-month" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
+      <select id="gf-month" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
         <option value="">월</option>${monthOpts}
       </select>
-      <select id="gf-day" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
+      <select id="gf-day" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
         <option value="">일</option>${dayOpts}
       </select>
-      <select id="gf-hour" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:13px">
+      <select id="gf-hour" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
         ${hourOpts}
       </select>
     </div>
     <div style="display:flex;gap:16px;margin-bottom:14px">
-      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:13px;cursor:pointer">
+      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:20px;cursor:pointer">
         <input type="radio" name="gf-gender" value="M" checked /> 남성
       </label>
-      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:13px;cursor:pointer">
+      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:20px;cursor:pointer">
         <input type="radio" name="gf-gender" value="F" /> 여성
       </label>
     </div>
     <button id="gf-calc" type="button"
-      style="width:100%;border-radius:8px;padding:11px;font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,#7c6af7,#5b4ef0)">
+      style="width:100%;border-radius:8px;padding:11px;font-size:21px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,#7c6af7,#5b4ef0)">
       🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)
     </button>
-    <div id="gf-error" style="color:#f87171;font-size:12px;margin-top:8px;display:none"></div>
+    <div id="gf-error" style="color:#f87171;font-size:18px;margin-top:8px;display:none"></div>
   </div>`;
 }
 
@@ -689,11 +689,11 @@ function createPanel() {
   el.style.display = 'none';
   el.innerHTML = `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
     <div style="margin-bottom:16px">
-      <h3 style="color:#e2e8f0;font-size:18px;font-weight:700;margin:0">🔮 무료 운세</h3>
-      <p style="color:#7a82a8;font-size:13px;margin:4px 0 0">사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)</p>
+      <h3 style="color:#e2e8f0;font-size:27px;font-weight:700;margin:0">🔮 무료 운세</h3>
+      <p style="color:#7a82a8;font-size:20px;margin:4px 0 0">사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)</p>
     </div>
     <div id="gf-body">
-      <p style="color:#7a82a8;font-size:13px;text-align:center;padding:24px 0">운세를 계산하는 중입니다…</p>
+      <p style="color:#7a82a8;font-size:20px;text-align:center;padding:24px 0">운세를 계산하는 중입니다…</p>
     </div>
   </div>`;
   return el;
@@ -702,10 +702,10 @@ function createPanel() {
 function membershipCard() {
   return `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
     <div style="border:2px dashed #fbbf2460;border-radius:12px;background:#fbbf240a;padding:24px;text-align:center">
-      <div style="font-size:36px;margin-bottom:10px">🔐</div>
-      <div style="color:#fbbf24;font-weight:700;font-size:16px;margin-bottom:8px">멤버십 전용 상세 분석</div>
-      <p style="color:#d97706;font-size:13px;margin-bottom:14px">사주팔자 · 자미두수 · 천궁도 전체 결과를<br/>PDF로 정리하여 제공합니다.</p>
-      <div style="color:#b45309;font-size:12px;line-height:2">
+      <div style="font-size:54px;margin-bottom:10px">🔐</div>
+      <div style="color:#fbbf24;font-weight:700;font-size:24px;margin-bottom:8px">멤버십 전용 상세 분석</div>
+      <p style="color:#d97706;font-size:20px;margin-bottom:14px">사주팔자 · 자미두수 · 천궁도 전체 결과를<br/>PDF로 정리하여 제공합니다.</p>
+      <div style="color:#b45309;font-size:18px;line-height:2">
         <div>✅ 8글자 원국 전체 해석</div>
         <div>✅ 대운 흐름 · 세운 분석</div>
         <div>✅ 자미두수 12궁 상세 해석</div>
@@ -722,11 +722,11 @@ function createTabs() {
   el.style.cssText = 'display:flex;border-radius:12px;background:#1a1d2e;padding:4px;gap:4px;border:1px solid #252840';
   el.innerHTML = `
     <button data-tab="fortune"
-      style="flex:1;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;background:#7c6af7;color:#fff;border:none;cursor:pointer;transition:all 0.2s">
+      style="flex:1;border-radius:8px;padding:8px 16px;font-size:20px;font-weight:600;background:#7c6af7;color:#fff;border:none;cursor:pointer;transition:all 0.2s">
       🔮 무료 운세
     </button>
     <button data-tab="detail"
-      style="flex:1;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:500;background:transparent;color:#7a82a8;border:none;cursor:pointer;transition:all 0.2s">
+      style="flex:1;border-radius:8px;padding:8px 16px;font-size:20px;font-weight:500;background:transparent;color:#7a82a8;border:none;cursor:pointer;transition:all 0.2s">
       🔐 멤버십 상세 분석
     </button>`;
   return el;
@@ -785,7 +785,7 @@ async function runFortune(preInput = null) {
   }
 
   if (errorEl) { errorEl.textContent=''; errorEl.style.display='none'; }
-  if (bodyEl) bodyEl.innerHTML = '<p style="color:#7a82a8;font-size:13px;text-align:center;padding:24px 0">계산 중… 잠시만 기다려주세요.</p>';
+  if (bodyEl) bodyEl.innerHTML = '<p style="color:#7a82a8;font-size:20px;text-align:center;padding:24px 0">계산 중… 잠시만 기다려주세요.</p>';
 
   try {
     if (!year||!month||!day) throw new Error('생년월일을 입력해주세요.');
@@ -816,7 +816,7 @@ async function runFortune(preInput = null) {
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
       <div style="text-align:center;padding:4px 0">
         <button id="gf-reset" type="button"
-          style="color:#565d80;font-size:12px;text-decoration:underline;background:none;border:none;cursor:pointer">
+          style="color:#565d80;font-size:18px;text-decoration:underline;background:none;border:none;cursor:pointer">
           다른 생년월일로 다시 보기
         </button>
       </div>
