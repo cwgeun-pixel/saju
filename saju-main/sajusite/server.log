@@ -1,0 +1,17 @@
+Serving C:\Users\cwgeu\OneDrive\Desktop\sajusite at http://127.0.0.1:4173
+AI interpretation model: gpt-5.5
+OPENAI_API_KEY loaded.
+AI interpretation request: section=love depth=short sourceChars=38
+AI interpretation completed in 10314ms.
+AI interpretation request: section=love depth=standard sourceChars=42500
+AI interpretation completed in 19222ms.
+AI interpretation request: section=personality depth=premium sourceChars=1573
+AI interpretation completed in 108640ms.
+AI interpretation request: section=love depth=standard sourceChars=1573
+AI interpretation completed in 107168ms.
+AI interpretation request: section=saju depth=standard sourceChars=1573
+AI interpretation completed in 153201ms.
+AI interpretation request: section=ziwei depth=premium sourceChars=1573
+AI interpretation completed in 71207ms.
+AI interpretation request: section=ziwei depth=premium sourceChars=968
+AI interpretation completed in 182090ms.
