@@ -842,7 +842,13 @@ async function runFortune(preInput = null) {
 async function tryAutoRun() {
   const bodyEl = document.getElementById('gf-body');
   if (!bodyEl) return;
-  const input = captureMainFormInput();
+  let input = captureMainFormInput();
+  if (!input) {
+    try {
+      const stored = sessionStorage.getItem('honcheon_last_input');
+      if (stored) input = JSON.parse(stored);
+    } catch {}
+  }
   if (input) {
     await runFortune(input);
   } else {
@@ -884,6 +890,11 @@ document.addEventListener('click', e => {
   }
   const btn = e.target.closest('button');
   if (btn && btn.textContent.includes('명식 산출하기')) {
+    // React가 폼을 언마운트하기 전에 즉시 캡처
+    const captured = captureMainFormInput();
+    if (captured) {
+      try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
+    }
     setTimeout(() => tryAutoRun().catch(console.error), 800);
   }
 });
