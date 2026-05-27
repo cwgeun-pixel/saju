@@ -1395,9 +1395,7 @@ function inputHtml() {
   const selectStyle = 'height:40px;border-radius:10px;border:1px solid rgba(212,175,55,0.3);background:linear-gradient(135deg,#131726,#161b2e);color:#e8dfc8;padding:0 12px;font-size:17px;outline:none;cursor:pointer;';
   return `<div style="background:linear-gradient(135deg,#0d1020,#111428);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:22px;box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
     <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
-    <p style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:18px;margin-bottom:16px;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">
-      ${t('생년월일시를 선택하면 사주·자미두수·점성학 무료 운세를 확인합니다.')}
-    </p>
+
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
       <select id="gf-year" style="${selectStyle}">
         <option value="">${t('출생 연도')}</option>${yearOpts}
@@ -1438,8 +1436,8 @@ function createPanel() {
     <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),rgba(124,106,247,0.5),transparent)"></div>
     <div style="position:absolute;top:20px;right:20px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,0.06) 0%,transparent 70%);pointer-events:none"></div>
     <div style="margin-bottom:20px">
-      <h3 style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:26px;font-weight:800;margin:0;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">🔮 ${t('무료 운세')}</h3>
-      <p style="color:#8a8fa8;font-size:16px;margin:6px 0 0;line-height:1.5">${t('사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)')}</p>
+      <h3 style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:26px;font-weight:800;margin:0;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em;text-align:center">🔮 ${t('무료 운세')}</h3>
+      <p style="color:#8a8fa8;font-size:16px;margin:6px 0 0;line-height:1.5;text-align:center">${t('사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)')}</p>
     </div>
     <div id="gf-body">
       <p style="color:#7a6f8a;font-size:18px;text-align:center;padding:28px 0">${t('운세를 계산하는 중입니다…')}</p>
