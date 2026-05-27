@@ -123,36 +123,31 @@
       }
 
       /* ===== 레이아웃: 폼을 화면 중앙으로 ===== */
-      /* 2컬럼 그리드를 1컬럼으로 */
-      [class*="grid-cols-2"],
-      [class*="lg:grid-cols-2"],
-      .grid.lg\\:grid-cols-2 {
+
+      /* 정확한 클래스: grid md:grid-cols-2 → 1컬럼으로 변경 */
+      .grid.md\:grid-cols-2 {
         grid-template-columns: 1fr !important;
         justify-items: center !important;
+        max-width: 560px !important;
+        margin: 0 auto !important;
       }
 
-      /* 메인 컨테이너 중앙 정렬 */
-      main, [role="main"],
-      [class*="container"],
-      [class*="Container"] {
+      /* 왼쪽 이미지 컬럼 숨기기 */
+      .grid.md\:grid-cols-2 > *:first-child {
+        display: none !important;
+      }
+
+      /* 오른쪽 폼 컬럼을 전체 너비로 */
+      .grid.md\:grid-cols-2 > *:last-child {
+        width: 100% !important;
+        max-width: 540px !important;
+      }
+
+      /* 전체 페이지 중앙 정렬 */
+      #root > div {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-      }
-
-      /* 폼/입력 패널 최대 너비 및 중앙 정렬 */
-      form,
-      [class*="InputForm"],
-      [class*="inputForm"],
-      [class*="BirthForm"],
-      [class*="birthForm"],
-      [class*="FormCard"],
-      [class*="formCard"],
-      [class*="InputCard"],
-      [class*="inputCard"] {
-        max-width: 540px !important;
-        width: 100% !important;
-        margin: 0 auto !important;
       }
 
       /* ===== 헤더 텍스트: 골드-퍼플 그라디언트 ===== */
