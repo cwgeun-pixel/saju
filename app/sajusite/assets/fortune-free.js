@@ -818,7 +818,7 @@ function getLucky(ganzi) {
   const info = ELEMENT_LUCKY[elem];
   return { ...info, number: info.numbers[ganzi[1].charCodeAt(0)%2], elem };
 }
-function ganziStr(g) { return `${STEM_KR[g[0]]||g[0]}${BRANCH_KR[g[1]]||g[1]}`; }
+function ganziStr(g) { return `${g[0]}${g[1]}`; }
 function getMainStars(palace) {
   return (palace?.stars||[]).filter(s => MAIN_STARS.has(s.name));
 }
@@ -1114,6 +1114,7 @@ function renderDailyCalendar(saju, yp, mp, dp) {
       <div style="font-size:12px;color:#5a5f7a;font-family:monospace;margin-top:2px">${ganziStr(dayP)}</div>
       <div style="font-size:26px;margin-top:4px;filter:drop-shadow(0 0 6px rgba(255,255,255,0.4))">${lv2.emoji}</div>
       <div style="width:14px;height:14px;border-radius:3px;background:${lk2.hex};margin:5px auto 0;border:1px solid rgba(255,255,255,0.25);box-shadow:0 0 8px ${lk2.hex}90"></div>
+      <div style="font-size:10px;color:#8a8fa8;margin-top:3px;letter-spacing:0.02em">${t('lucky.'+lk2.elem+'.color')}</div>
     </div>`);
   }
 
