@@ -158,20 +158,380 @@
         -webkit-text-fill-color: transparent !important;
         background-clip: text !important;
       }
-      h2, h3 {
+
+      /* ===== 결과 페이지 섹션 제목 스타일 ===== */
+      #results h2,
+      #results h3 {
+        font-family: 'Cormorant Garamond', serif !important;
+        background: linear-gradient(90deg, #e8d5a3 0%, #c9a84c 60%, #b8860b 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-size: 1.15rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.04em !important;
+        margin-bottom: 0.75rem !important;
+      }
+      #results h2 {
+        font-size: 1.35rem !important;
+        letter-spacing: 0.06em !important;
+      }
+
+      /* ===== 결과 카드 강화 스타일 ===== */
+      #results .rounded-lg.border.bg-card {
+        background: linear-gradient(145deg, rgba(8,9,28,0.95) 0%, rgba(12,10,35,0.92) 100%) !important;
+        border: 1px solid rgba(201,168,76,0.28) !important;
+        border-radius: 16px !important;
+        box-shadow:
+          0 4px 32px rgba(0,0,0,0.5),
+          0 0 0 1px rgba(201,168,76,0.08),
+          inset 0 1px 0 rgba(201,168,76,0.12) !important;
+        backdrop-filter: blur(20px) !important;
+        transition: box-shadow 0.3s, border-color 0.3s !important;
+        position: relative !important;
+        overflow: hidden !important;
+      }
+      #results .rounded-lg.border.bg-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+        pointer-events: none;
+      }
+      #results .rounded-lg.border.bg-card:hover {
+        border-color: rgba(201,168,76,0.45) !important;
+        box-shadow:
+          0 8px 40px rgba(0,0,0,0.6),
+          0 0 0 1px rgba(201,168,76,0.15),
+          inset 0 1px 0 rgba(201,168,76,0.2) !important;
+      }
+
+      /* ===== 사주 명식 테이블 ===== */
+      #results table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        width: 100% !important;
+      }
+      #results thead tr {
+        background: rgba(201,168,76,0.08) !important;
+      }
+      #results thead th,
+      #results thead td {
+        color: rgba(201,168,76,0.7) !important;
+        font-size: 0.75rem !important;
+        letter-spacing: 0.08em !important;
+        padding: 8px 12px !important;
+        border-bottom: 1px solid rgba(201,168,76,0.15) !important;
+      }
+      #results tbody tr {
+        border-bottom: 1px solid rgba(201,168,76,0.06) !important;
+      }
+      #results tbody tr:last-child {
+        border-bottom: none !important;
+      }
+      #results tbody td {
+        padding: 6px 12px !important;
         color: #e8d5a3 !important;
       }
 
-      /* ===== 카드/패널 배경 ===== */
-      [class*="card"],
-      [class*="Card"],
-      [class*="panel"],
-      [class*="Panel"],
-      [class*="section"],
-      [class*="Section"] {
-        background: rgba(8, 9, 28, 0.88) !important;
-        border: 1px solid rgba(201, 168, 76, 0.18) !important;
+      /* ===== 사주 천간/지지 글자 배지 강화 ===== */
+      #results .bg-el-solid-fire {
+        background: linear-gradient(135deg, #c0392b, #e74c3c) !important;
+        box-shadow: 0 2px 8px rgba(192,57,43,0.4) !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+      }
+      #results .bg-el-solid-water {
+        background: linear-gradient(135deg, #1a5276, #2980b9) !important;
+        box-shadow: 0 2px 8px rgba(41,128,185,0.4) !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+      }
+      #results .bg-el-solid-tree {
+        background: linear-gradient(135deg, #1e8449, #27ae60) !important;
+        box-shadow: 0 2px 8px rgba(39,174,96,0.4) !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+      }
+      #results .bg-el-solid-metal {
+        background: linear-gradient(135deg, #7f8c8d, #bdc3c7) !important;
+        box-shadow: 0 2px 8px rgba(189,195,199,0.4) !important;
+        color: #1a1a2e !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+      }
+      #results .bg-el-solid-earth {
+        background: linear-gradient(135deg, #7d6608, #d4ac0d) !important;
+        box-shadow: 0 2px 8px rgba(212,172,13,0.4) !important;
+        color: #1a1a2e !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+      }
+
+      /* ===== 탭 (Saju / Ziwei Doushu / Natal Chart) ===== */
+      #results [role="tablist"] {
+        background: rgba(5,6,20,0.8) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        border-radius: 12px !important;
+        padding: 4px !important;
+        backdrop-filter: blur(12px) !important;
+      }
+      #results [role="tab"] {
+        border-radius: 8px !important;
+        font-family: 'Pretendard', sans-serif !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.03em !important;
+        transition: all 0.2s !important;
+        color: rgba(201,168,76,0.5) !important;
+      }
+      #results [role="tab"][data-state="active"] {
+        background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(107,33,168,0.2)) !important;
+        color: #c9a84c !important;
+        border: 1px solid rgba(201,168,76,0.4) !important;
+        box-shadow: 0 2px 12px rgba(201,168,76,0.15) !important;
+        -webkit-text-fill-color: #c9a84c !important;
+      }
+      #results [role="tab"]:hover:not([data-state="active"]) {
+        color: rgba(201,168,76,0.75) !important;
+        background: rgba(201,168,76,0.06) !important;
+      }
+
+      /* ===== 무료 운세 / 멤버십 탭 ===== */
+      #honcheon-fortune-tabs {
+        background: rgba(5,6,20,0.85) !important;
+        border: 1px solid rgba(201,168,76,0.25) !important;
+        border-radius: 14px !important;
+        padding: 5px !important;
         backdrop-filter: blur(16px) !important;
+      }
+      #honcheon-fortune-tabs button[data-tab] {
+        border-radius: 10px !important;
+        font-family: 'Pretendard', sans-serif !important;
+        transition: all 0.25s !important;
+      }
+      #honcheon-fortune-tabs button[data-tab][style*="background:#7c6af7"],
+      #honcheon-fortune-tabs button[data-tab][style*="background: rgb(124, 106, 247)"] {
+        background: linear-gradient(135deg, #7c6af7, #9b59b6) !important;
+        box-shadow: 0 4px 16px rgba(124,106,247,0.35) !important;
+        color: #fff !important;
+      }
+
+      /* ===== 대운/세운 카드 ===== */
+      #results .flex.flex-col.items-center.gap-0\.5 {
+        background: rgba(8,9,28,0.6) !important;
+        border: 1px solid rgba(201,168,76,0.1) !important;
+        border-radius: 10px !important;
+        padding: 6px 8px !important;
+        transition: all 0.2s !important;
+      }
+      #results .flex.flex-col.items-center.gap-0\.5:hover {
+        background: rgba(201,168,76,0.08) !important;
+        border-color: rgba(201,168,76,0.3) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 16px rgba(201,168,76,0.12) !important;
+      }
+      /* 현재 대운 강조 (ring-2 클래스) */
+      #results .ring-2 {
+        background: rgba(201,168,76,0.1) !important;
+        border-color: rgba(201,168,76,0.5) !important;
+        box-shadow: 0 0 0 2px rgba(201,168,76,0.3), 0 4px 20px rgba(201,168,76,0.2) !important;
+      }
+
+      /* ===== 운세 리스트 ===== */
+      #results .max-h-80.overflow-y-auto {
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(201,168,76,0.3) transparent !important;
+      }
+      #results .max-h-80.overflow-y-auto::-webkit-scrollbar {
+        width: 4px !important;
+      }
+      #results .max-h-80.overflow-y-auto::-webkit-scrollbar-thumb {
+        background: rgba(201,168,76,0.3) !important;
+        border-radius: 2px !important;
+      }
+
+      /* ===== 특수성 배지 (Special Stars, Pillar Relations) ===== */
+      #results .bg-blue-50,
+      #results .dark\:bg-blue-950\/40 {
+        background: rgba(41,128,185,0.15) !important;
+        border: 1px solid rgba(41,128,185,0.3) !important;
+        color: #7fb3d3 !important;
+        border-radius: 6px !important;
+      }
+      #results .bg-red-50,
+      #results .dark\:bg-red-950\/40 {
+        background: rgba(192,57,43,0.15) !important;
+        border: 1px solid rgba(192,57,43,0.3) !important;
+        color: #e88080 !important;
+        border-radius: 6px !important;
+      }
+      #results span.px-2.py-0\.5.rounded.text-sm {
+        padding: 3px 10px !important;
+        border-radius: 6px !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.02em !important;
+      }
+
+      /* ===== AI 해석 섹션 ===== */
+      #honcheon-ai-panel {
+        background: linear-gradient(145deg, rgba(8,9,28,0.95) 0%, rgba(15,10,40,0.92) 100%) !important;
+        border: 1px solid rgba(107,33,168,0.35) !important;
+        border-radius: 16px !important;
+        box-shadow:
+          0 4px 32px rgba(0,0,0,0.5),
+          0 0 0 1px rgba(107,33,168,0.1),
+          inset 0 1px 0 rgba(107,33,168,0.15) !important;
+      }
+      #honcheon-ai-panel::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(107,33,168,0.5), rgba(201,168,76,0.4), transparent);
+        pointer-events: none;
+      }
+      #honcheon-ai-title {
+        font-family: 'Cormorant Garamond', serif !important;
+        background: linear-gradient(90deg, #c9a84c 0%, #9b59b6 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-size: 1.3rem !important;
+      }
+
+      /* AI 섹션 선택 버튼 */
+      #honcheon-ai-sections button {
+        background: rgba(8,9,28,0.7) !important;
+        border: 1px solid rgba(201,168,76,0.18) !important;
+        color: #c9a84c !important;
+        border-radius: 8px !important;
+        transition: all 0.2s !important;
+        font-size: 0.82rem !important;
+      }
+      #honcheon-ai-sections button:hover {
+        background: rgba(201,168,76,0.12) !important;
+        border-color: rgba(201,168,76,0.4) !important;
+        box-shadow: 0 2px 12px rgba(201,168,76,0.15) !important;
+        transform: translateY(-1px) !important;
+      }
+      #honcheon-ai-sections button[data-selected="true"],
+      #honcheon-ai-sections button.selected,
+      #honcheon-ai-sections button[aria-pressed="true"] {
+        background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(107,33,168,0.15)) !important;
+        border-color: rgba(201,168,76,0.5) !important;
+        box-shadow: 0 2px 12px rgba(201,168,76,0.2) !important;
+      }
+
+      /* AI 생성 버튼 */
+      #honcheon-ai-panel button[id*="generate"],
+      #honcheon-ai-panel button[class*="generate"],
+      #honcheon-ai-panel > div:last-child button {
+        background: linear-gradient(135deg, #c9a84c 0%, #9b59b6 100%) !important;
+        border: none !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.05em !important;
+        box-shadow: 0 4px 20px rgba(107,33,168,0.3) !important;
+        border-radius: 10px !important;
+        padding: 10px 24px !important;
+      }
+
+      /* ===== 무료 운세 패널 ===== */
+      #honcheon-fortune-panel > div {
+        background: linear-gradient(145deg, rgba(10,11,26,0.95), rgba(13,12,30,0.92)) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.5) !important;
+      }
+      #honcheon-fortune-panel h3 {
+        background: linear-gradient(90deg, #e8d5a3 0%, #c9a84c 60%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-family: 'Cormorant Garamond', serif !important;
+      }
+      #honcheon-fortune-panel #gf-body > div {
+        background: rgba(26,29,46,0.8) !important;
+        border: 1px solid rgba(201,168,76,0.25) !important;
+        border-radius: 12px !important;
+      }
+      #honcheon-fortune-panel select {
+        background: rgba(12,15,31,0.9) !important;
+        border: 1px solid rgba(201,168,76,0.25) !important;
+        color: #e8d5a3 !important;
+        border-radius: 8px !important;
+      }
+      #honcheon-fortune-panel #gf-calc {
+        background: linear-gradient(135deg, #7c6af7 0%, #9b59b6 50%, #c9a84c 100%) !important;
+        border: none !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 24px rgba(124,106,247,0.35) !important;
+        border-radius: 10px !important;
+        letter-spacing: 0.03em !important;
+        transition: all 0.25s !important;
+      }
+      #honcheon-fortune-panel #gf-calc:hover {
+        box-shadow: 0 6px 32px rgba(124,106,247,0.5) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      /* ===== 멤버십 패널 ===== */
+      #honcheon-membership-panel > div {
+        background: linear-gradient(145deg, rgba(10,11,26,0.95), rgba(13,12,30,0.92)) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.5) !important;
+      }
+      #honcheon-membership-panel > div > div {
+        border: 2px dashed rgba(201,168,76,0.4) !important;
+        background: rgba(201,168,76,0.05) !important;
+        border-radius: 12px !important;
+      }
+
+      /* ===== Reset 버튼 ===== */
+      #results button:has(.lucide-rotate-ccw) {
+        color: rgba(201,168,76,0.6) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        border-radius: 8px !important;
+        transition: all 0.2s !important;
+      }
+      #results button:has(.lucide-rotate-ccw):hover {
+        color: #c9a84c !important;
+        border-color: rgba(201,168,76,0.4) !important;
+        background: rgba(201,168,76,0.08) !important;
+      }
+
+      /* ===== 날짜 정보 텍스트 ===== */
+      #results .text-sm.text-muted-foreground {
+        color: rgba(201,168,76,0.55) !important;
+        font-size: 0.8rem !important;
+        letter-spacing: 0.04em !important;
+      }
+
+      /* ===== 運勢 버튼 (1 month / 3 months / Future) ===== */
+      #results .text-xs.px-2.py-0\.5.rounded.border {
+        background: rgba(8,9,28,0.7) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        color: rgba(201,168,76,0.6) !important;
+        border-radius: 6px !important;
+        transition: all 0.2s !important;
+      }
+      #results .text-xs.px-2.py-0\.5.rounded.border:hover {
+        background: rgba(201,168,76,0.1) !important;
+        border-color: rgba(201,168,76,0.4) !important;
+        color: #c9a84c !important;
+      }
+      #results select.text-xs {
+        background: rgba(8,9,28,0.8) !important;
+        border: 1px solid rgba(201,168,76,0.2) !important;
+        color: rgba(201,168,76,0.7) !important;
+        border-radius: 6px !important;
       }
 
       /* ===== 입력 필드 ===== */
@@ -190,7 +550,7 @@
         color: #e8d5a3 !important;
       }
 
-      /* ===== 주요 버튼 (명식 산출하기) ===== */
+      /* ===== 주요 버튼 (명식 산출하기 Calculate) ===== */
       button[class*="primary"],
       button[class*="Primary"],
       [class*="calculate"] button,
@@ -210,7 +570,7 @@
         box-shadow: 0 6px 28px rgba(201,168,76,0.45) !important;
       }
 
-      /* ===== 탭/토글 버튼 ===== */
+      /* ===== 탭/토글 버튼 (입력 폼 영역) ===== */
       [class*="tab"],
       [class*="Tab"],
       [class*="toggle"],
@@ -223,6 +583,26 @@
         background: rgba(201, 168, 76, 0.15) !important;
         color: #c9a84c !important;
         border-color: rgba(201, 168, 76, 0.5) !important;
+      }
+
+      /* ===== 구분선 ===== */
+      hr, [class*="separator"], [class*="divider"] {
+        border-color: rgba(201,168,76,0.12) !important;
+      }
+
+      /* ===== 애니메이션: 결과 페이지 등장 ===== */
+      #results {
+        animation: resultsReveal 0.6s ease-out !important;
+      }
+      @keyframes resultsReveal {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       /* ===== 스크롤바 ===== */
