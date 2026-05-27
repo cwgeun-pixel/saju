@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>혼천 · 사주 · 자미두수 · 천궁도 계산기</title>
+    <meta name="description" content="브라우저에서 안전하게 계산하는 사주, 자미두수, 천궁도 계산기입니다." />
+    <meta property="og:title" content="혼천 · 사주 · 자미두수 · 천궁도 계산기" />
+    <meta property="og:description" content="브라우저에서 안전하게 계산하는 사주, 자미두수, 천궁도 계산기입니다." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@latest/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      #honcheon-home-btn {
+        position: fixed;
+        top: 14px;
+        left: 16px;
+        z-index: 9999;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(10,12,20,0.82);
+        border: 1px solid rgba(201,168,76,0.35);
+        border-radius: 8px;
+        padding: 7px 14px;
+        color: #c9a84c;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+        backdrop-filter: blur(10px);
+        transition: background 0.2s, border-color 0.2s;
+        font-family: 'Pretendard', sans-serif;
+      }
+      #honcheon-home-btn:hover {
+        background: rgba(201,168,76,0.15);
+        border-color: rgba(201,168,76,0.6);
+        color: #e8c97a;
+      }
+      #honcheon-home-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    </style>
+    <script type="module" crossorigin src="./assets/index-B0lRK9V6.js"></script>
+    <script defer src="./assets/i18n.js"></script>
+    <script defer src="./assets/ai-interpretation.js"></script>
+    <script type="module" src="./sajusite/assets/fortune-free.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DvxU4PqU.css" />
+  </head>
+  <body>
+    <a id="honcheon-home-btn" href="/landing.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      혼천
+    </a>
+    <div id="root"></div>
+  </body>
+</html>

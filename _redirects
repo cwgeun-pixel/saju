@@ -1,3 +1,5 @@
-# Cloudflare Pages 리다이렉트 설정
-# 루트(/) 접속 시 랜딩페이지로 이동
+# 루트 접속 시 랜딩페이지로 이동
 /  /landing.html  302
+
+# 계산기 앱 SPA 지원
+/calculator.html  /calculator.html  200
