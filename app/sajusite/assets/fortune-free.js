@@ -980,6 +980,52 @@ function sectionHeader(letter, title, subtitle) {
   </div>`;
 }
 
+// ─── A. 기본 운세 해석 텍스트 ──────────────────────────────────
+
+const FORTUNE_DETAIL = {
+  성향: [
+    { min:85, text:'타고난 기질이 매우 조화롭고 균형 잡혀 있습니다. 어떤 환경에서도 자신의 강점을 발휘하며, 주변 사람들에게 긍정적인 영향을 미치는 타고난 리더 기질을 지니고 있습니다. 직관력과 판단력이 뛰어나 중요한 순간에 탁월한 선택을 내립니다.' },
+    { min:70, text:'성격과 기질이 안정적으로 발달해 있어 사회적 관계에서 신뢰를 쌓기 쉽습니다. 자신의 감정을 잘 조절하며, 목표를 향해 꾸준히 나아가는 힘이 있습니다. 다양한 상황에서 유연하게 대처하는 능력이 돋보입니다.' },
+    { min:48, text:'기질의 균형이 무난한 편입니다. 장점과 단점이 공존하며, 환경에 따라 성격 표현이 달라질 수 있습니다. 자신의 강점을 의식적으로 계발하면 더 큰 잠재력을 발휘할 수 있습니다.' },
+    { min:30, text:'기질적으로 다소 불균형한 면이 있어 감정 기복이나 결정 장애를 경험할 수 있습니다. 자기 이해를 높이고 약점을 보완하는 노력이 필요합니다. 내면의 안정을 찾는 것이 중요한 과제입니다.' },
+    { min: 0, text:'오행 불균형으로 인해 기질적 갈등이 심할 수 있습니다. 충동적 행동이나 극단적 감정 반응에 주의가 필요합니다. 명상, 규칙적인 생활, 신뢰할 수 있는 조언자의 도움을 받는 것이 도움이 됩니다.' },
+  ],
+  애정운: [
+    { min:85, text:'인연의 기운이 매우 강하게 흐르고 있습니다. 새로운 만남이나 기존 관계의 깊어짐이 기대되는 시기입니다. 감정 표현이 자연스럽게 이루어지며, 상대방의 마음을 얻기에 유리한 에너지가 충만합니다.' },
+    { min:70, text:'애정 운이 좋은 편으로, 관계에서 따뜻한 교류가 이루어집니다. 진심 어린 소통이 관계를 더욱 돈독하게 만들어 줍니다. 솔직한 감정 표현이 인연을 발전시키는 열쇠가 됩니다.' },
+    { min:48, text:'애정 운이 평범한 편입니다. 특별한 변화보다는 현재 관계를 안정적으로 유지하는 것이 중요합니다. 상대방의 입장을 이해하려는 노력이 관계의 질을 높여줍니다.' },
+    { min:30, text:'감정적 교류에서 어려움이 있을 수 있습니다. 오해나 갈등이 생기기 쉬운 시기이므로 충동적인 감정 표현을 자제하고 신중하게 행동하는 것이 좋습니다. 혼자만의 시간을 통해 감정을 정리하세요.' },
+    { min: 0, text:'인연의 흐름이 막혀 있는 시기입니다. 관계에서 상처를 받거나 이별의 아픔을 경험할 수 있습니다. 자신을 먼저 돌보고 내면의 상처를 치유하는 데 집중하는 것이 현명합니다.' },
+  ],
+  직업운: [
+    { min:85, text:'사회적 활동과 직업 운이 매우 강한 시기입니다. 능력을 인정받고 승진이나 중요한 기회가 찾아올 수 있습니다. 새로운 프로젝트나 도전에 적극적으로 나서면 좋은 결과를 얻을 수 있습니다.' },
+    { min:70, text:'직업 운이 순조롭게 흐르고 있습니다. 꾸준한 노력이 인정받는 시기로, 동료나 상사와의 관계도 원만합니다. 자신의 전문성을 더욱 갈고닦으면 더 큰 성과를 거둘 수 있습니다.' },
+    { min:48, text:'직업 운이 평범한 편입니다. 큰 변화보다는 현재 위치에서 성실하게 임하는 것이 중요합니다. 새로운 기술이나 지식을 습득하여 경쟁력을 높이는 것이 도움이 됩니다.' },
+    { min:30, text:'직업적으로 어려움이 있을 수 있는 시기입니다. 직장 내 갈등이나 업무 부담이 증가할 수 있으므로 신중하게 행동하고 불필요한 마찰을 피하는 것이 좋습니다. 무리한 도전보다 현상 유지에 집중하세요.' },
+    { min: 0, text:'직업 운이 매우 불안정한 시기입니다. 직장 변동이나 실직의 위험이 있을 수 있으므로 중요한 결정을 미루고 안정을 최우선으로 삼으세요. 신뢰할 수 있는 사람의 조언을 구하는 것이 도움이 됩니다.' },
+  ],
+  재물운: [
+    { min:85, text:'재물 운이 매우 강하게 흐르고 있습니다. 예상치 못한 수입이나 투자 성과가 기대되는 시기입니다. 재물이 자연스럽게 모이는 흐름이므로 장기적인 재테크 계획을 세우기에 좋은 때입니다.' },
+    { min:70, text:'재물 운이 좋은 편입니다. 수입이 안정적으로 유지되며 절약과 투자의 균형을 잘 맞출 수 있습니다. 소소한 재물 기회들이 꾸준히 찾아오는 시기입니다.' },
+    { min:48, text:'재물 운이 평범한 편입니다. 큰 이익보다는 현재 재정 상태를 안정적으로 유지하는 것이 중요합니다. 불필요한 지출을 줄이고 저축 습관을 기르는 것이 도움이 됩니다.' },
+    { min:30, text:'재물 손실이나 예상치 못한 지출이 발생할 수 있는 시기입니다. 충동적인 소비나 투기적 투자를 자제하고 보수적인 재정 관리가 필요합니다. 보증이나 대출에 특히 주의하세요.' },
+    { min: 0, text:'재물 운이 매우 불안정한 시기입니다. 큰 재정적 손실이나 사기 피해의 위험이 있으므로 중요한 금전 거래는 반드시 전문가의 조언을 구하세요. 현금 보유를 늘리고 리스크를 최소화하는 것이 현명합니다.' },
+  ],
+  건강운: [
+    { min:85, text:'몸과 마음의 에너지가 매우 충만한 시기입니다. 체력이 넘치고 면역력도 강해 활발한 활동이 가능합니다. 이 시기에 건강한 습관을 정착시키면 오랫동안 좋은 컨디션을 유지할 수 있습니다.' },
+    { min:70, text:'건강 상태가 전반적으로 양호합니다. 규칙적인 생활과 적당한 운동으로 현재의 좋은 컨디션을 유지하세요. 스트레스 관리에 신경 쓰면 더욱 활기찬 생활이 가능합니다.' },
+    { min:48, text:'건강 운이 평범한 편입니다. 특별한 이상은 없지만 과로나 스트레스에 취약할 수 있습니다. 충분한 수면과 균형 잡힌 식사로 기초 체력을 유지하는 것이 중요합니다.' },
+    { min:30, text:'건강에 주의가 필요한 시기입니다. 피로 누적이나 소화기 계통의 문제가 생길 수 있습니다. 무리한 활동을 자제하고 정기적인 건강 검진을 받는 것이 좋습니다. 충분한 휴식이 필수입니다.' },
+    { min: 0, text:'건강 운이 매우 좋지 않은 시기입니다. 만성 질환이 악화되거나 새로운 건강 문제가 발생할 수 있습니다. 즉시 전문의 상담을 받고, 과로와 스트레스를 철저히 피하세요. 몸의 신호에 귀를 기울이는 것이 중요합니다.' },
+  ],
+};
+
+function getFortuneDetail(key, pct) {
+  const list = FORTUNE_DETAIL[key];
+  if (!list) return '';
+  return (list.find(l => pct >= l.min) || list[list.length-1]).text;
+}
+
 // ─── A. 기본 운세 ─────────────────────────────────────────────
 
 function renderBasicFortune(saju, yp, mp, dp, gender) {
@@ -1000,18 +1046,19 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
     const pct = scores[cat.key] || 50;
     const lv  = getLevel(pct);
     const glowColor = cat.color;
-    return `<div style="${D.card}border-top:2px solid ${glowColor}40;">
+    const detailText = getFortuneDetail(cat.key, pct);
+    return `<div style="${D.card}border-top:2px solid ${glowColor}40;transition:transform 0.2s,box-shadow 0.2s;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${glowColor}60,transparent)"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:28px;filter:drop-shadow(0 0 6px ${glowColor}80)">${cat.emoji}</span>
-          <span style="color:#e8dfc8;font-weight:700;font-size:19px;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">${t(cat.key)}</span>
+          <span style="font-size:26px;filter:drop-shadow(0 0 6px ${glowColor}80)">${cat.emoji}</span>
+          <span style="color:#e8dfc8;font-weight:700;font-size:17px;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">${t(cat.key)}</span>
         </div>
         ${scoreBadge(pct)}
       </div>
       ${dGauge(pct, glowColor)}
-      <div style="color:#8a8fa8;font-size:15px;margin-top:8px;line-height:1.5">${cat.desc}</div>
-      <div style="margin-top:6px;display:inline-block;background:${glowColor}15;color:${glowColor};font-size:13px;padding:2px 8px;border-radius:10px;border:1px solid ${glowColor}30">${lv.emoji} ${lv.label}</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:${glowColor}15;color:${glowColor};font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px;border:1px solid ${glowColor}30">${lv.emoji} ${lv.label}</div>
+      <div style="color:#b8c0d8;font-size:14px;margin-top:10px;line-height:1.75;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid ${glowColor}50">${detailText}</div>
     </div>`;
   }).join('');
 
@@ -1030,7 +1077,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('A', t('기본 운세'), t('사주 원국 기반'))}
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
+    <div style="display:grid;grid-template-columns:1fr;gap:12px">
       ${cards}
     </div>
     ${zodiacBlock}
