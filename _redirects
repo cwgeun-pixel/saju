@@ -1,5 +1,1 @@
-# 루트 접속 시 랜딩페이지로 이동
-/  /landing.html  302
-
-# 계산기 앱 SPA 지원
-/calculator.html  /calculator.html  200
+/app/*  /app/index.html  200
