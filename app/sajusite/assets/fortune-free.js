@@ -1113,7 +1113,7 @@ function renderDailyCalendar(saju, yp, mp, dp) {
       ${isToday?`<div style="font-size:11px;color:#d4af37;margin-top:-4px;letter-spacing:0.1em;text-transform:uppercase">${t('오늘')}</div>`:''}
       <div style="font-size:12px;color:#5a5f7a;font-family:monospace;margin-top:2px">${ganziStr(dayP)}</div>
       <div style="font-size:26px;margin-top:4px;filter:drop-shadow(0 0 6px rgba(255,255,255,0.4))">${lv2.emoji}</div>
-      <div style="width:12px;height:12px;border-radius:50%;background:${lk2.hex};margin:5px auto 0;border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 8px ${lk2.hex}90"></div>
+      <div style="width:14px;height:14px;border-radius:3px;background:${lk2.hex};margin:5px auto 0;border:1px solid rgba(255,255,255,0.25);box-shadow:0 0 8px ${lk2.hex}90"></div>
     </div>`);
   }
 
@@ -1125,8 +1125,16 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     '흉(凶)':     t('today.흉(凶)'),
   };
 
+  // 오늘 날짜 문자열 생성
+  const todayDate = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+
   return `<div style="${D.wrap}">
-    ${sectionHeader('B', t('오늘의 운세'), t('일진 분석'))}
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,0.15)">
+      <span style="background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(124,106,247,0.2));color:#d4af37;font-size:14px;font-weight:800;padding:3px 9px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);box-shadow:0 0 12px rgba(212,175,55,0.15);letter-spacing:0.05em">B</span>
+      <span style="${D.hdr}">${t('오늘의 운세')}</span>
+      <span style="${D.sub};font-size:15px">${t('일진 분석')}</span>
+      <span style="margin-left:auto;background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.3);border-radius:20px;padding:4px 14px;color:#d4af37;font-size:14px;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">📅 ${todayDate}</span>
+    </div>
     <div style="${D.card}border:1px solid rgba(212,175,55,0.25);margin-bottom:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),transparent)"></div>
       <div style="display:flex;align-items:center;gap:20px">
@@ -1146,10 +1154,10 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
       <div style="${D.card}text-align:center;border:1px solid rgba(${lk.hex.replace('#','').match(/../g).map(h=>parseInt(h,16)).join(',')},0.3);">
-        <div style="color:#7a6f8a;font-size:14px;margin-bottom:8px;letter-spacing:0.05em">${t('행운의 색')}</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
-          <div style="width:18px;height:18px;border-radius:50%;background:${lk.hex};border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 12px ${lk.hex}90"></div>
-          <span style="color:#e8dfc8;font-size:22px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.color')}</span>
+        <div style="color:#7a6f8a;font-size:14px;margin-bottom:10px;letter-spacing:0.05em">${t('행운의 색')}</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:36px;height:36px;border-radius:6px;background:${lk.hex};border:2px solid rgba(255,255,255,0.25);box-shadow:0 0 16px ${lk.hex}99,inset 0 1px 0 rgba(255,255,255,0.2)"></div>
+          <span style="color:#e8dfc8;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif;margin-top:2px">${t('lucky.'+lk.elem+'.color')}</span>
         </div>
       </div>
       <div style="${D.card}text-align:center;border:1px solid rgba(212,175,55,0.2);">
@@ -1162,7 +1170,7 @@ function renderDailyCalendar(saju, yp, mp, dp) {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${cells.join('')}</div>
-    <div style="${D.muted};margin-top:8px;text-align:center">${t('⭐대길 ✨길 🌀평 ⚡소흉 ⚠️흉 · ● 행운의 색')}</div>
+    <div style="${D.muted};margin-top:8px;text-align:center">${t('⭐대길 ✨길 🌀평 ⚡소흉 ⚠️흉 · ● 행운의 색').replace('● 행운의 색','■ 행운의 색')}</div>
   </div>`;
 }
 
