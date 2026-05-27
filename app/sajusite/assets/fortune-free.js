@@ -1068,9 +1068,10 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
       <div style="display:flex;align-items:center;gap:16px">
         <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
         <div style="flex:1">
-          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:20px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}띄 · ${dayMaster}일간</div>
-          <div style="color:#7a6f8a;font-size:14px;margin-top:3px">${z.years}년생</div>
-          <div style="color:#c0c8e0;font-size:16px;margin-top:6px;line-height:1.6">${t('trait.'+b)}</div>
+          <div style="color:#8a8fa8;font-size:13px;letter-spacing:0.08em;margin-bottom:4px">${t('당신의 띠는')}</div>
+          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}띠 입니다.</div>
+          <div style="color:#7a6f8a;font-size:13px;margin-top:4px">${z.years}년생 · ${dayMaster}일간</div>
+          <div style="color:#c0c8e0;font-size:15px;margin-top:8px;line-height:1.7">${t('trait.'+b)}</div>
         </div>
       </div>
     </div>` : '';
@@ -1108,11 +1109,11 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     cells.push(`<div style="${bg}${border}border-radius:12px;padding:10px 4px;text-align:center;position:relative;overflow:hidden">
       ${isToday ? `<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.8),transparent)"></div>` : ''}
       <div style="font-size:14px;color:${dowCol};font-weight:700;letter-spacing:0.05em">${dow}</div>
-      <div style="font-size:26px;font-weight:700;color:${isToday?'#d4af37':'#c8cee8'};margin:3px 0;font-family:'Cormorant Garamond',serif">${dy}</div>
+      <div style="font-size:28px;font-weight:700;color:${isToday?'#d4af37':'#c8cee8'};margin:3px 0;font-family:'Cormorant Garamond',serif">${dy}</div>
       ${isToday?`<div style="font-size:11px;color:#d4af37;margin-top:-4px;letter-spacing:0.1em;text-transform:uppercase">${t('오늘')}</div>`:''}
-      <div style="font-size:13px;color:#5a5f7a;font-family:monospace;margin-top:2px">${ganziStr(dayP)}</div>
-      <div style="font-size:20px;margin-top:3px;filter:drop-shadow(0 0 4px rgba(255,255,255,0.3))">${lv2.emoji}</div>
-      <div style="width:10px;height:10px;border-radius:50%;background:${lk2.hex};margin:4px auto 0;border:1px solid rgba(255,255,255,0.2);box-shadow:0 0 6px ${lk2.hex}80"></div>
+      <div style="font-size:12px;color:#5a5f7a;font-family:monospace;margin-top:2px">${ganziStr(dayP)}</div>
+      <div style="font-size:26px;margin-top:4px;filter:drop-shadow(0 0 6px rgba(255,255,255,0.4))">${lv2.emoji}</div>
+      <div style="width:12px;height:12px;border-radius:50%;background:${lk2.hex};margin:5px auto 0;border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 8px ${lk2.hex}90"></div>
     </div>`);
   }
 
@@ -1128,36 +1129,36 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     ${sectionHeader('B', t('오늘의 운세'), t('일진 분석'))}
     <div style="${D.card}border:1px solid rgba(212,175,55,0.25);margin-bottom:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),transparent)"></div>
-      <div style="display:flex;align-items:center;gap:18px">
-        <div style="text-align:center;min-width:72px">
-          <div style="font-size:56px;filter:drop-shadow(0 0 12px rgba(212,175,55,0.5))">${todayLv.emoji}</div>
-          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:18px;margin-top:4px;font-family:'Cormorant Garamond',serif">${t(todayLv.label)}</div>
+      <div style="display:flex;align-items:center;gap:20px">
+        <div style="text-align:center;min-width:90px">
+          <div style="font-size:72px;line-height:1;filter:drop-shadow(0 0 16px rgba(212,175,55,0.6))">${todayLv.emoji}</div>
+          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-top:6px;font-family:'Cormorant Garamond',serif">${t(todayLv.label)}</div>
         </div>
         <div style="flex:1">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="color:#8a8fa8;font-size:15px">${t('운세 지수')}</span>
-            <span style="color:${scoreColor(todayPct)};font-weight:800;font-size:22px;font-family:'Cormorant Garamond',serif">${Math.round(todayPct)}점</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#8a8fa8;font-size:16px;font-weight:600">${t('운세 지수')}</span>
+            <span style="color:${scoreColor(todayPct)};font-weight:800;font-size:26px;font-family:'Cormorant Garamond',serif">${Math.round(todayPct)}점</span>
           </div>
           ${dGauge(todayPct, scoreColor(todayPct))}
-          <p style="color:#c0c8e0;font-size:16px;margin-top:10px;line-height:1.7">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
+          <p style="color:#c0c8e0;font-size:17px;margin-top:12px;line-height:1.8">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
         </div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
       <div style="${D.card}text-align:center;border:1px solid rgba(${lk.hex.replace('#','').match(/../g).map(h=>parseInt(h,16)).join(',')},0.3);">
-        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 색')}</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:6px">
-          <div style="width:14px;height:14px;border-radius:50%;background:${lk.hex};border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 10px ${lk.hex}90"></div>
-          <span style="color:#e8dfc8;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.color')}</span>
+        <div style="color:#7a6f8a;font-size:14px;margin-bottom:8px;letter-spacing:0.05em">${t('행운의 색')}</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
+          <div style="width:18px;height:18px;border-radius:50%;background:${lk.hex};border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 12px ${lk.hex}90"></div>
+          <span style="color:#e8dfc8;font-size:22px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.color')}</span>
         </div>
       </div>
       <div style="${D.card}text-align:center;border:1px solid rgba(212,175,55,0.2);">
-        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 방향')}</div>
-        <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.direction')}</div>
+        <div style="color:#7a6f8a;font-size:14px;margin-bottom:8px;letter-spacing:0.05em">${t('행운의 방향')}</div>
+        <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:22px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.direction')}</div>
       </div>
       <div style="${D.card}text-align:center;border:1px solid rgba(124,106,247,0.3);">
-        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 숫자')}</div>
-        <div style="color:#a78bfa;font-size:22px;font-weight:800;font-family:'Cormorant Garamond',serif">${lk.number}</div>
+        <div style="color:#7a6f8a;font-size:14px;margin-bottom:8px;letter-spacing:0.05em">${t('행운의 숫자')}</div>
+        <div style="color:#a78bfa;font-size:28px;font-weight:800;font-family:'Cormorant Garamond',serif">${lk.number}</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${cells.join('')}</div>
