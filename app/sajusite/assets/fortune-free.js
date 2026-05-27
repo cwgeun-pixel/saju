@@ -946,37 +946,37 @@ function captureMainFormInput() {
   return { year, month, day, hour:unknownTime?12:hour, minute, gender, unknownTime };
 }
 
-// ─── 다크 테마 렌더 헬퍼 ─────────────────────────────────────
+// ─── Imperial Cosmic 렌더 헬퍼 ─────────────────────────────────────
 
 const D = {
-  wrap:   'background:#12151f;border-radius:14px;padding:20px;',
-  card:   'background:#1a1d2e;border:1px solid #252840;border-radius:12px;padding:16px;',
-  hdr:    'color:#e2e8f0;font-weight:700;font-size:22px;',
-  sub:    'color:#7a82a8;font-size:18px;',
-  txt:    'color:#c8cee8;font-size:20px;line-height:1.7;',
-  muted:  'color:#565d80;font-size:16px;',
+  wrap:   'background:linear-gradient(135deg,#0d1020 0%,#111428 50%,#0a0e1a 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);',
+  card:   'background:linear-gradient(135deg,#131726 0%,#161b2e 100%);border:1px solid rgba(212,175,55,0.2);border-radius:14px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,0.4),0 0 0 1px rgba(124,106,247,0.05);position:relative;overflow:hidden;',
+  hdr:    'background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:22px;font-family:"Cormorant Garamond",serif;letter-spacing:0.03em;',
+  sub:    'color:#9d8aa0;font-size:17px;',
+  txt:    'color:#c8cee8;font-size:19px;line-height:1.8;',
+  muted:  'color:#5a5f7a;font-size:15px;',
 };
 
 function dGauge(pct, color) {
-  return `<div style="height:5px;background:#1f2340;border-radius:3px;overflow:hidden;margin-top:5px">
-    <div style="height:100%;width:${pct}%;background:${color};border-radius:3px"></div>
+  return `<div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:6px">
+    <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${color}99,${color});border-radius:3px;box-shadow:0 0 8px ${color}60"></div>
   </div>`;
 }
 
 function scoreColor(pct) {
-  return pct >= 70 ? '#34d399' : pct >= 45 ? '#fbbf24' : '#f87171';
+  return pct >= 70 ? '#34d399' : pct >= 45 ? '#d4af37' : '#f87171';
 }
 
 function scoreBadge(pct) {
   const c = scoreColor(pct);
-  return `<span style="background:${c}1a;color:${c};font-size:16px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid ${c}40">${Math.round(pct)}점</span>`;
+  return `<span style="background:${c}18;color:${c};font-size:15px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid ${c}50;box-shadow:0 0 8px ${c}30">${Math.round(pct)}점</span>`;
 }
 
 function sectionHeader(letter, title, subtitle) {
-  return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-    <span style="background:#7c6af71a;color:#9d8ff5;font-size:16px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #7c6af730">${letter}</span>
+  return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,0.15)">
+    <span style="background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(124,106,247,0.2));color:#d4af37;font-size:14px;font-weight:800;padding:3px 9px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);box-shadow:0 0 12px rgba(212,175,55,0.15);letter-spacing:0.05em">${letter}</span>
     <span style="${D.hdr}">${title}</span>
-    <span style="${D.sub}">${subtitle}</span>
+    <span style="${D.sub};font-size:15px">${subtitle}</span>
   </div>`;
 }
 
@@ -997,28 +997,34 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
   ];
 
   const cards = CATEGORIES.map(cat => {
-    const pct = scores[cat.key];
+    const pct = scores[cat.key] || 50;
     const lv  = getLevel(pct);
-    return `<div style="${D.card}">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:7px">
-          <span style="font-size:27px">${cat.emoji}</span>
-          <span style="color:#dde1f2;font-weight:600;font-size:20px">${t(cat.key)}</span>
+    const glowColor = cat.color;
+    return `<div style="${D.card}border-top:2px solid ${glowColor}40;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${glowColor}60,transparent)"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:28px;filter:drop-shadow(0 0 6px ${glowColor}80)">${cat.emoji}</span>
+          <span style="color:#e8dfc8;font-weight:700;font-size:19px;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">${t(cat.key)}</span>
         </div>
         ${scoreBadge(pct)}
       </div>
-      ${dGauge(pct, cat.color)}
-      <div style="${D.sub};margin-top:6px">${cat.desc} · ${lv.label}</div>
+      ${dGauge(pct, glowColor)}
+      <div style="color:#8a8fa8;font-size:15px;margin-top:8px;line-height:1.5">${cat.desc}</div>
+      <div style="margin-top:6px;display:inline-block;background:${glowColor}15;color:${glowColor};font-size:13px;padding:2px 8px;border-radius:10px;border:1px solid ${glowColor}30">${lv.emoji} ${lv.label}</div>
     </div>`;
   }).join('');
 
   const zodiacBlock = z ? `
-    <div style="${D.card};display:flex;align-items:center;gap:14px;margin-top:10px">
-      <span style="font-size:54px">${z.emoji}</span>
-      <div>
-        <div style="color:#dde1f2;font-weight:700;font-size:21px">${t('animal.'+b)}띠 · ${dayMaster}일간</div>
-        <div style="${D.sub};margin-top:2px">${z.years}년생</div>
-        <div style="${D.txt};margin-top:5px">${t('trait.'+b)}</div>
+    <div style="${D.card}border:1px solid rgba(212,175,55,0.3);margin-top:12px;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
+        <div style="flex:1">
+          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:20px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}띄 · ${dayMaster}일간</div>
+          <div style="color:#7a6f8a;font-size:14px;margin-top:3px">${z.years}년생</div>
+          <div style="color:#c0c8e0;font-size:16px;margin-top:6px;line-height:1.6">${t('trait.'+b)}</div>
+        </div>
       </div>
     </div>` : '';
 
@@ -1050,15 +1056,16 @@ function renderDailyCalendar(saju, yp, mp, dp) {
     let dayP; try { [,,dayP]=getFourPillars(y,m,dy,12,0,false); } catch { continue; }
     const p2=toPct(compareToNatal(saju.pillars,dayP),4), lv2=getLevel(p2), lk2=getLucky(dayP);
     const isToday = i===0;
-    const border = isToday ? 'border:1px solid #7c6af780;' : 'border:1px solid #252840;';
-    const bg     = isToday ? 'background:#1e1b40;' : 'background:#1a1d2e;';
-    cells.push(`<div style="${bg}${border}border-radius:10px;padding:8px 4px;text-align:center">
-      <div style="font-size:16px;color:${dowCol};font-weight:600">${dow}</div>
-      <div style="font-size:27px;font-weight:700;color:${isToday?'#a78bfa':'#dde1f2'};margin:2px 0">${dy}</div>
-      ${isToday?`<div style="font-size:14px;color:#9d8ff5;margin-top:-4px">${t('오늘')}</div>`:''}
-      <div style="font-size:15px;color:#565d80;font-family:monospace">${ganziStr(dayP)}</div>
-      <div style="font-size:21px;margin-top:2px">${lv2.emoji}</div>
-      <div style="width:10px;height:10px;border-radius:50%;background:${lk2.hex};margin:3px auto 0;border:1px solid #ffffff20"></div>
+    const border = isToday ? 'border:1px solid rgba(212,175,55,0.5);' : 'border:1px solid rgba(212,175,55,0.1);';
+    const bg     = isToday ? 'background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(212,175,55,0.08));box-shadow:0 0 16px rgba(212,175,55,0.15);' : 'background:linear-gradient(135deg,#131726,#161b2e);';
+    cells.push(`<div style="${bg}${border}border-radius:12px;padding:10px 4px;text-align:center;position:relative;overflow:hidden">
+      ${isToday ? `<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.8),transparent)"></div>` : ''}
+      <div style="font-size:14px;color:${dowCol};font-weight:700;letter-spacing:0.05em">${dow}</div>
+      <div style="font-size:26px;font-weight:700;color:${isToday?'#d4af37':'#c8cee8'};margin:3px 0;font-family:'Cormorant Garamond',serif">${dy}</div>
+      ${isToday?`<div style="font-size:11px;color:#d4af37;margin-top:-4px;letter-spacing:0.1em;text-transform:uppercase">${t('오늘')}</div>`:''}
+      <div style="font-size:13px;color:#5a5f7a;font-family:monospace;margin-top:2px">${ganziStr(dayP)}</div>
+      <div style="font-size:20px;margin-top:3px;filter:drop-shadow(0 0 4px rgba(255,255,255,0.3))">${lv2.emoji}</div>
+      <div style="width:10px;height:10px;border-radius:50%;background:${lk2.hex};margin:4px auto 0;border:1px solid rgba(255,255,255,0.2);box-shadow:0 0 6px ${lk2.hex}80"></div>
     </div>`);
   }
 
@@ -1072,35 +1079,38 @@ function renderDailyCalendar(saju, yp, mp, dp) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('B', t('오늘의 운세'), t('일진 분석'))}
-    <div style="${D.card};display:flex;align-items:center;gap:16px;margin-bottom:10px">
-      <div style="text-align:center;min-width:60px">
-        <div style="font-size:57px">${todayLv.emoji}</div>
-        <div style="color:${scoreColor(todayPct)};font-weight:700;font-size:20px;margin-top:2px">${t(todayLv.label)}</div>
-      </div>
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <span style="${D.sub}">${t('운세 지수')}</span>
-          <span style="color:${scoreColor(todayPct)};font-weight:700;font-size:20px">${Math.round(todayPct)}점</span>
+    <div style="${D.card}border:1px solid rgba(212,175,55,0.25);margin-bottom:12px;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="text-align:center;min-width:72px">
+          <div style="font-size:56px;filter:drop-shadow(0 0 12px rgba(212,175,55,0.5))">${todayLv.emoji}</div>
+          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:18px;margin-top:4px;font-family:'Cormorant Garamond',serif">${t(todayLv.label)}</div>
         </div>
-        ${dGauge(todayPct, scoreColor(todayPct))}
-        <p style="${D.txt};margin-top:8px">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span style="color:#8a8fa8;font-size:15px">${t('운세 지수')}</span>
+            <span style="color:${scoreColor(todayPct)};font-weight:800;font-size:22px;font-family:'Cormorant Garamond',serif">${Math.round(todayPct)}점</span>
+          </div>
+          ${dGauge(todayPct, scoreColor(todayPct))}
+          <p style="color:#c0c8e0;font-size:16px;margin-top:10px;line-height:1.7">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
+        </div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
-      <div style="${D.card};text-align:center">
-        <div style="${D.sub};margin-bottom:4px">${t('행운의 색')}</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:5px">
-          <div style="width:12px;height:12px;border-radius:50%;background:${lk.hex};border:1px solid #ffffff20"></div>
-          <span style="color:#dde1f2;font-size:20px;font-weight:600">${t('lucky.'+lk.elem+'.color')}</span>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+      <div style="${D.card}text-align:center;border:1px solid rgba(${lk.hex.replace('#','').match(/../g).map(h=>parseInt(h,16)).join(',')},0.3);">
+        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 색')}</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+          <div style="width:14px;height:14px;border-radius:50%;background:${lk.hex};border:1px solid rgba(255,255,255,0.3);box-shadow:0 0 10px ${lk.hex}90"></div>
+          <span style="color:#e8dfc8;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.color')}</span>
         </div>
       </div>
-      <div style="${D.card};text-align:center">
-        <div style="${D.sub};margin-bottom:4px">${t('행운의 방향')}</div>
-        <div style="color:#dde1f2;font-size:20px;font-weight:600">${t('lucky.'+lk.elem+'.direction')}</div>
+      <div style="${D.card}text-align:center;border:1px solid rgba(212,175,55,0.2);">
+        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 방향')}</div>
+        <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif">${t('lucky.'+lk.elem+'.direction')}</div>
       </div>
-      <div style="${D.card};text-align:center">
-        <div style="${D.sub};margin-bottom:4px">${t('행운의 숫자')}</div>
-        <div style="color:#dde1f2;font-size:20px;font-weight:600">${lk.number}</div>
+      <div style="${D.card}text-align:center;border:1px solid rgba(124,106,247,0.3);">
+        <div style="color:#7a6f8a;font-size:13px;margin-bottom:6px;letter-spacing:0.05em">${t('행운의 숫자')}</div>
+        <div style="color:#a78bfa;font-size:22px;font-weight:800;font-family:'Cormorant Garamond',serif">${lk.number}</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${cells.join('')}</div>
@@ -1130,12 +1140,17 @@ function renderYongShin(saju) {
   function yongCard(label, elem, role, desc) {
     const c = ELEM_CLR[elem] || '#7a82a8';
     const roleKey = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
-    return `<div style="${D.card};border-left:3px solid ${c}">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-        <span style="color:${c};font-weight:700;font-size:18px">${t(role)}</span>
-        <span style="background:${c}1a;color:${c};font-size:16px;padding:1px 7px;border-radius:10px;border:1px solid ${c}30">${elem ? ELEM_KO[elem] : '-'}</span>
+    const isGi = role==='기신';
+    return `<div style="${D.card}border-left:3px solid ${c};border-top:1px solid ${c}30;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,${c}60,transparent)"></div>
+      <div style="text-align:center;margin-bottom:8px">
+        <div style="font-size:28px;margin-bottom:4px;filter:drop-shadow(0 0 8px ${c}60)">${role==='용신'?'✨':role==='희신'?'🌟':'⚠️'}</div>
+        <span style="background:linear-gradient(135deg,${c}30,${c}15);color:${c};font-weight:800;font-size:17px;padding:3px 10px;border-radius:10px;border:1px solid ${c}40;display:inline-block">${t(role)}</span>
       </div>
-      <div style="${D.sub}">${t(roleKey)}</div>
+      <div style="text-align:center;background:${c}12;border-radius:8px;padding:6px;margin-bottom:6px">
+        <span style="color:${c};font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? ELEM_KO[elem] : '-'}</span>
+      </div>
+      <div style="color:#8a8fa8;font-size:13px;text-align:center;line-height:1.4">${t(roleKey)}</div>
     </div>`;
   }
 
@@ -1144,21 +1159,22 @@ function renderYongShin(saju) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('C', t('용신 분석'), t('일간 강약과 오행 균형'))}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-      <div style="${D.card}">
-        <div style="${D.sub};margin-bottom:8px">${t('일간 강약')}</div>
-        <div style="color:#dde1f2;font-weight:700;font-size:22px;margin-bottom:8px">${ys.type}</div>
-        <div style="display:flex;height:6px;border-radius:3px;overflow:hidden">
-          <div style="background:#60a5fa;width:${gaugeLeft}%"></div>
-          <div style="background:#f87171;width:${gaugeRight}%"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div style="${D.card}border:1px solid rgba(212,175,55,0.2);">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)"></div>
+        <div style="color:#7a6f8a;font-size:13px;margin-bottom:8px;letter-spacing:0.05em">${t('일간 강약')}</div>
+        <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-bottom:10px;font-family:'Cormorant Garamond',serif">${ys.type}</div>
+        <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3)">
+          <div style="background:linear-gradient(90deg,#60a5fa,#3b82f6);width:${gaugeLeft}%;box-shadow:0 0 8px #60a5fa60"></div>
+          <div style="background:linear-gradient(90deg,#f87171,#ef4444);width:${gaugeRight}%;box-shadow:0 0 8px #f8717160"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px">
-          <span style="color:#60a5fa;font-size:15px">${t('신약')}</span>
-          <span style="color:#f87171;font-size:15px">${t('신강')}</span>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="color:#60a5fa;font-size:13px;font-weight:600">${t('신약')}</span>
+          <span style="color:#f87171;font-size:13px;font-weight:600">${t('신강')}</span>
         </div>
       </div>
-      <div style="${D.card}">
-        <div style="${D.sub};margin-bottom:8px">${t('오행 분포')}</div>
+      <div style="${D.card}border:1px solid rgba(124,106,247,0.2);">
+        <div style="color:#7a6f8a;font-size:13px;margin-bottom:10px;letter-spacing:0.05em">${t('오행 분포')}</div>
         ${elemBars}
       </div>
     </div>
@@ -1176,16 +1192,19 @@ function renderSijunseong(saju) {
   const dayMaster = saju.pillars[2]?.pillar?.stem;
   if (!dayMaster) return '';
   const PILLAR_NAMES = [t('년주'),t('월주'),t('일주'),t('시주')];
+  const PILLAR_COLORS = ['#d4af37','#a78bfa','#f472b6','#60a5fa'];
   const cards = saju.pillars.map((p, i) => {
     const sjs = getSijunseong(dayMaster, p.pillar.branch);
     if (!sjs) return '';
     const sjsIdx = SJS_NAMES.indexOf(sjs.name);
-    return `<div style="${D.card};text-align:center">
-      <div style="${D.sub};margin-bottom:4px">${PILLAR_NAMES[i]}</div>
-      <div style="font-family:monospace;color:#9d8ff5;font-weight:700;font-size:21px;margin-bottom:6px">${p.pillar.ganzi}</div>
-      <div style="font-size:39px;margin-bottom:4px">${sjs.emoji}</div>
-      <div style="color:#dde1f2;font-weight:700;font-size:20px;margin-bottom:4px">${sjs.name}</div>
-      <div style="${D.sub};font-size:16px;line-height:1.5">${t('sjs.'+sjsIdx)}</div>
+    const pc = PILLAR_COLORS[i];
+    return `<div style="${D.card}border-top:2px solid ${pc}40;text-align:center;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
+      <div style="color:#7a6f8a;font-size:12px;margin-bottom:6px;letter-spacing:0.08em;text-transform:uppercase">${PILLAR_NAMES[i]}</div>
+      <div style="font-family:monospace;background:linear-gradient(135deg,${pc},${pc}99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:22px;margin-bottom:8px">${p.pillar.ganzi}</div>
+      <div style="font-size:38px;margin-bottom:6px;filter:drop-shadow(0 0 8px ${pc}60)">${sjs.emoji}</div>
+      <div style="color:#e8dfc8;font-weight:700;font-size:18px;margin-bottom:6px;font-family:'Cormorant Garamond',serif">${sjs.name}</div>
+      <div style="color:#8a8fa8;font-size:13px;line-height:1.5">${t('sjs.'+sjsIdx)}</div>
     </div>`;
   }).join('');
 
@@ -1204,14 +1223,17 @@ function renderZiweiSection(chart) {
     const palace = chart.palaces[palaceName];
     if (!palace) return '';
     const mains = getMainStars(palace);
+    const PALACE_COLORS = {'命宮':'#d4af37','財帛':'#fbbf24','夫妻':'#f472b6'};
+    const pc = PALACE_COLORS[palaceName] || '#a78bfa';
     if (mains.length === 0) {
-      return `<div style="${D.card}">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-          <span style="font-size:24px">${emoji}</span>
-          <span style="color:#dde1f2;font-weight:600;font-size:20px">${label}</span>
-          <span style="${D.sub}">${palace.ganZhi}</span>
+      return `<div style="${D.card}border-top:2px solid ${pc}40;">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:26px;filter:drop-shadow(0 0 6px ${pc}80)">${emoji}</span>
+          <span style="color:#e8dfc8;font-weight:700;font-size:18px;font-family:'Cormorant Garamond',serif">${label}</span>
+          <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:2px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.2)">${palace.ganZhi}</span>
         </div>
-        <p style="${D.sub}">${t('이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.')}</p>
+        <p style="color:#7a6f8a;font-size:15px">${t('이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.')}</p>
       </div>`;
     }
     const starCards = mains.map(s => {
@@ -1219,24 +1241,25 @@ function renderZiweiSection(chart) {
       const field = palaceName==='命宮' ? 'fate' : palaceName==='財帛' ? 'wealth' : 'love';
       const content = t('star.'+s.name+'.'+field) || (palaceName==='命宮' ? info.fate : palaceName==='財帛' ? info.wealth : info.love);
       const siHua = s.siHua
-        ? `<span style="background:${s.siHua==='化忌'?'#f871711a':'#fbbf241a'};color:${s.siHua==='化忌'?'#f87171':'#fbbf24'};font-size:15px;padding:1px 6px;border-radius:8px;margin-left:4px">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
-      const bright = s.brightness ? `<span style="${D.sub}"> (${s.brightness})</span>` : '';
-      return `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #1f2340">
-        <span style="font-size:24px;flex-shrink:0">${emoji}</span>
-        <div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap">
-            <span style="color:#dde1f2;font-weight:600;font-size:20px">${s.name}</span>${bright}${siHua}
+        ? `<span style="background:${s.siHua==='化忌'?'rgba(248,113,113,0.15)':'rgba(212,175,55,0.15)'};color:${s.siHua==='化忌'?'#f87171':'#d4af37'};font-size:13px;padding:2px 7px;border-radius:8px;margin-left:6px;border:1px solid ${s.siHua==='化忌'?'rgba(248,113,113,0.3)':'rgba(212,175,55,0.3)'}">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
+      const bright = s.brightness ? `<span style="color:#7a6f8a;font-size:14px"> (${s.brightness})</span>` : '';
+      return `<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(212,175,55,0.08)">
+        <span style="font-size:26px;flex-shrink:0;filter:drop-shadow(0 0 6px ${pc}60)">${emoji}</span>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;margin-bottom:4px">
+            <span style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:19px;font-family:'Cormorant Garamond',serif">${s.name}</span>${bright}${siHua}
           </div>
-          <p style="${D.txt};margin-top:3px">${content}</p>
+          <p style="color:#c0c8e0;font-size:16px;line-height:1.7;margin:0">${content}</p>
         </div>
       </div>`;
     }).join('');
 
-    return `<div style="${D.card}">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-        <span style="font-size:24px">${emoji}</span>
-        <span style="color:#dde1f2;font-weight:600;font-size:20px">${label}</span>
-        <span style="background:#7c6af71a;color:#9d8ff5;font-size:15px;padding:1px 6px;border-radius:6px">${palace.ganZhi} ${palaceName}</span>
+    return `<div style="${D.card}border-top:2px solid ${pc}40;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <span style="font-size:26px;filter:drop-shadow(0 0 8px ${pc}80)">${emoji}</span>
+        <span style="color:#e8dfc8;font-weight:700;font-size:18px;font-family:'Cormorant Garamond',serif">${label}</span>
+        <span style="background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(212,175,55,0.1));color:#a78bfa;font-size:13px;padding:2px 8px;border-radius:8px;border:1px solid rgba(124,106,247,0.3)">${palace.ganZhi} ${palaceName}</span>
       </div>
       ${starCards}
     </div>`;
@@ -1267,32 +1290,40 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
   const jupiter = find(transitChart, 'Jupiter');
   const venus   = find(transitChart, 'Venus');
 
+  const PLANET_COLORS = {'☀️':'#fbbf24','🌙':'#c0c8e0','⬆️':'#34d399','♃':'#a78bfa','♀':'#f472b6'};
   function planetRow(iconTxt, title, subtitle, sign, descKey) {
     if (!sign && sign !== 0) return '';
     const idx = toSignIdx(sign);
     const desc = t(descKey+'.'+idx) || '';
-    return `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
-      <div style="font-size:30px;flex-shrink:0;width:28px;text-align:center">${iconTxt}</div>
-      <div>
-        <div style="color:#dde1f2;font-weight:600;font-size:20px">${t(title)} <span style="${D.sub}">${t(subtitle)}</span></div>
-        <div style="font-weight:700;font-size:21px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
-        <p style="${D.txt};margin:0">${desc}</p>
+    const pc = PLANET_COLORS[iconTxt] || '#d4af37';
+    return `<div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.08)">
+      <div style="font-size:28px;flex-shrink:0;width:32px;text-align:center;filter:drop-shadow(0 0 8px ${pc}80)">${iconTxt}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="color:#e8dfc8;font-weight:700;font-size:17px;font-family:'Cormorant Garamond',serif">${t(title)}</span>
+          <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:1px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.15)">${t(subtitle)}</span>
+        </div>
+        <div style="background:linear-gradient(135deg,${pc},${pc}cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-bottom:5px;font-family:'Cormorant Garamond',serif">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
+        <p style="color:#c0c8e0;font-size:15px;line-height:1.7;margin:0">${desc}</p>
       </div>
     </div>`;
   }
 
-  const ascRow = ascObj ? `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1f2340">
-    <div style="font-size:30px;flex-shrink:0;width:28px;text-align:center">⬆️</div>
-    <div>
-      <div style="color:#dde1f2;font-weight:600;font-size:20px">${t('상승궁 (ASC)')} <span style="${D.sub}">${t('첫인상·외면')}</span></div>
-      <div style="font-weight:700;font-size:21px;margin:3px 0;color:#c8cee8">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
-      <p style="${D.txt};margin:0">${t('타인에게 비치는 첫인상과 외면적 태도를 나타냅니다.')}</p>
+  const ascRow = ascObj ? `<div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.08)">
+    <div style="font-size:28px;flex-shrink:0;width:32px;text-align:center;filter:drop-shadow(0 0 8px #34d39980)">⬆️</div>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="color:#e8dfc8;font-weight:700;font-size:17px;font-family:'Cormorant Garamond',serif">${t('상승궁 (ASC)')}</span>
+        <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:1px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.15)">${t('첫인상·외면')}</span>
+      </div>
+      <div style="background:linear-gradient(135deg,#34d399,#34d399cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-bottom:5px;font-family:'Cormorant Garamond',serif">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
+      <p style="color:#c0c8e0;font-size:15px;line-height:1.7;margin:0">${t('타인에게 비치는 첫인상과 외면적 태도를 나타냅니다.')}</p>
     </div>
   </div>` : '';
 
   return `<div style="${D.wrap}">
     ${sectionHeader('F', t('점성학'), t('서양 천궁도 분석'))}
-    <div style="${D.card}">
+    <div style="${D.card}border:1px solid rgba(212,175,55,0.2);">
       ${planetRow('☀️', '태양 별자리', '핵심 정체성', sun?.sign, 'sun')}
       ${planetRow('🌙', '달 별자리',   '감성·본능',   moon?.sign, 'moon')}
       ${ascRow}
@@ -1313,37 +1344,39 @@ function inputHtml() {
   const hourOpts  = `<option value="">시간 모름</option>` +
     Array.from({length:24},(_,i)=>`<option value="${i}">${i}시</option>`).join('');
 
-  return `<div style="background:#1a1d2e;border:1px solid #fbbf2440;border-radius:12px;padding:18px">
-    <p style="color:#fbbf24;font-weight:600;font-size:21px;margin-bottom:12px">
+  const selectStyle = 'height:40px;border-radius:10px;border:1px solid rgba(212,175,55,0.3);background:linear-gradient(135deg,#131726,#161b2e);color:#e8dfc8;padding:0 12px;font-size:17px;outline:none;cursor:pointer;';
+  return `<div style="background:linear-gradient(135deg,#0d1020,#111428);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:22px;box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
+    <p style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:18px;margin-bottom:16px;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">
       ${t('생년월일시를 선택하면 사주·자미두수·점성학 무료 운세를 확인합니다.')}
     </p>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-      <select id="gf-year" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+      <select id="gf-year" style="${selectStyle}">
         <option value="">${t('출생 연도')}</option>${yearOpts}
       </select>
-      <select id="gf-month" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
+      <select id="gf-month" style="${selectStyle}">
         <option value="">월</option>${monthOpts}
       </select>
-      <select id="gf-day" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
+      <select id="gf-day" style="${selectStyle}">
         <option value="">일</option>${dayOpts}
       </select>
-      <select id="gf-hour" style="height:36px;border-radius:8px;border:1px solid #252840;background:#12151f;color:#dde1f2;padding:0 10px;font-size:20px">
+      <select id="gf-hour" style="${selectStyle}">
         ${hourOpts}
       </select>
     </div>
-    <div style="display:flex;gap:16px;margin-bottom:14px">
-      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:20px;cursor:pointer">
-        <input type="radio" name="gf-gender" value="M" checked /> ${t('남성')}
+    <div style="display:flex;gap:20px;margin-bottom:16px">
+      <label style="display:flex;align-items:center;gap:8px;color:#c8cee8;font-size:17px;cursor:pointer">
+        <input type="radio" name="gf-gender" value="M" checked style="accent-color:#d4af37" /> ${t('남성')}
       </label>
-      <label style="display:flex;align-items:center;gap:6px;color:#dde1f2;font-size:20px;cursor:pointer">
-        <input type="radio" name="gf-gender" value="F" /> ${t('여성')}
+      <label style="display:flex;align-items:center;gap:8px;color:#c8cee8;font-size:17px;cursor:pointer">
+        <input type="radio" name="gf-gender" value="F" style="accent-color:#f472b6" /> ${t('여성')}
       </label>
     </div>
     <button id="gf-calc" type="button"
-      style="width:100%;border-radius:8px;padding:11px;font-size:21px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,#7c6af7,#5b4ef0)">
+      style="width:100%;border-radius:12px;padding:13px;font-size:19px;font-weight:700;color:#0a0e1a;border:none;cursor:pointer;background:linear-gradient(135deg,#d4af37,#c9a84c,#e8d5a3);box-shadow:0 4px 20px rgba(212,175,55,0.4),0 0 40px rgba(212,175,55,0.1);letter-spacing:0.03em;font-family:'Cormorant Garamond',serif">
       ${t('🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)')}
     </button>
-    <div id="gf-error" style="color:#f87171;font-size:18px;margin-top:8px;display:none"></div>
+    <div id="gf-error" style="color:#f87171;font-size:16px;margin-top:10px;display:none"></div>
   </div>`;
 }
 
@@ -1353,30 +1386,34 @@ function createPanel() {
   const el = document.createElement('div');
   el.id = 'honcheon-fortune-panel';
   el.style.display = 'none';
-  el.innerHTML = `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
-    <div style="margin-bottom:16px">
-      <h3 style="color:#e2e8f0;font-size:27px;font-weight:700;margin:0">${t('🔮 무료 운세')}</h3>
-      <p style="color:#7a82a8;font-size:20px;margin:4px 0 0">${t('사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)')}</p>
+  el.innerHTML = `<div style="background:linear-gradient(135deg,#0d1020 0%,#111428 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),rgba(124,106,247,0.5),transparent)"></div>
+    <div style="position:absolute;top:20px;right:20px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,0.06) 0%,transparent 70%);pointer-events:none"></div>
+    <div style="margin-bottom:20px">
+      <h3 style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:26px;font-weight:800;margin:0;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">🔮 ${t('무료 운세')}</h3>
+      <p style="color:#8a8fa8;font-size:16px;margin:6px 0 0;line-height:1.5">${t('사주 · 자미두수 · 점성학 세 시스템 통합 분석 (회원가입 불필요)')}</p>
     </div>
     <div id="gf-body">
-      <p style="color:#7a82a8;font-size:20px;text-align:center;padding:24px 0">${t('운세를 계산하는 중입니다…')}</p>
+      <p style="color:#7a6f8a;font-size:18px;text-align:center;padding:28px 0">${t('운세를 계산하는 중입니다…')}</p>
     </div>
   </div>`;
   return el;
 }
 
 function membershipCard() {
-  return `<div style="background:#0d0f1a;border-radius:16px;padding:20px;border:1px solid #1e2235">
-    <div style="border:2px dashed #fbbf2460;border-radius:12px;background:#fbbf240a;padding:24px;text-align:center">
-      <div style="font-size:54px;margin-bottom:10px">🔐</div>
-      <div style="color:#fbbf24;font-weight:700;font-size:24px;margin-bottom:8px">${t('멤버십 전용 상세 분석')}</div>
-      <p style="color:#d97706;font-size:20px;margin-bottom:14px">${t('사주팔자 · 자미두수 · 천궁도 전체 결과를PDF로 정리하여 제공합니다.')}</p>
-      <div style="color:#b45309;font-size:18px;line-height:2">
-        <div>${t('✅ 8글자 원국 전체 해석')}</div>
-        <div>${t('✅ 대운 흐름 · 세운 분석')}</div>
-        <div>${t('✅ 자미두수 12궁 상세 해석')}</div>
-        <div>${t('✅ 천궁도 행성·하우스·상(Aspect) 분석')}</div>
-        <div>${t('✅ AI 종합 해석 포함')}</div>
+  return `<div style="background:linear-gradient(135deg,#0d1020 0%,#111428 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),rgba(124,106,247,0.5),transparent)"></div>
+    <div style="position:absolute;bottom:-30px;right:-30px;width:150px;height:150px;background:radial-gradient(circle,rgba(212,175,55,0.08) 0%,transparent 70%);pointer-events:none"></div>
+    <div style="border:1px solid rgba(212,175,55,0.3);border-radius:16px;background:linear-gradient(135deg,rgba(212,175,55,0.05),rgba(124,106,247,0.05));padding:28px;text-align:center">
+      <div style="font-size:52px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(212,175,55,0.5))">🔐</div>
+      <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:22px;margin-bottom:10px;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">${t('멤버십 전용 상세 분석')}</div>
+      <p style="color:#c0a060;font-size:16px;margin-bottom:18px;line-height:1.6">${t('사주팔자 · 자미두수 · 천궁도 전체 결과를PDF로 정리하여 제공합니다.')}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;text-align:left;max-width:320px;margin:0 auto">
+        ${['✨ 8글자 원국 전체 해석','✨ 대운 흐름 · 세운 분석','✨ 자미두수 12궁 상세 해석','✨ 천궁도 행성·하우스·상(Aspect) 분석','✨ AI 종합 해석 포함'].map(item => `
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.12);border-radius:8px;padding:8px 12px">
+            <span style="color:#d4af37;font-size:16px">${item.split(' ')[0]}</span>
+            <span style="color:#c8cee8;font-size:15px">${t(item.slice(2))}</span>
+          </div>`).join('')}
       </div>
     </div>
   </div>`;
@@ -1385,15 +1422,15 @@ function membershipCard() {
 function createTabs() {
   const el = document.createElement('div');
   el.id = 'honcheon-fortune-tabs';
-  el.style.cssText = 'display:flex;border-radius:12px;background:#1a1d2e;padding:4px;gap:4px;border:1px solid #252840';
+  el.style.cssText = 'display:flex;border-radius:14px;background:linear-gradient(135deg,#0d1020,#111428);padding:5px;gap:5px;border:1px solid rgba(212,175,55,0.2);box-shadow:0 2px 16px rgba(0,0,0,0.4)';
   el.innerHTML = `
     <button data-tab="fortune"
-      style="flex:1;border-radius:8px;padding:8px 16px;font-size:20px;font-weight:600;background:#7c6af7;color:#fff;border:none;cursor:pointer;transition:all 0.2s">
-      ${t('🔮 무료 운세')}
+      style="flex:1;border-radius:10px;padding:10px 16px;font-size:17px;font-weight:700;background:linear-gradient(135deg,#d4af37,#c9a84c);color:#0a0e1a;border:none;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 12px rgba(212,175,55,0.3);font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">
+      🔮 ${t('무료 운세')}
     </button>
     <button data-tab="detail"
-      style="flex:1;border-radius:8px;padding:8px 16px;font-size:20px;font-weight:500;background:transparent;color:#7a82a8;border:none;cursor:pointer;transition:all 0.2s">
-      ${t('🔐 멤버십 상세 분석')}
+      style="flex:1;border-radius:10px;padding:10px 16px;font-size:17px;font-weight:500;background:transparent;color:#7a6f8a;border:1px solid rgba(212,175,55,0.1);cursor:pointer;transition:all 0.3s;font-family:'Cormorant Garamond',serif">
+      🔐 ${t('멤버십 상세 분석')}
     </button>`;
   return el;
 }
@@ -1414,9 +1451,19 @@ function switchTab(tabId, results) {
 
   tabs.querySelectorAll('button').forEach(btn => {
     const active = btn.dataset.tab === tabId;
-    btn.style.background = active ? '#7c6af7' : 'transparent';
-    btn.style.color = active ? '#fff' : '#7a82a8';
-    btn.style.fontWeight = active ? '600' : '500';
+    if (active) {
+      btn.style.background = 'linear-gradient(135deg,#d4af37,#c9a84c)';
+      btn.style.color = '#0a0e1a';
+      btn.style.fontWeight = '700';
+      btn.style.boxShadow = '0 2px 12px rgba(212,175,55,0.35)';
+      btn.style.border = 'none';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = '#7a6f8a';
+      btn.style.fontWeight = '500';
+      btn.style.boxShadow = 'none';
+      btn.style.border = '1px solid rgba(212,175,55,0.1)';
+    }
   });
 
   Array.from(results.children).forEach(child => {
@@ -1473,7 +1520,7 @@ async function runFortune(preInput = null) {
       ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">${year}년 ${month}월 ${day}일 · ${gender==='F'?t('여'):t('남')}</span></div>`
       : '';
 
-    if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px">
+    if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
       ${infoLine}
       ${renderBasicFortune(saju, yp, mp, dp, gender)}
       ${renderDailyCalendar(saju, yp, mp, dp)}
@@ -1481,13 +1528,13 @@ async function runFortune(preInput = null) {
       ${renderSijunseong(saju)}
       ${renderZiweiSection(ziwei)}
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
-      <div style="text-align:center;padding:4px 0">
+      <div style="text-align:center;padding:8px 0">
         <button id="gf-reset" type="button"
-          style="color:#565d80;font-size:18px;text-decoration:underline;background:none;border:none;cursor:pointer">
-          ${t('다른 생년월일로 다시 보기')}
+          style="color:#7a6f8a;font-size:15px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em;transition:all 0.2s">
+          ↺ ${t('다른 생년월일로 다시 보기')}
         </button>
       </div>
-      <p style="${D.muted};text-align:center;padding-bottom:4px">
+      <p style="color:#4a4f6a;font-size:14px;text-align:center;padding-bottom:6px;line-height:1.6">
         ${t('※ 사주·자미두수·점성학 원국과 현재 날짜를 기반으로 자동 계산됩니다. 참고용으로 활용하세요.')}
       </p>
     </div>`;
