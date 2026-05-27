@@ -1194,20 +1194,46 @@ function renderYongShin(saju) {
     </div>`;
   }).join('');
 
+  const YONG_DESC = {
+    '용신': {
+      '목': '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.',
+      '화': '불의 기운으로 열정과 표현력을 강화합니다. 남쪽 방향, 빨간색 계열이 행운을 부르며 인간관계와 명예 운이 상승합니다. 적극적인 자기 표현과 사교 활동이 운을 여는 열쇠입니다.',
+      '토': '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.',
+      '금': '금속의 날카로운 기운이 결단력과 재물운을 강화합니다. 서쪽 방향, 흰색·금색 계열이 길하며 계획적인 재테크와 자기 계발이 운을 높입니다. 원칙을 지키는 행동이 신뢰를 쌓습니다.',
+      '수': '물의 지혜로운 기운이 지식과 재물의 흐름을 원활하게 합니다. 북쪽 방향, 검정·파란색 계열이 길하며 학업·연구·금융 분야에서 두각을 나타낼 수 있습니다. 유연한 사고로 기회를 포착하세요.',
+    },
+    '희신': {
+      '목': '용신을 보조하는 나무 기운입니다. 창의적 활동과 인간관계 확장이 간접적으로 운을 돕습니다. 식물 키우기, 등산, 새벽 산책 등 목(木) 기운을 접하는 생활 습관이 에너지를 보충해 줍니다.',
+      '화': '용신을 보조하는 불 기운입니다. 밝고 활기찬 환경이 운의 흐름을 원활하게 합니다. 조명이 밝은 공간에서 활동하거나 따뜻한 색상의 소품을 활용하면 보조 에너지가 강화됩니다.',
+      '토': '용신을 보조하는 토 기운입니다. 안정적인 생활 기반이 전체 운을 뒷받침합니다. 규칙적인 식사와 수면, 꾸준한 저축 습관이 이 기운을 활성화하여 운의 토대를 다집니다.',
+      '금': '용신을 보조하는 금 기운입니다. 정확하고 체계적인 행동이 운을 뒷받침합니다. 금속 소품이나 흰색 계열 인테리어가 이 기운을 강화하며, 계획적인 생활 패턴이 도움이 됩니다.',
+      '수': '용신을 보조하는 수 기운입니다. 지식 축적과 내면 성찰이 운을 간접적으로 강화합니다. 독서, 명상, 수영 등 수(水) 기운과 연관된 활동이 보조 에너지를 활성화합니다.',
+    },
+    '기신': {
+      '목': '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.',
+      '화': '불 기운이 과잉되어 충동적 행동이나 과열을 유발할 수 있습니다. 감정 기복과 급한 결정을 경계하세요. 빨간색 계열과 남쪽 방향을 과도하게 접하면 스트레스가 가중될 수 있습니다.',
+      '토': '토 기운이 과잉되어 정체와 고집을 유발할 수 있습니다. 변화를 두려워하거나 지나치게 보수적인 태도가 기회를 놓치게 합니다. 황토색·중앙 배치를 줄이고 유연한 사고를 키우세요.',
+      '금': '금 기운이 과잉되어 지나친 냉정함이나 갈등을 일으킬 수 있습니다. 날카로운 언행과 무리한 경쟁을 자제하세요. 금속 소품이나 흰색 계열을 과도하게 사용하면 긴장감이 높아질 수 있습니다.',
+      '수': '수 기운이 과잉되어 우유부단함이나 과도한 걱정을 유발할 수 있습니다. 지나친 분석과 소극적 태도를 경계하세요. 검정·파란색 계열과 북쪽 방향을 과도하게 접하면 에너지가 침체될 수 있습니다.',
+    },
+  };
+
   function yongCard(label, elem, role, desc) {
     const c = ELEM_CLR[elem] || '#7a82a8';
     const roleKey = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
     const isGi = role==='기신';
+    const detailDesc = elem ? (YONG_DESC[role]?.[elem] || '') : '';
     return `<div style="${D.card}border-left:3px solid ${c};border-top:1px solid ${c}30;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,${c}60,transparent)"></div>
       <div style="text-align:center;margin-bottom:8px">
         <div style="font-size:28px;margin-bottom:4px;filter:drop-shadow(0 0 8px ${c}60)">${role==='용신'?'✨':role==='희신'?'🌟':'⚠️'}</div>
         <span style="background:linear-gradient(135deg,${c}30,${c}15);color:${c};font-weight:800;font-size:17px;padding:3px 10px;border-radius:10px;border:1px solid ${c}40;display:inline-block">${t(role)}</span>
       </div>
-      <div style="text-align:center;background:${c}12;border-radius:8px;padding:6px;margin-bottom:6px">
+      <div style="text-align:center;background:${c}12;border-radius:8px;padding:6px;margin-bottom:8px">
         <span style="color:${c};font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? ELEM_KO[elem] : '-'}</span>
       </div>
-      <div style="color:#8a8fa8;font-size:13px;text-align:center;line-height:1.4">${t(roleKey)}</div>
+      <div style="color:#8a8fa8;font-size:12px;text-align:center;line-height:1.4;margin-bottom:8px">${t(roleKey)}</div>
+      ${detailDesc ? `<div style="background:${isGi?'rgba(248,113,113,0.06)':'rgba(212,175,55,0.06)'};border:1px solid ${c}20;border-radius:8px;padding:10px;color:#b0b8d0;font-size:12px;line-height:1.7;text-align:left">${detailDesc}</div>` : ''}
     </div>`;
   }
 
