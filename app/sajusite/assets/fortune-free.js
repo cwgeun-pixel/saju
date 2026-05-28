@@ -3356,11 +3356,14 @@ document.addEventListener('click', e => {
   }
 }, true);
 
+// mount 함수를 전역에 노출 (React 렌더링 완료 후 외부에서 호출 가능)
+window.honcheonMount = mount;
+
 // MutationObserver: body 전체 관찰
 new MutationObserver(() => { mount(); }).observe(document.body, { childList:true, subtree:true });
 mount();
 
-// setInterval 폴링 함수 - 버튼 클릭 시 재시작 가능
+// setInterval 폴링 함수 - results 내부에 탭이 없으면 mount 실행
 let _mountPoller = null;
 function startMountPoller() {
   if (_mountPoller) clearInterval(_mountPoller);
@@ -3368,11 +3371,12 @@ function startMountPoller() {
   _mountPoller = setInterval(() => {
     _pollCount++;
     const results = document.getElementById('results');
-    if (results && results.children.length > 0 && !document.getElementById('honcheon-fortune-tabs')) {
+    // results 내부에 탭이 없을 때만 mount 실행 (DOM 전체가 아닌 results 내부 확인)
+    if (results && results.children.length > 0 && !results.querySelector('#honcheon-fortune-tabs')) {
       mount();
     }
-    // 30초(100회) 후 폴링 중단
-    if (_pollCount >= 100) clearInterval(_mountPoller);
+    // 60초(200회) 후 폴링 중단
+    if (_pollCount >= 200) clearInterval(_mountPoller);
   }, 300);
 }
 startMountPoller();
