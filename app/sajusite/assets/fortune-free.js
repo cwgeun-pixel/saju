@@ -1384,6 +1384,141 @@ function renderSijunseong(saju) {
   </div>`;
 }
 
+// ─── D2. 대운 분석 ──────────────────────────────────────────────
+
+function renderDaewoon(saju) {
+  const daewoon = saju.daewoon;
+  if (!daewoon || daewoon.length === 0) return '';
+
+  const today = new Date();
+  const birthYear = saju.input.year;
+  const currentAge = today.getFullYear() - birthYear;
+  const gender = saju.input.gender;
+  const genderLabel = gender === 'F' ? t('여') : t('남');
+
+  // 순행/역행 판단 (양남음녀 순행, 음남양녀 순행)
+  const dayStem = saju.pillars[2]?.pillar?.stem || '';
+  const YANG_STEMS = new Set(['甲','丙','戊','庚','壬']);
+  const isYang = YANG_STEMS.has(dayStem);
+  const isMale = gender !== 'F';
+  const isForward = (isYang && isMale) || (!isYang && !isMale);
+  const flowLabel = isForward ? '순행' : '역행';
+
+  // 현재 대운 찾기
+  let currentIdx = -1;
+  for (let i = 0; i < daewoon.length; i++) {
+    const startAge = daewoon[i].age;
+    const endAge = (i + 1 < daewoon.length) ? daewoon[i + 1].age : 999;
+    if (currentAge >= startAge && currentAge < endAge) {
+      currentIdx = i;
+      break;
+    }
+  }
+  if (currentIdx < 0) currentIdx = 0;
+
+  const cur = daewoon[currentIdx];
+  const curStartAge = cur.age;
+  const curEndAge = (currentIdx + 1 < daewoon.length) ? daewoon[currentIdx + 1].age - 1 : curStartAge + 9;
+
+  // 십성 한글 변환
+  const SIPSIN_KR = {
+    '比肩':'비견','劫財':'겁재','食神':'식신','傷官':'상관',
+    '偏財':'편재','正財':'정재','偏官':'편관','正官':'정관',
+    '偏印':'편인','正印':'정인'
+  };
+
+  // 12운성 한자
+  const SJS_HANJA2 = {
+    '장생':'長生','목욕':'沐浴','관대':'冠帶','임관':'臨官','제왕':'帝旺',
+    '쇠':'衰','병':'病','사':'死','묘':'墓','절':'絶','태':'胎','양':'養'
+  };
+
+  // 12운성 색상
+  const SJS_COLOR = {
+    '장생':'#22c55e','목욕':'#60a5fa','관대':'#22c55e','임관':'#22c55e','제왕':'#f59e0b',
+    '쇠':'#9ca3af','병':'#9ca3af','사':'#9ca3af','묘':'#9ca3af','절':'#9ca3af','태':'#a78bfa','양':'#a78bfa'
+  };
+
+  const stemSipsin = SIPSIN_KR[cur.stemSipsin] || cur.stemSipsin || '';
+  const branchSipsin = SIPSIN_KR[cur.branchSipsin] || cur.branchSipsin || '';
+  const unseong = cur.unseong || '';
+  const unseongHanja = SJS_HANJA2[unseong] || unseong;
+  const unseongColor = SJS_COLOR[unseong] || '#a78bfa';
+
+  // 현재 대운 카드
+  const currentCard = `
+    <div style="background:linear-gradient(135deg,rgba(124,106,247,0.12),rgba(212,175,55,0.08));border:1px solid rgba(124,106,247,0.35);border-radius:16px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c6af7,#d4af37,#7c6af7)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">현재 대운</div>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-size:32px;font-weight:800;color:#e8d5a3;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">${ganziStr(cur.ganzi)}</span>
+            <span style="font-size:18px;color:#9d8aa0">(${cur.ganzi[0]}${cur.ganzi[1]})</span>
+          </div>
+          <div style="font-size:14px;color:#8a7fa8;margin-top:4px">${curStartAge}세 ~ ${curEndAge}세</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">대운 십성</div>
+          <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${stemSipsin}</div>
+          <div style="margin-top:6px">
+            <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${unseong}(${unseongHanja})</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // 타임라인 카드들
+  const timelineCards = daewoon.map((dw, i) => {
+    const isPast = i < currentIdx;
+    const isCurrent = i === currentIdx;
+    const isFuture = i > currentIdx;
+    const dwStartAge = dw.age;
+    const dwEndAge = (i + 1 < daewoon.length) ? daewoon[i + 1].age - 1 : dwStartAge + 9;
+    const dwStemSipsin = SIPSIN_KR[dw.stemSipsin] || dw.stemSipsin || '';
+    const dwBranchSipsin = SIPSIN_KR[dw.branchSipsin] || dw.branchSipsin || '';
+    const dwUnseong = dw.unseong || '';
+    const dwUnseongColor = SJS_COLOR[dwUnseong] || '#a78bfa';
+
+    let dotColor, cardBg, cardBorder, textColor;
+    if (isCurrent) {
+      dotColor = '#a78bfa'; cardBg = 'rgba(124,106,247,0.12)'; cardBorder = '2px solid rgba(124,106,247,0.5)'; textColor = '#e8d5a3';
+    } else if (isPast) {
+      dotColor = '#4b5563'; cardBg = 'rgba(30,28,50,0.4)'; cardBorder = '1px solid rgba(255,255,255,0.06)'; textColor = '#6b7280';
+    } else {
+      dotColor = '#374151'; cardBg = 'rgba(20,18,40,0.3)'; cardBorder = '1px solid rgba(255,255,255,0.05)'; textColor = '#9da8c0';
+    }
+
+    return `<div style="background:${cardBg};border:${cardBorder};border-radius:14px;padding:14px 10px;text-align:center;position:relative;transition:transform 0.2s;min-width:0">
+      ${isCurrent ? '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#a78bfa,transparent)"></div>' : ''}
+      <div style="width:12px;height:12px;border-radius:50%;background:${dotColor};margin:0 auto 8px;${isCurrent ? 'box-shadow:0 0 8px #a78bfa' : ''}"></div>
+      <div style="font-weight:700;font-size:16px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:2px">${ganziStr(dw.ganzi)}</div>
+      <div style="font-size:10px;color:#6b7280;margin-bottom:6px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
+      <div style="font-size:11px;color:${isCurrent ? '#a78bfa' : '#4b5563'};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
+      <div style="font-size:11px;color:${isCurrent ? '#d4af37' : '#6b7280'};margin-bottom:4px">${dwStemSipsin}</div>
+      <div style="font-size:10px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:4px">${dwBranchSipsin}</div>
+      <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:10px;padding:1px 6px;border-radius:10px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
+    </div>`;
+  }).join('');
+
+  // 범례
+  const legend = `<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;font-size:12px;color:#6b7280">
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;display:inline-block"></span>현재 대운</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#4b5563;display:inline-block"></span>지난 대운</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#374151;border:1px solid #6b7280;display:inline-block"></span>미래 대운</span>
+  </div>`;
+
+  return `<div style="${D.wrap}">
+    ${sectionHeader('D2', t('대운 (大運)'), `현재 나이: ${currentAge}세 · ${flowLabel}`)}
+    <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + 양년 = ${flowLabel} · 대운수 ${cur.age}세</div>
+    ${currentCard}
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;overflow-x:auto">
+      ${timelineCards}
+    </div>
+    ${legend}
+  </div>`;
+}
+
 // ─── E. 자미두수 ──────────────────────────────────────────────
 
 function renderZiweiSection(chart) {
@@ -1690,6 +1825,7 @@ async function runFortune(preInput = null) {
       ${renderDailyCalendar(saju, yp, mp, dp)}
       ${renderYongShin(saju)}
       ${renderSijunseong(saju)}
+      ${renderDaewoon(saju)}
       ${renderZiweiSection(ziwei)}
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
       <div style="text-align:center;padding:8px 0">
