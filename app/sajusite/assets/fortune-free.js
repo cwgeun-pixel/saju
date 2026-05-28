@@ -3357,15 +3357,25 @@ document.addEventListener('click', e => {
 new MutationObserver(() => { mount(); }).observe(document.body, { childList:true, subtree:true });
 mount();
 
-// setInterval 폴링: React 렌더링 타이밍 문제 보완 (results가 생긴 후 탭이 없으면 mount 재시도)
-const _mountPoller = setInterval(() => {
-  const results = document.getElementById('results');
-  if (results && results.children.length > 0 && !document.getElementById('honcheon-fortune-tabs')) {
-    mount();
-  }
-}, 300);
-// 10초 후 폴링 중단
-setTimeout(() => clearInterval(_mountPoller), 10000);
+// setInterval 폴링 함수 - 버튼 클릭 시 재시작 가능
+let _mountPoller = null;
+function startMountPoller() {
+  if (_mountPoller) clearInterval(_mountPoller);
+  let _pollCount = 0;
+  _mountPoller = setInterval(() => {
+    _pollCount++;
+    const results = document.getElementById('results');
+    if (results && results.children.length > 0 && !document.getElementById('honcheon-fortune-tabs')) {
+      mount();
+    }
+    // 30초(100회) 후 폴링 중단
+    if (_pollCount >= 100) clearInterval(_mountPoller);
+  }, 300);
+}
+startMountPoller();
+
+// 모든 버튼 클릭 시 폴링 재시작 (계산 버튼 클릭 후 결과 렌더링 대기)
+document.addEventListener('click', () => { startMountPoller(); }, { capture: true, passive: true });
 
 document.addEventListener('honcheon:langchange', () => {
   if (lastInput) runFortune(lastInput).catch(console.error);
