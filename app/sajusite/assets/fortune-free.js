@@ -123,6 +123,138 @@ const SIHAU_LABEL = { '化祿':'화록(번영)', '化權':'화권(권력)', '化
 
 // ─── 자미두수 12궁 해석 데이터 ────────────────────────────────────
 // 각 별의 궁별 핵심 해석 (무료: 명궁·재백궁·부처궁 / 유료: 12궁 전체)
+const PALACE_LABELS = {
+  ko: {
+    '命宮':['명궁 (命宮)','기본 성격과 인생의 핵심 구조'],
+    '兄弟':['형제궁 (兄弟宮)','형제자매·동료와의 인연'],
+    '夫妻':['부처궁 (夫妻宮)','배우자·연인과의 인연'],
+    '子女':['자녀궁 (子女宮)','자녀운과 창조적 에너지'],
+    '財帛':['재백궁 (財帛宮)','재물·수입·금전 흐름'],
+    '疾厄':['질액궁 (疾厄宮)','건강·체질·질병 경향'],
+    '遷移':['천이궁 (遷移宮)','이동·해외·외부 활동'],
+    '交友':['교우궁 (交友宮)','친구·인맥·사회적 관계'],
+    '官祿':['관록궁 (官祿宮)','직업·사회적 성취·명예'],
+    '田宅':['전택궁 (田宅宮)','부동산·주거·가정환경'],
+    '福德':['복덕궁 (福德宮)','정신세계·복·내면의 행복'],
+    '父母':['부모궁 (父母宮)',
+    '현재 나이':'현재 나이',
+    '길신':'길신',
+    '긍정적인 기운':'긍정적인 기운',
+    '흉신':'흉신',
+    '주의가 필요한 기운':'주의가 필요한 기운',
+    '중성 신살':'중성 신살',
+    '상황에 따라 달라지는 기운':'상황에 따라 달라지는 기운',
+    '용신':'용신',
+    '희신':'희신',
+    '기신':'기신','부모운·윗사람과의 관계'],
+  },
+  en: {
+    '命宮':['Life Palace (命宮)','Core personality and life structure'],
+    '兄弟':['Siblings Palace (兄弟宮)','Siblings and colleagues'],
+    '夫妻':['Spouse Palace (夫妻宮)','Spouse and romantic relationships'],
+    '子女':['Children Palace (子女宮)','Children fortune and creative energy'],
+    '財帛':['Wealth Palace (財帛宮)','Wealth, income and financial flow'],
+    '疾厄':['Health Palace (疾厄宮)','Health, constitution and illness tendencies'],
+    '遷移':['Travel Palace (遷移宮)','Travel, overseas and external activities'],
+    '交友':['Friends Palace (交友宮)','Friends, networks and social relations'],
+    '官祿':['Career Palace (官祿宮)','Career, social achievement and honor'],
+    '田宅':['Home Palace (田宅宮)','Real estate, housing and home environment'],
+    '福德':['Fortune Palace (福德宮)','Inner world, blessings and inner happiness'],
+    '父母':['Parents Palace (父母宮)',
+    '현재 나이':'Current Age',
+    '길신':'Auspicious Stars',
+    '긍정적인 기운':'Positive energy',
+    '흉신':'Inauspicious Stars',
+    '주의가 필요한 기운':'Energy requiring caution',
+    '중성 신살':'Neutral Stars',
+    '상황에 따라 달라지는 기운':'Energy that varies by situation',
+    '용신':'Favorable Element',
+    '희신':'Supporting Element',
+    '기신':'Unfavorable Element','Parents fortune and relationships with superiors'],
+  },
+  ja: {
+    '命宮':['命宮 (命宮)','基本的な性格と人生の核心構造'],
+    '兄弟':['兄弟宮 (兄弟宮)','兄弟姉妹・同僚との縁'],
+    '夫妻':['夫妻宮 (夫妻宮)','配偶者・恋人との縁'],
+    '子女':['子女宮 (子女宮)','子供運と創造的エネルギー'],
+    '財帛':['財帛宮 (財帛宮)','財産・収入・金銭の流れ'],
+    '疾厄':['疾厄宮 (疾厄宮)','健康・体質・疾病傾向'],
+    '遷移':['遷移宮 (遷移宮)','移動・海外・外部活動'],
+    '交友':['交友宮 (交友宮)','友人・人脈・社会的関係'],
+    '官祿':['官祿宮 (官祿宮)','職業・社会的成就・名誉'],
+    '田宅':['田宅宮 (田宅宮)','不動産・住居・家庭環境'],
+    '福德':['福德宮 (福德宮)','精神世界・福・内面の幸福'],
+    '父母':['父母宮 (父母宮)',
+    '현재 나이':'現在の年齢',
+    '길신':'吉神',
+    '긍정적인 기운':'ポジティブなエネルギー',
+    '흉신':'凶神',
+    '주의가 필요한 기운':'注意が必要なエネルギー',
+    '중성 신살':'中性の神殺',
+    '상황에 따라 달라지는 기운':'状況によって変わるエネルギー',
+    '용신':'用神',
+    '희신':'喜神',
+    '기신':'忌神','親運・目上の人との関係'],
+  },
+  zh: {
+    '命宮':['命宫 (命宮)','基本性格与人生核心结构'],
+    '兄弟':['兄弟宫 (兄弟宮)','兄弟姐妹·同事的缘分'],
+    '夫妻':['夫妻宫 (夫妻宮)','配偶·恋人的缘分'],
+    '子女':['子女宫 (子女宮)','子女运与创造性能量'],
+    '財帛':['财帛宫 (財帛宮)','财富·收入·金钱流动'],
+    '疾厄':['疾厄宫 (疾厄宮)','健康·体质·疾病倾向'],
+    '遷移':['迁移宫 (遷移宮)','迁移·海外·外部活动'],
+    '交友':['交友宫 (交友宮)','朋友·人脉·社会关系'],
+    '官祿':['官禄宫 (官祿宮)','职业·社会成就·名誉'],
+    '田宅':['田宅宫 (田宅宮)','房产·居住·家庭环境'],
+    '福德':['福德宫 (福德宮)','精神世界·福气·内心幸福'],
+    '父母':['父母宫 (父母宮)',
+    '현재 나이':'当前年龄',
+    '길신':'吉神',
+    '긍정적인 기운':'积极的能量',
+    '흉신':'凶神',
+    '주의가 필요한 기운':'需要注意的能量',
+    '중성 신살':'中性神煞',
+    '상황에 따라 달라지는 기운':'随情况变化的能量',
+    '용신':'用神',
+    '희신':'喜神',
+    '기신':'忌神','父母运·与上级的关系'],
+  },
+  es: {
+    '命宮':['Palacio Vida (命宮)','Personalidad central y estructura de vida'],
+    '兄弟':['Palacio Hermanos (兄弟宮)','Hermanos y compañeros'],
+    '夫妻':['Palacio Cónyuge (夫妻宮)','Cónyuge y relaciones románticas'],
+    '子女':['Palacio Hijos (子女宮)','Fortuna de hijos y energía creativa'],
+    '財帛':['Palacio Riqueza (財帛宮)','Riqueza, ingresos y flujo financiero'],
+    '疾厄':['Palacio Salud (疾厄宮)','Salud, constitución y tendencias de enfermedad'],
+    '遷移':['Palacio Viajes (遷移宮)','Viajes, extranjero y actividades externas'],
+    '交友':['Palacio Amigos (交友宮)','Amigos, redes y relaciones sociales'],
+    '官祿':['Palacio Carrera (官祿宮)','Carrera, logros sociales y honor'],
+    '田宅':['Palacio Hogar (田宅宮)','Bienes raíces, vivienda y entorno familiar'],
+    '福德':['Palacio Fortuna (福德宮)','Mundo interior, bendiciones y felicidad interna'],
+    '父母':['Palacio Padres (父母宮)',
+    '현재 나이':'Edad Actual',
+    '길신':'Estrellas Auspiciosas',
+    '긍정적인 기운':'Energía positiva',
+    '흉신':'Estrellas Inauspiciosas',
+    '주의가 필요한 기운':'Energía que requiere precaución',
+    '중성 신살':'Estrellas Neutrales',
+    '상황에 따라 달라지는 기운':'Energía que varía según la situación',
+    '용신':'Elemento Favorable',
+    '희신':'Elemento de Apoyo',
+    '기신':'Elemento Desfavorable','Fortuna de padres y relaciones con superiores'],
+  },
+};
+function getPalaceLabel(key) {
+  const lang = gLang();
+  const map = PALACE_LABELS[lang] || PALACE_LABELS.ko;
+  return (map[key] || PALACE_LABELS.ko[key] || ['',''])[0];
+}
+function getPalaceDesc(key) {
+  const lang = gLang();
+  const map = PALACE_LABELS[lang] || PALACE_LABELS.ko;
+  return (map[key] || PALACE_LABELS.ko[key] || ['',''])[1];
+}
 const PALACE_INFO = {
   '命宮': { emoji:'🌟', label:'명궁 (命宮)', desc:'기본 성격과 인생의 핵심 구조', color:'#d4af37', field:'fate' },
   '兄弟': { emoji:'👥', label:'형제궁 (兄弟宮)', desc:'형제자매·동료와의 인연', color:'#60a5fa', field:'sibling' },
@@ -352,14 +484,54 @@ const SIJUNSEONG_TABLE = {
 };
 const SJS_NAMES = ['장생','목욕','관대','임관','제왕','쇠','병','사','묘','절','태','양'];
 const SJS_EMOJI = ['🌱','🛁','🎓','👔','👑','📉','🤒','💀','⚰️','❄️','🥚','🌿'];
-const SJS_DESC  = [
-  '생명력이 솟구치는 시작의 기운',  '감수성이 예민하고 배움이 깊은 단계',
-  '성장과 도약을 준비하는 단계',    '실력을 발휘하며 활약하는 단계',
-  '최고의 전성기, 강한 에너지',     '활동이 서서히 줄어드는 단계',
-  '주의가 필요하며 조심해야 할 시기','완전한 끝맺음, 전환점의 단계',
-  '저장과 안식, 내면 정리의 단계',  '에너지 소멸, 새 출발을 준비하는 단계',
-  '새 생명의 씨앗, 잉태의 단계',    '보호와 양육을 받으며 성장하는 단계',
-];
+const SJS_DESC_ML = {
+  ko: [
+    '생명력이 솟구치는 시작의 기운',  '감수성이 예민하고 배움이 깊은 단계',
+    '성장과 도약을 준비하는 단계',    '실력을 발휘하며 활약하는 단계',
+    '최고의 전성기, 강한 에너지',     '활동이 서서히 줄어드는 단계',
+    '주의가 필요하며 조심해야 할 시기','완전한 끝맺음, 전환점의 단계',
+    '저장과 안식, 내면 정리의 단계',  '에너지 소멸, 새 출발을 준비하는 단계',
+    '새 생명의 씨앗, 잉태의 단계',    '보호와 양육을 받으며 성장하는 단계',
+  ],
+  en: [
+    'Vital energy of new beginnings', 'Sensitive and deep learning stage',
+    'Preparing for growth and leap',   'Actively demonstrating your abilities',
+    'Peak prime, powerful energy',     'Activity gradually decreasing',
+    'Caution needed, careful period',  'Complete ending, turning point',
+    'Rest and inner reflection stage', 'Energy fading, preparing for new start',
+    'Seed of new life, conception',    'Growing under protection and nurturing',
+  ],
+  ja: [
+    '生命力が湧き出る始まりの気',     '感受性が豊かで学びが深い段階',
+    '成長と飛躍を準備する段階',       '実力を発揮して活躍する段階',
+    '最高の全盛期、強いエネルギー',   '活動が徐々に減少する段階',
+    '注意が必要で慎重にすべき時期',   '完全な終わり、転換点の段階',
+    '蓄積と安息、内面整理の段階',     'エネルギー消滅、新出発準備の段階',
+    '新しい命の種、受胎の段階',       '保護と養育を受けて成長する段階',
+  ],
+  zh: [
+    '生命力涌现的起始之气',           '感受性敏锐、学习深入的阶段',
+    '准备成长与跃进的阶段',           '发挥实力、大展身手的阶段',
+    '最高全盛期、强大能量',           '活动逐渐减少的阶段',
+    '需要注意、谨慎行事的时期',       '完全结束、转折点的阶段',
+    '储藏与安息、内心整理的阶段',     '能量消散、准备新出发的阶段',
+    '新生命的种子、孕育的阶段',       '在保护与养育中成长的阶段',
+  ],
+  es: [
+    'Energía vital de nuevos comienzos', 'Etapa de sensibilidad y aprendizaje profundo',
+    'Preparando crecimiento y salto',    'Demostrando activamente tus habilidades',
+    'Cima del apogeo, energía poderosa', 'Actividad disminuyendo gradualmente',
+    'Precaución necesaria, período cuidadoso', 'Final completo, punto de inflexión',
+    'Descanso y reflexión interior',     'Energía desvaneciéndose, preparando nuevo inicio',
+    'Semilla de nueva vida, concepción', 'Creciendo bajo protección y cuidado',
+  ],
+};
+function getSjsDesc(idx) {
+  const lang = gLang();
+  const arr = SJS_DESC_ML[lang] || SJS_DESC_ML.ko;
+  return arr[idx] || SJS_DESC_ML.ko[idx];
+}
+const SJS_DESC = SJS_DESC_ML.ko;
 
 // ─── 다국어 지원 ─────────────────────────────────────────────
 
@@ -378,9 +550,9 @@ const TX = {
     'trait.午':ZODIAC_ANIMAL['午'].trait,'trait.未':ZODIAC_ANIMAL['未'].trait,
     'trait.申':ZODIAC_ANIMAL['申'].trait,'trait.酉':ZODIAC_ANIMAL['酉'].trait,
     'trait.戌':ZODIAC_ANIMAL['戌'].trait,'trait.亥':ZODIAC_ANIMAL['亥'].trait,
-    'sjs.0':SJS_DESC[0],'sjs.1':SJS_DESC[1],'sjs.2':SJS_DESC[2],'sjs.3':SJS_DESC[3],
-    'sjs.4':SJS_DESC[4],'sjs.5':SJS_DESC[5],'sjs.6':SJS_DESC[6],'sjs.7':SJS_DESC[7],
-    'sjs.8':SJS_DESC[8],'sjs.9':SJS_DESC[9],'sjs.10':SJS_DESC[10],'sjs.11':SJS_DESC[11],
+    'sjs.0':getSjsDesc(0),'sjs.1':getSjsDesc(1),'sjs.2':getSjsDesc(2),'sjs.3':getSjsDesc(3),
+    'sjs.4':getSjsDesc(4),'sjs.5':getSjsDesc(5),'sjs.6':getSjsDesc(6),'sjs.7':getSjsDesc(7),
+    'sjs.8':getSjsDesc(8),'sjs.9':getSjsDesc(9),'sjs.10':getSjsDesc(10),'sjs.11':getSjsDesc(11),
     'sun.0':SUN_DESC[0],'sun.1':SUN_DESC[1],'sun.2':SUN_DESC[2],'sun.3':SUN_DESC[3],
     'sun.4':SUN_DESC[4],'sun.5':SUN_DESC[5],'sun.6':SUN_DESC[6],'sun.7':SUN_DESC[7],
     'sun.8':SUN_DESC[8],'sun.9':SUN_DESC[9],'sun.10':SUN_DESC[10],'sun.11':SUN_DESC[11],
@@ -541,6 +713,18 @@ const TX = {
     '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.':'혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.',
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.',
+    '기본 성격과 인생의 핵심 구조':'기본 성격과 인생의 핵심 구조',
+    '재물·수입·금전 흐름':'재물·수입·금전 흐름',
+    '배우자·연인과의 인연':'배우자·연인과의 인연',
+    '형제자매·동료와의 인연':'형제자매·동료와의 인연',
+    '자녀운과 창조적 에너지':'자녀운과 창조적 에너지',
+    '건강·체질·질병 경향':'건강·체질·질병 경향',
+    '이동·해외·외부 활동':'이동·해외·외부 활동',
+    '친구·인맥·사회적 관계':'친구·인맥·사회적 관계',
+    '직업·사회적 성취·명예':'직업·사회적 성취·명예',
+    '부동산·주거·가정환경':'부동산·주거·가정환경',
+    '정신세계·복·내면의 행복':'정신세계·복·내면의 행복',
+    '부모운·윗사람과의 관계':'부모운·윗사람과의 관계',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.'
   },
   en: {
@@ -842,6 +1026,18 @@ const TX = {
     '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.':'You shine in fields dealing with innovation and the future. IT, science, social movements, broadcasting, and humanitarian work suit you well. Your originality and foresight are your strengths.',
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'This is a period when activity and drive become strong. Financial liquidity is high, and social relationships expand. Avoid impulsive investments or guarantees, and practice careful financial management.',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'This is a time of active financial activity and increased sociability. Business opportunities or investment profits may arise, but volatility is also high. Romantic connections become lively, and interpersonal relationships broaden.',
+    '기본 성격과 인생의 핵심 구조':'Core personality and life structure',
+    '재물·수입·금전 흐름':'Wealth, income and financial flow',
+    '배우자·연인과의 인연':'Spouse and romantic relationships',
+    '형제자매·동료와의 인연':'Siblings and colleagues',
+    '자녀운과 창조적 에너지':'Children fortune and creative energy',
+    '건강·체질·질병 경향':'Health, constitution and illness tendencies',
+    '이동·해외·외부 활동':'Travel, overseas and external activities',
+    '친구·인맥·사회적 관계':'Friends, networks and social relations',
+    '직업·사회적 성취·명예':'Career, social achievement and honor',
+    '부동산·주거·가정환경':'Real estate, housing and home environment',
+    '정신세계·복·내면의 행복':'Inner world, blessings and inner happiness',
+    '부모운·윗사람과의 관계':'Parents fortune and relationships with superiors',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'Taurus is an earth sign ruled by Venus. It values stability and material abundance, showing perseverance to see decisions through to the end. It loves sensual pleasures and beauty, making it a reliable and steadfast partner. However, it can be stubborn and resistant to change, so cultivating flexibility is important.'
   },
   ja: {
@@ -1099,6 +1295,18 @@ const TX = {
     '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.':'革新と未来を扱う分野で輝きます。IT、科学、社会運動、放送、人道主義分野が適しています。独創的なアイデアと未来を見通す洞察力が強みです。',
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'活動性と推進力が強まる時期です。財の流動性が大きくなり、人間関係が広がります。衝動的な投資や保証は避け、慎重な財務管理が必要です。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'活発な財の活動と社交性が高まる時期です。事業のチャンスや投資の利益が生まれる可能性がありますが、変動性も大きいです。異性との縁が活発になり、対人関係が広がります。',
+    '기본 성격과 인생의 핵심 구조':'基本的な性格と人生の核心構造',
+    '재물·수입·금전 흐름':'財産・収入・金銭の流れ',
+    '배우자·연인과의 인연':'配偶者・恋人との縁',
+    '형제자매·동료와의 인연':'兄弟姉妹・同僚との縁',
+    '자녀운과 창조적 에너지':'子供運と創造的エネルギー',
+    '건강·체질·질병 경향':'健康・体質・疾病傾向',
+    '이동·해외·외부 활동':'移動・海外・外部活動',
+    '친구·인맥·사회적 관계':'友人・人脈・社会的関係',
+    '직업·사회적 성취·명예':'職業・社会的成就・名誉',
+    '부동산·주거·가정환경':'不動産・住居・家庭環境',
+    '정신세계·복·내면의 행복':'精神世界・福・内面の幸福',
+    '부모운·윗사람과의 관계':'親運・目上の人との関係',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'牡牛座は金星が支配する土の星座です。安定と物質的な豊かさを重視し、一度決めたことは最後まで押し通す粘り強さがあります。感覚的な楽しみと美しさを愛し、信頼できる頼もしいパートナーです。変化に抵抗する頑固な面があるため、柔軟性を養うことが重要です。'
   },
   zh: {
@@ -1350,6 +1558,18 @@ const TX = {
     '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.':'在創新與未來領域中閃耀。IT、科學、社會運動、廣播、人道主義領域相當適合。獨創的想法與前瞻性的洞察力是強項。',
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'這是一個活動力與推動力強烈增長的時期。財務流動性大，人際關係廣泛。需避免衝動投資或擔保，謹慎理財尤為重要。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'這是一個財務活動活躍、社交性提升的時期。可能出現商機或投資收益，但波動性亦大。異性緣分活躍，人際關係擴展。',
+    '기본 성격과 인생의 핵심 구조':'基本性格与人生核心结构',
+    '재물·수입·금전 흐름':'财富·收入·金钱流动',
+    '배우자·연인과의 인연':'配偶·恋人的缘分',
+    '형제자매·동료와의 인연':'兄弟姐妹·同事的缘分',
+    '자녀운과 창조적 에너지':'子女运与创造性能量',
+    '건강·체질·질병 경향':'健康·体质·疾病倾向',
+    '이동·해외·외부 활동':'迁移·海外·外部活动',
+    '친구·인맥·사회적 관계':'朋友·人脉·社会关系',
+    '직업·사회적 성취·명예':'职业·社会成就·名誉',
+    '부동산·주거·가정환경':'房产·居住·家庭环境',
+    '정신세계·복·내면의 행복':'精神世界·福气·内心幸福',
+    '부모운·윗사람과의 관계':'父母运·与上级的关系',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'金牛座是由金星主宰的土象星座。重視穩定與物質豐裕，對已決定之事具有堅持到底的韌性。喜愛感官享受與美感，是值得信賴的堅實夥伴。因抗拒變化而顯得固執，培養柔軟性極為重要。'
   },
   es: {
@@ -1651,6 +1871,18 @@ const TX = {
     '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.':'Brilla en campos que tratan la innovación y el futuro. Se adapta bien a la tecnología de la información, la ciencia, los movimientos sociales, la radiodifusión y la labor humanitaria. Su fortaleza radica en ideas originales y una visión prospectiva.',
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'Es un período en el que la actividad y la capacidad de impulso se fortalecen. La liquidez de los bienes es alta y las relaciones humanas se amplían. Es necesario evitar inversiones impulsivas o garantías y manejar las finanzas con prudencia.',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'Es un momento de intensa actividad financiera y aumento de la sociabilidad. Pueden surgir oportunidades de negocio o ganancias por inversiones, aunque la volatilidad también es alta. Las relaciones amorosas se activan y las conexiones sociales se expanden.',
+    '기본 성격과 인생의 핵심 구조':'Personalidad central y estructura de vida',
+    '재물·수입·금전 흐름':'Riqueza, ingresos y flujo financiero',
+    '배우자·연인과의 인연':'Cónyuge y relaciones románticas',
+    '형제자매·동료와의 인연':'Hermanos y compañeros',
+    '자녀운과 창조적 에너지':'Fortuna de hijos y energía creativa',
+    '건강·체질·질병 경향':'Salud, constitución y tendencias de enfermedad',
+    '이동·해외·외부 활동':'Viajes, extranjero y actividades externas',
+    '친구·인맥·사회적 관계':'Amigos, redes y relaciones sociales',
+    '직업·사회적 성취·명예':'Carrera, logros sociales y honor',
+    '부동산·주거·가정환경':'Bienes raíces, vivienda y entorno familiar',
+    '정신세계·복·내면의 행복':'Mundo interior, bendiciones y felicidad interna',
+    '부모운·윗사람과의 관계':'Fortuna de padres y relaciones con superiores',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'Tauro es un signo de tierra regido por Venus. Valora la estabilidad y la abundancia material, y posee la perseverancia para llevar hasta el final lo que decide. Ama los placeres sensoriales y la belleza, siendo un compañero confiable y sólido. Tiene un lado terco que resiste el cambio, por lo que es importante cultivar la flexibilidad.'
   },
 };
@@ -1666,7 +1898,7 @@ function getSijunseong(stem, branch) {
   if (!table) return null;
   const idx = table.indexOf(branch);
   if (idx < 0) return null;
-  return { name:SJS_NAMES[idx], emoji:SJS_EMOJI[idx], desc:SJS_DESC[idx] };
+  return { name:SJS_NAMES[idx], emoji:SJS_EMOJI[idx], desc:getSjsDesc(idx) };
 }
 
 // ─── 공통 유틸 ────────────────────────────────────────────────
@@ -2129,9 +2361,9 @@ function renderYongShin(saju) {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      ${yongCard('용신', ys.yong, '용신', '')}
-      ${yongCard('희신', ys.hee,  '희신', '')}
-      ${yongCard('기신', ys.gi,   '기신', '')}
+      ${yongCard(t('용신'), ys.yong, t('용신'), '')}
+      ${yongCard(t('희신'), ys.hee,  t('희신'), '')}
+      ${yongCard(t('기신'), ys.gi,   t('기신'), '')}
     </div>
   </div>`;
 }
@@ -2338,7 +2570,7 @@ function renderDaewoon(saju) {
   </div>`;
 
   return `<div style="${D.wrap}">
-    ${sectionHeader('D2', t('대운 (大運)'), `현재 나이: ${currentAge}세 · ${flowLabel}`)}
+    ${sectionHeader('D2', t('대운 (大運)'), `${t('현재 나이')}: ${currentAge}세 · ${flowLabel}`)}
     <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + 양년 = ${flowLabel} · 대운수 ${cur.age}세</div>
     ${currentCard}
     <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px">
@@ -2485,9 +2717,9 @@ function renderSinsal(saju) {
         <div style="font-size:11px;color:#6b6b85;margin-top:1px">사주 원국의 특수 기운 분석</div>
       </div>
     </div>
-    ${salSection('길신', '+', gilsin.length, '긍정적인 기운', gilsin, '#86efac', '#4ade80', 'linear-gradient(135deg,#16a34a,#15803d)')}
-    ${salSection('흉신', '−', hyungsin.length, '주의가 필요한 기운', hyungsin, '#fca5a5', '#f87171', 'linear-gradient(135deg,#dc2626,#b91c1c)')}
-    ${salSection('중성 신살', '○', jungseong.length, '상황에 따라 달라지는 기운', jungseong, '#c4b5fd', '#a78bfa', 'linear-gradient(135deg,#7c3aed,#6d28d9)')}
+    ${salSection(t('길신'), '+', gilsin.length, t('긍정적인 기운'), gilsin, '#86efac', '#4ade80', 'linear-gradient(135deg,#16a34a,#15803d)')}
+    ${salSection(t('흉신'), '−', hyungsin.length, t('주의가 필요한 기운'), hyungsin, '#fca5a5', '#f87171', 'linear-gradient(135deg,#dc2626,#b91c1c)')}
+    ${salSection(t('중성 신살'), '○', jungseong.length, t('상황에 따라 달라지는 기운'), jungseong, '#c4b5fd', '#a78bfa', 'linear-gradient(135deg,#7c3aed,#6d28d9)')}
     ${upgradeBanner}
   </div>`;
 }
@@ -2508,7 +2740,7 @@ function renderZiweiSection(chart) {
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:22px;filter:drop-shadow(0 0 6px ${pc}80)">${pi.emoji}</span>
-          <span style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${pi.label}</span>
+          <span style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(palaceName)}</span>
           <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:12px;padding:2px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.2)">${palace.ganZhi}</span>
         </div>
         <p style="color:#7a6f8a;font-size:14px">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
@@ -2541,8 +2773,8 @@ function renderZiweiSection(chart) {
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="font-size:22px;filter:drop-shadow(0 0 8px ${pc}80)">${pi.emoji}</span>
         <div style="flex:1">
-          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${pi.label}</div>
-          <div style="color:#7a6f8a;font-size:12px;margin-top:1px">${pi.desc}</div>
+          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(palaceName)}</div>
+          <div style="color:#7a6f8a;font-size:12px;margin-top:1px">${getPalaceDesc(palaceName)}</div>
         </div>
         <span style="background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(212,175,55,0.1));color:#a78bfa;font-size:12px;padding:2px 8px;border-radius:8px;border:1px solid rgba(124,106,247,0.3)">${palace.ganZhi}</span>
       </div>
@@ -2570,8 +2802,8 @@ function renderZiweiSection(chart) {
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
         <span style="font-size:20px">${pi.emoji}</span>
         <div style="flex:1">
-          <div style="color:#c8b89a;font-weight:700;font-size:15px;font-family:'Cormorant Garamond',serif">${pi.label}</div>
-          <div style="color:#5a5f7a;font-size:11px">${pi.desc}</div>
+          <div style="color:#c8b89a;font-weight:700;font-size:15px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(p)}</div>
+          <div style="color:#5a5f7a;font-size:11px">${getPalaceDesc(p)}</div>
         </div>
         <span style="background:rgba(124,106,247,0.08);color:#6b6f8a;font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid rgba(124,106,247,0.15)">${palace.ganZhi}</span>
       </div>
