@@ -3308,26 +3308,31 @@ async function tryAutoRun() {
 // ─── 마운트 ───────────────────────────────────────────────────
 
 function mount() {
-  const results = document.getElementById('results');
-  if (!results || document.getElementById('honcheon-fortune-tabs')) return;
-  if (results.children.length === 0) return;
+  try {
+    const results = document.getElementById('results');
+    if (!results || document.getElementById('honcheon-fortune-tabs')) return;
+    if (results.children.length === 0) return;
 
-  const tabs       = createTabs();
-  const panel      = createPanel();
-  const membership = createMembershipPanel();
+    const tabs       = createTabs();
+    const panel      = createPanel();
+    const membership = createMembershipPanel();
 
-  results.insertBefore(tabs, results.firstChild);
-  results.appendChild(panel);
-  results.appendChild(membership);
+    results.insertBefore(tabs, results.firstChild);
+    results.appendChild(panel);
+    results.appendChild(membership);
 
-  switchTab('fortune', results);
+    switchTab('fortune', results);
 
-  tabs.addEventListener('click', e => {
-    const btn = e.target.closest('[data-tab]');
-    if (btn) switchTab(btn.dataset.tab, results);
-  });
+    tabs.addEventListener('click', e => {
+      const btn = e.target.closest('[data-tab]');
+      if (btn) switchTab(btn.dataset.tab, results);
+    });
 
-  tryAutoRun().catch(console.error);
+    tryAutoRun().catch(console.error);
+  } catch(err) {
+    window.__mountError = err.message + '\n' + err.stack;
+    console.error('[fortune-free] mount error:', err);
+  }
 }
 
 // ─── 글로벌 이벤트 ───────────────────────────────────────────
