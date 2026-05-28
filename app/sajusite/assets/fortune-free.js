@@ -1981,6 +1981,74 @@ function renderZiweiSection(chart) {
 
 // ─── F. 점성학 ────────────────────────────────────────────────
 
+// 별자리별 상세 성격 해석 (무료 공개)
+const SUN_DETAIL = [
+  '양자리는 황도 12궁의 첫 번째 별자리로, 화성이 지배하는 불의 별자리입니다. 개척 정신과 추진력이 강하며, 새로운 일을 시작하는 데 탁월한 능력을 발휘합니다. 경쟁심이 강하고 즉흥적인 면이 있어 충동적 결정에 주의가 필요합니다. 리더십이 뛰어나고 용기 있는 행동으로 주변을 이끄는 타입입니다.',
+  '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.',
+  '쌍둥이자리는 수성이 지배하는 바람의 별자리입니다. 지적 호기심이 넘치고 다재다능하며, 소통과 정보 교환에 탁월합니다. 두 가지 상반된 성향이 공존하여 상황에 따라 다른 모습을 보이기도 합니다. 언어 능력과 적응력이 뛰어나 다양한 분야에서 활약할 수 있습니다.',
+  '게자리는 달이 지배하는 물의 별자리입니다. 감수성이 풍부하고 직관력이 뛰어나며, 가족과 가정을 무엇보다 소중히 여깁니다. 타인의 감정에 민감하게 반응하는 공감 능력이 탁월합니다. 감정 기복이 있을 수 있으며, 과거에 집착하는 경향을 의식적으로 조절하면 더 성장할 수 있습니다.',
+  '사자자리는 태양이 지배하는 불의 별자리입니다. 타고난 리더십과 카리스마로 자연스럽게 주목받습니다. 창의적이고 표현력이 풍부하며, 무대 위에서 빛나는 존재감을 발휘합니다. 자존심이 강하고 인정받고 싶은 욕구가 크므로, 겸손함을 갖추면 더욱 빛납니다.',
+  '처녀자리는 수성이 지배하는 흙의 별자리입니다. 분석력과 세심함이 뛰어나며, 완벽을 추구하는 성실한 성향입니다. 실용적이고 논리적인 사고로 문제를 해결하는 능력이 탁월합니다. 지나친 완벽주의와 자기비판에 주의하고, 있는 그대로의 자신을 인정하는 연습이 필요합니다.',
+  '천칭자리는 금성이 지배하는 바람의 별자리입니다. 균형과 조화를 추구하며, 아름다움과 예술적 감각이 뛰어납니다. 공정함을 중시하고 타인과의 관계에서 외교적 능력을 발휘합니다. 결정을 내리기 어려워하는 우유부단함이 있어, 자신의 내면 목소리를 믿는 연습이 중요합니다.',
+  '전갈자리는 명왕성과 화성이 지배하는 물의 별자리입니다. 강렬한 의지와 깊이 있는 통찰력을 가지고 있습니다. 비밀을 잘 지키고 심층적인 진실을 탐구하는 능력이 탁월합니다. 집착과 질투심이 강할 수 있으므로, 신뢰를 바탕으로 한 깊은 관계를 형성하는 것이 중요합니다.',
+  '사수자리는 목성이 지배하는 불의 별자리입니다. 자유를 사랑하고 철학적 사고와 모험 정신이 넘칩니다. 낙관적이고 유머 감각이 뛰어나며, 다양한 문화와 지식을 탐구하는 것을 즐깁니다. 무책임하거나 직설적인 말로 상처를 줄 수 있으므로, 세심한 배려가 필요합니다.',
+  '염소자리는 토성이 지배하는 흙의 별자리입니다. 책임감이 강하고 목표를 향한 끈기와 실용적 판단력이 탁월합니다. 사회적 성공과 명예를 중시하며, 체계적이고 성실하게 기반을 쌓아갑니다. 감정 표현이 서툴고 지나치게 일에 집중하는 경향이 있어, 휴식과 감정 교류도 중요합니다.',
+  '물병자리는 천왕성과 토성이 지배하는 바람의 별자리입니다. 독창적이고 혁신적인 사고로 미래를 내다보는 능력이 있습니다. 인류애와 평등을 중시하며, 독립적이고 자유로운 정신을 가지고 있습니다. 감정적 거리감이 있을 수 있으므로, 친밀한 관계에서 따뜻함을 표현하는 연습이 도움이 됩니다.',
+  '물고기자리는 해왕성과 목성이 지배하는 물의 별자리입니다. 예민한 감수성과 깊은 공감 능력, 영적 직관이 뛰어납니다. 예술적 재능과 상상력이 풍부하며, 타인의 고통에 민감하게 반응합니다. 현실과 이상 사이에서 혼란을 겪을 수 있으므로, 경계를 설정하고 자신을 보호하는 것이 중요합니다.',
+];
+
+// 별자리별 연애 스타일 (무료 공개)
+const SUN_LOVE = [
+  '열정적이고 직접적으로 감정을 표현합니다. 첫눈에 반하는 경우가 많고, 상대를 적극적으로 리드합니다. 권태기가 오면 새로운 자극이 필요합니다.',
+  '천천히 신중하게 마음을 열지만, 한번 사랑에 빠지면 매우 헌신적입니다. 안정적이고 감각적인 사랑을 추구하며, 물질적 표현으로 애정을 드러냅니다.',
+  '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.',
+  '감정적으로 깊이 연결되는 것을 원합니다. 상대를 세심하게 배려하고 보호하려 하며, 가정적인 사랑을 꿈꿉니다. 상처받으면 껍질 속으로 들어가는 경향이 있습니다.',
+  '로맨틱하고 극적인 사랑을 즐깁니다. 상대에게 최고의 것을 선사하고 싶어하며, 충성스럽고 열정적인 파트너입니다. 인정받지 못하면 상처를 받습니다.',
+  '완벽한 파트너를 찾기 위해 신중하게 관계를 시작합니다. 실용적이고 헌신적인 사랑을 하며, 세심한 배려로 상대를 돌봅니다. 지나친 비판은 관계를 어렵게 할 수 있습니다.',
+  '균형 잡힌 아름다운 관계를 추구합니다. 로맨틱하고 우아한 사랑을 즐기며, 파트너와의 조화를 중시합니다. 갈등을 피하려는 성향이 있어 솔직한 표현이 필요합니다.',
+  '깊고 강렬한 사랑을 원합니다. 상대의 영혼까지 알고 싶어하며, 완전한 신뢰와 헌신을 요구합니다. 질투심이 강할 수 있으나, 그만큼 깊이 사랑합니다.',
+  '자유롭고 모험적인 사랑을 즐깁니다. 함께 성장하고 세상을 탐험할 파트너를 원합니다. 구속받는 것을 싫어하며, 정신적 교감을 매우 중시합니다.',
+  '진지하고 책임감 있는 사랑을 합니다. 장기적인 관계와 안정을 추구하며, 파트너에게 든든한 지원자가 됩니다. 감정 표현이 서툴 수 있으나 깊이 헌신합니다.',
+  '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.',
+  '꿈같은 로맨스를 꿈꿉니다. 상대를 이상화하는 경향이 있으며, 깊은 영혼의 교감을 원합니다. 감정적으로 민감하고 공감 능력이 뛰어나 상대의 마음을 잘 읽습니다.',
+];
+
+// 별자리별 직업 적성 (무료 공개)
+const SUN_CAREER = [
+  '리더십과 추진력이 필요한 분야에서 두각을 나타냅니다. 스포츠, 군경, 기업가, 개척 사업, 응급 의료 분야가 잘 맞습니다. 독립적으로 일하거나 팀을 이끄는 역할이 적합합니다.',
+  '안정적이고 실용적인 분야에서 능력을 발휘합니다. 금융, 부동산, 요리, 예술, 농업, 건축 분야가 잘 맞습니다. 장기적인 프로젝트를 꾸준히 완성하는 능력이 탁월합니다.',
+  '소통과 정보를 다루는 분야에서 빛납니다. 언론, 교육, IT, 마케팅, 작가, 통역 분야가 잘 맞습니다. 다양한 분야를 넘나드는 멀티태스킹 능력이 강점입니다.',
+  '돌봄과 감성이 필요한 분야에서 탁월합니다. 의료, 사회복지, 교육, 요식업, 부동산, 상담 분야가 잘 맞습니다. 사람들의 감정을 이해하고 보살피는 능력이 뛰어납니다.',
+  '창의성과 리더십이 필요한 분야에서 성공합니다. 연예, 예술, 경영, 교육, 정치, 이벤트 기획 분야가 잘 맞습니다. 무대 위에서 빛나는 존재감과 카리스마가 강점입니다.',
+  '분석과 정밀함이 필요한 분야에서 두각을 나타냅니다. 의료, 회계, 연구, 편집, 영양, 품질관리 분야가 잘 맞습니다. 세심한 주의력과 완벽을 추구하는 성향이 강점입니다.',
+  '균형과 조화가 필요한 분야에서 능력을 발휘합니다. 법률, 외교, 디자인, 패션, 상담, 중재 분야가 잘 맞습니다. 공정한 판단력과 미적 감각이 뛰어납니다.',
+  '심층 분석과 변화를 다루는 분야에서 탁월합니다. 심리학, 의학, 금융, 탐정, 연구, 위기관리 분야가 잘 맞습니다. 숨겨진 진실을 파헤치는 능력과 강한 집중력이 강점입니다.',
+  '자유와 확장이 필요한 분야에서 성공합니다. 교육, 여행, 출판, 법률, 철학, 해외 비즈니스 분야가 잘 맞습니다. 넓은 시야와 낙관적 에너지로 새로운 기회를 만들어냅니다.',
+  '체계와 성취가 필요한 분야에서 두각을 나타냅니다. 경영, 정치, 금융, 건축, 행정, 공학 분야가 잘 맞습니다. 장기적인 목표를 향해 꾸준히 나아가는 끈기가 강점입니다.',
+  '혁신과 미래를 다루는 분야에서 빛납니다. IT, 과학, 사회운동, 방송, 인도주의 분야가 잘 맞습니다. 독창적인 아이디어와 미래를 내다보는 통찰력이 강점입니다.',
+  '감성과 영성이 필요한 분야에서 탁월합니다. 예술, 음악, 의료, 상담, 종교, 사진 분야가 잘 맞습니다. 깊은 공감 능력과 창의적 상상력이 강점입니다.',
+];
+
+// 유료판 점성술 해석 항목 목록
+const ASTRO_PREMIUM_ITEMS = [
+  {icon:'🌟', title:'네이탈 차트 완전 해석', desc:'태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석'},
+  {icon:'🧠', title:'심리 점성학', desc:'내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향'},
+  {icon:'💼', title:'직업운 심층 해석', desc:'10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운'},
+  {icon:'💰', title:'재물운 심층 해석', desc:'2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출'},
+  {icon:'💗', title:'연애·결혼운 심층 해석', desc:'금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴'},
+  {icon:'🔮', title:'트랜짓 미래운', desc:'현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기'},
+  {icon:'📅', title:'솔라 리턴 (생일 1년 운세)', desc:'생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운'},
+  {icon:'🌙', title:'프로그레션 (내면 성장)', desc:'진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름'},
+  {icon:'💞', title:'시나스트리 궁합', desc:'두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석'},
+  {icon:'🤝', title:'컴포지트 관계 차트', desc:'두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석'},
+  {icon:'🌍', title:'아스트로카토그래피', desc:'지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시'},
+  {icon:'🏥', title:'건강 점성학', desc:'취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석'},
+  {icon:'✨', title:'카르마·영혼 해석', desc:'북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제'},
+  {icon:'🔄', title:'역행 행성 해석', desc:'출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석'},
+  {icon:'🏠', title:'12하우스 전체 해석', desc:'인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)'},
+  {icon:'⚡', title:'행성 각도 심층 해석', desc:'합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석'},
+];
+
 function renderNatalSection(natalChart, transitChart, unknownTime) {
   const find = (chart, id) => chart?.planets?.find(p=>p.id===id);
   const signName = s => SIGN_KO[toSignIdx(s)] ?? ZODIAC_KO?.[s] ?? '알 수 없음';
@@ -1991,45 +2059,137 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
   const jupiter = find(transitChart, 'Jupiter');
   const venus   = find(transitChart, 'Venus');
 
+  const sunIdx  = sun ? toSignIdx(sun.sign) : -1;
+  const moonIdx = moon ? toSignIdx(moon.sign) : -1;
+  const ascIdx  = ascObj ? toSignIdx(ascObj.sign) : -1;
+
   const PLANET_COLORS = {'☀️':'#fbbf24','🌙':'#c0c8e0','⬆️':'#34d399','♃':'#a78bfa','♀':'#f472b6'};
-  function planetRow(iconTxt, title, subtitle, sign, descKey) {
-    if (!sign && sign !== 0) return '';
-    const idx = toSignIdx(sign);
-    const desc = t(descKey+'.'+idx) || '';
-    const pc = PLANET_COLORS[iconTxt] || '#d4af37';
-    return `<div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.08)">
-      <div style="font-size:28px;flex-shrink:0;width:32px;text-align:center;filter:drop-shadow(0 0 8px ${pc}80)">${iconTxt}</div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <span style="color:#e8dfc8;font-weight:700;font-size:17px;font-family:'Cormorant Garamond',serif">${t(title)}</span>
-          <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:1px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.15)">${t(subtitle)}</span>
+
+  // ── 별자리 소개 배너 ──
+  const sunBanner = sunIdx >= 0 ? `
+    <div style="background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.3);border-radius:14px;padding:20px 22px;margin-bottom:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),transparent)"></div>
+      <div style="font-size:13px;color:#9d8aa0;letter-spacing:0.08em;margin-bottom:6px">당신의 별자리는</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:38px;filter:drop-shadow(0 0 12px rgba(212,175,55,0.6))">${SIGN_EMOJI[sunIdx]}</span>
+        <div>
+          <div style="font-size:26px;font-weight:800;color:#e8dfc8;font-family:'Cormorant Garamond',serif;line-height:1.2">${SIGN_KO[sunIdx]} <span style="font-size:16px;color:#d4af37;font-weight:600">입니다</span></div>
+          <div style="font-size:14px;color:#a89bc0;margin-top:3px">${SUN_DESC[sunIdx] || ''}</div>
         </div>
-        <div style="background:linear-gradient(135deg,${pc},${pc}cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-bottom:5px;font-family:'Cormorant Garamond',serif">${SIGN_EMOJI[idx]} ${signName(sign)}</div>
-        <p style="color:#c0c8e0;font-size:15px;line-height:1.7;margin:0">${desc}</p>
+      </div>
+    </div>` : '';
+
+  // ── 태양 별자리 상세 카드 ──
+  const sunDetailCard = sunIdx >= 0 ? `
+    <div style="background:linear-gradient(135deg,#131726,#161b2e);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(251,191,36,0.5),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:26px;filter:drop-shadow(0 0 8px rgba(251,191,36,0.5))">☀️</span>
+        <div>
+          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${t('태양 별자리')} <span style="color:#fbbf24">${SIGN_EMOJI[sunIdx]} ${SIGN_KO[sunIdx]}</span></div>
+          <div style="color:#9d8aa0;font-size:12px">${t('핵심 정체성')}</div>
+        </div>
+      </div>
+      <p style="color:#c0c8e0;font-size:14px;line-height:1.8;margin:0 0 12px">${SUN_DETAIL[sunIdx] || ''}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:8px;padding:10px">
+          <div style="font-size:12px;color:#d4af37;font-weight:600;margin-bottom:5px">💗 연애 스타일</div>
+          <div style="font-size:13px;color:#b8c0d8;line-height:1.6">${SUN_LOVE[sunIdx] || ''}</div>
+        </div>
+        <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:8px;padding:10px">
+          <div style="font-size:12px;color:#a78bfa;font-weight:600;margin-bottom:5px">💼 직업 적성</div>
+          <div style="font-size:13px;color:#b8c0d8;line-height:1.6">${SUN_CAREER[sunIdx] || ''}</div>
+        </div>
+      </div>
+    </div>` : '';
+
+  // ── 달 별자리 카드 ──
+  const moonCard = moonIdx >= 0 ? `
+    <div style="background:linear-gradient(135deg,#131726,#161b2e);border:1px solid rgba(192,200,224,0.2);border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(192,200,224,0.5),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:26px;filter:drop-shadow(0 0 8px rgba(192,200,224,0.5))">🌙</span>
+        <div>
+          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${t('달 별자리')} <span style="color:#c0c8e0">${SIGN_EMOJI[moonIdx]} ${SIGN_KO[moonIdx]}</span></div>
+          <div style="color:#9d8aa0;font-size:12px">${t('감성·본능')}</div>
+        </div>
+      </div>
+      <p style="color:#c0c8e0;font-size:14px;line-height:1.8;margin:0">${MOON_DESC[moonIdx] || ''} 감정적으로 ${SIGN_KO[moonIdx]}의 에너지가 강하게 작용하여, 내면의 안정을 찾는 방식과 무의식적 반응 패턴에 영향을 줍니다.</p>
+    </div>` : '';
+
+  // ── 상승궁 카드 ──
+  const ascCard = ascObj && ascIdx >= 0 ? `
+    <div style="background:linear-gradient(135deg,#131726,#161b2e);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(52,211,153,0.5),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:26px;filter:drop-shadow(0 0 8px rgba(52,211,153,0.5))">⬆️</span>
+        <div>
+          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${t('상승궁 (ASC)')} <span style="color:#34d399">${SIGN_EMOJI[ascIdx]} ${SIGN_KO[ascIdx]}</span></div>
+          <div style="color:#9d8aa0;font-size:12px">${t('첫인상·외면')}</div>
+        </div>
+      </div>
+      <p style="color:#c0c8e0;font-size:14px;line-height:1.8;margin:0">타인에게 비치는 첫인상과 외면적 태도를 나타냅니다. ${SIGN_KO[ascIdx]}의 에너지가 상승궁에 위치하여, 처음 만나는 사람들에게 ${SUN_DESC[ascIdx] || '독특한 인상'}을 주는 경향이 있습니다.</p>
+    </div>` : '';
+
+  // ── 현재 행성 위치 카드 ──
+  const transitCard = `
+    <div style="background:linear-gradient(135deg,#131726,#161b2e);border:1px solid rgba(212,175,55,0.15);border-radius:12px;padding:18px;margin-bottom:14px">
+      <div style="font-size:13px;color:#9d8aa0;margin-bottom:12px;letter-spacing:0.05em">현재 행성 위치 · 지금 나에게 영향을 주는 에너지</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        ${jupiter ? `<div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:8px;padding:10px">
+          <div style="font-size:12px;color:#a78bfa;font-weight:600;margin-bottom:4px">♃ 목성 · 올해 성장 영역</div>
+          <div style="font-size:14px;color:#e8dfc8;font-weight:700">${SIGN_EMOJI[toSignIdx(jupiter.sign)]} ${SIGN_KO[toSignIdx(jupiter.sign)]}</div>
+          <div style="font-size:12px;color:#9d8aa0;margin-top:3px">${JUPITER_DESC[toSignIdx(jupiter.sign)] || ''}</div>
+        </div>` : ''}
+        ${venus ? `<div style="background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.15);border-radius:8px;padding:10px">
+          <div style="font-size:12px;color:#f472b6;font-weight:600;margin-bottom:4px">♀ 금성 · 이번달 애정·재물</div>
+          <div style="font-size:14px;color:#e8dfc8;font-weight:700">${SIGN_EMOJI[toSignIdx(venus.sign)]} ${SIGN_KO[toSignIdx(venus.sign)]}</div>
+          <div style="font-size:12px;color:#9d8aa0;margin-top:3px">${VENUS_DESC[toSignIdx(venus.sign)] || ''}</div>
+        </div>` : ''}
       </div>
     </div>`;
-  }
 
-  const ascRow = ascObj ? `<div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.08)">
-    <div style="font-size:28px;flex-shrink:0;width:32px;text-align:center;filter:drop-shadow(0 0 8px #34d39980)">⬆️</div>
-    <div style="flex:1">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <span style="color:#e8dfc8;font-weight:700;font-size:17px;font-family:'Cormorant Garamond',serif">${t('상승궁 (ASC)')}</span>
-        <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:1px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.15)">${t('첫인상·외면')}</span>
+  // ── 유료 항목 미리보기 ──
+  const premiumGrid = ASTRO_PREMIUM_ITEMS.map(item => `
+    <div style="background:rgba(19,23,38,0.7);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px;opacity:0.7">
+      <span style="font-size:18px;flex-shrink:0">${item.icon}</span>
+      <div>
+        <div style="font-size:13px;color:#c8b87a;font-weight:600;margin-bottom:2px">${item.title}</div>
+        <div style="font-size:11px;color:#7a7a9a;line-height:1.4">${item.desc}</div>
       </div>
-      <div style="background:linear-gradient(135deg,#34d399,#34d399cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:20px;margin-bottom:5px;font-family:'Cormorant Garamond',serif">${SIGN_EMOJI[toSignIdx(ascObj.sign)]} ${signName(ascObj.sign)}</div>
-      <p style="color:#c0c8e0;font-size:15px;line-height:1.7;margin:0">${t('타인에게 비치는 첫인상과 외면적 태도를 나타냅니다.')}</p>
-    </div>
-  </div>` : '';
+    </div>`).join('');
 
   return `<div style="${D.wrap}">
     ${sectionHeader('F', t('점성학'), t('서양 천궁도 분석'))}
-    <div style="${D.card}border:1px solid rgba(212,175,55,0.2);">
-      ${planetRow('☀️', '태양 별자리', '핵심 정체성', sun?.sign, 'sun')}
-      ${planetRow('🌙', '달 별자리',   '감성·본능',   moon?.sign, 'moon')}
-      ${ascRow}
-      ${planetRow('♃', '목성 현재 위치', '올해 성장 영역', jupiter?.sign, 'jup')}
-      ${planetRow('♀', '금성 현재 위치', '이번달 애정·재물', venus?.sign, 'ven')}
+
+    <!-- 별자리 소개 배너 -->
+    ${sunBanner}
+
+    <!-- 무료 해석 영역 -->
+    <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399"></span>
+      무료 해석 · 핵심 3요소
+    </div>
+    ${sunDetailCard}
+    ${moonCard}
+    ${ascCard}
+    ${transitCard}
+
+    <!-- 유료 항목 미리보기 -->
+    <div style="margin-top:20px">
+      <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#d4af37"></span>
+        멤버십 전용 · 심층 점성술 해석 ${ASTRO_PREMIUM_ITEMS.length}종
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+        ${premiumGrid}
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.06));border:1px solid rgba(212,175,55,0.25);border-radius:12px;padding:16px;text-align:center;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
+        <div style="font-size:20px;margin-bottom:6px">🔐</div>
+        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 점성술 완전 해석</div>
+        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">네이탈 차트 완전 해석 · 트랜짓 미래운 · 솔라리턴 1년 운세 · 심리 점성학 · 직업·재물·연애 심층 분석 · 궁합 · 아스트로카토그래피 등 ${ASTRO_PREMIUM_ITEMS.length}가지 해석을 멤버십에서 확인하세요.</div>
+      </div>
     </div>
   </div>`;
 }
