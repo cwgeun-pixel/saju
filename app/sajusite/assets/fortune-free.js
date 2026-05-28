@@ -412,7 +412,6 @@ const TX = {
     '생년월일을 입력해주세요.':'Please enter your date of birth.',
     '올바른 연도를 입력해주세요.':'Please enter a valid year.',
     '계산 중 오류가 발생했습니다.':'An error occurred during calculation.',
-    '남':'M','여':'F',
   },
   ja: {
     '기본 운세':'基本運勢','사주 원국 기반':'四柱原局より',
@@ -542,7 +541,6 @@ const TX = {
     '생년월일을 입력해주세요.':'生年月日を入力してください。',
     '올바른 연도를 입력해주세요.':'正しい年を入力してください。',
     '계산 중 오류가 발생했습니다.':'計算中にエラーが発生しました。',
-    '남':'男','여':'女',
   },
   zh: {
     '기본 운세':'基本運勢','사주 원국 기반':'四柱原局',
@@ -666,7 +664,6 @@ const TX = {
     '생년월일을 입력해주세요.':'請輸入生年月日。',
     '올바른 연도를 입력해주세요.':'請輸入正確年份。',
     '계산 중 오류가 발생했습니다.':'計算過程中發生錯誤。',
-    '남':'男','여':'女',
   },
   es: {
     '기본 운세':'Fortuna Básica','사주 원국 기반':'Basada en la carta natal',
@@ -840,7 +837,6 @@ const TX = {
     '생년월일을 입력해주세요.':'Por favor introduce tu fecha de nacimiento.',
     '올바른 연도를 입력해주세요.':'Por favor introduce un año válido.',
     '계산 중 오류가 발생했습니다.':'Ocurrió un error durante el cálculo.',
-    '남':'H','여':'M',
   },
 };
 
@@ -1394,7 +1390,7 @@ function renderDaewoon(saju) {
   const birthYear = saju.input.year;
   const currentAge = today.getFullYear() - birthYear;
   const gender = saju.input.gender;
-  const genderLabel = gender === 'F' ? t('여') : t('남');
+  const genderLabel = gender === 'F' ? '여' : '남';
 
   // 순행/역행 판단 (양남음녀 순행, 음남양녀 순행)
   const dayStem = saju.pillars[2]?.pillar?.stem || '';
