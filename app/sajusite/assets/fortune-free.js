@@ -3310,7 +3310,10 @@ async function tryAutoRun() {
 function mount() {
   try {
     const results = document.getElementById('results');
-    if (!results || document.getElementById('honcheon-fortune-tabs')) return;
+    if (!results) return;
+    // results 안에 탭이 이미 있으면 스킵 (DOM 전체가 아닌 results 내부만 확인)
+    const existingTabs = results.querySelector('#honcheon-fortune-tabs');
+    if (existingTabs) return;
     if (results.children.length === 0) return;
 
     const tabs       = createTabs();
