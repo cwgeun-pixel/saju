@@ -1533,6 +1533,144 @@ function renderDaewoon(saju) {
   </div>`;
 }
 
+// ─── D3. 신살 분석 ──────────────────────────────────────────────
+
+function renderSinsal(saju) {
+  const ss = saju.specialSals;
+  if (!ss) return '';
+
+  // pillars 인덱스 -> 주 이름 (0=시주, 1=일주, 2=월주, 3=년주)
+  const PILLAR_LABEL = ['시주','일주','월주','년주'];
+
+  // 일간/일지/월지/년지
+  const dayStem   = saju.pillars[1]?.pillar?.stem || '';
+  const dayBranch = saju.pillars[1]?.pillar?.branch || '';
+  const monthBranch = saju.pillars[2]?.pillar?.branch || '';
+  const yearBranch  = saju.pillars[3]?.pillar?.branch || '';
+
+  // ── 추가 신살 계산 ──
+  // 화개(華蓋): 년지 기준
+  const HWAGAE_MAP = {'子':'辰','丑':'丑','寅':'戌','卯':'未','辰':'辰','巳':'丑','午':'戌','未':'未','申':'辰','酉':'丑','戌':'戌','亥':'未'};
+  const hwagaeBranch = HWAGAE_MAP[yearBranch];
+  const hwagaePillars = hwagaeBranch ? saju.pillars.reduce((acc,p,i)=>{ if(p.pillar.branch===hwagaeBranch) acc.push(i); return acc; },[]) : [];
+
+  // 태극귀인(太極貴人): 일간 기준
+  const TAEGUK_MAP = {'甲':['子','午'],'乙':['子','午'],'丙':['卯','酉'],'丁':['卯','酉'],'戊':['辰','戌','丑','未'],'己':['辰','戌','丑','未'],'庚':['寅','亥'],'辛':['寅','亥'],'壬':['卯','巳'],'癸':['卯','巳']};
+  const taegukBranches = TAEGUK_MAP[dayStem] || [];
+  const taegukPillars = saju.pillars.reduce((acc,p,i)=>{ if(taegukBranches.includes(p.pillar.branch)) acc.push(i); return acc; },[]);
+
+  // 천의성(天醫星): 월지 앞 지지가 사주에 있으면
+  const CHEONUI_MAP = {'子':'亥','丑':'子','寅':'丑','卯':'寅','辰':'卯','巳':'辰','午':'巳','未':'午','申':'未','酉':'申','戌':'酉','亥':'戌'};
+  const cheonuiBranch = CHEONUI_MAP[monthBranch];
+  const cheonuiPillars = cheonuiBranch ? saju.pillars.reduce((acc,p,i)=>{ if(p.pillar.branch===cheonuiBranch) acc.push(i); return acc; },[]) : [];
+
+  // 귀문관살(鬼門關殺): 사주 내 특정 지지 조합
+  const GUIMUN_PAIRS = [['子','酉'],['丑','午'],['寅','未'],['卯','申'],['辰','亥'],['巳','戌']];
+  const allBranches = saju.pillars.map(p=>p.pillar.branch);
+  let hasGuimun = false;
+  for (const [a,b] of GUIMUN_PAIRS) {
+    if (allBranches.includes(a) && allBranches.includes(b)) { hasGuimun = true; break; }
+  }
+
+  // ── 신살 목록 구성 ──
+  // 길신 (green)
+  const gilsin = [];
+  const pushGil = (idxArr, name, hanja, shortDesc, fullDesc) => {
+    if (idxArr && idxArr.length > 0) {
+      idxArr.forEach(i => gilsin.push({ name, hanja, pillar: PILLAR_LABEL[i], shortDesc, fullDesc }));
+    }
+  };
+  const pushGilBool = (flag, name, hanja, pillar, shortDesc, fullDesc) => {
+    if (flag) gilsin.push({ name, hanja, pillar, shortDesc, fullDesc });
+  };
+
+  pushGil(hwagaePillars,      '화개',     '華蓋',     '예술, 학문, 종교적 기운',       '예술적 감각과 학문적 재능이 뛰어나며 종교·철학적 소질이 있습니다.');
+  pushGil(taegukPillars,      '태극귀인', '太極貴人', '최고의 귀인, 큰 도움과 인복',   '일생 최고의 귀인을 만나는 기운으로 위기 시 강력한 도움을 받습니다.');
+  pushGil(ss.munchang,        '문창귀인', '文昌貴人', '학문과 시험의 귀인, 문장 재능',  '학업·시험 운이 강하고 글재주가 뛰어나 문서·계약에 유리합니다.');
+  pushGil(cheonuiPillars,     '천의성',   '天醫星',   '의술과 건강의 별, 치료 능력',    '의료·치유 분야에 재능이 있으며 건강 회복력이 강합니다.');
+  pushGil(ss.geumyeo,         '금여성',   '金輿星',   '부귀와 안락의 별, 재물과 명예',  '재물복과 명예운이 좋아 안정된 삶을 누리는 기운입니다.');
+  pushGil(ss.cheonul,         '천을귀인', '天乙貴人', '최고 귀인성, 위기 극복',         '하늘이 내린 귀인으로 어려운 상황에서 도움을 받는 강한 기운입니다.');
+  pushGil(ss.cheonduk,        '천덕귀인', '天德貴人', '하늘의 덕, 재난 소멸',           '하늘의 덕을 받아 재난과 액운이 자연스럽게 해소됩니다.');
+  pushGil(ss.wolduk,          '월덕귀인', '月德貴人', '월의 덕, 관재 소멸',             '관재구설과 소송에서 보호받으며 관운이 좋아집니다.');
+
+  // 흉신 (red)
+  const hyungsin = [];
+  const pushHyung = (idxArr, name, hanja, shortDesc, fullDesc) => {
+    if (idxArr && idxArr.length > 0) {
+      idxArr.forEach(i => hyungsin.push({ name, hanja, pillar: PILLAR_LABEL[i], shortDesc, fullDesc }));
+    }
+  };
+  const pushHyungBool = (flag, name, hanja, pillar, shortDesc, fullDesc) => {
+    if (flag) hyungsin.push({ name, hanja, pillar, shortDesc, fullDesc });
+  };
+
+  pushHyungBool(hasGuimun,    '귀문관살', '鬼門關殺', '원국', '신비롭고 예민한 기운이 강하게 작동할 수 있음', '직관력과 영적 감수성이 뛰어나지만 신경과민·불안 경향에 주의가 필요합니다.');
+  pushHyungBool(ss.baekho,    '백호살',   '白虎殺',   '일주', '강한 기운, 사고·수술 주의',                  '강렬한 에너지로 추진력이 강하지만 사고·수술·구설에 주의가 필요합니다.');
+  pushHyungBool(ss.goegang,   '괴강살',   '魁罡殺',   '일주', '강한 의지력, 극단적 기운',                   '강한 의지와 리더십이 있지만 극단적 상황이 발생할 수 있습니다.');
+  pushHyung(ss.yangin,        '양인살',   '羊刃殺',   '강한 의지, 충동적 행동 주의',                        '추진력과 결단력이 강하지만 충동적 행동과 대인 갈등에 주의하세요.');
+
+  // 중성 신살 (gray)
+  const jungseong = [];
+  const pushJung = (idxArr, name, hanja, shortDesc, fullDesc) => {
+    if (idxArr && idxArr.length > 0) {
+      idxArr.forEach(i => jungseong.push({ name, hanja, pillar: PILLAR_LABEL[i], shortDesc, fullDesc }));
+    }
+  };
+  const pushJungBool = (flag, name, hanja, pillar, shortDesc, fullDesc) => {
+    if (flag) jungseong.push({ name, hanja, pillar, shortDesc, fullDesc });
+  };
+
+  pushJung(ss.dohwa,          '도화살',   '桃花殺',   '이성 매력, 예술적 감각',         '이성에게 매력적으로 보이며 예술·연예 분야에 재능이 있습니다.');
+  pushJungBool(ss.hongyeom,   '홍염살',   '紅艶殺',   '일주', '열정과 감정의 기운, 예술적 재능', '강한 감수성과 예술적 재능을 가지며 이성 관계가 활발합니다.');
+
+  if (gilsin.length === 0 && hyungsin.length === 0 && jungseong.length === 0) return '';
+
+  // ── 카드 렌더링 ──
+  function salCard(item, bgColor, borderColor, textColor, badgeBg) {
+    return `<div style="background:${bgColor};border:1px solid ${borderColor};border-radius:14px;padding:14px 16px;position:relative;">
+      <div style="position:absolute;top:10px;right:12px;font-size:11px;color:${textColor};background:${badgeBg};padding:2px 8px;border-radius:20px;font-weight:600">${item.pillar}</div>
+      <div style="font-weight:700;font-size:16px;color:#1a1a2e;margin-bottom:2px">${item.name} <span style="font-size:13px;color:#6b7280;font-weight:400">(${item.hanja})</span></div>
+      <div style="font-size:13px;color:#374151;line-height:1.5">${item.shortDesc}</div>
+    </div>`;
+  }
+
+  function salSection(label, emoji, count, subtitle, items, bgColor, borderColor, textColor, badgeBg, dotColor) {
+    if (items.length === 0) return '';
+    const grid = items.length === 1
+      ? `<div style="display:grid;grid-template-columns:1fr;gap:10px">${items.map(i=>salCard(i,bgColor,borderColor,textColor,badgeBg)).join('')}</div>`
+      : `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${items.map(i=>salCard(i,bgColor,borderColor,textColor,badgeBg)).join('')}</div>`;
+    return `<div style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="width:22px;height:22px;border-radius:50%;background:${dotColor};display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${emoji}</span>
+        <span style="font-weight:700;font-size:15px;color:#1a1a2e">${label} (${count}개)</span>
+        <span style="font-size:13px;color:#6b7280">- ${subtitle}</span>
+      </div>
+      ${grid}
+    </div>`;
+  }
+
+  // 무료판 업그레이드 유도 배너
+  const upgradeBanner = `<div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:12px;padding:14px 18px;margin-top:8px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:24px">🔐</span>
+    <div>
+      <div style="font-weight:700;font-size:14px;color:#92400e">멤버십 전용 · 상세 해석 제공</div>
+      <div style="font-size:12px;color:#78350f;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
+    </div>
+  </div>`;
+
+  // 라이트 테마 래퍼 (이미지와 동일한 밝은 배경)
+  return `<div style="background:#fff;border-radius:18px;padding:24px;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #f3f4f6">
+      <span style="background:linear-gradient(135deg,#f97316,#ea580c);width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:18px">✨</span>
+      <span style="font-weight:800;font-size:20px;color:#111827">신살 분석</span>
+    </div>
+    ${salSection('길신', '+', gilsin.length, '긍정적인 기운', gilsin, '#f0fdf4', '#bbf7d0', '#15803d', '#dcfce7', '#22c55e')}
+    ${salSection('흉신', '−', hyungsin.length, '주의가 필요한 기운', hyungsin, '#fff1f2', '#fecdd3', '#be123c', '#ffe4e6', '#ef4444')}
+    ${salSection('중성 신살', '○', jungseong.length, '상황에 따라 달라지는 기운', jungseong, '#f9fafb', '#e5e7eb', '#374151', '#f3f4f6', '#6b7280')}
+    ${upgradeBanner}
+  </div>`;
+}
+
 // ─── E. 자미두수 ──────────────────────────────────────────────
 
 function renderZiweiSection(chart) {
@@ -1840,6 +1978,7 @@ async function runFortune(preInput = null) {
       ${renderYongShin(saju)}
       ${renderSijunseong(saju)}
       ${renderDaewoon(saju)}
+      ${renderSinsal(saju)}
       ${renderZiweiSection(ziwei)}
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
       <div style="text-align:center;padding:8px 0">
