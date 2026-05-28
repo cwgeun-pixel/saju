@@ -3338,7 +3338,8 @@ document.addEventListener('click', e => {
     return;
   }
   const btn = e.target.closest('button');
-  if (btn && btn.textContent.includes(t('명식 산출하기'))) {
+  // React 번들의 계산 버튼은 항상 한국어 '명식 산출하기'로 하드코딩되어 있음
+  if (btn && btn.textContent.includes('명식 산출하기')) {
     // capture 단계에서 React보다 먼저 실행 — 폼이 아직 DOM에 존재함
     const captured = captureMainFormInput();
     if (captured) {
