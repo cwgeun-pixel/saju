@@ -2166,7 +2166,7 @@ function sectionHeader(letter, title, subtitle) {
 
 // ─── A. 기본 운세 해석 텍스트 ──────────────────────────────────
 
-const FORTUNE_DETAIL = {
+function getFORTUNE_DETAIL() { return {
   성향: [
     { min:85, text:t('타고난 기질이 매우 조화롭고 균형 잡혀 있습니다. 어떤 환경에서도 자신의 강점을 발휘하며, 주변 사람들에게 긍정적인 영향을 미치는 타고난 리더 기질을 지니고 있습니다. 직관력과 판단력이 뛰어나 중요한 순간에 탁월한 선택을 내립니다.') },
     { min:70, text:t('성격과 기질이 안정적으로 발달해 있어 사회적 관계에서 신뢰를 쌓기 쉽습니다. 자신의 감정을 잘 조절하며, 목표를 향해 꾸준히 나아가는 힘이 있습니다. 다양한 상황에서 유연하게 대처하는 능력이 돋보입니다.') },
@@ -2202,10 +2202,10 @@ const FORTUNE_DETAIL = {
     { min:30, text:t('건강에 주의가 필요한 시기입니다. 피로 누적이나 소화기 계통의 문제가 생길 수 있습니다. 무리한 활동을 자제하고 정기적인 건강 검진을 받는 것이 좋습니다. 충분한 휴식이 필수입니다.') },
     { min: 0, text:t('건강 운이 매우 좋지 않은 시기입니다. 만성 질환이 악화되거나 새로운 건강 문제가 발생할 수 있습니다. 즉시 전문의 상담을 받고, 과로와 스트레스를 철저히 피하세요. 몸의 신호에 귀를 기울이는 것이 중요합니다.') },
   ],
-};
+}; }
 
 function getFortuneDetail(key, pct) {
-  const list = FORTUNE_DETAIL[key];
+  const list = getFORTUNE_DETAIL()[key];
   if (!list) return '';
   return (list.find(l => pct >= l.min) || list[list.length-1]).text;
 }
