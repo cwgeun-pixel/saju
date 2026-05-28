@@ -121,6 +121,181 @@ const STAR_DESC = {
 };
 const SIHAU_LABEL = { '化祿':'화록(번영)', '化權':'화권(권력)', '化科':'화과(명예)', '化忌':'화기(주의)' };
 
+// ─── 자미두수 12궁 해석 데이터 ────────────────────────────────────
+// 각 별의 궁별 핵심 해석 (무료: 명궁·재백궁·부처궁 / 유료: 12궁 전체)
+const PALACE_INFO = {
+  '命宮': { emoji:'🌟', label:'명궁 (命宮)', desc:'기본 성격과 인생의 핵심 구조', color:'#d4af37', field:'fate' },
+  '兄弟': { emoji:'👥', label:'형제궁 (兄弟宮)', desc:'형제자매·동료와의 인연', color:'#60a5fa', field:'sibling' },
+  '夫妻': { emoji:'💗', label:'부처궁 (夫妻宮)', desc:'배우자·연인과의 인연', color:'#f472b6', field:'love' },
+  '子女': { emoji:'👶', label:'자녀궁 (子女宮)', desc:'자녀운과 창조적 에너지', color:'#34d399', field:'child' },
+  '財帛': { emoji:'💰', label:'재백궁 (財帛宮)', desc:'재물·수입·금전 흐름', color:'#fbbf24', field:'wealth' },
+  '疾厄': { emoji:'🌿', label:'질액궁 (疾厄宮)', desc:'건강·체질·질병 경향', color:'#4ade80', field:'health' },
+  '遷移': { emoji:'✈️', label:'천이궁 (遷移宮)', desc:'이동·해외·외부 활동', color:'#38bdf8', field:'travel' },
+  '交友': { emoji:'🤝', label:'교우궁 (交友宮)', desc:'친구·인맥·사회적 관계', color:'#a78bfa', field:'friend' },
+  '官祿': { emoji:'💼', label:'관록궁 (官祿宮)', desc:'직업·사회적 성취·명예', color:'#fb923c', field:'career' },
+  '田宅': { emoji:'🏠', label:'전택궁 (田宅宮)', desc:'부동산·주거·가정환경', color:'#f59e0b', field:'home' },
+  '福德': { emoji:'🧘', label:'복덕궁 (福德宮)', desc:'정신세계·복·내면의 행복', color:'#c084fc', field:'spirit' },
+  '父母': { emoji:'👨‍👩‍👧', label:'부모궁 (父母宮)', desc:'부모운·윗사람과의 관계', color:'#94a3b8', field:'parent' },
+};
+
+// 각 별의 궁별 해석 텍스트 (무료: 1~2문장 요약)
+const STAR_PALACE_DESC = {
+  '紫微': {
+    sibling:'자미성의 권위가 형제궁에 작용하여 형제자매 중 중심 역할을 하거나 귀한 인연을 만납니다.',
+    child:'자미성의 귀한 기운이 자녀궁에 자리하여 뛰어난 자녀를 두거나 창의적 재능이 풍부합니다.',
+    health:'자미성의 강한 기운이 질액궁에 있어 건강 관리에 신경 쓰면 큰 문제 없이 지낼 수 있습니다.',
+    travel:'자미성의 권위가 천이궁에 작용하여 외부 활동에서 귀인을 만나고 명성을 얻을 수 있습니다.',
+    friend:'자미성의 기운이 교우궁에 있어 지위 있는 인맥을 형성하고 귀인의 도움을 받습니다.',
+    career:'자미성의 제왕 기운이 관록궁에 자리하여 높은 지위와 권한을 가질 수 있는 직업 구조입니다.',
+    home:'자미성의 귀한 기운이 전택궁에 작용하여 좋은 주거 환경과 부동산 복이 있습니다.',
+    spirit:'자미성의 고귀함이 복덕궁에 자리하여 정신적 풍요와 높은 이상을 추구합니다.',
+    parent:'자미성의 권위가 부모궁에 있어 부모가 사회적으로 인정받거나 귀한 가문의 인연입니다.',
+  },
+  '天機': {
+    sibling:'천기성의 변화 기운이 형제궁에 작용하여 형제자매와 지적 교류가 활발하지만 변화가 많습니다.',
+    child:'천기성의 영리함이 자녀궁에 자리하여 총명하고 다재다능한 자녀를 두는 경향이 있습니다.',
+    health:'천기성의 변화 기운이 질액궁에 있어 신경계나 정신적 피로에 주의가 필요합니다.',
+    travel:'천기성의 활동적 기운이 천이궁에 작용하여 이동과 변화가 많고 해외 기회가 생깁니다.',
+    friend:'천기성의 기운이 교우궁에 있어 다양하고 지적인 인맥을 형성하지만 관계 변화가 잦습니다.',
+    career:'천기성의 지략이 관록궁에 자리하여 기획·분석·IT 분야에서 두각을 나타냅니다.',
+    home:'천기성의 변화 기운이 전택궁에 작용하여 이사나 주거 변화가 잦을 수 있습니다.',
+    spirit:'천기성의 지적 기운이 복덕궁에 자리하여 끊임없이 배우고 탐구하는 정신세계를 가집니다.',
+    parent:'천기성의 기운이 부모궁에 있어 부모와 지적 교류가 활발하나 관계 변화가 있을 수 있습니다.',
+  },
+  '太陽': {
+    sibling:'태양성의 밝은 기운이 형제궁에 작용하여 형제자매와 활발하고 공개적인 관계를 유지합니다.',
+    child:'태양성의 빛나는 기운이 자녀궁에 자리하여 사교적이고 활동적인 자녀를 두는 경향입니다.',
+    health:'태양성의 강한 기운이 질액궁에 있어 심장·눈 건강에 주의하고 과로를 피해야 합니다.',
+    travel:'태양성의 사회적 기운이 천이궁에 작용하여 외부 활동이 활발하고 해외에서 명성을 얻습니다.',
+    friend:'태양성의 기운이 교우궁에 있어 넓은 인맥을 형성하고 사회적으로 영향력 있는 친구를 둡니다.',
+    career:'태양성의 빛나는 기운이 관록궁에 자리하여 공직·교육·미디어 분야에서 두각을 나타냅니다.',
+    home:'태양성의 밝은 기운이 전택궁에 작용하여 밝고 활기찬 가정환경과 좋은 주거 복이 있습니다.',
+    spirit:'태양성의 기운이 복덕궁에 자리하여 사회 공헌과 타인을 위한 활동에서 행복을 찾습니다.',
+    parent:'태양성의 기운이 부모궁에 있어 부모가 사회적으로 활발하고 영향력 있는 분일 가능성이 높습니다.',
+  },
+  '武曲': {
+    sibling:'무곡성의 강직한 기운이 형제궁에 작용하여 형제자매와 의리 있는 관계를 유지합니다.',
+    child:'무곡성의 강한 기운이 자녀궁에 자리하여 의지가 강하고 실행력 있는 자녀를 두는 경향입니다.',
+    health:'무곡성의 금속 기운이 질액궁에 있어 수술이나 외상에 주의하고 규칙적인 운동이 도움됩니다.',
+    travel:'무곡성의 실행력이 천이궁에 작용하여 실무적인 목적의 이동이 많고 해외 사업 기회가 생깁니다.',
+    friend:'무곡성의 기운이 교우궁에 있어 의리 있고 실력 있는 인맥을 형성합니다.',
+    career:'무곡성의 재물 기운이 관록궁에 자리하여 금융·사업·기술 분야에서 탁월한 성과를 냅니다.',
+    home:'무곡성의 강한 기운이 전택궁에 작용하여 부동산 투자에 강하고 안정적인 자산을 축적합니다.',
+    spirit:'무곡성의 기운이 복덕궁에 자리하여 실질적인 성취와 물질적 안정에서 행복을 찾습니다.',
+    parent:'무곡성의 기운이 부모궁에 있어 부모가 강직하고 실용적인 분이며 물질적 지원이 있습니다.',
+  },
+  '天同': {
+    sibling:'천동성의 온화한 기운이 형제궁에 작용하여 형제자매와 화목하고 편안한 관계를 유지합니다.',
+    child:'천동성의 복덕 기운이 자녀궁에 자리하여 온화하고 복 있는 자녀를 두는 경향입니다.',
+    health:'천동성의 편안한 기운이 질액궁에 있어 건강이 비교적 양호하나 과식·나태에 주의하세요.',
+    travel:'천동성의 여유로운 기운이 천이궁에 작용하여 즐거운 여행과 편안한 외부 활동이 많습니다.',
+    friend:'천동성의 기운이 교우궁에 있어 편안하고 즐거운 인간관계를 형성하고 좋은 친구를 둡니다.',
+    career:'천동성의 복덕 기운이 관록궁에 자리하여 복지·서비스·예술 분야에서 안정적으로 일합니다.',
+    home:'천동성의 기운이 전택궁에 작용하여 편안하고 아늑한 가정환경과 안정적인 주거 복이 있습니다.',
+    spirit:'천동성의 기운이 복덕궁에 자리하여 여유롭고 낙천적인 정신세계와 풍부한 복덕을 가집니다.',
+    parent:'천동성의 기운이 부모궁에 있어 부모와 화목하고 편안한 관계를 유지합니다.',
+  },
+  '廉貞': {
+    sibling:'염정성의 열정적 기운이 형제궁에 작용하여 형제자매와 강렬하지만 기복 있는 관계입니다.',
+    child:'염정성의 강한 기운이 자녀궁에 자리하여 개성 강하고 열정적인 자녀를 두는 경향입니다.',
+    health:'염정성의 기복 기운이 질액궁에 있어 감정 스트레스로 인한 건강 문제에 주의가 필요합니다.',
+    travel:'염정성의 열정이 천이궁에 작용하여 외부 활동에서 강렬한 경험과 기복 있는 변화가 생깁니다.',
+    friend:'염정성의 기운이 교우궁에 있어 강렬하고 열정적인 인간관계를 맺지만 갈등도 있을 수 있습니다.',
+    career:'염정성의 카리스마가 관록궁에 자리하여 법률·정치·예술 분야에서 강한 존재감을 발휘합니다.',
+    home:'염정성의 기운이 전택궁에 작용하여 주거 환경에 변화가 많고 이사를 자주 할 수 있습니다.',
+    spirit:'염정성의 기운이 복덕궁에 자리하여 강렬한 욕망과 열정에서 삶의 의미를 찾습니다.',
+    parent:'염정성의 기운이 부모궁에 있어 부모와 강렬하지만 기복 있는 관계를 유지합니다.',
+  },
+  '天府': {
+    sibling:'천부성의 든든한 기운이 형제궁에 작용하여 형제자매와 안정적이고 신뢰 있는 관계입니다.',
+    child:'천부성의 풍요로운 기운이 자녀궁에 자리하여 안정적이고 복 있는 자녀를 두는 경향입니다.',
+    health:'천부성의 안정적 기운이 질액궁에 있어 건강이 비교적 양호하고 회복력이 강합니다.',
+    travel:'천부성의 보수적 기운이 천이궁에 작용하여 안정적인 목적의 이동이 많고 해외에서도 기반을 잡습니다.',
+    friend:'천부성의 기운이 교우궁에 있어 신뢰할 수 있는 든든한 인맥을 형성합니다.',
+    career:'천부성의 저장 기운이 관록궁에 자리하여 재무·부동산·행정 분야에서 안정적으로 성장합니다.',
+    home:'천부성의 풍요로운 기운이 전택궁에 작용하여 좋은 부동산 복과 안정적인 가정환경이 있습니다.',
+    spirit:'천부성의 기운이 복덕궁에 자리하여 안정과 풍요 속에서 깊은 내면의 만족을 추구합니다.',
+    parent:'천부성의 기운이 부모궁에 있어 부모가 든든하고 안정적인 지원을 해주는 좋은 인연입니다.',
+  },
+  '太陰': {
+    sibling:'태음성의 섬세한 기운이 형제궁에 작용하여 형제자매와 감성적이고 깊은 유대를 형성합니다.',
+    child:'태음성의 감성적 기운이 자녀궁에 자리하여 섬세하고 예술적 재능을 가진 자녀를 두는 경향입니다.',
+    health:'태음성의 달 기운이 질액궁에 있어 호르몬·수면·감정 건강에 특별한 주의가 필요합니다.',
+    travel:'태음성의 내향적 기운이 천이궁에 작용하여 조용하고 감성적인 여행을 즐기며 해외 부동산 기회가 있습니다.',
+    friend:'태음성의 기운이 교우궁에 있어 섬세하고 감성적인 친구들과 깊은 우정을 나눕니다.',
+    career:'태음성의 감성적 기운이 관록궁에 자리하여 예술·상담·부동산·금융 분야에서 재능을 발휘합니다.',
+    home:'태음성의 기운이 전택궁에 작용하여 아름답고 감성적인 주거 환경을 추구하며 부동산 복이 있습니다.',
+    spirit:'태음성의 기운이 복덕궁에 자리하여 풍부한 감성과 내면의 아름다움을 추구하는 정신세계입니다.',
+    parent:'태음성의 기운이 부모궁에 있어 어머니와의 인연이 깊고 감성적인 가정환경에서 자랍니다.',
+  },
+  '貪狼': {
+    sibling:'탐랑성의 다재다능함이 형제궁에 작용하여 형제자매와 다양하고 활발한 교류를 합니다.',
+    child:'탐랑성의 매력적 기운이 자녀궁에 자리하여 다재다능하고 사교적인 자녀를 두는 경향입니다.',
+    health:'탐랑성의 욕망 기운이 질액궁에 있어 과식·과음·과로에 주의하고 절제가 필요합니다.',
+    travel:'탐랑성의 활동적 기운이 천이궁에 작용하여 다양한 곳을 여행하고 해외에서 새로운 기회를 만납니다.',
+    friend:'탐랑성의 기운이 교우궁에 있어 다양하고 매력적인 인맥을 형성하며 사교 활동이 활발합니다.',
+    career:'탐랑성의 다재다능함이 관록궁에 자리하여 예술·연예·영업·서비스 분야에서 두각을 나타냅니다.',
+    home:'탐랑성의 기운이 전택궁에 작용하여 다양한 주거 경험을 하고 인테리어에 관심이 많습니다.',
+    spirit:'탐랑성의 기운이 복덕궁에 자리하여 다양한 취미와 욕망을 즐기는 풍요로운 정신세계입니다.',
+    parent:'탐랑성의 기운이 부모궁에 있어 부모와 다양한 활동을 함께하며 활발한 관계를 유지합니다.',
+  },
+  '巨門': {
+    sibling:'거문성의 소통 기운이 형제궁에 작용하여 형제자매와 언쟁이나 오해가 생기기 쉬우니 소통에 주의하세요.',
+    child:'거문성의 언변 기운이 자녀궁에 자리하여 말 잘하고 논리적인 자녀를 두는 경향입니다.',
+    health:'거문성의 기운이 질액궁에 있어 소화기·구강 건강에 주의하고 스트레스 관리가 중요합니다.',
+    travel:'거문성의 소통 기운이 천이궁에 작용하여 외부에서 언변으로 기회를 만들고 정보 수집 능력이 뛰어납니다.',
+    friend:'거문성의 기운이 교우궁에 있어 지적이고 말 잘하는 인맥을 형성하나 오해가 생기지 않도록 주의하세요.',
+    career:'거문성의 언변이 관록궁에 자리하여 법률·언론·교육·상담 분야에서 탁월한 능력을 발휘합니다.',
+    home:'거문성의 기운이 전택궁에 작용하여 가정 내 소통 문제가 생길 수 있으니 대화에 신경 쓰세요.',
+    spirit:'거문성의 기운이 복덕궁에 자리하여 지식 탐구와 진리 추구에서 정신적 만족을 찾습니다.',
+    parent:'거문성의 기운이 부모궁에 있어 부모와 소통에서 오해가 생기기 쉬우니 명확한 대화가 중요합니다.',
+  },
+  '天相': {
+    sibling:'천상성의 조화로운 기운이 형제궁에 작용하여 형제자매와 서로 돕는 따뜻한 관계입니다.',
+    child:'천상성의 귀인 기운이 자녀궁에 자리하여 착하고 귀인 역할을 하는 자녀를 두는 경향입니다.',
+    health:'천상성의 안정적 기운이 질액궁에 있어 건강이 비교적 양호하고 귀인의 도움으로 회복이 빠릅니다.',
+    travel:'천상성의 귀인 기운이 천이궁에 작용하여 외부 활동에서 귀인을 만나고 좋은 지원을 받습니다.',
+    friend:'천상성의 기운이 교우궁에 있어 귀인 같은 친구들과 서로 지지하는 따뜻한 인간관계를 형성합니다.',
+    career:'천상성의 조화 기운이 관록궁에 자리하여 행정·복지·조직 관리 분야에서 안정적으로 성장합니다.',
+    home:'천상성의 기운이 전택궁에 작용하여 화목하고 안정적인 가정환경과 좋은 주거 복이 있습니다.',
+    spirit:'천상성의 기운이 복덕궁에 자리하여 타인을 돕고 조화를 이루는 것에서 정신적 만족을 찾습니다.',
+    parent:'천상성의 기운이 부모궁에 있어 부모가 귀인 같은 존재로 좋은 지원과 보호를 받습니다.',
+  },
+  '天梁': {
+    sibling:'천량성의 수호 기운이 형제궁에 작용하여 형제자매 중 보호자 역할을 하거나 연장자와 인연이 깊습니다.',
+    child:'천량성의 지혜로운 기운이 자녀궁에 자리하여 성숙하고 지혜로운 자녀를 두는 경향입니다.',
+    health:'천량성의 수호 기운이 질액궁에 있어 건강 위기에서도 귀인의 도움으로 회복하는 능력이 있습니다.',
+    travel:'천량성의 지혜 기운이 천이궁에 작용하여 외부에서 귀인을 만나고 위기를 극복하는 경험을 합니다.',
+    friend:'천량성의 기운이 교우궁에 있어 연장자나 멘토 같은 귀인 친구들과 깊은 인연을 맺습니다.',
+    career:'천량성의 지혜가 관록궁에 자리하여 의료·법률·종교·상담 분야에서 나이 들수록 빛을 발합니다.',
+    home:'천량성의 기운이 전택궁에 작용하여 안정적인 주거 환경과 부동산을 지키는 능력이 있습니다.',
+    spirit:'천량성의 기운이 복덕궁에 자리하여 깊은 지혜와 정신적 수양에서 내면의 평화를 찾습니다.',
+    parent:'천량성의 기운이 부모궁에 있어 부모가 지혜롭고 보호적인 분으로 큰 정신적 지주가 됩니다.',
+  },
+  '七殺': {
+    sibling:'칠살성의 강한 기운이 형제궁에 작용하여 형제자매와 독립적이고 경쟁적인 관계를 유지합니다.',
+    child:'칠살성의 돌파력이 자녀궁에 자리하여 강하고 독립적인 자녀를 두는 경향이 있습니다.',
+    health:'칠살성의 강렬한 기운이 질액궁에 있어 사고·수술·외상에 주의하고 무리한 활동을 삼가세요.',
+    travel:'칠살성의 개척 기운이 천이궁에 작용하여 도전적인 이동과 해외 개척 기회가 많습니다.',
+    friend:'칠살성의 기운이 교우궁에 있어 강하고 독립적인 인맥을 형성하지만 갈등도 생길 수 있습니다.',
+    career:'칠살성의 강력한 기운이 관록궁에 자리하여 군경·스포츠·창업 분야에서 강한 추진력을 발휘합니다.',
+    home:'칠살성의 기운이 전택궁에 작용하여 주거 환경에 변화와 도전이 많고 독립적인 공간을 선호합니다.',
+    spirit:'칠살성의 기운이 복덕궁에 자리하여 도전과 극복에서 삶의 의미를 찾는 강인한 정신세계입니다.',
+    parent:'칠살성의 기운이 부모궁에 있어 부모와 독립적이고 강한 관계를 유지하며 일찍 자립하는 경향입니다.',
+  },
+  '破軍': {
+    sibling:'파군성의 변화 기운이 형제궁에 작용하여 형제자매와 관계에 변화가 많고 독립적인 인연입니다.',
+    child:'파군성의 혁신적 기운이 자녀궁에 자리하여 개성 강하고 창의적인 자녀를 두는 경향입니다.',
+    health:'파군성의 파괴적 기운이 질액궁에 있어 건강 변화가 크고 생활 습관 개선이 중요합니다.',
+    travel:'파군성의 변화 기운이 천이궁에 작용하여 잦은 이동과 새로운 환경에서의 도전이 많습니다.',
+    friend:'파군성의 기운이 교우궁에 있어 인간관계에 변화가 많고 새로운 인맥을 계속 형성합니다.',
+    career:'파군성의 혁신 기운이 관록궁에 자리하여 혁신·스타트업·예술 분야에서 새로운 길을 개척합니다.',
+    home:'파군성의 기운이 전택궁에 작용하여 이사와 주거 변화가 많고 새로운 환경을 추구합니다.',
+    spirit:'파군성의 기운이 복덕궁에 자리하여 끊임없는 변화와 새로운 도전에서 정신적 활력을 찾습니다.',
+    parent:'파군성의 기운이 부모궁에 있어 부모와 관계에 변화가 많고 독립적인 성장을 추구합니다.',
+  },
+};
+
 // ─── 점성학 상수 ──────────────────────────────────────────────
 
 const SIGN_KO = ['양자리','황소자리','쌍둥이자리','게자리','사자자리','처녀자리','천칭자리','전갈자리','사수자리','염소자리','물병자리','물고기자리'];
@@ -1680,58 +1855,125 @@ function renderSinsal(saju) {
 // ─── E. 자미두수 ──────────────────────────────────────────────
 
 function renderZiweiSection(chart) {
-  function palaceCard(palaceName, emoji, label) {
+  // 궁 카드 렌더링 함수
+  function palaceCard(palaceName, isPremium) {
     const palace = chart.palaces[palaceName];
     if (!palace) return '';
     const mains = getMainStars(palace);
-    const PALACE_COLORS = {'命宮':'#d4af37','財帛':'#fbbf24','夫妻':'#f472b6'};
-    const pc = PALACE_COLORS[palaceName] || '#a78bfa';
+    const pi = PALACE_INFO[palaceName] || { emoji:'⭐', label:palaceName, desc:'', color:'#a78bfa', field:'fate' };
+    const pc = pi.color;
+
     if (mains.length === 0) {
-      return `<div style="${D.card}border-top:2px solid ${pc}40;">
+      return `<div style="${D.card}border-top:2px solid ${pc}40;opacity:${isPremium?'1':'0.85'}">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <span style="font-size:26px;filter:drop-shadow(0 0 6px ${pc}80)">${emoji}</span>
-          <span style="color:#e8dfc8;font-weight:700;font-size:18px;font-family:'Cormorant Garamond',serif">${label}</span>
-          <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:13px;padding:2px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.2)">${palace.ganZhi}</span>
+          <span style="font-size:22px;filter:drop-shadow(0 0 6px ${pc}80)">${pi.emoji}</span>
+          <span style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${pi.label}</span>
+          <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:12px;padding:2px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.2)">${palace.ganZhi}</span>
         </div>
-        <p style="color:#7a6f8a;font-size:15px">${t('이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.')}</p>
+        <p style="color:#7a6f8a;font-size:14px">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
       </div>`;
     }
+
     const starCards = mains.map(s => {
-      const info = STAR_DESC[s.name] || { fate:s.name, wealth:'', love:'' };
-      const field = palaceName==='命宮' ? 'fate' : palaceName==='財帛' ? 'wealth' : 'love';
-      const content = t('star.'+s.name+'.'+field) || (palaceName==='命宮' ? info.fate : palaceName==='財帛' ? info.wealth : info.love);
+      const baseInfo = STAR_DESC[s.name] || { fate:s.name, wealth:'', love:'' };
+      const extraInfo = STAR_PALACE_DESC[s.name] || {};
+      const field = pi.field;
+      let content;
+      if (field === 'fate') content = baseInfo.fate;
+      else if (field === 'wealth') content = baseInfo.wealth;
+      else if (field === 'love') content = baseInfo.love;
+      else content = extraInfo[field] || baseInfo.fate;
+
       const siHua = s.siHua
-        ? `<span style="background:${s.siHua==='化忌'?'rgba(248,113,113,0.15)':'rgba(212,175,55,0.15)'};color:${s.siHua==='化忌'?'#f87171':'#d4af37'};font-size:13px;padding:2px 7px;border-radius:8px;margin-left:6px;border:1px solid ${s.siHua==='化忌'?'rgba(248,113,113,0.3)':'rgba(212,175,55,0.3)'}">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
-      const bright = s.brightness ? `<span style="color:#7a6f8a;font-size:14px"> (${s.brightness})</span>` : '';
-      return `<div style="padding:14px;margin-bottom:8px;background:rgba(15,12,35,0.6);border-radius:12px;border:1px solid rgba(212,175,55,0.12);border-left:3px solid ${pc}">
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-          <span style="font-size:24px;filter:drop-shadow(0 0 6px ${pc}80)">${emoji}</span>
-          <span style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:20px;font-family:'Cormorant Garamond',serif">${s.name}</span>${bright}${siHua}
+        ? `<span style="background:${s.siHua==='化忌'?'rgba(248,113,113,0.15)':'rgba(212,175,55,0.15)'};color:${s.siHua==='化忌'?'#f87171':'#d4af37'};font-size:12px;padding:2px 7px;border-radius:8px;margin-left:6px;border:1px solid ${s.siHua==='化忌'?'rgba(248,113,113,0.3)':'rgba(212,175,55,0.3)'}">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
+      const bright = s.brightness ? `<span style="color:#7a6f8a;font-size:13px"> (${s.brightness})</span>` : '';
+      return `<div style="padding:12px;margin-bottom:6px;background:rgba(15,12,35,0.6);border-radius:10px;border:1px solid rgba(212,175,55,0.12);border-left:3px solid ${pc}">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-bottom:8px">
+          <span style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:18px;font-family:'Cormorant Garamond',serif">${s.name}</span>${bright}${siHua}
         </div>
-        <p style="color:#c8d0e8;font-size:15px;line-height:1.85;margin:0;padding:10px 12px;background:rgba(124,106,247,0.05);border-radius:8px;border-left:2px solid ${pc}40">${content}</p>
+        <p style="color:#c8d0e8;font-size:14px;line-height:1.8;margin:0;padding:8px 10px;background:rgba(124,106,247,0.05);border-radius:8px;border-left:2px solid ${pc}40">${content}</p>
       </div>`;
     }).join('');
 
     return `<div style="${D.card}border-top:2px solid ${pc}40;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <span style="font-size:26px;filter:drop-shadow(0 0 8px ${pc}80)">${emoji}</span>
-        <span style="color:#e8dfc8;font-weight:700;font-size:18px;font-family:'Cormorant Garamond',serif">${label}</span>
-        <span style="background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(212,175,55,0.1));color:#a78bfa;font-size:13px;padding:2px 8px;border-radius:8px;border:1px solid rgba(124,106,247,0.3)">${palace.ganZhi} ${palaceName}</span>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:22px;filter:drop-shadow(0 0 8px ${pc}80)">${pi.emoji}</span>
+        <div style="flex:1">
+          <div style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${pi.label}</div>
+          <div style="color:#7a6f8a;font-size:12px;margin-top:1px">${pi.desc}</div>
+        </div>
+        <span style="background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(212,175,55,0.1));color:#a78bfa;font-size:12px;padding:2px 8px;border-radius:8px;border:1px solid rgba(124,106,247,0.3)">${palace.ganZhi}</span>
       </div>
       ${starCards}
     </div>`;
   }
 
+  // 무료: 명궁·재백궁·부처궁 3개 궁
+  const freePalaces = ['命宮','財帛','夫妻'];
+  // 유료 전용: 나머지 9개 궁
+  const premiumPalaces = ['兄弟','子女','疾厄','遷移','交友','官祿','田宅','福德','父母'];
+
+  const freePalaceCards = freePalaces.map(p => palaceCard(p, false)).join('');
+
+  // 유료 궁들을 흐리게 미리보기로 표시
+  const premiumPreviewCards = premiumPalaces.map(p => {
+    const palace = chart.palaces[p];
+    if (!palace) return '';
+    const mains = getMainStars(palace);
+    const pi = PALACE_INFO[p] || { emoji:'⭐', label:p, desc:'', color:'#a78bfa' };
+    const pc = pi.color;
+    const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : '공궁';
+    return `<div style="${D.card}border-top:2px solid ${pc}30;opacity:0.55;filter:blur(0.3px);position:relative;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}40,transparent)"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:20px">${pi.emoji}</span>
+        <div style="flex:1">
+          <div style="color:#c8b89a;font-weight:700;font-size:15px;font-family:'Cormorant Garamond',serif">${pi.label}</div>
+          <div style="color:#5a5f7a;font-size:11px">${pi.desc}</div>
+        </div>
+        <span style="background:rgba(124,106,247,0.08);color:#6b6f8a;font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid rgba(124,106,247,0.15)">${palace.ganZhi}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(15,12,35,0.4);border-radius:8px;border:1px solid rgba(212,175,55,0.08)">
+        <span style="color:#d4af37;font-size:14px;font-family:'Cormorant Garamond',serif;font-weight:600">${starNames}</span>
+        <span style="color:#5a5f7a;font-size:12px">· 멤버십에서 상세 해석 확인</span>
+      </div>
+    </div>`;
+  }).join('');
+
   const wu = chart.wuXingJu;
   return `<div style="${D.wrap}">
-    ${sectionHeader('E', t('자미두수'), `${wu?.name||'命盤'} · 3`)}
-    <div style="display:flex;flex-direction:column;gap:10px">
-      ${palaceCard('命宮','🌟',t('기본 운명 (명궁)'))}
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        ${palaceCard('財帛','💰',t('재물 성향 (재백궁)'))}
-        ${palaceCard('夫妻','💗',t('인연 성향 (부처궁)'))}
+    ${sectionHeader('E', t('자미두수'), `${wu?.name||'命盤'} · 12궁`)}
+
+    <!-- 무료 3궁 -->
+    <div style="margin-bottom:6px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e80"></span>
+        <span style="color:#9d8aa0;font-size:13px">무료 해석 · 핵심 3궁</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${freePalaceCards}
+      </div>
+    </div>
+
+    <!-- 유료 9궁 미리보기 -->
+    <div style="margin-top:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4af37;box-shadow:0 0 6px #d4af3780"></span>
+        <span style="color:#9d8aa0;font-size:13px">멤버십 전용 · 나머지 9궁</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${premiumPreviewCards}
+      </div>
+    </div>
+
+    <!-- 멤버십 업그레이드 배너 -->
+    <div style="margin-top:16px;padding:16px 18px;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.25);border-radius:14px;display:flex;align-items:center;gap:14px">
+      <span style="font-size:28px">🔐</span>
+      <div style="flex:1">
+        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 자미두수 12궁 완전 해석</div>
+        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.</div>
       </div>
     </div>
   </div>`;
