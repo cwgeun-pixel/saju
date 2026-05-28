@@ -3348,26 +3348,19 @@ document.addEventListener('click', e => {
   }
 }, true);
 
-// results div에 자식이 추가될 때 mount 실행
-const _resultsObserver = new MutationObserver((mutations) => {
+// MutationObserver: body 전체 관찰
+new MutationObserver(() => { mount(); }).observe(document.body, { childList:true, subtree:true });
+mount();
+
+// setInterval 폴링: React 렌더링 타이밍 문제 보완 (results가 생긴 후 탭이 없으면 mount 재시도)
+const _mountPoller = setInterval(() => {
   const results = document.getElementById('results');
-  if (!results || document.getElementById('honcheon-fortune-tabs')) return;
-  if (results.children.length > 0) {
-    // results에 자식이 생겼으면 mount 실행
+  if (results && results.children.length > 0 && !document.getElementById('honcheon-fortune-tabs')) {
     mount();
   }
-});
-
-// body 전체 관찰 (results가 나중에 생길 수 있으므로)
-new MutationObserver((mutations) => {
-  const results = document.getElementById('results');
-  if (results && !_resultsObserver._started) {
-    _resultsObserver.observe(results, { childList: true });
-    _resultsObserver._started = true;
-  }
-  mount();
-}).observe(document.body, { childList:true, subtree:true });
-mount();
+}, 300);
+// 10초 후 폴링 중단
+setTimeout(() => clearInterval(_mountPoller), 10000);
 
 document.addEventListener('honcheon:langchange', () => {
   if (lastInput) runFortune(lastInput).catch(console.error);
