@@ -1445,6 +1445,21 @@ function renderDaewoon(saju) {
   const unseongHanja = SJS_HANJA2[unseong] || unseong;
   const unseongColor = SJS_COLOR[unseong] || '#a78bfa';
 
+  // 십성별 대운 설명
+  const DAEWOON_DESC = {
+    '비견': '자립심과 독립 의지가 강해지는 시기입니다. 새로운 시작과 자기 계발에 유리하며, 경쟁 속에서 실력을 키울 수 있습니다. 다만 고집이 세질 수 있으니 협력을 잊지 마세요.',
+    '겁재': '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.',
+    '식신': '창의력과 표현력이 풍부해지는 시기입니다. 재능을 발휘하고 새로운 것을 배우기에 좋으며, 음식·예술·교육 분야에서 기회가 생깁니다. 전반적으로 안정적이고 여유로운 대운입니다.',
+    '상관': '변화와 혁신을 추구하는 시기입니다. 창의적 아이디어가 넘치고 기존 틀을 벗어나려는 욕구가 강해집니다. 직업 변화나 이직을 고려할 수 있으며, 언행에 주의가 필요합니다.',
+    '편재': '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.',
+    '정재': '안정적인 재물 축적과 내실을 다지는 시기입니다. 꾸준한 노력이 결실을 맺고 저축과 부동산 등 안정적 자산 관리에 유리합니다. 성실하게 임하면 좋은 결과를 얻습니다.',
+    '편관': '강한 도전과 변화의 시기입니다. 외부 압박이나 경쟁이 심해질 수 있으나, 이를 극복하면 큰 성취를 이룰 수 있습니다. 건강 관리와 법적 문제에 각별히 주의하세요.',
+    '정관': '명예와 사회적 지위가 높아지는 시기입니다. 조직 내 승진이나 인정을 받을 기회가 생기며, 책임감과 원칙을 중시하게 됩니다. 공직·전문직에서 두각을 나타낼 수 있습니다.',
+    '편인': '학문·연구·영성에 관심이 높아지는 시기입니다. 내면을 탐구하고 전문 지식을 쌓기에 좋으며, 예술·의료·종교 분야에서 재능이 발휘됩니다. 고독감이 들 수 있으니 소통을 늘리세요.',
+    '정인': '학습과 성장, 귀인의 도움을 받는 시기입니다. 자격증 취득이나 학업에 유리하며, 어른이나 스승의 지원을 받을 수 있습니다. 차분하고 신중하게 임하면 좋은 결과를 얻습니다.'
+  };
+  const daewoonDesc = DAEWOON_DESC[stemSipsin] || '이 대운은 천간의 기운이 일간에 영향을 미치는 시기입니다. 해당 십성의 특성을 이해하고 흐름에 맞게 대응하는 것이 중요합니다.';
+
   // 현재 대운 카드
   const currentCard = `
     <div style="background:linear-gradient(135deg,rgba(124,106,247,0.12),rgba(212,175,55,0.08));border:1px solid rgba(124,106,247,0.35);border-radius:16px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden">
@@ -1465,6 +1480,9 @@ function renderDaewoon(saju) {
             <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${unseong}(${unseongHanja})</span>
           </div>
         </div>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(212,175,55,0.15)">
+        <div style="font-size:13px;color:#a0a8c0;line-height:1.7">${daewoonDesc}</div>
       </div>
     </div>`;
 
@@ -1489,15 +1507,15 @@ function renderDaewoon(saju) {
       dotColor = '#374151'; cardBg = 'rgba(20,18,40,0.3)'; cardBorder = '1px solid rgba(255,255,255,0.05)'; textColor = '#9da8c0';
     }
 
-    return `<div style="background:${cardBg};border:${cardBorder};border-radius:14px;padding:14px 10px;text-align:center;position:relative;transition:transform 0.2s;min-width:0">
+    return `<div style="background:${cardBg};border:${cardBorder};border-radius:10px;padding:8px 4px;text-align:center;position:relative;transition:transform 0.2s">
       ${isCurrent ? '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#a78bfa,transparent)"></div>' : ''}
-      <div style="width:12px;height:12px;border-radius:50%;background:${dotColor};margin:0 auto 8px;${isCurrent ? 'box-shadow:0 0 8px #a78bfa' : ''}"></div>
-      <div style="font-weight:700;font-size:16px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:2px">${ganziStr(dw.ganzi)}</div>
-      <div style="font-size:10px;color:#6b7280;margin-bottom:6px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
-      <div style="font-size:11px;color:${isCurrent ? '#a78bfa' : '#4b5563'};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
-      <div style="font-size:11px;color:${isCurrent ? '#d4af37' : '#6b7280'};margin-bottom:4px">${dwStemSipsin}</div>
-      <div style="font-size:10px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:4px">${dwBranchSipsin}</div>
-      <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:10px;padding:1px 6px;border-radius:10px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
+      <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};margin:0 auto 5px;${isCurrent ? 'box-shadow:0 0 6px #a78bfa' : ''}"></div>
+      <div style="font-weight:700;font-size:13px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:1px">${ganziStr(dw.ganzi)}</div>
+      <div style="font-size:9px;color:#6b7280;margin-bottom:4px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
+      <div style="font-size:9px;color:${isCurrent ? '#a78bfa' : '#4b5563'};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
+      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : '#6b7280'};margin-bottom:2px">${dwStemSipsin}</div>
+      <div style="font-size:9px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:3px">${dwBranchSipsin}</div>
+      <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
     </div>`;
   }).join('');
 
@@ -1512,7 +1530,7 @@ function renderDaewoon(saju) {
     ${sectionHeader('D2', t('대운 (大運)'), `현재 나이: ${currentAge}세 · ${flowLabel}`)}
     <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + 양년 = ${flowLabel} · 대운수 ${cur.age}세</div>
     ${currentCard}
-    <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;overflow-x:auto">
+    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px">
       ${timelineCards}
     </div>
     ${legend}
