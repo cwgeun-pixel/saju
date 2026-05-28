@@ -1275,25 +1275,54 @@ function renderSijunseong(saju) {
   const dayMaster = saju.pillars[2]?.pillar?.stem;
   if (!dayMaster) return '';
   const PILLAR_NAMES = [t('년주'),t('월주'),t('일주'),t('시주')];
-  const PILLAR_COLORS = ['#d4af37','#a78bfa','#f472b6','#60a5fa'];
+  const PILLAR_AGE   = ['초년운 (0~15세)','청년운 (15~35세)','중년운 (35~50세)','말년운 (50세~)'];
+  const PILLAR_COLORS = ['#a78bfa','#f472b6','#f87171','#60a5fa'];
+  // 12운성 한자 대응표
+  const SJS_HANJA = {
+    '장생':'長生','목욕':'沐浴','관대':'冠帶','임관':'臨官','제왕':'帝旺',
+    '쇠':'衰','병':'病','사':'死','묘':'墓','절':'絶','태':'胎','양':'養'
+  };
+  // 12운성 강도 배지 (약/중/강)
+  const SJS_GRADE = {
+    '장생':'강','목욕':'중','관대':'강','임관':'강','제왕':'강',
+    '쇠':'약','병':'약','사':'약','묘':'약','절':'약','태':'중','양':'중'
+  };
+  const GRADE_STYLE = {
+    '강':'background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff',
+    '중':'background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff',
+    '약':'background:linear-gradient(135deg,#6b7280,#4b5563);color:#fff'
+  };
+  // 이모지 배경 색상 (카드별)
+  const EMOJI_BG = ['#7c3aed','#db2777','#dc2626','#2563eb'];
+
   const cards = saju.pillars.map((p, i) => {
     const sjs = getSijunseong(dayMaster, p.pillar.branch);
     if (!sjs) return '';
     const sjsIdx = SJS_NAMES.indexOf(sjs.name);
     const pc = PILLAR_COLORS[i];
-    return `<div style="${D.card}border-top:2px solid ${pc}40;text-align:center;">
-      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}60,transparent)"></div>
-      <div style="color:#7a6f8a;font-size:12px;margin-bottom:6px;letter-spacing:0.08em;text-transform:uppercase">${PILLAR_NAMES[i]}</div>
-      <div style="font-family:monospace;background:linear-gradient(135deg,${pc},${pc}99);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:22px;margin-bottom:8px">${p.pillar.ganzi}</div>
-      <div style="font-size:38px;margin-bottom:6px;filter:drop-shadow(0 0 8px ${pc}60)">${sjs.emoji}</div>
-      <div style="color:#e8dfc8;font-weight:700;font-size:18px;margin-bottom:6px;font-family:'Cormorant Garamond',serif">${sjs.name}</div>
-      <div style="color:#8a8fa8;font-size:13px;line-height:1.5">${t('sjs.'+sjsIdx)}</div>
+    const bg = EMOJI_BG[i];
+    const hanja = SJS_HANJA[sjs.name] || sjs.name;
+    const grade = SJS_GRADE[sjs.name] || '중';
+    const gradeStyle = GRADE_STYLE[grade];
+    return `<div style="position:relative;background:linear-gradient(160deg,#13162a,#0e1020);border:1px solid ${pc}30;border-radius:16px;padding:20px 14px 18px;text-align:center;overflow:hidden;transition:transform 0.2s;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${pc}80,transparent)"></div>
+      <div style="position:absolute;top:10px;right:10px;${gradeStyle};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em">${grade}</div>
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,${bg}cc,${bg}66);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px ${bg}50,inset 0 1px 0 rgba(255,255,255,0.15);border:2px solid ${pc}40">
+        <span style="font-size:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))">${sjs.emoji}</span>
+      </div>
+      <div style="font-weight:800;font-size:26px;color:#f0e6d0;font-family:'Cormorant Garamond',serif;margin-bottom:2px;letter-spacing:0.02em">${sjs.name}</div>
+      <div style="color:#8a7fa8;font-size:13px;margin-bottom:12px;letter-spacing:0.05em">(${hanja})</div>
+      <div style="border-top:1px solid ${pc}20;padding-top:12px;margin-bottom:6px">
+        <div style="font-weight:700;font-size:14px;color:${pc};margin-bottom:2px">${PILLAR_NAMES[i]}</div>
+        <div style="font-size:11px;color:#6b7280;margin-bottom:8px">${PILLAR_AGE[i]}</div>
+        <div style="font-size:12px;color:#9da8c0;line-height:1.6">${sjs.desc || t('sjs.'+sjsIdx)}</div>
+      </div>
     </div>`;
   }).join('');
 
   return `<div style="${D.wrap}">
-    ${sectionHeader('D', t('12운성'), t('일간 기준 · 사주 각 기둥의 생명 단계'))}
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+    ${sectionHeader('D', t('12운성'), t('생애 에너지 흐름'))}
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
       ${cards}
     </div>
   </div>`;
