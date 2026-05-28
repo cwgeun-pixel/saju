@@ -56,6 +56,12 @@
         width: 14px; height: 14px;
         flex-shrink: 0;
       }
+      #honcheon-home-btn img.logo-emblem {
+        width: 26px; height: 26px;
+        object-fit: contain;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 4px rgba(201,168,76,0.5));
+      }
 
       /* ===== 랜딩페이지 톤: 딥 네이비 + 골드 + 퍼플 ===== */
 
@@ -739,10 +745,7 @@
     <div id="honcheon-ring2" aria-hidden="true"></div>
     <!-- 랜딩페이지 연결 홈 버튼 -->
     <a id="honcheon-home-btn" href="/">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
+      <img class="logo-emblem" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663619875220/DfbvYihIEWOVIDRo.png" alt="Trinity of Destiny" />
       홈화면
     </a>
     <div id="root"></div>
