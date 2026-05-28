@@ -3332,24 +3332,41 @@ function mount() {
 
 // ─── 글로벌 이벤트 ───────────────────────────────────────────
 
+// 모든 버튼 클릭 시 폼 데이터 캡처 시도 (계산 버튼 텍스트가 다국어로 변경되어도 대응)
 document.addEventListener('click', e => {
   if (e.target.id==='gf-calc' || e.target.closest('#gf-calc')) {
     runFortune(null).catch(console.error);
     return;
   }
   const btn = e.target.closest('button');
-  // React 번들의 계산 버튼은 항상 한국어 '명식 산출하기'로 하드코딩되어 있음
-  if (btn && btn.textContent.includes('명식 산출하기')) {
-    // capture 단계에서 React보다 먼저 실행 — 폼이 아직 DOM에 존재함
+  if (btn) {
+    // 버튼 클릭 시 항상 폼 데이터 캡처 시도 (계산 버튼인지 여부와 무관하게)
     const captured = captureMainFormInput();
     if (captured) {
       try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
     }
-    setTimeout(() => tryAutoRun().catch(console.error), 800);
   }
 }, true);
 
-new MutationObserver(mount).observe(document.body, { childList:true, subtree:true });
+// results div에 자식이 추가될 때 mount 실행
+const _resultsObserver = new MutationObserver((mutations) => {
+  const results = document.getElementById('results');
+  if (!results || document.getElementById('honcheon-fortune-tabs')) return;
+  if (results.children.length > 0) {
+    // results에 자식이 생겼으면 mount 실행
+    mount();
+  }
+});
+
+// body 전체 관찰 (results가 나중에 생길 수 있으므로)
+new MutationObserver((mutations) => {
+  const results = document.getElementById('results');
+  if (results && !_resultsObserver._started) {
+    _resultsObserver.observe(results, { childList: true });
+    _resultsObserver._started = true;
+  }
+  mount();
+}).observe(document.body, { childList:true, subtree:true });
 mount();
 
 document.addEventListener('honcheon:langchange', () => {
