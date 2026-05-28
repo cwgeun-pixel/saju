@@ -1458,8 +1458,8 @@ function renderDaewoon(saju) {
 
   // 현재 대운 카드
   const currentCard = `
-    <div style="background:linear-gradient(135deg,rgba(124,106,247,0.12),rgba(212,175,55,0.08));border:1px solid rgba(124,106,247,0.35);border-radius:16px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c6af7,#d4af37,#7c6af7)"></div>
+    <div style="background:linear-gradient(135deg,rgba(34,197,94,0.10),rgba(212,175,55,0.08));border:1px solid rgba(34,197,94,0.35);border-radius:16px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22c55e,#d4af37,#22c55e)"></div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
         <div>
           <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">현재 대운</div>
@@ -1496,20 +1496,20 @@ function renderDaewoon(saju) {
 
     let dotColor, cardBg, cardBorder, textColor;
     if (isCurrent) {
-      dotColor = '#a78bfa'; cardBg = 'rgba(124,106,247,0.12)'; cardBorder = '2px solid rgba(124,106,247,0.5)'; textColor = '#e8d5a3';
+      dotColor = '#22c55e'; cardBg = 'rgba(34,197,94,0.12)'; cardBorder = '2px solid rgba(34,197,94,0.5)'; textColor = '#e8d5a3';
     } else if (isPast) {
       dotColor = '#4b5563'; cardBg = 'rgba(30,28,50,0.4)'; cardBorder = '1px solid rgba(255,255,255,0.06)'; textColor = '#6b7280';
     } else {
-      dotColor = '#374151'; cardBg = 'rgba(20,18,40,0.3)'; cardBorder = '1px solid rgba(255,255,255,0.05)'; textColor = '#9da8c0';
+      dotColor = '#eab308'; cardBg = 'rgba(234,179,8,0.10)'; cardBorder = '1px solid rgba(234,179,8,0.35)'; textColor = '#fde68a';
     }
 
     return `<div style="background:${cardBg};border:${cardBorder};border-radius:10px;padding:8px 4px;text-align:center;position:relative;transition:transform 0.2s">
-      ${isCurrent ? '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#a78bfa,transparent)"></div>' : ''}
-      <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};margin:0 auto 5px;${isCurrent ? 'box-shadow:0 0 6px #a78bfa' : ''}"></div>
+      ${isCurrent ? '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#22c55e,transparent)"></div>' : ''}
+      <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};margin:0 auto 5px;${isCurrent ? 'box-shadow:0 0 6px #22c55e' : ''}"></div>
       <div style="font-weight:700;font-size:13px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:1px">${ganziStr(dw.ganzi)}</div>
       <div style="font-size:9px;color:#6b7280;margin-bottom:4px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
-      <div style="font-size:9px;color:${isCurrent ? '#a78bfa' : '#4b5563'};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
-      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : '#6b7280'};margin-bottom:2px">${dwStemSipsin}</div>
+      <div style="font-size:9px;color:${isCurrent ? '#22c55e' : (isFuture ? '#eab308' : '#4b5563')};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
+      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${dwStemSipsin}</div>
       <div style="font-size:9px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:3px">${dwBranchSipsin}</div>
       <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
     </div>`;
@@ -1517,9 +1517,9 @@ function renderDaewoon(saju) {
 
   // 범례
   const legend = `<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;font-size:12px;color:#6b7280">
-    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;display:inline-block"></span>현재 대운</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 6px #22c55e80"></span>현재 대운</span>
     <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#4b5563;display:inline-block"></span>지난 대운</span>
-    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#374151;border:1px solid #6b7280;display:inline-block"></span>미래 대운</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#eab308;display:inline-block;box-shadow:0 0 6px #eab30880"></span>미래 대운</span>
   </div>`;
 
   return `<div style="${D.wrap}">
