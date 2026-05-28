@@ -1625,48 +1625,54 @@ function renderSinsal(saju) {
 
   if (gilsin.length === 0 && hyungsin.length === 0 && jungseong.length === 0) return '';
 
-  // ── 카드 렌더링 ──
-  function salCard(item, bgColor, borderColor, textColor, badgeBg) {
-    return `<div style="background:${bgColor};border:1px solid ${borderColor};border-radius:14px;padding:14px 16px;position:relative;">
-      <div style="position:absolute;top:10px;right:12px;font-size:11px;color:${textColor};background:${badgeBg};padding:2px 8px;border-radius:20px;font-weight:600">${item.pillar}</div>
-      <div style="font-weight:700;font-size:16px;color:#1a1a2e;margin-bottom:2px">${item.name} <span style="font-size:13px;color:#6b7280;font-weight:400">(${item.hanja})</span></div>
-      <div style="font-size:13px;color:#374151;line-height:1.5">${item.shortDesc}</div>
+  // ── 카드 렌더링 (다크 파스텔톤 고급 디자인) ──
+  function salCard(item, glowColor, accentColor) {
+    return `<div style="background:linear-gradient(135deg,#131726 0%,#161b2e 100%);border:1px solid ${glowColor}45;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.04);">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${glowColor}70,transparent)"></div>
+      <div style="position:absolute;top:9px;right:11px;font-size:11px;color:${accentColor};background:${glowColor}18;padding:2px 9px;border-radius:20px;font-weight:600;border:1px solid ${glowColor}35;letter-spacing:0.3px">${item.pillar}</div>
+      <div style="font-weight:700;font-size:15px;color:#e8dfc8;margin-bottom:3px">${item.name} <span style="font-size:12px;color:${accentColor};font-weight:400;opacity:0.9">(${item.hanja})</span></div>
+      <div style="font-size:12px;color:#9d9db5;line-height:1.55">${item.shortDesc}</div>
     </div>`;
   }
 
-  function salSection(label, emoji, count, subtitle, items, bgColor, borderColor, textColor, badgeBg, dotColor) {
+  function salSection(label, emoji, count, subtitle, items, glowColor, accentColor, dotGradient) {
     if (items.length === 0) return '';
     const grid = items.length === 1
-      ? `<div style="display:grid;grid-template-columns:1fr;gap:10px">${items.map(i=>salCard(i,bgColor,borderColor,textColor,badgeBg)).join('')}</div>`
-      : `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${items.map(i=>salCard(i,bgColor,borderColor,textColor,badgeBg)).join('')}</div>`;
-    return `<div style="margin-bottom:18px">
+      ? `<div style="display:grid;grid-template-columns:1fr;gap:10px">${items.map(i=>salCard(i,glowColor,accentColor)).join('')}</div>`
+      : `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${items.map(i=>salCard(i,glowColor,accentColor)).join('')}</div>`;
+    return `<div style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="width:22px;height:22px;border-radius:50%;background:${dotColor};display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${emoji}</span>
-        <span style="font-weight:700;font-size:15px;color:#1a1a2e">${label} (${count}개)</span>
-        <span style="font-size:13px;color:#6b7280">- ${subtitle}</span>
+        <span style="width:24px;height:24px;border-radius:50%;background:${dotGradient};display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 0 10px ${glowColor}55;flex-shrink:0">${emoji}</span>
+        <span style="font-weight:700;font-size:14px;color:#e8dfc8">${label} <span style="color:${accentColor}">(${count}개)</span></span>
+        <span style="font-size:12px;color:#6b6b85">· ${subtitle}</span>
       </div>
       ${grid}
     </div>`;
   }
 
-  // 무료판 업그레이드 유도 배너
-  const upgradeBanner = `<div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:12px;padding:14px 18px;margin-top:8px;display:flex;align-items:center;gap:12px">
-    <span style="font-size:24px">🔐</span>
+  // 무료판 업그레이드 유도 배너 (다크 골드 스타일)
+  const upgradeBanner = `<div style="background:linear-gradient(135deg,rgba(212,175,55,0.10),rgba(251,191,36,0.06));border:1px solid rgba(212,175,55,0.30);border-radius:14px;padding:14px 18px;margin-top:4px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.55),transparent)"></div>
+    <span style="font-size:22px;flex-shrink:0">🔐</span>
     <div>
-      <div style="font-weight:700;font-size:14px;color:#92400e">멤버십 전용 · 상세 해석 제공</div>
-      <div style="font-size:12px;color:#78350f;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
+      <div style="font-weight:700;font-size:13px;color:#d4af37;letter-spacing:0.3px">멤버십 전용 · 상세 해석 제공</div>
+      <div style="font-size:12px;color:#9d8a5a;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
     </div>
   </div>`;
 
-  // 라이트 테마 래퍼 (이미지와 동일한 밝은 배경)
-  return `<div style="background:#fff;border-radius:18px;padding:24px;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #f3f4f6">
-      <span style="background:linear-gradient(135deg,#f97316,#ea580c);width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:18px">✨</span>
-      <span style="font-weight:800;font-size:20px;color:#111827">신살 분석</span>
+  // 다크 테마 래퍼 - 나머지 섹션과 동일한 배경
+  return `<div style="background:linear-gradient(135deg,#0d1020 0%,#111428 50%,#0a0e1a 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.40),transparent)"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,0.12)">
+      <span style="background:linear-gradient(135deg,rgba(212,175,55,0.22),rgba(251,191,36,0.12));width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(212,175,55,0.28);box-shadow:0 0 14px rgba(212,175,55,0.18)">✨</span>
+      <div>
+        <div style="font-weight:800;font-size:17px;color:#e8dfc8;letter-spacing:0.5px">신살 분석</div>
+        <div style="font-size:11px;color:#6b6b85;margin-top:1px">사주 원국의 특수 기운 분석</div>
+      </div>
     </div>
-    ${salSection('길신', '+', gilsin.length, '긍정적인 기운', gilsin, '#f0fdf4', '#bbf7d0', '#15803d', '#dcfce7', '#22c55e')}
-    ${salSection('흉신', '−', hyungsin.length, '주의가 필요한 기운', hyungsin, '#fff1f2', '#fecdd3', '#be123c', '#ffe4e6', '#ef4444')}
-    ${salSection('중성 신살', '○', jungseong.length, '상황에 따라 달라지는 기운', jungseong, '#f9fafb', '#e5e7eb', '#374151', '#f3f4f6', '#6b7280')}
+    ${salSection('길신', '+', gilsin.length, '긍정적인 기운', gilsin, '#86efac', '#4ade80', 'linear-gradient(135deg,#16a34a,#15803d)')}
+    ${salSection('흉신', '−', hyungsin.length, '주의가 필요한 기운', hyungsin, '#fca5a5', '#f87171', 'linear-gradient(135deg,#dc2626,#b91c1c)')}
+    ${salSection('중성 신살', '○', jungseong.length, '상황에 따라 달라지는 기운', jungseong, '#c4b5fd', '#a78bfa', 'linear-gradient(135deg,#7c3aed,#6d28d9)')}
     ${upgradeBanner}
   </div>`;
 }
