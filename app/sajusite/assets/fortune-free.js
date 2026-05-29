@@ -37,11 +37,11 @@ const WEALTH_SIP = new Set(['偏財','正財']);
 const LOVE_SIP_F = new Set(['偏官','正官']);
 const R_SCORE    = {'合':2,'沖':-2,'破':-1,'害':-1,'刑':-1.5,'怨嗔':-3,'鬼門':0};
 const LEVELS = [
-  { min:85, label:t('today.대길(大吉)'), color:'#f59e0b', bg:'#fef3c7', emoji:'⭐' },
-  { min:70, label:t('today.길(吉)'),     color:'#22c55e', bg:'#dcfce7', emoji:'✨' },
-  { min:48, label:t('today.평(平)'),     color:'#60a5fa', bg:'#dbeafe', emoji:'🌀' },
-  { min:30, label:t('today.소흉(小凶)'), color:'#a78bfa', bg:'#f3e8ff', emoji:'⚡' },
-  { min: 0, label:t('today.흉(凶)'),     color:'#f87171', bg:'#fee2e2', emoji:'⚠️' },
+  { min:85, label:'대길(大吉)', color:'#f59e0b', bg:'#fef3c7', emoji:'⭐' },
+  { min:70, label:'길(吉)',     color:'#22c55e', bg:'#dcfce7', emoji:'✨' },
+  { min:48, label:'평(平)',     color:'#60a5fa', bg:'#dbeafe', emoji:'🌀' },
+  { min:30, label:'소흉(小凶)', color:'#a78bfa', bg:'#f3e8ff', emoji:'⚡' },
+  { min: 0, label:'흉(凶)',     color:'#f87171', bg:'#fee2e2', emoji:'⚠️' },
 ];
 
 // ─── 자미두수 상수 ────────────────────────────────────────────
