@@ -37,11 +37,11 @@ const WEALTH_SIP = new Set(['偏財','正財']);
 const LOVE_SIP_F = new Set(['偏官','正官']);
 const R_SCORE    = {'合':2,'沖':-2,'破':-1,'害':-1,'刑':-1.5,'怨嗔':-3,'鬼門':0};
 const LEVELS = [
-  { min:85, label:'대길(大吉)', color:'#f59e0b', bg:'#fef3c7', emoji:'⭐' },
-  { min:70, label:'길(吉)',     color:'#22c55e', bg:'#dcfce7', emoji:'✨' },
-  { min:48, label:'평(平)',     color:'#60a5fa', bg:'#dbeafe', emoji:'🌀' },
-  { min:30, label:'소흉(小凶)', color:'#a78bfa', bg:'#f3e8ff', emoji:'⚡' },
-  { min: 0, label:'흉(凶)',     color:'#f87171', bg:'#fee2e2', emoji:'⚠️' },
+  { min:85, label:t('today.대길(大吉)'), color:'#f59e0b', bg:'#fef3c7', emoji:'⭐' },
+  { min:70, label:t('today.길(吉)'),     color:'#22c55e', bg:'#dcfce7', emoji:'✨' },
+  { min:48, label:t('today.평(平)'),     color:'#60a5fa', bg:'#dbeafe', emoji:'🌀' },
+  { min:30, label:t('today.소흉(小凶)'), color:'#a78bfa', bg:'#f3e8ff', emoji:'⚡' },
+  { min: 0, label:t('today.흉(凶)'),     color:'#f87171', bg:'#fee2e2', emoji:'⚠️' },
 ];
 
 // ─── 자미두수 상수 ────────────────────────────────────────────
@@ -147,6 +147,19 @@ const PALACE_LABELS = {
     '용신':'용신',
     '희신':'희신',
     '기신':'기신',
+    '신강(身强)':'신강(身强)',
+    '신약(身弱)':'신약(身弱)',
+    '중화(中和)':'중화(中和)',
+    '지난 대운':'지난 대운',
+    '미래 대운':'미래 대운',
+    '현재 대운':'현재 대운',
+    '무료 해석':'무료 해석',
+    '핵심 3궁':'핵심 3궁',
+    '핵심 3요소':'핵심 3요소',
+    '멤버십 전용':'멤버십 전용',
+    '나머지 9궁':'나머지 9궁',
+    '상세 해석 제공':'상세 해석 제공',
+    '띠 입니다':'띠 입니다',
   },
   en: {
     '命宮':['Life Palace (命宮)','Core personality and life structure'],
@@ -171,6 +184,19 @@ const PALACE_LABELS = {
     '용신':'Favorable Element',
     '희신':'Supporting Element',
     '기신':'Unfavorable Element',
+    '신강(身强)':'Strong Day Master (身强)',
+    '신약(身弱)':'Weak Day Master (身弱)',
+    '중화(中和)':'Balanced Day Master (中和)',
+    '지난 대운':'Past Fortune Cycle',
+    '미래 대운':'Future Fortune Cycle',
+    '현재 대운':'Current Fortune Cycle',
+    '무료 해석':'Free Reading',
+    '핵심 3궁':'Core 3 Palaces',
+    '핵심 3요소':'Core 3 Elements',
+    '멤버십 전용':'Membership Only',
+    '나머지 9궁':'Remaining 9 Palaces',
+    '상세 해석 제공':'Detailed Analysis Available',
+    '띠 입니다':'Zodiac Sign',
     '12운성':'Twelve Life Stages',
     'today.길(吉)':'today.Fortune',
     'today.대길(大吉)':'today.Great Fortune',
@@ -376,6 +402,32 @@ const PALACE_LABELS = {
     '용신':'用神',
     '희신':'喜神',
     '기신':'忌神',
+    '신강(身强)':'身强 (身强)',
+    '신약(身弱)':'身弱 (身弱)',
+    '중화(中和)':'中和 (中和)',
+    '지난 대운':'过去大运',
+    '미래 대운':'未来大运',
+    '현재 대운':'当前大运',
+    '무료 해석':'免费解读',
+    '핵심 3궁':'核心3宫',
+    '핵심 3요소':'核心3要素',
+    '멤버십 전용':'会员专属',
+    '나머지 9궁':'其余9宫',
+    '상세 해석 제공':'提供详细解读',
+    '띠 입니다':'生肖',
+    '신강(身强)':'身強 (身强)',
+    '신약(身弱)':'身弱 (身弱)',
+    '중화(中和)':'中和 (中和)',
+    '지난 대운':'過去の大運',
+    '미래 대운':'未来の大運',
+    '현재 대운':'現在の大運',
+    '무료 해석':'無料解釈',
+    '핵심 3궁':'核心3宮',
+    '핵심 3요소':'核心3要素',
+    '멤버십 전용':'メンバーシップ専用',
+    '나머지 9궁':'残り9宮',
+    '상세 해석 제공':'詳細解釈提供',
+    '띠 입니다':'干支です',
     '🔮 무료 운세 탭':'🔮 無料占いタブ',
     '12운성':'十二運星',
     'today.길(吉)':'today.吉',
@@ -788,6 +840,19 @@ const PALACE_LABELS = {
     '용신':'Elemento Favorable',
     '희신':'Elemento de Apoyo',
     '기신':'Elemento Desfavorable',
+    '신강(身强)':'Maestro Fuerte (身强)',
+    '신약(身弱)':'Maestro Débil (身弱)',
+    '중화(中和)':'Maestro Equilibrado (中和)',
+    '지난 대운':'Ciclo Pasado',
+    '미래 대운':'Ciclo Futuro',
+    '현재 대운':'Ciclo Actual',
+    '무료 해석':'Lectura Gratuita',
+    '핵심 3궁':'3 Palacios Principales',
+    '핵심 3요소':'3 Elementos Principales',
+    '멤버십 전용':'Solo Membresía',
+    '나머지 9궁':'9 Palacios Restantes',
+    '상세 해석 제공':'Análisis Detallado Disponible',
+    '띠 입니다':'Signo Zodiacal',
     '🔮 무료 운세 탭':'🔮 Pestaña de Fortuna Gratis',
     '12운성':'Doce Etapas de Vida',
     'today.길(吉)':'today.Fortuna',
@@ -2762,7 +2827,7 @@ function computeYongShin(saju) {
   const gi   = isStrong ? GENERATED_BY[dayElem] : CONTROLS[dayElem];
 
   return {
-    type:    isStrong ? '신강(身强)' : isWeak ? '신약(身弱)' : '중화(中和)',
+    type:    isStrong ? t('신강(身强)') : isWeak ? t('신약(身弱)') : t('중화(中和)'),
     gauge:   Math.max(10, Math.min(90, (support / total) * 100 * 1.2)),
     dayElem, yong, hee, gi, elems, total, isStrong, isWeak,
   };
@@ -2979,7 +3044,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
         <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
         <div style="flex:1">
           <div style="color:#8a8fa8;font-size:13px;letter-spacing:0.08em;margin-bottom:4px">${t('당신의 띠는')}</div>
-          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}띠 입니다.</div>
+          <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}${t('띠 입니다')}.</div>
           <div style="color:#7a6f8a;font-size:13px;margin-top:4px">${z.years}년생 · ${dayMaster}일간</div>
           <div style="color:#c0c8e0;font-size:15px;margin-top:8px;line-height:1.7">${t('trait.'+b)}</div>
         </div>
@@ -3375,9 +3440,9 @@ function renderDaewoon(saju) {
 
   // 범례
   const legend = `<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;font-size:12px;color:#6b7280">
-    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 6px #22c55e80"></span>현재 대운</span>
-    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#4b5563;display:inline-block"></span>지난 대운</span>
-    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#eab308;display:inline-block;box-shadow:0 0 6px #eab30880"></span>미래 대운</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 6px #22c55e80"></span>${t('현재 대운')}</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#4b5563;display:inline-block"></span>${t('지난 대운')}</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#eab308;display:inline-block;box-shadow:0 0 6px #eab30880"></span>${t('미래 대운')}</span>
   </div>`;
 
   return `<div style="${D.wrap}">
@@ -3513,7 +3578,7 @@ function renderSinsal(saju) {
     <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.55),transparent)"></div>
     <span style="font-size:22px;flex-shrink:0">🔐</span>
     <div>
-      <div style="font-weight:700;font-size:13px;color:#d4af37;letter-spacing:0.3px">멤버십 전용 · 상세 해석 제공</div>
+      <div style="font-weight:700;font-size:13px;color:#d4af37;letter-spacing:0.3px">${t('멤버십 전용')} · ${t('상세 해석 제공')}</div>
       <div style="font-size:12px;color:#9d8a5a;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
     </div>
   </div>`;
@@ -3633,7 +3698,7 @@ function renderZiweiSection(chart) {
     <div style="margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e80"></span>
-        <span style="color:#9d8aa0;font-size:13px">무료 해석 · 핵심 3궁</span>
+        <span style="color:#9d8aa0;font-size:13px">${t('무료 해석')} · ${t('핵심 3궁')}</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         ${freePalaceCards}
@@ -3644,7 +3709,7 @@ function renderZiweiSection(chart) {
     <div style="margin-top:14px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4af37;box-shadow:0 0 6px #d4af3780"></span>
-        <span style="color:#9d8aa0;font-size:13px">멤버십 전용 · 나머지 9궁</span>
+        <span style="color:#9d8aa0;font-size:13px">${t('멤버십 전용')} · ${t('나머지 9궁')}</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         ${premiumPreviewCards}
@@ -3851,7 +3916,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     <!-- 무료 해석 영역 -->
     <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
       <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399"></span>
-      무료 해석 · 핵심 3요소
+      ${t('무료 해석')} · ${t('핵심 3요소')}
     </div>
     ${sunDetailCard}
     ${moonCard}
