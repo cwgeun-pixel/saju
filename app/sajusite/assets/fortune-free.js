@@ -4216,21 +4216,31 @@ function mount() {
 
 // ─── 글로벌 이벤트 ───────────────────────────────────────────
 
-// 모든 버튼 클릭 시 폼 데이터 캡처 시도 (계산 버튼 텍스트가 다국어로 변경되어도 대응)
+// 계산 버튼 텍스트 (5개국어)
+const CALC_BTN_TEXTS = ['명식 산출하기', 'Calculate', '命式を計算', '開始計算', 'Calcular'];
+
 document.addEventListener('click', e => {
   if (e.target.id==='gf-calc' || e.target.closest('#gf-calc')) {
     runFortune(null).catch(console.error);
     return;
   }
   const btn = e.target.closest('button');
-  if (btn) {
-    // 버튼 클릭 시 항상 폼 데이터 캡처 시도 (계산 버튼인지 여부와 무관하게)
-    const captured = captureMainFormInput();
-    if (captured) {
-      try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
-      // 탭이 이미 마운트된 경우 mount()가 tryAutoRun을 호출하지 않으므로 직접 호출
-      setTimeout(() => tryAutoRun().catch(console.error), 900);
+  if (!btn) return;
+
+  const btnText = btn.textContent.trim();
+  const isCalcBtn = CALC_BTN_TEXTS.some(txt => btnText.includes(txt));
+
+  const captured = captureMainFormInput();
+  if (captured) {
+    try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
+    if (isCalcBtn) {
+      // 계산 버튼: 무료운세 페이지로 이동 (React가 처리하기 전에 캡처 완료)
+      e.stopImmediatePropagation();
+      window.location.href = '/fortune/';
+      return;
     }
+    // 그 외 버튼: 탭이 이미 마운트된 경우를 위해 tryAutoRun 직접 호출
+    setTimeout(() => tryAutoRun().catch(console.error), 900);
   }
 }, true);
 
@@ -4249,19 +4259,50 @@ function startMountPoller() {
   _mountPoller = setInterval(() => {
     _pollCount++;
     const results = document.getElementById('results');
-    // results 내부에 탭이 없을 때만 mount 실행 (DOM 전체가 아닌 results 내부 확인)
     if (results && results.children.length > 0 && !results.querySelector('#honcheon-fortune-tabs')) {
       mount();
     }
-    // 60초(200회) 후 폴링 중단
     if (_pollCount >= 200) clearInterval(_mountPoller);
   }, 300);
 }
 startMountPoller();
 
-// 모든 버튼 클릭 시 폴링 재시작 (계산 버튼 클릭 후 결과 렌더링 대기)
 document.addEventListener('click', () => { startMountPoller(); }, { capture: true, passive: true });
 
 document.addEventListener('honcheon:langchange', () => {
   if (lastInput) runFortune(lastInput).catch(console.error);
 });
+
+// ─── 무료운세 전용 페이지 (standalone mode) ───────────────────
+(function() {
+  const root = document.getElementById('fortune-root');
+  if (!root) return;
+
+  root.innerHTML = `<div style="max-width:860px;margin:0 auto">
+    <div id="gf-error" style="color:#f87171;font-size:16px;margin-bottom:10px;display:none;text-align:center"></div>
+    <div id="gf-body" style="min-height:200px">
+      <p style="color:#7a82a8;font-size:20px;text-align:center;padding:60px 0">${t('계산 중… 잠시만 기다려주세요.')}</p>
+    </div>
+  </div>`;
+
+  // gf-reset 클릭 시 계산기로 복귀
+  root.addEventListener('click', e => {
+    if (e.target.id==='gf-reset' || e.target.closest('#gf-reset')) {
+      window.location.href = '/app/';
+    }
+  });
+
+  (async () => {
+    let input = null;
+    try {
+      const stored = sessionStorage.getItem('honcheon_last_input');
+      if (stored) input = JSON.parse(stored);
+    } catch {}
+
+    if (input) {
+      await runFortune(input);
+    } else {
+      window.location.replace('/app/');
+    }
+  })();
+})();

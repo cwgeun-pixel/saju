@@ -160,6 +160,10 @@ async function handleInterpret(request, response) {
 function serveStatic(request, response) {
   let pathname = decodeURIComponent(request.url.split("?")[0]);
   if (pathname === "/" || pathname === "") pathname = "/index.html";
+  // Cloudflare _redirects: /app/* → /app/index.html
+  if (pathname.startsWith("/app") && !pathname.match(/\.\w+$/)) pathname = "/app/index.html";
+  // Cloudflare _redirects: /fortune/* → /fortune/index.html
+  if (pathname.startsWith("/fortune") && !pathname.match(/\.\w+$/)) pathname = "/fortune/index.html";
 
   const filePath = path.resolve(root, `.${pathname}`);
   if (!filePath.startsWith(root)) {
