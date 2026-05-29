@@ -1605,6 +1605,7 @@ const TX = {
     '🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)':'🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)',
     '🔮 무료 운세 탭':'🔮 무료 운세 탭',
     '신살 분석':'신살 분석','대운 십성':'대운 십성','당신의 별자리는':'당신의 별자리는','입니다':'입니다',
+    '원국':'원국','사주 원국의 특수 기운 분석':'사주 원국의 특수 기운 분석',
     '대운 (大運)':'대운 (大運)','현재 나이':'현재 나이','순행':'순행','역행':'역행',
     '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
     '세':'세','양년':'양년','대운수':'대운수','대운 십성':'대운 십성',
@@ -1934,6 +1935,7 @@ const TX = {
     '부모운·윗사람과의 관계':'Parents fortune and relationships with superiors',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'Taurus is an earth sign ruled by Venus. It values stability and material abundance, showing perseverance to see decisions through to the end. It loves sensual pleasures and beauty, making it a reliable and steadfast partner. However, it can be stubborn and resistant to change, so cultivating flexibility is important.',
     '신살 분석':'Special Stars','대운 십성':'Fortune Cycle Star','당신의 별자리는':'Your zodiac sign is','입니다':'',
+    '원국':'Natal','사주 원국의 특수 기운 분석':'Special energy analysis of natal Saju',
     '대운 (大運)':'Grand Fortune Cycle','현재 나이':'Current Age','순행':'Forward','역행':'Reverse',
     '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
     '세':'','양년':'yang yr','대운수':'cycle age','대운 십성':'Fortune Cycle Star',
@@ -2206,6 +2208,7 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'活動性と推進力が強まる時期です。財の流動性が大きくなり、人間関係が広がります。衝動的な投資や保証は避け、慎重な財務管理が必要です。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'活発な財の活動と社交性が高まる時期です。事業のチャンスや投資の利益が生まれる可能性がありますが、変動性も大きいです。異性との縁が活発になり、対人関係が広がります。',
     '신살 분석':'神殺分析','대운 십성':'大運十星','당신의 별자리는':'あなたの星座は','입니다':'です',
+    '원국':'原局','사주 원국의 특수 기운 분석':'四柱原局の特殊エネルギー分析',
     '대운 (大運)':'大運','현재 나이':'現在の年齢','순행':'順行','역행':'逆行',
     '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
     '세':'歳','양년':'陽年','대운수':'大運数','대운 십성':'大運十星',
@@ -2485,6 +2488,7 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'這是一個活動力與推動力強烈增長的時期。財務流動性大，人際關係廣泛。需避免衝動投資或擔保，謹慎理財尤為重要。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'這是一個財務活動活躍、社交性提升的時期。可能出現商機或投資收益，但波動性亦大。異性緣分活躍，人際關係擴展。',
     '신살 분석':'神煞分析','대운 십성':'大運十星','당신의 별자리는':'您的星座是','입니다':'',
+    '원국':'原局','사주 원국의 특수 기운 분석':'四柱原局特殊能量分析',
     '대운 (大運)':'大运','현재 나이':'当前年龄','순행':'顺行','역행':'逆行',
     '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
     '세':'岁','양년':'陽年','대운수':'大运数','대운 십성':'大运十星',
@@ -2814,6 +2818,7 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'Es un período en el que la actividad y la capacidad de impulso se fortalecen. La liquidez de los bienes es alta y las relaciones humanas se amplían. Es necesario evitar inversiones impulsivas o garantías y manejar las finanzas con prudencia.',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'Es un momento de intensa actividad financiera y aumento de la sociabilidad. Pueden surgir oportunidades de negocio o ganancias por inversiones, aunque la volatilidad también es alta. Las relaciones amorosas se activan y las conexiones sociales se expanden.',
     '신살 분석':'Estrellas especiales','대운 십성':'Estrella del ciclo','당신의 별자리는':'Tu signo zodiacal es','입니다':'',
+    '원국':'Natal','사주 원국의 특수 기운 분석':'Análisis de energía especial natal',
     '대운 (大運)':'Gran Ciclo de Fortuna','현재 나이':'Edad actual','순행':'Directo','역행':'Inverso',
     '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
     '세':'','양년':'año yang','대운수':'ciclo','대운 십성':'Estrella del Ciclo',
@@ -3559,7 +3564,7 @@ function renderSinsal(saju) {
   if (!ss) return '';
 
   // pillars 인덱스 -> 주 이름 (0=시주, 1=일주, 2=월주, 3=년주)
-  const PILLAR_LABEL = ['시주','일주','월주','년주'];
+  const PILLAR_LABEL = [t('시주'),t('일주'),t('월주'),t('년주')];
 
   // 일간/일지/월지/년지
   const dayStem   = saju.pillars[1]?.pillar?.stem || '';
@@ -3623,9 +3628,9 @@ function renderSinsal(saju) {
     if (flag) hyungsin.push({ name, hanja, pillar, shortDesc, fullDesc });
   };
 
-  pushHyungBool(hasGuimun,    '귀문관살', '鬼門關殺', '원국', t('신비롭고 예민한 기운이 강하게 작동할 수 있음'), t('직관력과 영적 감수성이 뛰어나지만 신경과민·불안 경향에 주의가 필요합니다.'));
-  pushHyungBool(ss.baekho,    '백호살',   '白虎殺',   '일주', t('강한 기운, 사고·수술 주의'),                t('강렬한 에너지로 추진력이 강하지만 사고·수술·구설에 주의가 필요합니다.'));
-  pushHyungBool(ss.goegang,   '괴강살',   '魁罡殺',   '일주', t('강한 의지력, 극단적 기운'),                   t('강한 의지와 리더십이 있지만 극단적 상황이 발생할 수 있습니다.'));
+  pushHyungBool(hasGuimun,    '귀문관살', '鬼門關殺', t('원국'), t('신비롭고 예민한 기운이 강하게 작동할 수 있음'), t('직관력과 영적 감수성이 뛰어나지만 신경과민·불안 경향에 주의가 필요합니다.'));
+  pushHyungBool(ss.baekho,    '백호살',   '白虎殺',   t('일주'), t('강한 기운, 사고·수술 주의'),                t('강렬한 에너지로 추진력이 강하지만 사고·수술·구설에 주의가 필요합니다.'));
+  pushHyungBool(ss.goegang,   '괴강살',   '魁罡殺',   t('일주'), t('강한 의지력, 극단적 기운'),                   t('강한 의지와 리더십이 있지만 극단적 상황이 발생할 수 있습니다.'));
   pushHyung(ss.yangin,        '양인살',   '羊刃殺',   t('강한 의지, 충동적 행동 주의'),                        t('추진력과 결단력이 강하지만 충동적 행동과 대인 갈등에 주의하세요.'));
 
   // 중성 신살 (gray)
@@ -3640,7 +3645,7 @@ function renderSinsal(saju) {
   };
 
   pushJung(ss.dohwa,          '도화살',   '桃花殺',   t('이성 매력, 예술적 감각'),         t('이성에게 매력적으로 보이며 예술·연예 분야에 재능이 있습니다.'));
-  pushJungBool(ss.hongyeom,   '홍염살',   '紅艶殺',   '일주', t('열정과 감정의 기운, 예술적 재능'), t('강한 감수성과 예술적 재능을 가지며 이성 관계가 활발합니다.'));
+  pushJungBool(ss.hongyeom,   '홍염살',   '紅艶殺',   t('일주'), t('열정과 감정의 기운, 예술적 재능'), t('강한 감수성과 예술적 재능을 가지며 이성 관계가 활발합니다.'));
 
   if (gilsin.length === 0 && hyungsin.length === 0 && jungseong.length === 0) return '';
 
@@ -3662,7 +3667,7 @@ function renderSinsal(saju) {
     return `<div style="margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="width:24px;height:24px;border-radius:50%;background:${dotGradient};display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 0 10px ${glowColor}55;flex-shrink:0">${emoji}</span>
-        <span style="font-weight:700;font-size:14px;color:#e8dfc8">${label} <span style="color:${accentColor}">(${count}개)</span></span>
+        <span style="font-weight:700;font-size:14px;color:#e8dfc8">${label} <span style="color:${accentColor}">(${count}${t('개')})</span></span>
         <span style="font-size:12px;color:#6b6b85">· ${subtitle}</span>
       </div>
       ${grid}
@@ -3686,7 +3691,7 @@ function renderSinsal(saju) {
       <span style="background:linear-gradient(135deg,rgba(212,175,55,0.22),rgba(251,191,36,0.12));width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(212,175,55,0.28);box-shadow:0 0 14px rgba(212,175,55,0.18)">✨</span>
       <div>
         <div style="font-weight:800;font-size:17px;color:#e8dfc8;letter-spacing:0.5px">${t('신살 분석')}</div>
-        <div style="font-size:11px;color:#6b6b85;margin-top:1px">사주 원국의 특수 기운 분석</div>
+        <div style="font-size:11px;color:#6b6b85;margin-top:1px">${t('사주 원국의 특수 기운 분석')}</div>
       </div>
     </div>
     ${salSection(t('길신'), '+', gilsin.length, t('긍정적인 기운'), gilsin, '#86efac', '#4ade80', 'linear-gradient(135deg,#16a34a,#15803d)')}
