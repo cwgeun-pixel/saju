@@ -2891,16 +2891,30 @@ function captureMainFormInput() {
   const triggers = [...document.querySelectorAll('button[role="combobox"]')];
   let year=null, month=null, day=null, hour=12, minute=0, gender='M', unknownTime=false;
 
+  // i18n이 텍스트를 변환해도 숫자를 올바르게 인식하도록 다국어 패턴 지원
   for (const btn of triggers) {
     const txt = btn.textContent.trim(); let m;
-    if      ((m=txt.match(/^(\d{4})년$/)))   year  = +m[1];
-    else if ((m=txt.match(/^(\d{1,2})월$/))) month = +m[1];
-    else if ((m=txt.match(/^(\d{1,2})일$/))) day   = +m[1];
-    else if ((m=txt.match(/^(\d{1,2})시$/))) {
-      if (btn.disabled||btn.hasAttribute('data-disabled')) unknownTime=true;
-      else hour = +m[1];
+    // 연도: "1995년" (ko) / "1995" (en·ja·zh·es - 년 제거됨)
+    if ((m=txt.match(/^(\d{4})년?$/))) {
+      const v=+m[1]; if(v>=1900&&v<=2100) year=v;
     }
-    else if ((m=txt.match(/^(\d{2})분$/)))   minute = +m[1];
+    // 월: "6월" / "6月" / "6 mo" / "6 mes"
+    else if ((m=txt.match(/^(\d{1,2})(월|月| mo| mes)?$/i))) {
+      const v=+m[1];
+      if (year!==null && month===null && v>=1 && v<=12) month=v;
+    }
+    // 일: "15일" / "15日" / "15 day" / "15 día"
+    else if ((m=txt.match(/^(\d{1,2})(일|日| day| d[ií]a)?$/i))) {
+      const v=+m[1];
+      if (month!==null && day===null && v>=1 && v<=31) day=v;
+    }
+    // 시: "12시" / "12時" / "12 h"
+    else if ((m=txt.match(/^(\d{1,2})(시|時| h)?$/i))) {
+      if (btn.disabled||btn.hasAttribute('data-disabled')) unknownTime=true;
+      else { const v=+m[1]; if(v>=0&&v<=23) hour=v; }
+    }
+    // 분: "30분" / "30分" / "30 min"
+    else if ((m=txt.match(/^(\d{2})(분|分| min)?$/i))) minute=+m[1];
   }
 
   const sw = document.querySelector('button[role="switch"]');
@@ -4187,29 +4201,17 @@ function mount() {
   try {
     const results = document.getElementById('results');
     if (!results) return;
-    // results 안에 탭이 이미 있으면 스킵 (DOM 전체가 아닌 results 내부만 확인)
-    const existingTabs = results.querySelector('#honcheon-fortune-tabs');
-    if (existingTabs) return;
     if (results.children.length === 0) return;
+    // 이미 이동 중이면 스킵
+    if (results.querySelector('#honcheon-fortune-tabs')) return;
 
-    const tabs       = createTabs();
-    const panel      = createPanel();
-    const membership = createMembershipPanel();
-
-    results.insertBefore(tabs, results.firstChild);
-    results.appendChild(panel);
-    results.appendChild(membership);
-
-    switchTab('fortune', results);
-
-    tabs.addEventListener('click', e => {
-      const btn = e.target.closest('[data-tab]');
-      if (btn) switchTab(btn.dataset.tab, results);
-    });
-
-    tryAutoRun().catch(console.error);
+    // 결과가 채워지면 데이터를 sessionStorage에 저장하고 무료운세 페이지로 이동
+    const input = captureMainFormInput();
+    if (input) {
+      try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(input)); } catch {}
+      window.location.href = '/fortune/';
+    }
   } catch(err) {
-    window.__mountError = err.message + '\n' + err.stack;
     console.error('[fortune-free] mount error:', err);
   }
 }
