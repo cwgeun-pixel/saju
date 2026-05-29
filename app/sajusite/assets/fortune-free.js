@@ -3259,7 +3259,7 @@ function renderYongShin(saju) {
     },
   };
 
-  function yongCard(label, elem, role, desc) {
+  function yongCard(role, elem, desc) {
     const c = ELEM_CLR[elem] || '#7a82a8';
     const roleKey = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
     const isGi = role==='기신';
@@ -3303,9 +3303,9 @@ function renderYongShin(saju) {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      ${yongCard(t('용신'), ys.yong, t('용신'), '')}
-      ${yongCard(t('희신'), ys.hee,  t('희신'), '')}
-      ${yongCard(t('기신'), ys.gi,   t('기신'), '')}
+      ${yongCard('용신', ys.yong, '')}
+      ${yongCard('희신', ys.hee,  '')}
+      ${yongCard('기신', ys.gi,   '')}
     </div>
   </div>`;
 }
