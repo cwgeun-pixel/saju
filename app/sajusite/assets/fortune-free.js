@@ -3174,7 +3174,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
         ${scoreBadge(pct)}
       </div>
       ${dGauge(pct, glowColor)}
-      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:${glowColor}15;color:${glowColor};font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px;border:1px solid ${glowColor}30">${lv.emoji} ${lv.label}</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:${glowColor}15;color:${glowColor};font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px;border:1px solid ${glowColor}30">${lv.emoji} ${t(lv.label)}</div>
       <div style="color:#b8c0d8;font-size:14px;margin-top:10px;line-height:1.75;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid ${glowColor}50">${detailText}</div>
     </div>`;
   }).join('');
