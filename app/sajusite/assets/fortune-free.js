@@ -3196,7 +3196,7 @@ function renderDailyCalendar(saju, yp, mp, dp) {
         <div style="flex:1">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span style="color:#8a8fa8;font-size:16px;font-weight:600">${t('운세 지수')}</span>
-            <span style="color:${scoreColor(todayPct)};font-weight:800;font-size:26px;font-family:'Cormorant Garamond',serif">${Math.round(todayPct)}점</span>
+            <span style="color:${scoreColor(todayPct)};font-weight:800;font-size:26px;font-family:'Cormorant Garamond',serif">${Math.round(todayPct)}${t('점')}</span>
           </div>
           ${dGauge(todayPct, scoreColor(todayPct))}
           <p style="color:#c0c8e0;font-size:17px;margin-top:12px;line-height:1.8">${TODAY_DESC[todayLv.label]||TODAY_DESC['평(平)']}</p>
