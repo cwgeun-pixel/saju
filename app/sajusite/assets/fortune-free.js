@@ -1609,6 +1609,9 @@ const TX = {
     '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
     'day.0':'일','day.1':'월','day.2':'화','day.3':'수','day.4':'목','day.5':'금','day.6':'토',
     '점':'점','개':'개',
+    '운성.장생':'장생','운성.목욕':'목욕','운성.관대':'관대','운성.임관':'임관','운성.제왕':'제왕',
+    '운성.쇠':'쇠','운성.병':'병','운성.사':'사','운성.묘':'묘','운성.절':'절','운성.태':'태','운성.양':'양',
+    'grade.강':'강','grade.중':'중','grade.약':'약',
     '연애 스타일':'연애 스타일','직업 적성':'직업 적성',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'현재 행성 위치 · 지금 나에게 영향을 주는 에너지',
     '월의 덕, 관재 소멸':'월의 덕, 관재 소멸','강한 기운, 사고·수술 주의':'강한 기운, 사고·수술 주의',
@@ -1934,6 +1937,9 @@ const TX = {
     '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
     'day.0':'Sun','day.1':'Mon','day.2':'Tue','day.3':'Wed','day.4':'Thu','day.5':'Fri','day.6':'Sat',
     '점':'pts','개':'',
+    '운성.장생':'Birth','운성.목욕':'Bathing','운성.관대':'Crown','운성.임관':'Official','운성.제왕':'Emperor',
+    '운성.쇠':'Decline','운성.병':'Illness','운성.사':'Death','운성.묘':'Tomb','운성.절':'Void','운성.태':'Seed','운성.양':'Nurture',
+    'grade.강':'High','grade.중':'Mid','grade.약':'Low',
     '연애 스타일':'Love Style','직업 적성':'Career Aptitude',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Current Planets · Energy affecting you now',
     '월의 덕, 관재 소멸':'Monthly virtue, legal troubles dispelled','강한 기운, 사고·수술 주의':'Strong energy; beware accidents & surgery',
@@ -2202,6 +2208,9 @@ const TX = {
     '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
     'day.0':'日','day.1':'月','day.2':'火','day.3':'水','day.4':'木','day.5':'金','day.6':'土',
     '점':'点','개':'個',
+    '운성.장생':'長生','운성.목욕':'沐浴','운성.관대':'冠帶','운성.임관':'臨官','운성.제왕':'帝旺',
+    '운성.쇠':'衰','운성.병':'病','운성.사':'死','운성.묘':'墓','운성.절':'絶','운성.태':'胎','운성.양':'養',
+    'grade.강':'強','grade.중':'中','grade.약':'弱',
     '연애 스타일':'恋愛スタイル','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'現在の惑星位置 · 影響を与えるエネルギー',
     '월의 덕, 관재 소멸':'月徳、官災消滅','강한 기운, 사고·수술 주의':'強い気、事故・手術に注意',
@@ -2477,6 +2486,9 @@ const TX = {
     '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
     'day.0':'日','day.1':'一','day.2':'二','day.3':'三','day.4':'四','day.5':'五','day.6':'六',
     '점':'分','개':'個',
+    '운성.장생':'長生','운성.목욕':'沐浴','운성.관대':'冠帶','운성.임관':'臨官','운성.제왕':'帝旺',
+    '운성.쇠':'衰','운성.병':'病','운성.사':'死','운성.묘':'墓','운성.절':'絶','운성.태':'胎','운성.양':'養',
+    'grade.강':'强','grade.중':'中','grade.약':'弱',
     '연애 스타일':'戀愛風格','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'當前行星位置 · 影響您的能量',
     '월의 덕, 관재 소멸':'月德，官災消滅','강한 기운, 사고·수술 주의':'強大氣運，注意事故與手術',
@@ -2802,6 +2814,9 @@ const TX = {
     '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
     'day.0':'Dom','day.1':'Lun','day.2':'Mar','day.3':'Mié','day.4':'Jue','day.5':'Vie','day.6':'Sáb',
     '점':'pts','개':'',
+    '운성.장생':'Nac.','운성.목욕':'Crec.','운성.관대':'Corona','운성.임관':'Ascenso','운성.제왕':'Cumbre',
+    '운성.쇠':'Declive','운성.병':'Debil.','운성.사':'Extinc.','운성.묘':'Reposo','운성.절':'Vacío','운성.태':'Semilla','운성.양':'Nutr.',
+    'grade.강':'Alto','grade.중':'Med','grade.약':'Bajo',
     '연애 스타일':'Estilo amoroso','직업 적성':'Aptitud profesional',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Planetas actuales · Energía que te influye ahora',
     '월의 덕, 관재 소멸':'Virtud mensual, problemas legales disipados','강한 기운, 사고·수술 주의':'Energía fuerte; cuidado con accidentes y cirugías',
@@ -3357,11 +3372,11 @@ function renderSijunseong(saju) {
     const gradeStyle = GRADE_STYLE[grade];
     return `<div style="position:relative;background:linear-gradient(160deg,#13162a,#0e1020);border:1px solid ${pc}30;border-radius:16px;padding:20px 14px 18px;text-align:center;overflow:hidden;transition:transform 0.2s;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${pc}80,transparent)"></div>
-      <div style="position:absolute;top:10px;right:10px;${gradeStyle};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em">${grade}</div>
+      <div style="position:absolute;top:10px;right:10px;${gradeStyle};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em">${t('grade.'+grade)}</div>
       <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,${bg}cc,${bg}66);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px ${bg}50,inset 0 1px 0 rgba(255,255,255,0.15);border:2px solid ${pc}40">
         <span style="font-size:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))">${sjs.emoji}</span>
       </div>
-      <div style="font-weight:800;font-size:26px;color:#f0e6d0;font-family:'Cormorant Garamond',serif;margin-bottom:2px;letter-spacing:0.02em">${sjs.name}</div>
+      <div style="font-weight:800;font-size:26px;color:#f0e6d0;font-family:'Cormorant Garamond',serif;margin-bottom:2px;letter-spacing:0.02em">${t('운성.'+sjs.name)}</div>
       <div style="color:#8a7fa8;font-size:13px;margin-bottom:12px;letter-spacing:0.05em">(${hanja})</div>
       <div style="border-top:1px solid ${pc}20;padding-top:12px;margin-bottom:6px">
         <div style="font-weight:700;font-size:14px;color:${pc};margin-bottom:2px">${PILLAR_NAMES[i]}</div>
@@ -3472,7 +3487,7 @@ function renderDaewoon(saju) {
           <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">${t('대운 십성')}</div>
           <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${stemSipsin}</div>
           <div style="margin-top:6px">
-            <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${unseong}(${unseongHanja})</span>
+            <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${t('운성.'+unseong)}(${unseongHanja})</span>
           </div>
         </div>
       </div>
