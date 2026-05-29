@@ -3633,19 +3633,18 @@ function renderZiweiSection(chart) {
           <span style="color:#e8dfc8;font-weight:700;font-size:16px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(palaceName)}</span>
           <span style="background:rgba(212,175,55,0.1);color:#9d8aa0;font-size:12px;padding:2px 7px;border-radius:6px;border:1px solid rgba(212,175,55,0.2)">${palace.ganZhi}</span>
         </div>
-        <p style="color:#7a6f8a;font-size:14px">이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.</p>
+        <p style="color:#7a6f8a;font-size:14px">${t('이 궁에는 주성이 없어 대궁(對宮) 성향으로 판단합니다.')}</p>
       </div>`;
     }
 
     const starCards = mains.map(s => {
-      const baseInfo = STAR_DESC[s.name] || { fate:s.name, wealth:'', love:'' };
       const extraInfo = STAR_PALACE_DESC[s.name] || {};
       const field = pi.field;
       let content;
-      if (field === 'fate') content = baseInfo.fate;
-      else if (field === 'wealth') content = baseInfo.wealth;
-      else if (field === 'love') content = baseInfo.love;
-      else content = extraInfo[field] || baseInfo.fate;
+      if (field === 'fate') content = t(`star.${s.name}.fate`);
+      else if (field === 'wealth') content = t(`star.${s.name}.wealth`);
+      else if (field === 'love') content = t(`star.${s.name}.love`);
+      else content = extraInfo[field] || t(`star.${s.name}.fate`);
 
       const siHua = s.siHua
         ? `<span style="background:${s.siHua==='化忌'?'rgba(248,113,113,0.15)':'rgba(212,175,55,0.15)'};color:${s.siHua==='化忌'?'#f87171':'#d4af37'};font-size:12px;padding:2px 7px;border-radius:8px;margin-left:6px;border:1px solid ${s.siHua==='化忌'?'rgba(248,113,113,0.3)':'rgba(212,175,55,0.3)'}">${SIHAU_LABEL[s.siHua]||s.siHua}</span>` : '';
