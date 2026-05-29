@@ -1410,6 +1410,7 @@ const TX = {
     '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.':'나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.',
     '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.':'나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.',
     '당신의 띠는':'당신의 띠는','띠 입니다':'띠 입니다',
+    'elem.목':'木 목','elem.화':'火 화','elem.토':'土 토','elem.금':'金 금','elem.수':'水 수',
     '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.':'대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.',
     '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.':'대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.',
     '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.':'독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.',
@@ -1814,6 +1815,7 @@ const TX = {
     '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.':'Excessive Wood energy disrupts balance. Be cautious of stubbornness or overexpansion. Overusing the east direction and green hues may lead to energy depletion, so moderation is necessary.',
     '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.':'This breathes life into a chart lacking Wood energy. It replenishes growth, creativity, and challenge energies, making the east direction, green colors, and spring activities auspicious. Make good use of favorable times for new beginnings or business expansion.',
     '당신의 띠는':'Your zodiac sign is','띠 입니다':' Year',
+    'elem.목':'Wood','elem.화':'Fire','elem.토':'Earth','elem.금':'Metal','elem.수':'Water',
     '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.':'The stable energy of Earth grounds you. Central and earth-tone colors are auspicious, and focusing on real estate, savings, and health management will open your luck. Gaining support through trust and sincerity is important.',
     '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.':'You value conversation and intellectual connection. While interested in many people, you seek a true soulmate. You prefer free relationships and dislike constraints.',
     '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.':'You desire a unique and free love. You prefer a partner like a friend and value intellectual rapport and shared values. Mental connection is more important than emotional intimacy.',
@@ -2090,6 +2092,7 @@ const TX = {
     '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.':'木の気が過剰でバランスを乱します。過度な頑固さや無理な拡張に注意してください。東の方角や緑色系を過度に使うとエネルギー消耗が大きくなるため、節制が必要です。',
     '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.':'木の気が不足した命式に活気を吹き込みます。成長・創造・挑戦のエネルギーを補うため、東の方角、緑色系、春の活動が吉です。新しい始まりや事業拡大に有利な時期をうまく活用しましょう。',
     '당신의 띠는':'あなたの干支は','띠 입니다':'年生まれです',
+    'elem.목':'木 もく','elem.화':'火 か','elem.토':'土 ど','elem.금':'金 きん','elem.수':'水 すい',
     '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.':'大地の安定した気が中心を支えます。中央・黄土色系が吉で、不動産・貯蓄・健康管理に集中すると運が開けます。信頼と誠実さで周囲の支持を得ることが重要です。',
     '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.':'対話と知的交流を重視します。多様な人に関心を示しますが、真のソウルメイトを探します。自由な関係を好み、束縛を嫌います。',
     '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.':'独特で自由な愛を求めます。友人のようなパートナーを好み、知的交流と共通の価値観を重視します。感情的親密さより精神的つながりをより重要視します。',
@@ -2360,6 +2363,7 @@ const TX = {
     '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.':'木氣過盛，導致失衡。請注意過於固執或過度擴張。過度使用東方方位及綠色系會消耗大量能量，需節制。',
     '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.':'為木氣不足的命盤注入生氣。補充成長、創意與挑戰的能量，東方方位、綠色系及春季活動皆有利。善用新開始或事業擴展的良機。',
     '당신의 띠는':'你的生肖是','띠 입니다':'年生肖',
+    'elem.목':'木','elem.화':'火','elem.토':'土','elem.금':'金','elem.수':'水',
     '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.':'大地穩定的氣息為中心定下基礎。中央及黃土色系有利，專注於房地產、儲蓄與健康管理將開啟好運。以信賴與誠實獲得周遭支持至關重要。',
     '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.':'重視對話與智慧交流。對多樣的人群感興趣，但尋找真正的靈魂伴侶。偏好自由關係，厭惡束縛。',
     '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.':'渴望獨特且自由的愛情。偏好如朋友般的伴侶，重視智慧交流與共同價值觀。精神連結比情感親密更重要。',
@@ -2680,6 +2684,7 @@ const TX = {
     '나무 기운이 과잉되어 균형을 흐트러뜨립니다. 지나친 고집이나 무리한 확장을 조심하세요. 동쪽 방향과 초록색 계열을 과도하게 사용하면 에너지 소모가 커질 수 있으니 절제가 필요합니다.':'El exceso de energía de madera desequilibra la armonía. Tenga cuidado con la terquedad excesiva o expansiones forzadas. Usar en exceso la dirección este y tonos verdes puede consumir mucha energía, por lo que se requiere moderación.',
     '나무의 기운이 부족한 명식에 생기를 불어넣습니다. 성장·창의·도전의 에너지를 보충해 주므로 동쪽 방향, 초록색 계열, 봄철 활동이 길합니다. 새로운 시작이나 사업 확장에 유리한 시기를 잘 활용하세요.':'Aporta vitalidad a una carta natal con falta de energía de madera. Suple energía de crecimiento, creatividad y desafío, por lo que son favorables la dirección este, tonos verdes y actividades primaverales. Aproveche bien este período para nuevos comienzos o expansión de negocios.',
     '당신의 띠는':'Tu signo zodiacal es','띠 입니다':' (año zodiacal)',
+    'elem.목':'Madera','elem.화':'Fuego','elem.토':'Tierra','elem.금':'Metal','elem.수':'Agua',
     '대지의 안정된 기운이 중심을 잡아줍니다. 중앙·황토색 계열이 길하며 부동산·저축·건강 관리에 집중하면 운이 열립니다. 신뢰와 성실함으로 주변의 지지를 얻는 것이 중요합니다.':'La energía estable de la tierra sostiene el centro. Son favorables los tonos centrales y tierra amarilla, y enfocarse en bienes raíces, ahorros y cuidado de la salud abrirá la suerte. Es importante ganar el apoyo de quienes te rodean con confianza y sinceridad.',
     '대화와 지적 교감을 중시합니다. 다양한 사람에게 관심을 보이지만, 진정한 소울메이트를 찾습니다. 자유로운 관계를 선호하며 구속을 싫어합니다.':'Valora la comunicación y el intercambio intelectual. Muestra interés por diversas personas, pero busca un alma gemela verdadera. Prefiere relaciones libres y detesta las ataduras.',
     '독특하고 자유로운 사랑을 원합니다. 친구 같은 파트너를 선호하며, 지적 교감과 공통된 가치관을 중시합니다. 감정적 친밀감보다 정신적 연결을 더 중요하게 여깁니다.':'Desea un amor único y libre. Prefiere una pareja que sea como un amigo, valorando la conexión intelectual y los valores compartidos. Da más importancia a la conexión mental que a la intimidad emocional.',
@@ -3206,13 +3211,14 @@ function renderYongShin(saju) {
   const ys = computeYongShin(saju);
   const ELEM_KO  = {'목':'木 목','화':'火 화','토':'土 토','금':'金 금','수':'水 수'};
   const ELEM_CLR = {'목':'#34d399','화':'#f87171','토':'#fbbf24','금':'#94a3b8','수':'#60a5fa'};
+  const getElemName = e => t('elem.'+e) || ELEM_KO[e];
   const total = ys.total || 8;
 
   const elemBars = Object.entries(ys.elems).map(([e, cnt]) => {
     const pct = Math.round((cnt/total)*100);
     return `<div style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-        <span style="color:${ELEM_CLR[e]};font-size:18px;font-weight:600">${ELEM_KO[e]}</span>
+        <span style="color:${ELEM_CLR[e]};font-size:18px;font-weight:600">${getElemName(e)}</span>
         <span style="${D.sub}">${cnt}개 · ${pct}%</span>
       </div>
       ${dGauge(pct, ELEM_CLR[e])}
@@ -3255,7 +3261,7 @@ function renderYongShin(saju) {
         <span style="background:linear-gradient(135deg,${c}30,${c}15);color:${c};font-weight:800;font-size:17px;padding:3px 10px;border-radius:10px;border:1px solid ${c}40;display:inline-block">${t(role)}</span>
       </div>
       <div style="text-align:center;background:${c}12;border-radius:8px;padding:6px;margin-bottom:8px">
-        <span style="color:${c};font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? ELEM_KO[elem] : '-'}</span>
+        <span style="color:${c};font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? getElemName(elem) : '-'}</span>
       </div>
       <div style="color:#8a8fa8;font-size:12px;text-align:center;line-height:1.4;margin-bottom:8px">${t(roleKey)}</div>
       ${detailDesc ? `<div style="background:${isGi?'rgba(248,113,113,0.06)':'rgba(212,175,55,0.06)'};border:1px solid ${c}20;border-radius:8px;padding:10px;color:#b0b8d0;font-size:12px;line-height:1.7;text-align:left">${detailDesc}</div>` : ''}
