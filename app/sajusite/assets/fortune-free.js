@@ -1607,6 +1607,7 @@ const TX = {
     '신살 분석':'신살 분석','대운 십성':'대운 십성','당신의 별자리는':'당신의 별자리는','입니다':'입니다',
     '대운 (大運)':'대운 (大運)','현재 나이':'현재 나이','순행':'순행','역행':'역행',
     '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
+    '세':'세','양년':'양년','대운수':'대운수','대운 십성':'대운 십성',
     'day.0':'일','day.1':'월','day.2':'화','day.3':'수','day.4':'목','day.5':'금','day.6':'토',
     '점':'점','개':'개',
     '운성.장생':'장생','운성.목욕':'목욕','운성.관대':'관대','운성.임관':'임관','운성.제왕':'제왕',
@@ -1935,6 +1936,7 @@ const TX = {
     '신살 분석':'Special Stars','대운 십성':'Fortune Cycle Star','당신의 별자리는':'Your zodiac sign is','입니다':'',
     '대운 (大運)':'Grand Fortune Cycle','현재 나이':'Current Age','순행':'Forward','역행':'Reverse',
     '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
+    '세':'','양년':'yang yr','대운수':'cycle age','대운 십성':'Fortune Cycle Star',
     'day.0':'Sun','day.1':'Mon','day.2':'Tue','day.3':'Wed','day.4':'Thu','day.5':'Fri','day.6':'Sat',
     '점':'pts','개':'',
     '운성.장생':'Birth','운성.목욕':'Bathing','운성.관대':'Crown','운성.임관':'Official','운성.제왕':'Emperor',
@@ -2206,6 +2208,7 @@ const TX = {
     '신살 분석':'神殺分析','대운 십성':'大運十星','당신의 별자리는':'あなたの星座は','입니다':'です',
     '대운 (大運)':'大運','현재 나이':'現在の年齢','순행':'順行','역행':'逆行',
     '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
+    '세':'歳','양년':'陽年','대운수':'大運数','대운 십성':'大運十星',
     'day.0':'日','day.1':'月','day.2':'火','day.3':'水','day.4':'木','day.5':'金','day.6':'土',
     '점':'点','개':'個',
     '운성.장생':'長生','운성.목욕':'沐浴','운성.관대':'冠帶','운성.임관':'臨官','운성.제왕':'帝旺',
@@ -2484,6 +2487,7 @@ const TX = {
     '신살 분석':'神煞分析','대운 십성':'大運十星','당신의 별자리는':'您的星座是','입니다':'',
     '대운 (大運)':'大运','현재 나이':'当前年龄','순행':'顺行','역행':'逆行',
     '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
+    '세':'岁','양년':'陽年','대운수':'大运数','대운 십성':'大运十星',
     'day.0':'日','day.1':'一','day.2':'二','day.3':'三','day.4':'四','day.5':'五','day.6':'六',
     '점':'分','개':'個',
     '운성.장생':'長生','운성.목욕':'沐浴','운성.관대':'冠帶','운성.임관':'臨官','운성.제왕':'帝旺',
@@ -2812,6 +2816,7 @@ const TX = {
     '신살 분석':'Estrellas especiales','대운 십성':'Estrella del ciclo','당신의 별자리는':'Tu signo zodiacal es','입니다':'',
     '대운 (大運)':'Gran Ciclo de Fortuna','현재 나이':'Edad actual','순행':'Directo','역행':'Inverso',
     '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
+    '세':'','양년':'año yang','대운수':'ciclo','대운 십성':'Estrella del Ciclo',
     'day.0':'Dom','day.1':'Lun','day.2':'Mar','day.3':'Mié','day.4':'Jue','day.5':'Vie','day.6':'Sáb',
     '점':'pts','개':'',
     '운성.장생':'Nac.','운성.목욕':'Crec.','운성.관대':'Corona','운성.임관':'Ascenso','운성.제왕':'Cumbre',
@@ -3481,7 +3486,7 @@ function renderDaewoon(saju) {
             <span style="font-size:32px;font-weight:800;color:#e8d5a3;font-family:'Cormorant Garamond',serif;letter-spacing:0.02em">${ganziStr(cur.ganzi)}</span>
             <span style="font-size:18px;color:#9d8aa0">(${cur.ganzi[0]}${cur.ganzi[1]})</span>
           </div>
-          <div style="font-size:14px;color:#8a7fa8;margin-top:4px">${curStartAge}세 ~ ${curEndAge}세</div>
+          <div style="font-size:14px;color:#8a7fa8;margin-top:4px">${curStartAge}${t('세')} ~ ${curEndAge}${t('세')}</div>
         </div>
         <div style="text-align:right">
           <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">${t('대운 십성')}</div>
@@ -3522,10 +3527,10 @@ function renderDaewoon(saju) {
       <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};margin:0 auto 5px;${isCurrent ? 'box-shadow:0 0 6px #22c55e' : ''}"></div>
       <div style="font-weight:700;font-size:13px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:1px">${ganziStr(dw.ganzi)}</div>
       <div style="font-size:9px;color:#6b7280;margin-bottom:4px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
-      <div style="font-size:9px;color:${isCurrent ? '#22c55e' : (isFuture ? '#eab308' : '#4b5563')};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
+      <div style="font-size:9px;color:${isCurrent ? '#22c55e' : (isFuture ? '#eab308' : '#4b5563')};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}${t('세')}</div>
       <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${dwStemSipsin}</div>
       <div style="font-size:9px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:3px">${dwBranchSipsin}</div>
-      <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
+      <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${t('운성.'+dwUnseong)}</div>
     </div>`;
   }).join('');
 
@@ -3537,8 +3542,8 @@ function renderDaewoon(saju) {
   </div>`;
 
   return `<div style="${D.wrap}">
-    ${sectionHeader('D2', t('대운 (大運)'), `${t('현재 나이')}: ${currentAge}세 · ${flowLabel}`)}
-    <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + 양년 = ${flowLabel} · 대운수 ${cur.age}세</div>
+    ${sectionHeader('D2', t('대운 (大運)'), `${t('현재 나이')}: ${currentAge}${t('세')} · ${flowLabel}`)}
+    <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + ${t('양년')} = ${flowLabel} · ${t('대운수')} ${cur.age}${t('세')}</div>
     ${currentCard}
     <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px">
       ${timelineCards}
