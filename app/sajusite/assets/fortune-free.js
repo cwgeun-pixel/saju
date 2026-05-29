@@ -4228,6 +4228,8 @@ document.addEventListener('click', e => {
     const captured = captureMainFormInput();
     if (captured) {
       try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
+      // 탭이 이미 마운트된 경우 mount()가 tryAutoRun을 호출하지 않으므로 직접 호출
+      setTimeout(() => tryAutoRun().catch(console.error), 900);
     }
   }
 }, true);
