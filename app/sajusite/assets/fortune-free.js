@@ -1605,6 +1605,8 @@ const TX = {
     '🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)':'🔮 무료 운세 보기 (사주 · 자미두수 · 점성학)',
     '🔮 무료 운세 탭':'🔮 무료 운세 탭',
     '신살 분석':'신살 분석','대운 십성':'대운 십성','당신의 별자리는':'당신의 별자리는','입니다':'입니다',
+    '대운 (大運)':'대운 (大運)','현재 나이':'현재 나이','순행':'순행','역행':'역행',
+    '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
     '연애 스타일':'연애 스타일','직업 적성':'직업 적성',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'현재 행성 위치 · 지금 나에게 영향을 주는 에너지',
     '월의 덕, 관재 소멸':'월의 덕, 관재 소멸','강한 기운, 사고·수술 주의':'강한 기운, 사고·수술 주의',
@@ -1926,6 +1928,8 @@ const TX = {
     '부모운·윗사람과의 관계':'Parents fortune and relationships with superiors',
     '황소자리는 금성이 지배하는 흙의 별자리입니다. 안정과 물질적 풍요를 중시하며, 한번 결정한 것은 끝까지 밀고 나가는 끈기가 있습니다. 감각적인 즐거움과 아름다움을 사랑하며, 신뢰할 수 있는 든든한 파트너입니다. 변화에 저항하는 고집스러운 면이 있어 유연성을 기르는 것이 중요합니다.':'Taurus is an earth sign ruled by Venus. It values stability and material abundance, showing perseverance to see decisions through to the end. It loves sensual pleasures and beauty, making it a reliable and steadfast partner. However, it can be stubborn and resistant to change, so cultivating flexibility is important.',
     '신살 분석':'Special Stars','대운 십성':'Fortune Cycle Star','당신의 별자리는':'Your zodiac sign is','입니다':'',
+    '대운 (大運)':'Grand Fortune Cycle','현재 나이':'Current Age','순행':'Forward','역행':'Reverse',
+    '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
     '연애 스타일':'Love Style','직업 적성':'Career Aptitude',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Current Planets · Energy affecting you now',
     '월의 덕, 관재 소멸':'Monthly virtue, legal troubles dispelled','강한 기운, 사고·수술 주의':'Strong energy; beware accidents & surgery',
@@ -2190,6 +2194,8 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'活動性と推進力が強まる時期です。財の流動性が大きくなり、人間関係が広がります。衝動的な投資や保証は避け、慎重な財務管理が必要です。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'活発な財の活動と社交性が高まる時期です。事業のチャンスや投資の利益が生まれる可能性がありますが、変動性も大きいです。異性との縁が活発になり、対人関係が広がります。',
     '신살 분석':'神殺分析','대운 십성':'大運十星','당신의 별자리는':'あなたの星座は','입니다':'です',
+    '대운 (大運)':'大運','현재 나이':'現在の年齢','순행':'順行','역행':'逆行',
+    '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
     '연애 스타일':'恋愛スタイル','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'現在の惑星位置 · 影響を与えるエネルギー',
     '월의 덕, 관재 소멸':'月徳、官災消滅','강한 기운, 사고·수술 주의':'強い気、事故・手術に注意',
@@ -2461,6 +2467,8 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'這是一個活動力與推動力強烈增長的時期。財務流動性大，人際關係廣泛。需避免衝動投資或擔保，謹慎理財尤為重要。',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'這是一個財務活動活躍、社交性提升的時期。可能出現商機或投資收益，但波動性亦大。異性緣分活躍，人際關係擴展。',
     '신살 분석':'神煞分析','대운 십성':'大運十星','당신의 별자리는':'您的星座是','입니다':'',
+    '대운 (大運)':'大运','현재 나이':'当前年龄','순행':'顺行','역행':'逆行',
+    '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
     '연애 스타일':'戀愛風格','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'當前行星位置 · 影響您的能量',
     '월의 덕, 관재 소멸':'月德，官災消滅','강한 기운, 사고·수술 주의':'強大氣運，注意事故與手術',
@@ -2782,6 +2790,8 @@ const TX = {
     '활동성과 추진력이 강해지는 시기입니다. 재물의 유동성이 크고 인간관계가 넓어집니다. 충동적인 투자나 보증은 피하고 신중한 재무 관리가 필요합니다.':'Es un período en el que la actividad y la capacidad de impulso se fortalecen. La liquidez de los bienes es alta y las relaciones humanas se amplían. Es necesario evitar inversiones impulsivas o garantías y manejar las finanzas con prudencia.',
     '활발한 재물 활동과 사교성이 높아지는 시기입니다. 사업 기회나 투자 수익이 생길 수 있으나 변동성도 큽니다. 이성 인연이 활발해지고 대인관계가 넓어집니다.':'Es un momento de intensa actividad financiera y aumento de la sociabilidad. Pueden surgir oportunidades de negocio o ganancias por inversiones, aunque la volatilidad también es alta. Las relaciones amorosas se activan y las conexiones sociales se expanden.',
     '신살 분석':'Estrellas especiales','대운 십성':'Estrella del ciclo','당신의 별자리는':'Tu signo zodiacal es','입니다':'',
+    '대운 (大運)':'Gran Ciclo de Fortuna','현재 나이':'Edad actual','순행':'Directo','역행':'Inverso',
+    '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
     '연애 스타일':'Estilo amoroso','직업 적성':'Aptitud profesional',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Planetas actuales · Energía que te influye ahora',
     '월의 덕, 관재 소멸':'Virtud mensual, problemas legales disipados','강한 기운, 사고·수술 주의':'Energía fuerte; cuidado con accidentes y cirugías',
@@ -3377,7 +3387,7 @@ function renderDaewoon(saju) {
   const isYang = YANG_STEMS.has(dayStem);
   const isMale = gender !== 'F';
   const isForward = (isYang && isMale) || (!isYang && !isMale);
-  const flowLabel = isForward ? '순행' : '역행';
+  const flowLabel = isForward ? t('순행') : t('역행');
 
   // 현재 대운 찾기
   let currentIdx = -1;
