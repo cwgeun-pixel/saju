@@ -1606,6 +1606,12 @@ const TX = {
     '🔮 무료 운세 탭':'🔮 무료 운세 탭',
     '신살 분석':'신살 분석','대운 십성':'대운 십성','당신의 별자리는':'당신의 별자리는','입니다':'입니다',
     '원국':'원국','사주 원국의 특수 기운 분석':'사주 원국의 특수 기운 분석',
+    'sinsal.천을귀인':'천을귀인','sinsal.천덕귀인':'천덕귀인','sinsal.월덕귀인':'월덕귀인',
+    'sinsal.태극귀인':'태극귀인','sinsal.문창귀인':'문창귀인',
+    'sinsal.천의성':'천의성','sinsal.금여성':'금여성','sinsal.화개':'화개',
+    'sinsal.귀문관살':'귀문관살','sinsal.백호살':'백호살',
+    'sinsal.괴강살':'괴강살','sinsal.양인살':'양인살',
+    'sinsal.도화살':'도화살','sinsal.홍염살':'홍염살',
     '대운 (大運)':'대운 (大運)','현재 나이':'현재 나이','순행':'순행','역행':'역행',
     '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
     '세':'세','양년':'양년','대운수':'대운수','대운 십성':'대운 십성',
@@ -1939,6 +1945,12 @@ const TX = {
     '길신':'Auspicious Stars','긍정적인 기운':'Positive energy',
     '흉신':'Inauspicious Stars','주의가 필요한 기운':'Energy requiring caution',
     '중성 신살':'Neutral Stars','상황에 따라 달라지는 기운':'Energy that varies by situation',
+    'sinsal.천을귀인':'Heavenly Nobleman Star','sinsal.천덕귀인':'Heavenly Virtue Star','sinsal.월덕귀인':'Monthly Virtue Star',
+    'sinsal.태극귀인':'Taiji Nobleman Star','sinsal.문창귀인':'Literary Nobleman Star',
+    'sinsal.천의성':'Heavenly Physician Star','sinsal.금여성':'Golden Carriage Star','sinsal.화개':'Canopy Star',
+    'sinsal.귀문관살':'Ghost Gate Star','sinsal.백호살':'White Tiger Star',
+    'sinsal.괴강살':'Powerful Authority Star','sinsal.양인살':'Yang Blade Star',
+    'sinsal.도화살':'Peach Blossom Star','sinsal.홍염살':'Red Charm Star',
     '대운 (大運)':'Grand Fortune Cycle','현재 나이':'Current Age','순행':'Forward','역행':'Reverse',
     '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
     '세':'','양년':'yang yr','대운수':'cycle age','대운 십성':'Fortune Cycle Star',
@@ -2215,6 +2227,12 @@ const TX = {
     '길신':'吉神','긍정적인 기운':'ポジティブなエネルギー',
     '흉신':'凶神','주의가 필요한 기운':'注意が必要なエネルギー',
     '중성 신살':'中性の神殺','상황에 따라 달라지는 기운':'状況によって変わるエネルギー',
+    'sinsal.천을귀인':'天乙貴人','sinsal.천덕귀인':'天德貴人','sinsal.월덕귀인':'月德貴人',
+    'sinsal.태극귀인':'太極貴人','sinsal.문창귀인':'文昌貴人',
+    'sinsal.천의성':'天醫星','sinsal.금여성':'金輿星','sinsal.화개':'華蓋星',
+    'sinsal.귀문관살':'鬼門関殺','sinsal.백호살':'白虎殺',
+    'sinsal.괴강살':'魁罡殺','sinsal.양인살':'羊刃殺',
+    'sinsal.도화살':'桃花殺','sinsal.홍염살':'紅艶殺',
     '대운 (大運)':'大運','현재 나이':'現在の年齢','순행':'順行','역행':'逆行',
     '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
     '세':'歳','양년':'陽年','대운수':'大運数','대운 십성':'大運十星',
@@ -2498,6 +2516,12 @@ const TX = {
     '길신':'吉神','긍정적인 기운':'正面能量',
     '흉신':'凶神','주의가 필요한 기운':'需要注意的能量',
     '중성 신살':'中性神煞','상황에 따라 달라지는 기운':'随情况变化的能量',
+    'sinsal.천을귀인':'天乙貴人','sinsal.천덕귀인':'天德貴人','sinsal.월덕귀인':'月德貴人',
+    'sinsal.태극귀인':'太極貴人','sinsal.문창귀인':'文昌貴人',
+    'sinsal.천의성':'天醫星','sinsal.금여성':'金輿星','sinsal.화개':'華蓋星',
+    'sinsal.귀문관살':'鬼門關殺','sinsal.백호살':'白虎殺',
+    'sinsal.괴강살':'魁罡殺','sinsal.양인살':'羊刃殺',
+    'sinsal.도화살':'桃花殺','sinsal.홍염살':'紅艶殺',
     '대운 (大運)':'大运','현재 나이':'当前年龄','순행':'顺行','역행':'逆行',
     '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
     '세':'岁','양년':'陽年','대운수':'大运数','대운 십성':'大运十星',
@@ -2831,6 +2855,12 @@ const TX = {
     '길신':'Estrellas Auspiciosas','긍정적인 기운':'Energía positiva',
     '흉신':'Estrellas Inauspiciosas','주의가 필요한 기운':'Energía que requiere precaución',
     '중성 신살':'Estrellas Neutrales','상황에 따라 달라지는 기운':'Energía que varía según la situación',
+    'sinsal.천을귀인':'Estrella Noble Celestial','sinsal.천덕귀인':'Estrella de Virtud Celestial','sinsal.월덕귀인':'Estrella de Virtud Mensual',
+    'sinsal.태극귀인':'Estrella Noble Taiji','sinsal.문창귀인':'Estrella Literaria',
+    'sinsal.천의성':'Estrella Médico Celestial','sinsal.금여성':'Estrella del Carruaje Dorado','sinsal.화개':'Estrella del Dosel',
+    'sinsal.귀문관살':'Estrella Puerta Fantasma','sinsal.백호살':'Estrella Tigre Blanco',
+    'sinsal.괴강살':'Estrella de Gran Autoridad','sinsal.양인살':'Estrella Hoja Yang',
+    'sinsal.도화살':'Estrella Flor de Durazno','sinsal.홍염살':'Estrella del Encanto Rojo',
     '대운 (大運)':'Gran Ciclo de Fortuna','현재 나이':'Edad actual','순행':'Directo','역행':'Inverso',
     '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
     '세':'','양년':'año yang','대운수':'ciclo','대운 십성':'Estrella del Ciclo',
@@ -3666,7 +3696,7 @@ function renderSinsal(saju) {
     return `<div style="background:linear-gradient(135deg,#131726 0%,#161b2e 100%);border:1px solid ${glowColor}45;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.04);">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${glowColor}70,transparent)"></div>
       <div style="position:absolute;top:9px;right:11px;font-size:11px;color:${accentColor};background:${glowColor}18;padding:2px 9px;border-radius:20px;font-weight:600;border:1px solid ${glowColor}35;letter-spacing:0.3px">${item.pillar}</div>
-      <div style="font-weight:700;font-size:15px;color:#e8dfc8;margin-bottom:3px">${item.name} <span style="font-size:12px;color:${accentColor};font-weight:400;opacity:0.9">(${item.hanja})</span></div>
+      <div style="font-weight:700;font-size:15px;color:#e8dfc8;margin-bottom:3px">${t('sinsal.'+item.name)} <span style="font-size:12px;color:${accentColor};font-weight:400;opacity:0.9">(${item.hanja})</span></div>
       <div style="font-size:12px;color:#9d9db5;line-height:1.55">${item.shortDesc}</div>
     </div>`;
   }
