@@ -4285,12 +4285,13 @@ document.addEventListener('honcheon:langchange', () => {
     </div>
   </div>`;
 
-  // gf-reset 클릭 시 계산기로 복귀
+  // gf-reset 클릭 시 계산기로 복귀 (capture로 runFortune 내부 리셋보다 먼저 실행)
   root.addEventListener('click', e => {
     if (e.target.id==='gf-reset' || e.target.closest('#gf-reset')) {
+      e.stopImmediatePropagation();
       window.location.href = '/app/';
     }
-  });
+  }, true);
 
   (async () => {
     let input = null;
