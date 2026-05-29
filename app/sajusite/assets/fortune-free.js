@@ -1608,7 +1608,7 @@ const TX = {
     '대운 (大運)':'대운 (大運)','현재 나이':'현재 나이','순행':'순행','역행':'역행',
     '현재 대운':'현재 대운','지난 대운':'지난 대운','미래 대운':'미래 대운',
     'day.0':'일','day.1':'월','day.2':'화','day.3':'수','day.4':'목','day.5':'금','day.6':'토',
-    '점':'점',
+    '점':'점','개':'개',
     '연애 스타일':'연애 스타일','직업 적성':'직업 적성',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'현재 행성 위치 · 지금 나에게 영향을 주는 에너지',
     '월의 덕, 관재 소멸':'월의 덕, 관재 소멸','강한 기운, 사고·수술 주의':'강한 기운, 사고·수술 주의',
@@ -1933,7 +1933,7 @@ const TX = {
     '대운 (大運)':'Grand Fortune Cycle','현재 나이':'Current Age','순행':'Forward','역행':'Reverse',
     '현재 대운':'Current Cycle','지난 대운':'Past Cycle','미래 대운':'Future Cycle',
     'day.0':'Sun','day.1':'Mon','day.2':'Tue','day.3':'Wed','day.4':'Thu','day.5':'Fri','day.6':'Sat',
-    '점':'pts',
+    '점':'pts','개':'',
     '연애 스타일':'Love Style','직업 적성':'Career Aptitude',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Current Planets · Energy affecting you now',
     '월의 덕, 관재 소멸':'Monthly virtue, legal troubles dispelled','강한 기운, 사고·수술 주의':'Strong energy; beware accidents & surgery',
@@ -2201,7 +2201,7 @@ const TX = {
     '대운 (大運)':'大運','현재 나이':'現在の年齢','순행':'順行','역행':'逆行',
     '현재 대운':'現在の大運','지난 대운':'過去の大運','미래 대운':'未来の大運',
     'day.0':'日','day.1':'月','day.2':'火','day.3':'水','day.4':'木','day.5':'金','day.6':'土',
-    '점':'点',
+    '점':'点','개':'個',
     '연애 스타일':'恋愛スタイル','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'現在の惑星位置 · 影響を与えるエネルギー',
     '월의 덕, 관재 소멸':'月徳、官災消滅','강한 기운, 사고·수술 주의':'強い気、事故・手術に注意',
@@ -2476,7 +2476,7 @@ const TX = {
     '대운 (大運)':'大运','현재 나이':'当前年龄','순행':'顺行','역행':'逆行',
     '현재 대운':'当前大运','지난 대운':'过去大运','미래 대운':'未来大运',
     'day.0':'日','day.1':'一','day.2':'二','day.3':'三','day.4':'四','day.5':'五','day.6':'六',
-    '점':'分',
+    '점':'分','개':'個',
     '연애 스타일':'戀愛風格','직업 적성':'職業適性',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'當前行星位置 · 影響您的能量',
     '월의 덕, 관재 소멸':'月德，官災消滅','강한 기운, 사고·수술 주의':'強大氣運，注意事故與手術',
@@ -2801,7 +2801,7 @@ const TX = {
     '대운 (大運)':'Gran Ciclo de Fortuna','현재 나이':'Edad actual','순행':'Directo','역행':'Inverso',
     '현재 대운':'Ciclo Actual','지난 대운':'Ciclo Pasado','미래 대운':'Ciclo Futuro',
     'day.0':'Dom','day.1':'Lun','day.2':'Mar','day.3':'Mié','day.4':'Jue','day.5':'Vie','day.6':'Sáb',
-    '점':'pts',
+    '점':'pts','개':'',
     '연애 스타일':'Estilo amoroso','직업 적성':'Aptitud profesional',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Planetas actuales · Energía que te influye ahora',
     '월의 덕, 관재 소멸':'Virtud mensual, problemas legales disipados','강한 기운, 사고·수술 주의':'Energía fuerte; cuidado con accidentes y cirugías',
@@ -3239,7 +3239,7 @@ function renderYongShin(saju) {
     return `<div style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;margin-bottom:3px">
         <span style="color:${ELEM_CLR[e]};font-size:18px;font-weight:600">${getElemName(e)}</span>
-        <span style="${D.sub}">${cnt}개 · ${pct}%</span>
+        <span style="${D.sub}">${cnt}${t('개')} · ${pct}%</span>
       </div>
       ${dGauge(pct, ELEM_CLR[e])}
     </div>`;
