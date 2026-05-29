@@ -4202,15 +4202,14 @@ function mount() {
     const results = document.getElementById('results');
     if (!results) return;
     if (results.children.length === 0) return;
-    // 이미 이동 중이면 스킵
     if (results.querySelector('#honcheon-fortune-tabs')) return;
 
-    // 결과가 채워지면 데이터를 sessionStorage에 저장하고 무료운세 페이지로 이동
+    // 폼 데이터 저장 시도 (captureMainFormInput 성공 여부와 관계없이 항상 이동)
     const input = captureMainFormInput();
     if (input) {
       try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(input)); } catch {}
-      window.location.href = '/fortune/';
     }
+    window.location.href = '/fortune/';
   } catch(err) {
     console.error('[fortune-free] mount error:', err);
   }
@@ -4305,7 +4304,9 @@ document.addEventListener('honcheon:langchange', () => {
     if (input) {
       await runFortune(input);
     } else {
-      window.location.replace('/app/');
+      // sessionStorage 없으면 직접 입력 폼 표시 (계산기로 돌아가지 않고)
+      const bodyEl = document.getElementById('gf-body');
+      if (bodyEl) bodyEl.innerHTML = inputHtml();
     }
   })();
 })();
