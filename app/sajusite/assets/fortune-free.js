@@ -4266,7 +4266,7 @@ async function runFortune(preInput = null) {
 
     lastInput = { year, month, day, hour, minute, gender, unknownTime };
     const infoLine = preInput
-      ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">${year}년 ${month}월 ${day}일 · ${gender==='F'?t('여'):t('남')}</span></div>`
+      ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">Born ${month}/${day}/${year} · ${gender==='F'?'Female':'Male'}</span></div>`
       : '';
 
     if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
