@@ -4480,6 +4480,61 @@ function switchTab(tabId, results) {
   });
 }
 
+// ─── 관리자 원본 데이터 뷰 ────────────────────────────────────
+
+function renderAdminData(saju, ziwei, natalChart, transitChart, input) {
+  const pillars = saju?.pillars || [];
+  const row = (label, val) => `<tr><td style="color:#8a9ab8;padding:4px 12px 4px 0;white-space:nowrap">${label}</td><td style="color:#e8dfc8;font-family:monospace;font-size:13px;word-break:break-all">${val}</td></tr>`;
+
+  // 사주 8자
+  const sajuRows = pillars.map((p, i) => {
+    const names = ['연주','월주','일주','시주'];
+    const pl = p.pillar || {};
+    return row(names[i], `${pl.stem||''}${pl.branch||''} | 십성:${p.stemSipsin||'-'}/${p.branchSipsin||'-'} | 운성:${p.unseong||'-'}`);
+  }).join('');
+
+  // 자미두수 12궁
+  const palaces = ziwei?.palaces || [];
+  const ziweiRows = palaces.map(p => {
+    const stars = (p.stars||[]).map(s=>s.name).join(',') || '(공궁)';
+    return row(p.name||'', `${p.ganZhi||''} | ${stars}`);
+  }).join('');
+
+  // 점성술 행성
+  const planets = natalChart?.planets || [];
+  const planetRows = planets.map(p =>
+    row(p.name||p.id, `${p.sign||''} ${p.degree?.toFixed(2)||''}° | 하우스:${p.house||'-'}${p.retrograde?' ℞':''}`)
+  ).join('');
+
+  // 하우스 커스프
+  const houses = natalChart?.houses || [];
+  const houseRows = houses.map((h,i) =>
+    row(`${i+1}하우스`, `${h.sign||''} ${h.degree?.toFixed(2)||''}°`)
+  ).join('');
+
+  const section = (title, content) => `
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.08em;margin-bottom:8px;border-bottom:1px solid rgba(212,175,55,0.2);padding-bottom:4px">${title}</div>
+      <table style="width:100%;border-collapse:collapse">${content}</table>
+    </div>`;
+
+  return `
+    <div style="background:rgba(220,30,30,0.06);border:1px solid rgba(220,80,80,0.3);border-radius:14px;padding:18px;margin-bottom:4px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="background:#c0392b;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.06em">ADMIN</span>
+        <span style="color:#e8a0a0;font-size:14px;font-weight:600">원본 계산 데이터 — ${input.year}/${input.month}/${input.day} ${input.gender==='M'?'남':'여'}</span>
+      </div>
+      ${section('📊 사주 원국 (8자)', sajuRows)}
+      ${section('🌟 자미두수 12궁', ziweiRows)}
+      ${section('🪐 점성술 행성', planetRows)}
+      ${section('🏠 점성술 하우스', houseRows)}
+      <details style="margin-top:8px">
+        <summary style="color:#7a82a8;font-size:12px;cursor:pointer">JSON 원본 데이터 보기</summary>
+        <pre style="color:#6a7a9a;font-size:11px;overflow:auto;max-height:300px;margin-top:8px;background:rgba(0,0,0,0.3);padding:10px;border-radius:6px">${JSON.stringify({saju,ziwei,natalChart},null,2).slice(0,8000)}</pre>
+      </details>
+    </div>`;
+}
+
 // ─── 계산 실행 ────────────────────────────────────────────────
 
 async function runFortune(preInput = null) {
@@ -4523,8 +4578,14 @@ async function runFortune(preInput = null) {
       ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">Born ${month}/${day}/${year} · ${gender==='F'?'Female':'Male'}</span></div>`
       : '';
 
+    // 관리자 원본 데이터 저장
+    window.__adminCalcData = { saju, ziwei, natalChart, transitChart, input: { year, month, day, hour, minute, gender, unknownTime } };
+
+    const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+
     if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
       ${infoLine}
+      ${isAdmin ? renderAdminData(saju, ziwei, natalChart, transitChart, { year, month, day, hour, minute, gender }) : ''}
       ${renderBasicFortune(saju, yp, mp, dp, gender)}
       ${renderDailyCalendar(saju, yp, mp, dp)}
       ${renderYongShin(saju)}
