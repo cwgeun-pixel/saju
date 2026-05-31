@@ -204,7 +204,7 @@ const PALACE_LABELS = {
     '멤버십 전용':'Membership Only',
     '나머지 9궁':'Remaining 9 Palaces',
     '상세 해석 제공':'Detailed Analysis Available',
-    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'In-depth analysis of each star's impact on love, career & health. AI insights available for members.',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'In-depth analysis of each star impact on love, career & health. AI insights available for members.',
     '멤버십에서 상세 해석 확인':'View detailed reading in Membership',
     '공궁':'Empty Palace',
     '멤버십 전용 · 자미두수 12궁 완전 해석':'Membership Only · Full 12-Palace Zi Wei Reading',
