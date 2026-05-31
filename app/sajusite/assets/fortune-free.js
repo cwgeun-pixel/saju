@@ -159,6 +159,14 @@ const PALACE_LABELS = {
     '멤버십 전용':'멤버십 전용',
     '나머지 9궁':'나머지 9궁',
     '상세 해석 제공':'상세 해석 제공',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.',
+    '멤버십에서 상세 해석 확인':'멤버십에서 상세 해석 확인',
+    '공궁':'공궁',
+    '멤버십 전용 · 자미두수 12궁 완전 해석':'멤버십 전용 · 자미두수 12궁 완전 해석',
+    '형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.':'형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.',
+    '멤버십 전용 · 심층 점성술 완전 해석':'멤버십 전용 · 심층 점성술 완전 해석',
+    '점성술 멤버십 배너 설명':'네이탈 차트 완전 해석 · 트랜짓 미래운 · 솔라리턴 · 심리 점성학 · 직업·재물·연애 심층 분석 · 궁합 · 아스트로카토그래피 등을 멤버십에서 확인하세요.',
+    '멤버십 전용 · 심층 점성술 해석':'멤버십 전용 · 심층 점성술 해석',
     '띠 입니다':'띠 입니다',
   },
   en: {
@@ -196,6 +204,30 @@ const PALACE_LABELS = {
     '멤버십 전용':'Membership Only',
     '나머지 9궁':'Remaining 9 Palaces',
     '상세 해석 제공':'Detailed Analysis Available',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'In-depth analysis of each star's impact on love, career & health. AI insights available for members.',
+    '멤버십에서 상세 해석 확인':'View detailed reading in Membership',
+    '공궁':'Empty Palace',
+    '멤버십 전용 · 자미두수 12궁 완전 해석':'Membership Only · Full 12-Palace Zi Wei Reading',
+    '형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.':'Siblings, Children, Health, Travel, Friends, Career, Home, Fortune, Parents palaces + Four Transformations + Major/Annual cycle readings available for members.',
+    '멤버십 전용 · 심층 점성술 완전 해석':'Membership Only · Complete Astrology Reading',
+    '점성술 멤버십 배너 설명':'Full Natal Chart · Transits · Solar Return · Psychological Astrology · Career, Wealth & Love in-depth · Synastry · Astrocartography and more — available for members.',
+    "네이탈 차트 완전 해석":"Complete Natal Chart",
+    "심리 점성학":"Psychological Astrology",
+    "직업운 심층 해석":"Career Fortune In-Depth",
+    "재물운 심층 해석":"Wealth Fortune In-Depth",
+    "연애·결혼운 심층 해석":"Love & Marriage In-Depth",
+    "트랜짓 미래운":"Transit Fortune",
+    "솔라 리턴 (생일 1년 운세)":"Solar Return (Annual Fortune)",
+    "프로그레션 (내면 성장)":"Progressions (Inner Growth)",
+    "시나스트리 궁합":"Synastry Compatibility",
+    "컴포지트 관계 차트":"Composite Chart",
+    "아스트로카토그래피":"Astrocartography",
+    "건강 점성학":"Medical Astrology",
+    "카르마·영혼 해석":"Karma & Soul Reading",
+    "역행 행성 해석":"Retrograde Planet Reading",
+    "12하우스 전체 해석":"Full 12-House Reading",
+    "행성 각도 심층 해석":"Aspects In-Depth",
+    '멤버십 전용 · 심층 점성술 해석':'Membership Only · In-Depth Astrology',
     '띠 입니다':'Zodiac Sign',
     '12운성':'Twelve Life Stages',
     'today.길(吉)':'today.Fortune',
@@ -414,6 +446,30 @@ const PALACE_LABELS = {
     '멤버십 전용':'会员专属',
     '나머지 9궁':'其余9宫',
     '상세 해석 제공':'提供详细解读',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'各神煞对爱情·职业·健康的深度分析，AI综合解读会员专享。',
+    '멤버십에서 상세 해석 확인':'会员查看详细解读',
+    '공궁':'空宫',
+    '멤버십 전용 · 자미두수 12궁 완전 해석':'会员专属 · 紫微斗数12宫完整解读',
+    '형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.':'兄弟·子女·疾厄·迁移·交友·官禄·田宅·福德·父母宫 + 四化分析 + 大运·流年连动解读，会员专享。',
+    '멤버십 전용 · 심층 점성술 완전 해석':'会员专属 · 占星完整解读',
+    '점성술 멤버십 배너 설명':'星盘·行运·太阳回归·心理占星·职业财富爱情深度分析·合盘·星盘地图等，会员专享。',
+    "네이탈 차트 완전 해석":"完整星盘解读",
+    "심리 점성학":"心理占星学",
+    "직업운 심층 해석":"职业运深度解读",
+    "재물운 심층 해석":"财运深度解读",
+    "연애·결혼운 심층 해석":"爱情婚姻深度解读",
+    "트랜짓 미래운":"行运未来运势",
+    "솔라 리턴 (생일 1년 운세)":"太阳回归（生日年运）",
+    "프로그레션 (내면 성장)":"推运（内在成长）",
+    "시나스트리 궁합":"比较盘合盘",
+    "컴포지트 관계 차트":"合成关系星盘",
+    "아스트로카토그래피":"星盘地图",
+    "건강 점성학":"健康占星学",
+    "카르마·영혼 해석":"业力·灵魂解读",
+    "역행 행성 해석":"逆行行星解读",
+    "12하우스 전체 해석":"12宫完整解读",
+    "행성 각도 심층 해석":"行星相位深度解读",
+    '멤버십 전용 · 심층 점성술 해석':'会员专属 · 占星深度解读',
     '띠 입니다':'生肖',
     '신강(身强)':'身強 (身强)',
     '신약(身弱)':'身弱 (身弱)',
@@ -427,6 +483,30 @@ const PALACE_LABELS = {
     '멤버십 전용':'メンバーシップ専用',
     '나머지 9궁':'残り9宮',
     '상세 해석 제공':'詳細解釈提供',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'各神殺の恋愛・職業・健康への影響を詳しく分析。AI総合解釈はメンバーシップで。',
+    '멤버십에서 상세 해석 확인':'メンバーシップで詳細確認',
+    '공궁':'空宮',
+    '멤버십 전용 · 자미두수 12궁 완전 해석':'会員限定 · 紫微斗数12宮完全解釈',
+    '형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.':'兄弟・子女・疾厄・遷移・交友・官禄・田宅・福徳・父母宮＋四化分析＋大運・流年の連動解釈をメンバーシップで。',
+    '멤버십 전용 · 심층 점성술 완전 해석':'会員限定 · 占星術完全解釈',
+    '점성술 멤버십 배너 설명':'ネイタルチャート・トランジット・ソーラーリターン・心理占星術・職業・財・恋愛分析・シナストリー・アストロカルトグラフィーなど会員限定。',
+    "네이탈 차트 완전 해석":"ネイタルチャート完全解釈",
+    "심리 점성학":"心理占星術",
+    "직업운 심층 해석":"職業運深層解釈",
+    "재물운 심층 해석":"財運深層解釈",
+    "연애·결혼운 심층 해석":"恋愛・結婚運深層解釈",
+    "트랜짓 미래운":"トランジット未来運",
+    "솔라 리턴 (생일 1년 운세)":"ソーラーリターン（誕生日年運）",
+    "프로그레션 (내면 성장)":"プログレッション（内面成長）",
+    "시나스트리 궁합":"シナストリー相性",
+    "컴포지트 관계 차트":"コンポジットチャート",
+    "아스트로카토그래피":"アストロカルトグラフィー",
+    "건강 점성학":"健康占星術",
+    "카르마·영혼 해석":"カルマ・魂解釈",
+    "역행 행성 해석":"逆行惑星解釈",
+    "12하우스 전체 해석":"12ハウス全解釈",
+    "행성 각도 심층 해석":"アスペクト深層解釈",
+    '멤버십 전용 · 심층 점성술 해석':'会員限定 · 占星術詳細解釈',
     '띠 입니다':'干支です',
     '🔮 무료 운세 탭':'🔮 無料占いタブ',
     '12운성':'十二運星',
@@ -852,6 +932,30 @@ const PALACE_LABELS = {
     '멤버십 전용':'Solo Membresía',
     '나머지 9궁':'9 Palacios Restantes',
     '상세 해석 제공':'Análisis Detallado Disponible',
+    '각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.':'Análisis profundo de cada estrella en amor, carrera y salud. Interpretación IA disponible para miembros.',
+    '멤버십에서 상세 해석 확인':'Ver análisis completo en Membresía',
+    '공궁':'Palacio Vacío',
+    '멤버십 전용 · 자미두수 12궁 완전 해석':'Solo Miembros · Lectura completa Zi Wei 12 Palacios',
+    '형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.':'Palacios de Hermanos, Hijos, Salud, Viajes, Amigos, Carrera, Hogar, Fortuna y Padres + Análisis de Cuatro Transformaciones + ciclos mayores, disponibles para miembros.',
+    '멤버십 전용 · 심층 점성술 완전 해석':'Solo Miembros · Astrología Completa',
+    '점성술 멤버십 배너 설명':'Carta Natal · Tránsitos · Retorno Solar · Astrología Psicológica · Carrera, Riqueza y Amor · Sinastría · Astrocartografía y más — disponible para miembros.',
+    "네이탈 차트 완전 해석":"Carta Natal Completa",
+    "심리 점성학":"Astrología Psicológica",
+    "직업운 심층 해석":"Carrera en Profundidad",
+    "재물운 심층 해석":"Riqueza en Profundidad",
+    "연애·결혼운 심층 해석":"Amor y Matrimonio en Profundidad",
+    "트랜짓 미래운":"Tránsitos Futuros",
+    "솔라 리턴 (생일 1년 운세)":"Retorno Solar (Fortuna Anual)",
+    "프로그레션 (내면 성장)":"Progresiones (Crecimiento Interior)",
+    "시나스트리 궁합":"Sinastría de Compatibilidad",
+    "컴포지트 관계 차트":"Carta Compuesta",
+    "아스트로카토그래피":"Astrocartografía",
+    "건강 점성학":"Astrología Médica",
+    "카르마·영혼 해석":"Lectura de Karma y Alma",
+    "역행 행성 해석":"Planetas Retrógrados",
+    "12하우스 전체 해석":"Lectura de 12 Casas",
+    "행성 각도 심층 해석":"Aspectos Planetarios",
+    '멤버십 전용 · 심층 점성술 해석':'Solo Miembros · Astrología en Profundidad',
     '띠 입니다':'Signo Zodiacal',
     '🔮 무료 운세 탭':'🔮 Pestaña de Fortuna Gratis',
     '12운성':'Doce Etapas de Vida',
@@ -3716,7 +3820,7 @@ function renderSinsal(saju) {
     <span style="font-size:22px;flex-shrink:0">🔐</span>
     <div>
       <div style="font-weight:700;font-size:13px;color:#d4af37;letter-spacing:0.3px">${t('멤버십 전용')} · ${t('상세 해석 제공')}</div>
-      <div style="font-size:12px;color:#9d8a5a;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
+      <div style="font-size:12px;color:#9d8a5a;margin-top:2px">${t('각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.')}</div>
     </div>
   </div>`;
 
@@ -3808,7 +3912,7 @@ function renderZiweiSection(chart) {
     const mains = getMainStars(palace);
     const pi = PALACE_INFO[p] || { emoji:'⭐', label:p, desc:'', color:'#a78bfa' };
     const pc = pi.color;
-    const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : '공궁';
+    const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : t('공궁');
     return `<div style="${D.card}border-top:2px solid ${pc}30;opacity:0.55;filter:blur(0.3px);position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}40,transparent)"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
@@ -3821,7 +3925,7 @@ function renderZiweiSection(chart) {
       </div>
       <div style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(15,12,35,0.4);border-radius:8px;border:1px solid rgba(212,175,55,0.08)">
         <span style="color:#d4af37;font-size:14px;font-family:'Cormorant Garamond',serif;font-weight:600">${starNames}</span>
-        <span style="color:#5a5f7a;font-size:12px">· 멤버십에서 상세 해석 확인</span>
+        <span style="color:#5a5f7a;font-size:12px">· ${t('멤버십에서 상세 해석 확인')}</span>
       </div>
     </div>`;
   }).join('');
@@ -3856,8 +3960,8 @@ function renderZiweiSection(chart) {
     <div style="margin-top:16px;padding:16px 18px;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.25);border-radius:14px;display:flex;align-items:center;gap:14px">
       <span style="font-size:28px">🔐</span>
       <div style="flex:1">
-        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 자미두수 12궁 완전 해석</div>
-        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.</div>
+        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">${t('멤버십 전용 · 자미두수 12궁 완전 해석')}</div>
+        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">${t('형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.')}</div>
       </div>
     </div>
   </div>`;
@@ -3915,22 +4019,22 @@ const SUN_CAREER = [
 
 // 유료판 점성술 해석 항목 목록
 const ASTRO_PREMIUM_ITEMS = [
-  {icon:'🌟', title:'네이탈 차트 완전 해석', desc:'태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석'},
-  {icon:'🧠', title:'심리 점성학', desc:'내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향'},
-  {icon:'💼', title:'직업운 심층 해석', desc:'10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운'},
-  {icon:'💰', title:'재물운 심층 해석', desc:'2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출'},
-  {icon:'💗', title:'연애·결혼운 심층 해석', desc:'금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴'},
-  {icon:'🔮', title:'트랜짓 미래운', desc:'현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기'},
-  {icon:'📅', title:'솔라 리턴 (생일 1년 운세)', desc:'생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운'},
-  {icon:'🌙', title:'프로그레션 (내면 성장)', desc:'진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름'},
-  {icon:'💞', title:'시나스트리 궁합', desc:'두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석'},
-  {icon:'🤝', title:'컴포지트 관계 차트', desc:'두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석'},
-  {icon:'🌍', title:'아스트로카토그래피', desc:'지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시'},
-  {icon:'🏥', title:'건강 점성학', desc:'취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석'},
-  {icon:'✨', title:'카르마·영혼 해석', desc:'북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제'},
-  {icon:'🔄', title:'역행 행성 해석', desc:'출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석'},
-  {icon:'🏠', title:'12하우스 전체 해석', desc:'인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)'},
-  {icon:'⚡', title:'행성 각도 심층 해석', desc:'합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석'},
+  {icon:'🌟', title:t('네이탈 차트 완전 해석'), desc:t('태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석')},
+  {icon:'🧠', title:t('심리 점성학'), desc:t('내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향')},
+  {icon:'💼', title:t('직업운 심층 해석'), desc:t('10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운')},
+  {icon:'💰', title:t('재물운 심층 해석'), desc:t('2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출')},
+  {icon:'💗', title:t('연애·결혼운 심층 해석'), desc:t('금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴')},
+  {icon:'🔮', title:t('트랜짓 미래운'), desc:t('현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기')},
+  {icon:'📅', title:t('솔라 리턴 (생일 1년 운세)'), desc:t('생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운')},
+  {icon:'🌙', title:t('프로그레션 (내면 성장)'), desc:t('진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름')},
+  {icon:'💞', title:t('시나스트리 궁합'), desc:t('두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석')},
+  {icon:'🤝', title:t('컴포지트 관계 차트'), desc:t('두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석')},
+  {icon:'🌍', title:t('아스트로카토그래피'), desc:t('지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시')},
+  {icon:'🏥', title:t('건강 점성학'), desc:t('취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석')},
+  {icon:'✨', title:t('카르마·영혼 해석'), desc:t('북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제')},
+  {icon:'🔄', title:t('역행 행성 해석'), desc:t('출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석')},
+  {icon:'🏠', title:t('12하우스 전체 해석'), desc:t('인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)')},
+  {icon:'⚡', title:t('행성 각도 심층 해석'), desc:t('합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석')},
 ];
 
 function renderNatalSection(natalChart, transitChart, unknownTime) {
@@ -4063,7 +4167,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     <div style="margin-top:20px">
       <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
         <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#d4af37"></span>
-        멤버십 전용 · 심층 점성술 해석 ${ASTRO_PREMIUM_ITEMS.length}종
+        ${t('멤버십 전용 · 심층 점성술 해석')} · ${ASTRO_PREMIUM_ITEMS.length}
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
         ${premiumGrid}
@@ -4071,8 +4175,8 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
       <div style="background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.06));border:1px solid rgba(212,175,55,0.25);border-radius:12px;padding:16px;text-align:center;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
         <div style="font-size:20px;margin-bottom:6px">🔐</div>
-        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 점성술 완전 해석</div>
-        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">네이탈 차트 완전 해석 · 트랜짓 미래운 · 솔라리턴 1년 운세 · 심리 점성학 · 직업·재물·연애 심층 분석 · 궁합 · 아스트로카토그래피 등 ${ASTRO_PREMIUM_ITEMS.length}가지 해석을 멤버십에서 확인하세요.</div>
+        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">${t('멤버십 전용 · 심층 점성술 완전 해석')}</div>
+        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">${t('점성술 멤버십 배너 설명')}</div>
       </div>
     </div>
   </div>`;
