@@ -73,6 +73,18 @@ Error generating stack: `+l.message+`
 </script>
 
     <div id="root"></div>
+    <script>
+      // 언어 변경 시 자동 새로고침 — React state가 실시간 반영 안 되는 문제 해결
+      (function() {
+        const _set = localStorage.setItem.bind(localStorage);
+        localStorage.setItem = function(key, value) {
+          _set(key, value);
+          if (key === 'tod_lang') {
+            setTimeout(() => location.reload(), 50);
+          }
+        };
+      })();
+    </script>
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
