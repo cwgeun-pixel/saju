@@ -4276,26 +4276,87 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
 
   const PLANET_COLORS = {'☀️':'#fbbf24','🌙':'#c0c8e0','⬆️':'#34d399','♃':'#a78bfa','♀':'#f472b6'};
 
-  // ── 점성학 12궁 미니 휠 (태양 별자리만 선명, 나머지 블러) ──
+  // ── 천궁도 SVG 휠 차트 (태양 별자리만 선명, 나머지 블러) ──
   const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
-  const SIGN_NAMES_SHORT = ['양','황소','쌍둥이','게','사자','처녀','천칭','전갈','사수','염소','물병','물고기'];
+  const SIGN_COLORS  = ['#ef4444','#22c55e','#facc15','#38bdf8','#f97316','#84cc16','#f472b6','#a78bfa','#fb923c','#94a3b8','#60a5fa','#818cf8'];
+  const planets = natalChart?.planets || [];
+  const PLANET_SYMS = {Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆',Pluto:'♇',Chiron:'⚷','North Node':'☊'};
+
+  function degToXY(deg, r, cx, cy) {
+    const rad = (deg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+  }
+
+  const cx = 160, cy = 160, R = 150;
+  const rOuter = 148, rInner = 115, rPlanet = 95, rCenter = 60;
+
+  // 하우스 구분선
+  const houseLines = (natalChart?.houses || []).map((h, i) => {
+    const deg = (h.degree || i * 30);
+    const [x1, y1] = degToXY(deg, rInner, cx, cy);
+    const [x2, y2] = degToXY(deg, rCenter, cx, cy);
+    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>`;
+  }).join('');
+
+  // 12 별자리 섹터
+  const signSectors = Array.from({length:12}, (_, i) => {
+    const startDeg = i * 30 - 90;
+    const endDeg   = startDeg + 30;
+    const isSun    = (i === sunIdx);
+    const midDeg   = startDeg + 15;
+    const rad1 = startDeg * Math.PI / 180;
+    const rad2 = endDeg   * Math.PI / 180;
+    const radM = midDeg   * Math.PI / 180;
+    const x1s = cx + rOuter * Math.cos(rad1), y1s = cy + rOuter * Math.sin(rad1);
+    const x2s = cx + rOuter * Math.cos(rad2), y2s = cy + rOuter * Math.sin(rad2);
+    const x1i = cx + rInner * Math.cos(rad1), y1i = cy + rInner * Math.sin(rad1);
+    const x2i = cx + rInner * Math.cos(rad2), y2i = cy + rInner * Math.sin(rad2);
+    const tx  = cx + (rOuter - 14) * Math.cos(radM), ty = cy + (rOuter - 14) * Math.sin(radM);
+    const fill = isSun ? SIGN_COLORS[i] + '40' : 'rgba(255,255,255,0.03)';
+    const stroke = isSun ? SIGN_COLORS[i] : 'rgba(255,255,255,0.08)';
+    const blurAttr = isSun ? '' : `filter="url(#blur)"`;
+    return `<g ${blurAttr}>
+      <path d="M ${x1s.toFixed(1)} ${y1s.toFixed(1)} A ${rOuter} ${rOuter} 0 0 1 ${x2s.toFixed(1)} ${y2s.toFixed(1)} L ${x2i.toFixed(1)} ${y2i.toFixed(1)} A ${rInner} ${rInner} 0 0 0 ${x1i.toFixed(1)} ${y1i.toFixed(1)} Z" fill="${fill}" stroke="${stroke}" stroke-width="${isSun?1.5:0.5}"/>
+      <text x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}" text-anchor="middle" font-size="${isSun?13:11}" fill="${isSun?SIGN_COLORS[i]:'rgba(255,255,255,0.25)'}" font-family="serif">${SIGN_SYMBOLS[i]}</text>
+    </g>`;
+  }).join('');
+
+  // 행성 배치
+  const planetDots = planets.map(p => {
+    const isSunPlanet = (p.id === 'Sun');
+    const absLong = p.absoluteLongitude ?? ((toSignIdx(p.sign) * 30) + (p.degree || 0));
+    const [px, py] = degToXY(absLong, rPlanet, cx, cy);
+    const sym = PLANET_SYMS[p.id] || p.id?.charAt(0) || '·';
+    const color = isSunPlanet ? '#fbbf24' : 'rgba(255,255,255,0.2)';
+    const blurAttr = isSunPlanet ? '' : `filter="url(#blur)"`;
+    return `<g ${blurAttr}>
+      <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${isSunPlanet?9:7}" fill="${isSunPlanet?'rgba(251,191,36,0.15)':'rgba(255,255,255,0.04)'}" stroke="${color}" stroke-width="${isSunPlanet?1.5:0.8}"/>
+      <text x="${px.toFixed(1)}" y="${(py+4).toFixed(1)}" text-anchor="middle" font-size="${isSunPlanet?11:9}" fill="${color}" font-family="serif">${sym}</text>
+    </g>`;
+  }).join('');
+
   const miniAstro = sunIdx >= 0 ? `
-    <div style="background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.2);border-radius:12px;padding:12px;margin-bottom:14px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,106,247,0.4),transparent)"></div>
-      <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">Natal Chart · 12 Signs</div>
-      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
-        ${Array.from({length:12},(_,i)=>{
-          const isSun = (i === sunIdx);
-          const blur = isSun ? '' : 'filter:blur(5px);user-select:none;';
-          const border = isSun ? '1.5px solid #a78bfa' : '1px solid rgba(255,255,255,0.06)';
-          const bg = isSun ? 'rgba(124,106,247,0.15)' : 'rgba(255,255,255,0.02)';
-          return `<div style="background:${bg};border:${border};border-radius:6px;padding:5px 4px;text-align:center;${blur}">
-            <div style="font-size:16px">${SIGN_SYMBOLS[i]}</div>
-            <div style="font-size:9px;color:${isSun?'#c8b0f8':'#4a5268'};margin-top:2px">${SIGN_NAMES_SHORT[i]}</div>
-          </div>`;
-        }).join('')}
-      </div>
-      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:8px">🔒 태양 별자리 공개 · 나머지는 멤버십에서 확인</div>
+    <div style="background:rgba(10,12,24,0.7);border:1px solid rgba(124,106,247,0.2);border-radius:14px;padding:14px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,106,247,0.5),transparent)"></div>
+      <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:8px">Natal Chart</div>
+      <svg width="320" height="320" viewBox="0 0 320 320" style="display:block;margin:0 auto">
+        <defs>
+          <filter id="blur"><feGaussianBlur stdDeviation="3"/></filter>
+        </defs>
+        <!-- 배경 원 -->
+        <circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="rgba(13,16,40,0.8)" stroke="rgba(124,106,247,0.2)" stroke-width="1"/>
+        <circle cx="${cx}" cy="${cy}" r="${rInner}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+        <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="rgba(8,10,28,0.9)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- 별자리 섹터 -->
+        ${signSectors}
+        <!-- 하우스 구분선 -->
+        ${houseLines}
+        <!-- 행성 -->
+        ${planetDots}
+        <!-- 중심 태양 표시 -->
+        <text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="13" fill="rgba(251,191,36,0.6)" font-family="serif">☉</text>
+      </svg>
+      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:6px">🔒 태양 별자리(${SIGN_SYMBOLS[sunIdx]}) 공개 · 나머지는 멤버십에서 확인</div>
     </div>` : '';
 
   // ── 별자리 소개 배너 ──
