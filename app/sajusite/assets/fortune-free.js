@@ -3447,8 +3447,51 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
       </div>
     </div>` : '';
 
+  // ── 사주원국 미니 차트 (일주만 선명, 나머지 블러) ──
+  const ELEM_COLOR = {'목':'#22c55e','화':'#ef4444','토':'#d97706','금':'#94a3b8','수':'#60a5fa'};
+  const pillarLabels = [t('시주'), t('일주'), t('월주'), t('연주')];
+  // pillars 순서: 0=시주 1=월주 2=일주 3=년주 → 표시 순서: 시,일,월,년
+  const displayOrder = [0, 2, 1, 3];
+  const pillarCols = displayOrder.map((idx, colIdx) => {
+    const p     = saju.pillars[idx];
+    const pl    = p?.pillar || {};
+    const stem  = pl.stem  || '';
+    const branch= pl.branch|| '';
+    const sElem = STEM_ELEM[stem]  || '토';
+    const bElem = BRANCH_ELEM[branch]|| '토';
+    const sCol  = ELEM_COLOR[sElem] || '#94a3b8';
+    const bCol  = ELEM_COLOR[bElem] || '#94a3b8';
+    const sipTop = p?.stemSipsin  || '';
+    const sipBot = p?.branchSipsin|| '';
+    const isDay  = (idx === 2);
+    const blur   = isDay ? '' : 'filter:blur(5px);user-select:none;';
+
+    return `
+      <div style="text-align:center;flex:1;min-width:0">
+        <div style="font-size:11px;color:#6a7a9a;letter-spacing:0.06em;margin-bottom:6px">${pillarLabels[colIdx]}</div>
+        <div style="${blur}">
+          <div style="font-size:11px;color:#8a9ab8;margin-bottom:4px">${t(sipTop)||sipTop}</div>
+          <div style="width:44px;height:44px;border-radius:10px;background:${sCol}22;border:1.5px solid ${sCol}66;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:26px;font-weight:700;color:${sCol};font-family:'Noto Serif KR','Cormorant Garamond',serif;box-shadow:0 0 10px ${sCol}30">${stem}</div>
+          <div style="width:44px;height:44px;border-radius:10px;background:${bCol}22;border:1.5px solid ${bCol}66;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:26px;font-weight:700;color:${bCol};font-family:'Noto Serif KR','Cormorant Garamond',serif;box-shadow:0 0 10px ${bCol}30">${branch}</div>
+          <div style="font-size:11px;color:#8a9ab8;margin-top:4px">${t(sipBot)||sipBot}</div>
+        </div>
+        ${isDay ? `<div style="width:4px;height:4px;border-radius:50%;background:#d4af37;margin:6px auto 0;box-shadow:0 0 6px #d4af3780"></div>` : ''}
+      </div>`;
+  }).join('');
+
+  const miniChart = `
+    <div style="background:rgba(13,16,32,0.6);border:1px solid rgba(212,175,55,0.15);border-radius:12px;padding:14px 10px 10px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.4),transparent)"></div>
+      <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">四柱八字</div>
+      <div style="display:flex;gap:8px;justify-content:center">${pillarCols}</div>
+      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:10px">${isAdmin ? '' : '🔒 일주 공개 · 나머지는 멤버십에서 확인'}</div>
+    </div>`;
+
+  const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+
   return `<div style="${D.wrap}">
     ${sectionHeader('A', t('기본 운세'), t('사주 원국 기반'))}
+    ${miniChart}
     <div style="display:grid;grid-template-columns:1fr;gap:12px">
       ${cards}
     </div>
