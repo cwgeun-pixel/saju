@@ -10,6 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Cinzel:wght@400;500;600;700;900&family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet" />
     <script type="module" crossorigin src="./landing-assets/index-Thu9hj-U.js"></script>
     <link rel="stylesheet" crossorigin href="./landing-assets/index-DK2QtfMw.css">
+    <script>
+      // React보다 먼저 실행 — Storage.prototype 레벨 intercept로 언어 변경 즉시 반영
+      (function() {
+        const _orig = Storage.prototype.setItem;
+        Storage.prototype.setItem = function(key, value) {
+          const prev = this.getItem(key);
+          _orig.call(this, key, value);
+          if (key === 'tod_lang' && value !== prev) {
+            setTimeout(() => location.reload(), 80);
+          }
+        };
+      })();
+    </script>
   </head>
   <body>
     <script id="manus-runtime">window.__MANUS_HOST_DEV__ = false;
@@ -73,19 +86,6 @@ Error generating stack: `+l.message+`
 </script>
 
     <div id="root"></div>
-    <script>
-      // 언어 변경 시 자동 새로고침 — Storage.prototype 레벨에서 intercept
-      (function() {
-        const _orig = Storage.prototype.setItem;
-        Storage.prototype.setItem = function(key, value) {
-          const prev = localStorage.getItem(key);
-          _orig.call(this, key, value);
-          if (key === 'tod_lang' && value !== prev) {
-            setTimeout(() => location.reload(), 80);
-          }
-        };
-      })();
-    </script>
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
