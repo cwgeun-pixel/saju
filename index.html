@@ -8,28 +8,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Cinzel:wght@400;500;600;700;900&family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./landing-assets/index-Thu9hj-U.js"></script>
+    <script type="module" crossorigin src="./landing-assets/index-Thu9hj-U.js?v=20260531c"></script>
     <link rel="stylesheet" crossorigin href="./landing-assets/index-DK2QtfMw.css">
     <script>
-      // 언어 드롭다운 클릭 직접 처리 — React 이벤트 우회
-      document.addEventListener('DOMContentLoaded', function() {
-        const LANGS = {'한국어':'ko','English':'en','日本語':'ja','中文':'zh','Español':'es'};
-        document.addEventListener('click', function(e) {
-          var btn = e.target.closest('button');
-          if (!btn) return;
-          var txt = btn.textContent.trim();
-          // 언어 이름을 포함하는 버튼인지 확인
-          var matched = Object.keys(LANGS).find(function(name){ return txt.includes(name); });
-          if (!matched) return;
-          var code = LANGS[matched];
-          var cur = localStorage.getItem('tod_lang') || 'ko';
-          if (code === cur) return;
-          localStorage.setItem('tod_lang', code);
-          localStorage.setItem('honcheon.lang', code);
-          e.stopImmediatePropagation();
-          setTimeout(function(){ location.reload(); }, 50);
-        }, true);
-      });
+      // 언어 드롭다운 클릭 처리
+      (function() {
+        var LANGS = {'한국어':'ko','English':'en','日本語':'ja','中文':'zh','Español':'es'};
+        function handleLangClick(e) {
+          var el = e.target;
+          while (el && el !== document.body) {
+            var txt = el.textContent ? el.textContent.trim() : '';
+            var matched = Object.keys(LANGS).find(function(n){ return txt === n || txt.startsWith(n); });
+            if (matched) {
+              var code = LANGS[matched];
+              var cur = localStorage.getItem('tod_lang') || localStorage.getItem('honcheon.lang') || 'ko';
+              if (code !== cur) {
+                localStorage.setItem('tod_lang', code);
+                localStorage.setItem('honcheon.lang', code);
+                setTimeout(function(){ location.reload(); }, 300);
+              }
+              return;
+            }
+            el = el.parentElement;
+          }
+        }
+        document.addEventListener('click', handleLangClick, true);
+      })();
     </script>
   </head>
   <body>
