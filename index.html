@@ -11,17 +11,25 @@
     <script type="module" crossorigin src="./landing-assets/index-Thu9hj-U.js"></script>
     <link rel="stylesheet" crossorigin href="./landing-assets/index-DK2QtfMw.css">
     <script>
-      // React보다 먼저 실행 — Storage.prototype 레벨 intercept로 언어 변경 즉시 반영
-      (function() {
-        const _orig = Storage.prototype.setItem;
-        Storage.prototype.setItem = function(key, value) {
-          const prev = this.getItem(key);
-          _orig.call(this, key, value);
-          if (key === 'tod_lang' && value !== prev) {
-            location.reload();
-          }
-        };
-      })();
+      // 언어 드롭다운 클릭 직접 처리 — React 이벤트 우회
+      document.addEventListener('DOMContentLoaded', function() {
+        const LANGS = {'한국어':'ko','English':'en','日本語':'ja','中文':'zh','Español':'es'};
+        document.addEventListener('click', function(e) {
+          var btn = e.target.closest('button');
+          if (!btn) return;
+          var txt = btn.textContent.trim();
+          // 언어 이름을 포함하는 버튼인지 확인
+          var matched = Object.keys(LANGS).find(function(name){ return txt.includes(name); });
+          if (!matched) return;
+          var code = LANGS[matched];
+          var cur = localStorage.getItem('tod_lang') || 'ko';
+          if (code === cur) return;
+          localStorage.setItem('tod_lang', code);
+          localStorage.setItem('honcheon.lang', code);
+          e.stopImmediatePropagation();
+          setTimeout(function(){ location.reload(); }, 50);
+        }, true);
+      });
     </script>
   </head>
   <body>
