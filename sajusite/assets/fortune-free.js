@@ -2290,7 +2290,7 @@ function renderDaewoon(saju) {
         </div>
         <div style="text-align:right">
           <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">대운 십성</div>
-          <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${stemSipsin}</div>
+          <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${t(stemSipsin)}</div>
           <div style="margin-top:6px">
             <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${unseong}(${unseongHanja})</span>
           </div>
@@ -2328,7 +2328,7 @@ function renderDaewoon(saju) {
       <div style="font-weight:700;font-size:13px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:1px">${ganziStr(dw.ganzi)}</div>
       <div style="font-size:9px;color:#6b7280;margin-bottom:4px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
       <div style="font-size:9px;color:${isCurrent ? '#22c55e' : (isFuture ? '#eab308' : '#4b5563')};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}세</div>
-      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${dwStemSipsin}</div>
+      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${t(dwStemSipsin)}</div>
       <div style="font-size:9px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:3px">${dwBranchSipsin}</div>
       <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${dwUnseong}</div>
     </div>`;

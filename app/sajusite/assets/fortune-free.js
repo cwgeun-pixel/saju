@@ -1619,6 +1619,7 @@ const TX = {
     '점':'점','개':'개',
     '운성.장생':'장생','운성.목욕':'목욕','운성.관대':'관대','운성.임관':'임관','운성.제왕':'제왕',
     '운성.쇠':'쇠','운성.병':'병','운성.사':'사','운성.묘':'묘','운성.절':'절','운성.태':'태','운성.양':'양',
+    '비견':'비견','겁재':'겁재','식신':'식신','상관':'상관','편재':'편재','정재':'정재','편관':'편관','정관':'정관','편인':'편인','정인':'정인',
     'grade.강':'강','grade.중':'중','grade.약':'약',
     '연애 스타일':'연애 스타일','직업 적성':'직업 적성',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'현재 행성 위치 · 지금 나에게 영향을 주는 에너지',
@@ -1958,6 +1959,7 @@ const TX = {
     '점':'pts','개':'',
     '운성.장생':'Birth','운성.목욕':'Bathing','운성.관대':'Crown','운성.임관':'Official','운성.제왕':'Emperor',
     '운성.쇠':'Decline','운성.병':'Illness','운성.사':'Death','운성.묘':'Tomb','운성.절':'Void','운성.태':'Seed','운성.양':'Nurture',
+    '비견':'Rob. Wealth','겁재':'Comp. Wealth','식신':'Food God','상관':'Hurt Officer','편재':'Irreg. Wealth','정재':'Reg. Wealth','편관':'7 Killings','정관':'Reg. Officer','편인':'Irreg. Resource','정인':'Reg. Resource',
     'grade.강':'High','grade.중':'Mid','grade.약':'Low',
     '연애 스타일':'Love Style','직업 적성':'Career Aptitude',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Current Planets · Energy affecting you now',
@@ -2868,6 +2870,7 @@ const TX = {
     '점':'pts','개':'',
     '운성.장생':'Nac.','운성.목욕':'Crec.','운성.관대':'Corona','운성.임관':'Ascenso','운성.제왕':'Cumbre',
     '운성.쇠':'Declive','운성.병':'Debil.','운성.사':'Extinc.','운성.묘':'Reposo','운성.절':'Vacío','운성.태':'Semilla','운성.양':'Nutr.',
+    '비견':'Igual Riq.','겁재':'Rob. Riq.','식신':'Dios Com.','상관':'Func. Her.','편재':'Riq. Irreg.','정재':'Riq. Reg.','편관':'7 Muertes','정관':'Func. Reg.','편인':'Rec. Irreg.','정인':'Rec. Reg.',
     'grade.강':'Alto','grade.중':'Med','grade.약':'Bajo',
     '연애 스타일':'Estilo amoroso','직업 적성':'Aptitud profesional',
     '현재 행성 위치 · 지금 나에게 영향을 주는 에너지':'Planetas actuales · Energía que te influye ahora',
@@ -3528,7 +3531,7 @@ function renderDaewoon(saju) {
         </div>
         <div style="text-align:right">
           <div style="font-size:12px;color:#8a7fa8;margin-bottom:6px;letter-spacing:0.08em">${t('대운 십성')}</div>
-          <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${stemSipsin}</div>
+          <div style="font-size:22px;font-weight:700;color:#e8d5a3;font-family:'Cormorant Garamond',serif">${t(stemSipsin)}</div>
           <div style="margin-top:6px">
             <span style="background:${unseongColor}22;color:${unseongColor};font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid ${unseongColor}44;font-weight:600">${t('운성.'+unseong)}(${unseongHanja})</span>
           </div>
@@ -3566,7 +3569,7 @@ function renderDaewoon(saju) {
       <div style="font-weight:700;font-size:13px;color:${textColor};font-family:'Cormorant Garamond',serif;margin-bottom:1px">${ganziStr(dw.ganzi)}</div>
       <div style="font-size:9px;color:#6b7280;margin-bottom:4px">${dw.ganzi[0]}${dw.ganzi[1]}</div>
       <div style="font-size:9px;color:${isCurrent ? '#22c55e' : (isFuture ? '#eab308' : '#4b5563')};font-weight:600;margin-bottom:2px">${dwStartAge}~${dwEndAge}${t('세')}</div>
-      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${dwStemSipsin}</div>
+      <div style="font-size:9px;color:${isCurrent ? '#d4af37' : (isFuture ? '#fde68a' : '#6b7280')};margin-bottom:2px">${t(dwStemSipsin)}</div>
       <div style="font-size:9px;color:${isCurrent ? '#9da8c0' : '#4b5563'};margin-bottom:3px">${dwBranchSipsin}</div>
       <div style="display:inline-block;background:${dwUnseongColor}18;color:${dwUnseongColor};font-size:9px;padding:1px 4px;border-radius:8px;border:1px solid ${dwUnseongColor}30">${t('운성.'+dwUnseong)}</div>
     </div>`;
