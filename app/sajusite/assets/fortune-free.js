@@ -6,19 +6,20 @@ import { calculateNatal, ZODIAC_KO, PLANET_KO } from './orrery-core/natal.js';
 
 // ─── 사주 상수 ────────────────────────────────────────────────
 
+// sp: [col, row] — zodiac-coins.png 스프라이트 위치 (4열×3행)
 const ZODIAC_ANIMAL = {
-  '子':{ animal:'쥐',  emoji:'🐭', years:'1960·1972·1984·1996·2008·2020', trait:'영리하고 재치 넘치며 사교성이 풍부합니다.' },
-  '丑':{ animal:'소',  emoji:'🐂', years:'1961·1973·1985·1997·2009·2021', trait:'성실하고 인내심이 강하며 묵묵히 목표를 향해 나아갑니다.' },
-  '寅':{ animal:'호랑이', emoji:'🐯', years:'1962·1974·1986·1998·2010·2022', trait:'용감하고 리더십이 강하며 열정적입니다.' },
-  '卯':{ animal:'토끼', emoji:'🐰', years:'1963·1975·1987·1999·2011·2023', trait:'온화하고 섬세하며 예술적 감각이 뛰어납니다.' },
-  '辰':{ animal:'용',  emoji:'🐉', years:'1964·1976·1988·2000·2012·2024', trait:'카리스마 넘치고 야망이 크며 창의적입니다.' },
-  '巳':{ animal:'뱀',  emoji:'🐍', years:'1965·1977·1989·2001·2013·2025', trait:'직관이 예리하고 지혜로우며 끈기가 있습니다.' },
-  '午':{ animal:'말',  emoji:'🐎', years:'1966·1978·1990·2002·2014·2026', trait:'활동적이고 에너지 넘치며 낙관적입니다.' },
-  '未':{ animal:'양',  emoji:'🐑', years:'1967·1979·1991·2003·2015·2027', trait:'온순하고 예술적이며 평화를 사랑합니다.' },
-  '申':{ animal:'원숭이', emoji:'🐒', years:'1968·1980·1992·2004·2016·2028', trait:'영리하고 적응력이 탁월하며 재주가 많습니다.' },
-  '酉':{ animal:'닭',  emoji:'🐓', years:'1969·1981·1993·2005·2017·2029', trait:'꼼꼼하고 완벽을 추구하며 부지런합니다.' },
-  '戌':{ animal:'개',  emoji:'🐕', years:'1970·1982·1994·2006·2018·2030', trait:'충직하고 정직하며 강한 책임감을 지닙니다.' },
-  '亥':{ animal:'돼지', emoji:'🐷', years:'1971·1983·1995·2007·2019·2031', trait:'넉넉하고 복이 많으며 진실하고 너그럽습니다.' },
+  '子':{ animal:'쥐',  emoji:'🐭', sp:[0,0], years:'1960·1972·1984·1996·2008·2020', trait:'영리하고 재치 넘치며 사교성이 풍부합니다.' },
+  '丑':{ animal:'소',  emoji:'🐂', sp:[1,0], years:'1961·1973·1985·1997·2009·2021', trait:'성실하고 인내심이 강하며 묵묵히 목표를 향해 나아갑니다.' },
+  '寅':{ animal:'호랑이', emoji:'🐯', sp:[2,0], years:'1962·1974·1986·1998·2010·2022', trait:'용감하고 리더십이 강하며 열정적입니다.' },
+  '卯':{ animal:'토끼', emoji:'🐰', sp:[3,0], years:'1963·1975·1987·1999·2011·2023', trait:'온화하고 섬세하며 예술적 감각이 뛰어납니다.' },
+  '辰':{ animal:'용',  emoji:'🐉', sp:[0,1], years:'1964·1976·1988·2000·2012·2024', trait:'카리스마 넘치고 야망이 크며 창의적입니다.' },
+  '巳':{ animal:'뱀',  emoji:'🐍', sp:[1,1], years:'1965·1977·1989·2001·2013·2025', trait:'직관이 예리하고 지혜로우며 끈기가 있습니다.' },
+  '午':{ animal:'말',  emoji:'🐎', sp:[2,1], years:'1966·1978·1990·2002·2014·2026', trait:'활동적이고 에너지 넘치며 낙관적입니다.' },
+  '未':{ animal:'양',  emoji:'🐑', sp:[3,1], years:'1967·1979·1991·2003·2015·2027', trait:'온순하고 예술적이며 평화를 사랑합니다.' },
+  '申':{ animal:'원숭이', emoji:'🐒', sp:[0,2], years:'1968·1980·1992·2004·2016·2028', trait:'영리하고 적응력이 탁월하며 재주가 많습니다.' },
+  '酉':{ animal:'닭',  emoji:'🐓', sp:[1,2], years:'1969·1981·1993·2005·2017·2029', trait:'꼼꼼하고 완벽을 추구하며 부지런합니다.' },
+  '戌':{ animal:'개',  emoji:'🐕', sp:[2,2], years:'1970·1982·1994·2006·2018·2030', trait:'충직하고 정직하며 강한 책임감을 지닙니다.' },
+  '亥':{ animal:'돼지', emoji:'🐷', sp:[3,2], years:'1971·1983·1995·2007·2019·2031', trait:'넉넉하고 복이 많으며 진실하고 너그럽습니다.' },
 };
 
 const ELEMENT_LUCKY = {
@@ -3437,7 +3438,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
     <div style="${D.card}border:1px solid rgba(212,175,55,0.3);margin-top:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
       <div style="display:flex;align-items:center;gap:16px">
-        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
+        <div style="width:80px;height:80px;border-radius:50%;flex-shrink:0;box-shadow:0 0 24px rgba(212,175,55,0.4),0 0 8px rgba(0,0,0,0.6);overflow:hidden;background:#0d1020;${z.sp?`background-image:url('/assets/zodiac-coins.png');background-size:400% 300%;background-position:${z.sp[0]*100/3}% ${z.sp[1]*100/2}%;`:`display:flex;align-items:center;justify-content:center;font-size:40px`}">${z.sp?'':z.emoji}</div>
         <div style="flex:1">
           <div style="color:#8a8fa8;font-size:13px;letter-spacing:0.08em;margin-bottom:4px">${t('당신의 띠는')}</div>
           <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}${t('띠 입니다')}.</div>
