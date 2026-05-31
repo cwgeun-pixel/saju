@@ -4641,6 +4641,7 @@ async function tryAutoRun() {
 // ─── 마운트 ───────────────────────────────────────────────────
 
 function mount() {
+  if (new URLSearchParams(location.search).get('admin') === '1') return;
   try {
     const results = document.getElementById('results');
     if (!results) return;
@@ -4678,9 +4679,10 @@ document.addEventListener('click', e => {
   if (captured) {
     try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
     if (isCalcBtn) {
-      // 계산 버튼: 무료운세 페이지로 이동 (React가 처리하기 전에 캡처 완료)
+      if (new URLSearchParams(location.search).get('admin') === '1') return; // admin: 원본 앱 표시
+      // 계산 버튼: 무료운세 페이지로 이동
       e.stopImmediatePropagation();
-      window.location.href = '/fortune/' + (location.search.includes('admin=1') ? '?admin=1' : '');
+      window.location.href = '/fortune/';
       return;
     }
     // 그 외 버튼: 탭이 이미 마운트된 경우를 위해 tryAutoRun 직접 호출
