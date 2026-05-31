@@ -18,7 +18,7 @@
           const prev = this.getItem(key);
           _orig.call(this, key, value);
           if (key === 'tod_lang' && value !== prev) {
-            setTimeout(() => location.reload(), 80);
+            location.reload();
           }
         };
       })();
