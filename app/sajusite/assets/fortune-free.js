@@ -227,6 +227,22 @@ const PALACE_LABELS = {
     "역행 행성 해석":"Retrograde Planet Reading",
     "12하우스 전체 해석":"Full 12-House Reading",
     "행성 각도 심층 해석":"Aspects In-Depth",
+    "태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석":"Sun, Moon, Ascendant & 10 planets, house placements & aspects",
+    "내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향":"Inner wounds, recurring patterns, anxiety roots & healing path",
+    "10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운":"10th/MC/6th house, suitable careers, career-change timing & promotion",
+    "2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출":"2nd/8th house, income style, investment, spouse wealth, inheritance & loans",
+    "금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴":"Venus/Mars/7th house, ideal partner, marriage timing & breakup patterns",
+    "현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기":"Current planetary influences, this year fortune & timing of major changes",
+    "생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운":"Key themes from birthday to birthday: career, love, wealth & health",
+    "진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름":"Psychological evolution & life stages via progressed Sun, Moon & Venus",
+    "두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석":"Two-chart comparison: emotional, communication & attraction analysis",
+    "두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석":"The relationship destiny, purpose & long-term potential",
+    "지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시":"Regional fortune: best countries & cities for life, study, business & love",
+    "취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석":"Vulnerable body areas, health tendencies & sign-specific illness",
+    "북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제":"North/South nodes, Chiron, past-life patterns & soul mission",
+    "출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석":"Internalized energy & special talents of natal retrograde planets",
+    "인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)":"All 12 life areas: self, wealth, siblings, home, love, health, marriage, change, philosophy, career, networks & spirit",
+    "합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석":"Full analysis of conjunction, sextile, square, trine & opposition",
     '멤버십 전용 · 심층 점성술 해석':'Membership Only · In-Depth Astrology',
     '띠 입니다':'Zodiac Sign',
     '12운성':'Twelve Life Stages',
@@ -469,6 +485,22 @@ const PALACE_LABELS = {
     "역행 행성 해석":"逆行行星解读",
     "12하우스 전체 해석":"12宫完整解读",
     "행성 각도 심층 해석":"行星相位深度解读",
+    "태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석":"太阳·月亮·上升·10行星·宫位与相位全面分析",
+    "내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향":"内心创伤·重复模式·焦虑根源·防御方式·疗愈方向",
+    "10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운":"第10/MC/第6宫、适合职业、转职时机与晋升运",
+    "2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출":"第2/8宫、收入方式·投资倾向·配偶财产·继承与贷款",
+    "금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴":"金星·火星·第7宫、配偶形象·结婚时机·分手模式",
+    "현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기":"当前行星影响、今年运势与重大变化时机",
+    "생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운":"从生日到下个生日的核心主题：职业·爱情·财运·健康",
+    "진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름":"通过推运太阳·月亮·金星看心理变化与人生阶段",
+    "두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석":"双人星盘比较：情感·沟通·吸引力·婚姻稳定性",
+    "두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석":"两人共同关系本身的命运·目的·长远性分析",
+    "지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시":"各地区运势：移民·留学·商业·爱情最佳城市",
+    "취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석":"脆弱身体部位·健康倾向·各星座需注意疾病",
+    "북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제":"北交·南交点·凯龙·前世模式与今生灵魂课题",
+    "출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석":"出生星盘逆行行星的内在化能量与特殊才能",
+    "인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)":"人生12领域：自我·财富·兄弟·家庭·爱情·健康·婚姻·变革·哲学·职业·人脉·灵性",
+    "합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석":"合相·六分相·四分相·三分相·对分相全面分析",
     '멤버십 전용 · 심층 점성술 해석':'会员专属 · 占星深度解读',
     '띠 입니다':'生肖',
     '신강(身强)':'身強 (身强)',
@@ -506,6 +538,22 @@ const PALACE_LABELS = {
     "역행 행성 해석":"逆行惑星解釈",
     "12하우스 전체 해석":"12ハウス全解釈",
     "행성 각도 심층 해석":"アスペクト深層解釈",
+    "태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석":"太陽・月・ASC・10惑星、ハウス・アスペクト全分析",
+    "내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향":"内面の傷・繰り返しパターン・不安の根源・癒しの方向",
+    "10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운":"10H・MC・6H、適職・転職時期・昇進運",
+    "2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출":"2・8ハウス、収入スタイル・投資・配偶者財産・相続・借入",
+    "금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴":"金星・火星・7H、配偶者像・結婚時期・別れのパターン",
+    "현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기":"現在の惑星影響・今年の運勢・職業・恋愛・財運変化時期",
+    "생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운":"誕生日から次の誕生日までの核心テーマ：職業・恋愛・財・健康運",
+    "진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름":"進行太陽・月・金星で見る心理的変化と人生段階",
+    "두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석":"2人チャート比較：感情・対話・引力・結婚安定性分析",
+    "두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석":"2人が作り出した関係の運命・目的・長期性分析",
+    "지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시":"地域別運勢：移民・留学・事業・恋愛に有利な国と都市",
+    "취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석":"弱い身体部位・健康傾向・星座別注意疾患",
+    "북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제":"ノースノード・サウスノード・キロン・前世パターン・魂の課題",
+    "출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석":"出生チャートの逆行惑星の内面化エネルギーと特殊才能",
+    "인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)":"人生12分野：自我・財・兄弟・家庭・恋愛・健康・結婚・変化・哲学・職業・人脈・霊性",
+    "합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석":"コンジャンクション・セクスタイル・スクエア・トライン・オポジション全分析",
     '멤버십 전용 · 심층 점성술 해석':'会員限定 · 占星術詳細解釈',
     '띠 입니다':'干支です',
     '🔮 무료 운세 탭':'🔮 無料占いタブ',
@@ -955,6 +1003,22 @@ const PALACE_LABELS = {
     "역행 행성 해석":"Planetas Retrógrados",
     "12하우스 전체 해석":"Lectura de 12 Casas",
     "행성 각도 심층 해석":"Aspectos Planetarios",
+    "태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석":"Sol, Luna, Ascendente, 10 planetas, casas y aspectos",
+    "내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향":"Heridas internas, patrones repetitivos, raíces de ansiedad y camino de sanación",
+    "10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운":"Casas 10/MC/6, carreras adecuadas, cambio de carrera y ascenso",
+    "2·8하우스 분석, 수입 방식, 투자 성향, 배우자 재산, 상속·대출":"Casas 2/8, ingresos, inversión, riqueza del cónyuge, herencia y préstamos",
+    "금성·화성·7하우스 분석, 배우자상, 결혼 시기, 이별 패턴":"Venus/Marte/Casa 7, pareja ideal, matrimonio y rupturas",
+    "현재 행성이 내 차트에 주는 영향, 올해 운세, 직업·연애·재물 변화 시기":"Influencias planetarias actuales, fortuna anual y momentos de cambio",
+    "생일부터 다음 생일까지 핵심 주제, 직업·연애·재물·건강운":"Temas clave de cumpleaños a cumpleaños: carrera, amor, riqueza y salud",
+    "진행 태양·달·금성으로 보는 심리적 변화와 인생 단계 흐름":"Evolución psicológica y etapas vitales a través del Sol, Luna y Venus progresados",
+    "두 사람 차트 비교, 감정·대화·성적 끌림·결혼 안정성 분석":"Comparación de dos cartas: atracción emocional, comunicativa y estabilidad",
+    "두 사람이 만들어낸 관계 자체의 운명, 목적, 장기성 분석":"Destino, propósito y potencial de la relación en sí misma",
+    "지역별 운세, 이민·유학·사업·연애에 유리한 나라와 도시":"Fortuna regional: mejores países y ciudades para vivir, estudiar y trabajar",
+    "취약 신체 부위, 건강 경향, 별자리별 주의 질환 분석":"Áreas corporales vulnerables, tendencias de salud y enfermedades por signo",
+    "북쪽·남쪽 노드, 키론, 전생 패턴, 이번 생의 영혼 과제":"Nodos Norte/Sur, Quirón, vidas pasadas y misión del alma",
+    "출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석":"Energía internalizada y talentos especiales de planetas retrógrados natales",
+    "인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)":"Las 12 áreas: yo, riqueza, hermanos, hogar, amor, salud, matrimonio, cambio, filosofía, carrera, redes y espíritu",
+    "합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석":"Análisis completo de conjunción, sextil, cuadratura, trígono y oposición",
     '멤버십 전용 · 심층 점성술 해석':'Solo Miembros · Astrología en Profundidad',
     '띠 입니다':'Signo Zodiacal',
     '🔮 무료 운세 탭':'🔮 Pestaña de Fortuna Gratis',
@@ -4018,7 +4082,7 @@ const SUN_CAREER = [
 ];
 
 // 유료판 점성술 해석 항목 목록
-const ASTRO_PREMIUM_ITEMS = [
+function getAstroPremiumItems() { return [
   {icon:'🌟', title:t('네이탈 차트 완전 해석'), desc:t('태양·달·상승궁·10행성 전체 분석, 하우스 배치, 행성 각도 해석')},
   {icon:'🧠', title:t('심리 점성학'), desc:t('내면 상처, 반복 패턴, 불안 원인, 자기방어 방식, 치유 방향')},
   {icon:'💼', title:t('직업운 심층 해석'), desc:t('10하우스·MC·6하우스 분석, 적합 직종, 커리어 전환 시기, 승진운')},
@@ -4035,7 +4099,7 @@ const ASTRO_PREMIUM_ITEMS = [
   {icon:'🔄', title:t('역행 행성 해석'), desc:t('출생차트 역행 행성의 내면화된 에너지와 특수 재능 분석')},
   {icon:'🏠', title:t('12하우스 전체 해석'), desc:t('인생 12개 분야(자아·재물·형제·가정·연애·건강·결혼·변화·철학·직업·인맥·영성)')},
   {icon:'⚡', title:t('행성 각도 심층 해석'), desc:t('합·섹스타일·스퀘어·트라인·오포지션 전체 각도 분석')},
-];
+]; }
 
 function renderNatalSection(natalChart, transitChart, unknownTime) {
   const find = (chart, id) => chart?.planets?.find(p=>p.id===id);
@@ -4138,7 +4202,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     </div>`;
 
   // ── 유료 항목 미리보기 ──
-  const premiumGrid = ASTRO_PREMIUM_ITEMS.map(item => `
+  const premiumGrid = getAstroPremiumItems().map(item => `
     <div style="background:rgba(19,23,38,0.7);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px;opacity:0.7">
       <span style="font-size:18px;flex-shrink:0">${item.icon}</span>
       <div>
@@ -4167,7 +4231,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     <div style="margin-top:20px">
       <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
         <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#d4af37"></span>
-        ${t('멤버십 전용 · 심층 점성술 해석')} · ${ASTRO_PREMIUM_ITEMS.length}
+        ${t('멤버십 전용 · 심층 점성술 해석')} · ${getAstroPremiumItems().length}
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
         ${premiumGrid}
