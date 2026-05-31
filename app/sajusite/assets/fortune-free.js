@@ -4089,11 +4089,11 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
 function inputHtml() {
   const curYear = new Date().getFullYear();
   const yearOpts = Array.from({length: curYear - 1899}, (_, i) => curYear - i)
-    .map(y => `<option value="${y}">${y}년</option>`).join('');
-  const monthOpts = Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}월</option>`).join('');
-  const dayOpts   = Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}일</option>`).join('');
-  const hourOpts  = `<option value="">시간 모름</option>` +
-    Array.from({length:24},(_,i)=>`<option value="${i}">${i}시</option>`).join('');
+    .map(y => `<option value="${y}">${y}</option>`).join('');
+  const monthOpts = Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+  const dayOpts   = Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+  const hourOpts  = `<option value="">Unknown time</option>` +
+    Array.from({length:24},(_,i)=>`<option value="${i}">${String(i).padStart(2,'0')}</option>`).join('');
 
   const selectStyle = 'height:40px;border-radius:10px;border:1px solid rgba(212,175,55,0.3);background:linear-gradient(135deg,#131726,#161b2e);color:#e8dfc8;padding:0 12px;font-size:17px;outline:none;cursor:pointer;';
   return `<div style="background:linear-gradient(135deg,#0d1020,#111428);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:22px;box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
@@ -4104,10 +4104,10 @@ function inputHtml() {
         <option value="">${t('출생 연도')}</option>${yearOpts}
       </select>
       <select id="gf-month" style="${selectStyle}">
-        <option value="">월</option>${monthOpts}
+        <option value="">Month</option>${monthOpts}
       </select>
       <select id="gf-day" style="${selectStyle}">
-        <option value="">일</option>${dayOpts}
+        <option value="">Day</option>${dayOpts}
       </select>
       <select id="gf-hour" style="${selectStyle}">
         ${hourOpts}
