@@ -4127,9 +4127,35 @@ function renderZiweiSection(chart) {
     </div>`;
   }).join('');
 
+  // ── 자미두수 명반 미니 그리드 (명궁만 선명, 나머지 블러) ──
+  const PALACE_ORDER = ['交友','遷移','疾厄','財帛','官祿','田宅','福德','父母','命宮','兄弟','夫妻','子女'];
+  const miniZiwei = `
+    <div style="background:rgba(13,16,32,0.6);border:1px solid rgba(212,175,55,0.15);border-radius:12px;padding:12px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.4),transparent)"></div>
+      <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">紫微斗數 命盤</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+        ${PALACE_ORDER.map(name => {
+          const p = chart.palaces[name];
+          const pi = PALACE_INFO[name] || {};
+          const isLife = (name === '命宮');
+          const mains = getMainStars(p || {}).map(s=>s.name||s).slice(0,2).join(' ');
+          const blur = isLife ? '' : 'filter:blur(5px);user-select:none;';
+          const border = isLife ? '1.5px solid #d4af37' : '1px solid rgba(255,255,255,0.06)';
+          const bg = isLife ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.02)';
+          return `<div style="background:${bg};border:${border};border-radius:6px;padding:5px 4px;text-align:center;${blur}">
+            <div style="font-size:9px;color:#6a7898;margin-bottom:2px">${name}</div>
+            <div style="font-size:10px;color:#c8b89a;font-weight:600;line-height:1.3">${mains||'空'}</div>
+            <div style="font-size:9px;color:#4a5268">${p?.ganZhi||''}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:8px">🔒 명궁 공개 · 나머지는 멤버십에서 확인</div>
+    </div>`;
+
   const wu = chart.wuXingJu;
   return `<div style="${D.wrap}">
     ${sectionHeader('E', t('자미두수'), `${wu?.name||'命盤'} · 12궁`)}
+    ${miniZiwei}
 
     <!-- 무료 3궁 -->
     <div style="margin-bottom:6px">
@@ -4250,6 +4276,28 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
 
   const PLANET_COLORS = {'☀️':'#fbbf24','🌙':'#c0c8e0','⬆️':'#34d399','♃':'#a78bfa','♀':'#f472b6'};
 
+  // ── 점성학 12궁 미니 휠 (태양 별자리만 선명, 나머지 블러) ──
+  const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+  const SIGN_NAMES_SHORT = ['양','황소','쌍둥이','게','사자','처녀','천칭','전갈','사수','염소','물병','물고기'];
+  const miniAstro = sunIdx >= 0 ? `
+    <div style="background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.2);border-radius:12px;padding:12px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,106,247,0.4),transparent)"></div>
+      <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">Natal Chart · 12 Signs</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
+        ${Array.from({length:12},(_,i)=>{
+          const isSun = (i === sunIdx);
+          const blur = isSun ? '' : 'filter:blur(5px);user-select:none;';
+          const border = isSun ? '1.5px solid #a78bfa' : '1px solid rgba(255,255,255,0.06)';
+          const bg = isSun ? 'rgba(124,106,247,0.15)' : 'rgba(255,255,255,0.02)';
+          return `<div style="background:${bg};border:${border};border-radius:6px;padding:5px 4px;text-align:center;${blur}">
+            <div style="font-size:16px">${SIGN_SYMBOLS[i]}</div>
+            <div style="font-size:9px;color:${isSun?'#c8b0f8':'#4a5268'};margin-top:2px">${SIGN_NAMES_SHORT[i]}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:8px">🔒 태양 별자리 공개 · 나머지는 멤버십에서 확인</div>
+    </div>` : '';
+
   // ── 별자리 소개 배너 ──
   const sunBanner = sunIdx >= 0 ? `
     <div style="background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.3);border-radius:14px;padding:20px 22px;margin-bottom:20px;position:relative;overflow:hidden">
@@ -4346,6 +4394,7 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('F', t('점성학'), t('서양 천궁도 분석'))}
+    ${miniAstro}
 
     <!-- 별자리 소개 배너 -->
     ${sunBanner}
