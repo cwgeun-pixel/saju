@@ -3017,37 +3017,30 @@ function computeBasicScores(saju, mp, dp, gender) {
 
 function captureMainFormInput() {
   const triggers = [...document.querySelectorAll('button[role="combobox"]')];
-  let year=null, month=null, day=null, hour=12, minute=0, gender='M', unknownTime=false;
+  const vals = triggers.map(b => b.textContent.trim());
 
-  // i18n이 텍스트를 변환해도 숫자를 올바르게 인식하도록 다국어 패턴 지원
-  for (const btn of triggers) {
-    const txt = btn.textContent.trim(); let m;
-    // 연도: "1995년" (ko) / "1995" (en·ja·zh·es - 년 제거됨)
-    if ((m=txt.match(/^(\d{4})년?$/))) {
-      const v=+m[1]; if(v>=1900&&v<=2100) year=v;
-    }
-    // 월: "6월" / "6月" / "6 mo" / "6 mes"
-    else if ((m=txt.match(/^(\d{1,2})(월|月| mo| mes)?$/i))) {
-      const v=+m[1];
-      if (year!==null && month===null && v>=1 && v<=12) month=v;
-    }
-    // 일: "15일" / "15日" / "15 day" / "15 día"
-    else if ((m=txt.match(/^(\d{1,2})(일|日| day| d[ií]a)?$/i))) {
-      const v=+m[1];
-      if (month!==null && day===null && v>=1 && v<=31) day=v;
-    }
-    // 시: "12시" / "12時" / "12 h"
-    else if ((m=txt.match(/^(\d{1,2})(시|時| h)?$/i))) {
-      if (btn.disabled||btn.hasAttribute('data-disabled')) unknownTime=true;
-      else { const v=+m[1]; if(v>=0&&v<=23) hour=v; }
-    }
-    // 분: "30분" / "30分" / "30 min"
-    else if ((m=txt.match(/^(\d{2})(분|分| min)?$/i))) minute=+m[1];
-  }
+  // 4자리 연도 위치 기준으로 순서대로 파싱 (regex else-if 오매칭 방지)
+  const yearIdx = vals.findIndex(v => /^\d{4}$/.test(v) && +v>=1900 && +v<=2100);
+  if (yearIdx === -1) return null;
+
+  const year  = +vals[yearIdx];
+  const month = +vals[yearIdx + 1];
+  const day   = +vals[yearIdx + 2];
+  if (!month||month<1||month>12) return null;
+  if (!day||day<1||day>31) return null;
 
   const sw = document.querySelector('button[role="switch"]');
-  if (sw && sw.getAttribute('data-state')==='checked') { unknownTime=true; hour=12; }
+  const unknownTime = !!(sw && sw.getAttribute('data-state')==='checked');
 
+  let hour=12, minute=0;
+  if (!unknownTime) {
+    const hBtn = triggers[yearIdx + 3];
+    const mBtn = triggers[yearIdx + 4];
+    if (hBtn) { const v=+hBtn.textContent.trim(); if(v>=0&&v<=23) hour=v; }
+    if (mBtn) { const v=+mBtn.textContent.trim(); if(v>=0&&v<=59) minute=v; }
+  }
+
+  let gender='M';
   const radioItems = [...document.querySelectorAll('button[role="radio"]')];
   for (const btn of radioItems) {
     if (btn.getAttribute('data-state')==='on') {
@@ -3058,9 +3051,7 @@ function captureMainFormInput() {
   }
   if (document.querySelector('input[type="radio"][value="F"]:checked')) gender='F';
 
-  if (!year||!month||!day) return null;
-  if (year<1900||year>2100||month<1||month>12||day<1||day>31) return null;
-  return { year, month, day, hour:unknownTime?12:hour, minute, gender, unknownTime };
+  return { year, month, day, hour, minute, gender, unknownTime };
 }
 
 // ─── Imperial Cosmic 렌더 헬퍼 ─────────────────────────────────────
