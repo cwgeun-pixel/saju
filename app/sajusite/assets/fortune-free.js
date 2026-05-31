@@ -4493,11 +4493,11 @@ function renderAdminData(saju, ziwei, natalChart, transitChart, input) {
     return row(names[i], `${pl.stem||''}${pl.branch||''} | 십성:${p.stemSipsin||'-'}/${p.branchSipsin||'-'} | 운성:${p.unseong||'-'}`);
   }).join('');
 
-  // 자미두수 12궁
-  const palaces = ziwei?.palaces || [];
-  const ziweiRows = palaces.map(p => {
-    const stars = (p.stars||[]).map(s=>s.name).join(',') || '(공궁)';
-    return row(p.name||'', `${p.ganZhi||''} | ${stars}`);
+  // 자미두수 12궁 (palaces는 객체)
+  const palacesObj = ziwei?.palaces || {};
+  const ziweiRows = Object.entries(palacesObj).map(([name, p]) => {
+    const stars = (p?.stars||[]).map(s=>s.name||s).join(', ') || '(공궁)';
+    return row(name, `${p?.ganZhi||''} | ${stars}`);
   }).join('');
 
   // 점성술 행성
@@ -4652,7 +4652,7 @@ function mount() {
     if (input) {
       try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(input)); } catch {}
     }
-    window.location.href = '/fortune/';
+    window.location.href = '/fortune/' + (location.search.includes('admin=1') ? '?admin=1' : '');
   } catch(err) {
     console.error('[fortune-free] mount error:', err);
   }
@@ -4680,7 +4680,7 @@ document.addEventListener('click', e => {
     if (isCalcBtn) {
       // 계산 버튼: 무료운세 페이지로 이동 (React가 처리하기 전에 캡처 완료)
       e.stopImmediatePropagation();
-      window.location.href = '/fortune/';
+      window.location.href = '/fortune/' + (location.search.includes('admin=1') ? '?admin=1' : '');
       return;
     }
     // 그 외 버튼: 탭이 이미 마운트된 경우를 위해 tryAutoRun 직접 호출
