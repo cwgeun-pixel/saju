@@ -3484,10 +3484,8 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.4),transparent)"></div>
       <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">四柱八字</div>
       <div style="display:flex;gap:8px;justify-content:center">${pillarCols}</div>
-      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:10px">${isAdmin ? '' : '🔒 일주 공개 · 나머지는 멤버십에서 확인'}</div>
+      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:10px">${new URLSearchParams(location.search).get('admin')==='1' ? '' : '🔒 일주 공개 · 나머지는 멤버십에서 확인'}</div>
     </div>`;
-
-  const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
 
   return `<div style="${D.wrap}">
     ${sectionHeader('A', t('기본 운세'), t('사주 원국 기반'))}
