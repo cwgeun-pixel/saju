@@ -1,8 +1,9 @@
-# Trinity of Destiny — Claude AI 사주/자미두수/점성술 해석 생성기
+# Trinity of Destiny - Claude AI 사주/자미두수/점성술 해석 생성기
 # 사용법: python interpret_with_claude.py --input data.json --output interpreted.json --key sk-ant-...
 
 import os, sys, json, argparse
 import anthropic
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # ── 해석 요청 프롬프트 빌더 ─────────────────────────────────
 
@@ -25,9 +26,9 @@ def build_saju_prompt(data: dict) -> str:
 
 ## 기본 정보
 - 이름: {data.get('name', '의뢰인')}
-- 생년월일: {data.get('birth_date', '—')}
-- 출생시각: {data.get('birth_time', '—')}
-- 성별: {data.get('gender', '—')}
+- 생년월일: {data.get('birth_date', '-')}
+- 출생시각: {data.get('birth_time', '-')}
+- 성별: {data.get('gender', '-')}
 
 ## 사주 원국
 {pillar_str}
@@ -36,9 +37,9 @@ def build_saju_prompt(data: dict) -> str:
 목: {elem.get('목', 0)}% / 화: {elem.get('화', 0)}% / 토: {elem.get('토', 0)}% / 금: {elem.get('금', 0)}% / 수: {elem.get('수', 0)}%
 
 ## 용신/희신/기신
-- 용신: {ys.get('yong', '—')}
-- 희신: {ys.get('hee', '—')}
-- 기신: {ys.get('gi', '—')}
+- 용신: {ys.get('yong', '-')}
+- 희신: {ys.get('hee', '-')}
+- 기신: {ys.get('gi', '-')}
 
 ---
 
@@ -89,9 +90,9 @@ def build_ziwei_prompt(data: dict) -> str:
 
 ## 명반 정보
 - 이름: {data.get('name', '의뢰인')}
-- 생년월일: {data.get('birth_date', '—')}
-- 성별: {data.get('gender', '—')}
-- 명반 유형: {ziwei.get('chart_type', '—')}
+- 생년월일: {data.get('birth_date', '-')}
+- 성별: {data.get('gender', '-')}
+- 명반 유형: {ziwei.get('chart_type', '-')}
 
 ## 12궁 배치
 {palace_str}
@@ -148,9 +149,9 @@ def build_natal_prompt(data: dict) -> str:
 
 ## 기본 정보
 - 이름: {data.get('name', '의뢰인')}
-- 태양 별자리: {natal.get('sun_sign', '—')}
-- 달 별자리: {natal.get('moon_sign', '—')}
-- 상승궁: {natal.get('asc_sign', '—')}
+- 태양 별자리: {natal.get('sun_sign', '-')}
+- 달 별자리: {natal.get('moon_sign', '-')}
+- 상승궁: {natal.get('asc_sign', '-')}
 
 ## 행성 배치
 {planet_str}
@@ -168,19 +169,19 @@ def build_natal_prompt(data: dict) -> str:
     "asc": "상승궁 심층 해석 (3~4문장)"
   }},
   "extended": {{
-    "psych": "심리 점성학 — 내면 심리, 방어 기제, 성장 방향 (4~5문장)",
-    "career": "직업 점성술 — 적합 직종, 커리어 전략, 성공 시기 (4~5문장)",
-    "wealth": "재물 점성술 — 재물 성향, 투자 전략, 주의사항 (4~5문장)",
-    "love": "연애 점성술 — 연애 스타일, 이상형, 결혼 인연 (4~5문장)",
-    "transit": "2026년 트랜짓 핵심 운세 — 주요 행성 영향과 타이밍 (4~5문장)",
-    "solar": "2026년 솔라 리턴 분석 — 올해의 핵심 테마 (3~4문장)",
-    "progression": "프로그레션 현재 분석 — 심리적 성장 단계 (3~4문장)",
-    "karma": "카르마·노드 해석 — 전생 패턴과 이번 생의 과제 (3~4문장)",
-    "retrograde": "역행 행성 해석 — 내면화된 에너지와 특수 재능 (3~4문장)",
-    "health_astro": "건강 점성학 — 취약 부위, 체질, 관리법 (3~4문장)",
+    "psych": "심리 점성학 - 내면 심리, 방어 기제, 성장 방향 (4~5문장)",
+    "career": "직업 점성술 - 적합 직종, 커리어 전략, 성공 시기 (4~5문장)",
+    "wealth": "재물 점성술 - 재물 성향, 투자 전략, 주의사항 (4~5문장)",
+    "love": "연애 점성술 - 연애 스타일, 이상형, 결혼 인연 (4~5문장)",
+    "transit": "2026년 트랜짓 핵심 운세 - 주요 행성 영향과 타이밍 (4~5문장)",
+    "solar": "2026년 솔라 리턴 분석 - 올해의 핵심 테마 (3~4문장)",
+    "progression": "프로그레션 현재 분석 - 심리적 성장 단계 (3~4문장)",
+    "karma": "카르마·노드 해석 - 전생 패턴과 이번 생의 과제 (3~4문장)",
+    "retrograde": "역행 행성 해석 - 내면화된 에너지와 특수 재능 (3~4문장)",
+    "health_astro": "건강 점성학 - 취약 부위, 체질, 관리법 (3~4문장)",
     "all_houses": "12하우스 전체 키워드 요약 (각 하우스 1~2문장)",
-    "aspects": "주요 각도(Aspect) 심층 해석 — 상위 5개 (각 2문장)",
-    "astrocarto": "아스트로카토그래피 — 인생에 유리한 지역과 이유 (3~4문장)"
+    "aspects": "주요 각도(Aspect) 심층 해석 - 상위 5개 (각 2문장)",
+    "astrocarto": "아스트로카토그래피 - 인생에 유리한 지역과 이유 (3~4문장)"
   }}
 }}
 ```
@@ -247,7 +248,7 @@ def call_claude(client: anthropic.Anthropic, prompt: str, section: str) -> dict:
     try:
         msg = client.messages.create(
             model='claude-opus-4-5',
-            max_tokens=4096,
+            max_tokens=8192,
             messages=[{'role': 'user', 'content': prompt}]
         )
         raw = msg.content[0].text.strip()
@@ -286,11 +287,11 @@ def generate_interpretations(data: dict, api_key: str) -> dict:
     client = anthropic.Anthropic(api_key=api_key)
     result = json.loads(json.dumps(data))  # 깊은 복사
 
-    print('\n🔮 Trinity of Destiny — AI 해석 생성 시작')
+    print('\n? Trinity of Destiny - AI 해석 생성 시작')
     print('=' * 50)
 
     # 1. 사주 해석
-    print('\n📊 PART I · 사주명리 해석...')
+    print('\n? PART I · 사주명리 해석...')
     saju_prompt = build_saju_prompt(data)
     saju_interp = call_claude(client, saju_prompt, '사주')
 
@@ -342,7 +343,7 @@ def generate_interpretations(data: dict, api_key: str) -> dict:
             natal['extended'] = natal_interp['extended']
 
     # 4. 종합 해석
-    print('\n🌟 PART IV · 종합 해석...')
+    print('\n? PART IV · 종합 해석...')
     summary_prompt = build_summary_prompt(data, saju_interp, ziwei_interp, natal_interp)
     summary_interp = call_claude(client, summary_prompt, '종합')
 
@@ -366,7 +367,7 @@ def generate_interpretations(data: dict, api_key: str) -> dict:
 # ── CLI 진입점 ─────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description='Trinity of Destiny — AI 해석 생성기')
+    parser = argparse.ArgumentParser(description='Trinity of Destiny - AI 해석 생성기')
     parser.add_argument('--input',  '-i', required=True,  help='입력 JSON 파일 경로')
     parser.add_argument('--output', '-o', required=True,  help='출력 JSON 파일 경로')
     parser.add_argument('--key',    '-k', default='',     help='Anthropic API 키 (없으면 환경변수 ANTHROPIC_API_KEY 사용)')
@@ -390,16 +391,16 @@ def main():
     # 결과 저장
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(interpreted, f, ensure_ascii=False, indent=2)
-    print(f'\n💾 해석 결과 저장: {args.output}')
+    print(f'\n? 해석 결과 저장: {args.output}')
 
     # PDF 생성 (선택)
     if args.pdf:
-        print(f'\n📄 PDF 생성 중...')
+        print(f'\n? PDF 생성 중...')
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sys.path.insert(0, script_dir)
         from generate_report import generate_report
         generate_report(interpreted, args.pdf)
-        print(f'📄 PDF 저장: {args.pdf}')
+        print(f'? PDF 저장: {args.pdf}')
 
 
 if __name__ == '__main__':

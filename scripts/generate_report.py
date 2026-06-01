@@ -15,16 +15,34 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
-# ── 폰트 ─────────────────────────────────────────────────────
-MAIN_FONT, BOLD_FONT = 'Malgun', 'MalgunBold'
-for path, name in [('C:/Windows/Fonts/malgun.ttf', MAIN_FONT),
-                   ('C:/Windows/Fonts/malgunbd.ttf', BOLD_FONT)]:
-    if os.path.exists(path):
-        try: pdfmetrics.registerFont(TTFont(name, path))
-        except: pass
+# ── 폰트 — 로컬 fonts/ 폴더 우선, 없으면 시스템 폰트 ────────
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+FONT_DIR   = os.path.join(SCRIPT_DIR, 'fonts')
+MAIN_FONT, BOLD_FONT = 'NanumGothic', 'NanumGothicBold'
+
+_font_candidates = [
+    (MAIN_FONT, [
+        os.path.join(FONT_DIR, 'NotoSansKR-Regular.ttf'),
+        os.path.join(FONT_DIR, 'NanumGothic.ttf'),
+    ]),
+    (BOLD_FONT, [
+        os.path.join(FONT_DIR, 'NotoSansKR-Bold.ttf'),
+        os.path.join(FONT_DIR, 'NanumGothicBold.ttf'),
+        os.path.join(FONT_DIR, 'NotoSansKR-Regular.ttf'),
+    ]),
+]
+for font_name, paths in _font_candidates:
+    for path in paths:
+        if os.path.exists(path):
+            try:
+                pdfmetrics.registerFont(TTFont(font_name, path))
+                break
+            except Exception:
+                continue
+
 try:
     pdfmetrics.getFont(MAIN_FONT)
-except:
+except Exception:
     MAIN_FONT, BOLD_FONT = 'Helvetica', 'Helvetica-Bold'
 
 # ── 색상 ─────────────────────────────────────────────────────
@@ -120,6 +138,12 @@ def sec(label, sub=''):
 def subsec(label):
     return [Paragraph(label, ST['h3'])]
 
+
+def safe_str(v):
+    if isinstance(v, list): return ' '.join(str(x) for x in v)
+    if v is None: return ''
+    return str(v)
+
 def card(rows, widths=None, bg=None):
     bg = bg or C['card']
     t = Table(rows, colWidths=widths or [W])
@@ -154,6 +178,7 @@ def two_col(left_items, right_items, ratio=0.5):
     return t
 
 def labeled_card(label, text, label_color=None):
+    text = safe_str(text)
     lc = label_color or C['gold']
     lbl_style = S('lc', fontName=BOLD_FONT, fontSize=9, textColor=lc, leading=13)
     t = Table([[Paragraph(label, lbl_style), Paragraph(text, ST['body'])]],
@@ -171,6 +196,7 @@ def labeled_card(label, text, label_color=None):
     return t
 
 def badge_card(badge, title, text, badge_color=None):
+    text = safe_str(text)
     bc = badge_color or C['gold']
     badge_style = S('bc', fontName=BOLD_FONT, fontSize=9, textColor=bc, leading=13)
     title_style = S('tc2', fontName=BOLD_FONT, fontSize=10, textColor=C['goldlt'], leading=14, spaceAfter=3)
@@ -301,27 +327,98 @@ def generate_report(data: dict, output_path: str):
     # ═════════════════════════════════════════════════════════
     story += part_break('PART I · 사주명리', '四柱命理 · The Four Pillars')
 
+    # ── 오행 색상 매핑 ──────────────────────────────────────────
+    STEM_ELEM = {
+        '甲':'목','乙':'목','丙':'화','丁':'화',
+        '戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'
+    }
+    BRANCH_ELEM = {
+        '子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화',
+        '午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'
+    }
+    ELEM_BG = {
+        '목': colors.HexColor('#14532d'),   # 진초록
+        '화': colors.HexColor('#7f1d1d'),   # 진빨강
+        '토': colors.HexColor('#78350f'),   # 진주황
+        '금': colors.HexColor('#1e293b'),   # 진회색
+        '수': colors.HexColor('#1e3a5f'),   # 진파랑
+    }
+    ELEM_FG = {
+        '목': colors.HexColor('#4ade80'),
+        '화': colors.HexColor('#f87171'),
+        '토': colors.HexColor('#fbbf24'),
+        '금': colors.HexColor('#cbd5e1'),
+        '수': colors.HexColor('#60a5fa'),
+    }
+
+    def elem_box(char, elem_map, size=22):
+        """오행 색상 박스 안에 한자 글자"""
+        elem = elem_map.get(char, '토')
+        bg   = ELEM_BG.get(elem, C['card'])
+        fg   = ELEM_FG.get(elem, C['gold'])
+        style = S(f'eb_{char}', fontName=BOLD_FONT, fontSize=size,
+                  textColor=fg, alignment=TA_CENTER, leading=size+4)
+        # 배경색 있는 셀은 TableStyle로 처리 — 여기서는 스타일만 반환
+        return Paragraph(f'<b>{char}</b>', style), bg
+
     # ── 01. 사주팔자 원국 ─────────────────────────────────────
     story += sec('01.  사주팔자 원국 전체 분석', '四柱八字 原局')
     if pillars:
+        cw = (W - 18*mm) / 4
         hdr = [Paragraph('', ST['lbl'])] + [Paragraph(l, ST['lbl']) for l in p_labels]
-        r1  = [Paragraph('十神上', ST['sm'])] + [Paragraph(p.get('sipsin_top',''), ST['ctr']) for p in pillars]
-        r2  = [Paragraph('天干', ST['sm'])]   + [Paragraph(f'<b>{p.get("stem","")}</b>', ST['pillar']) for p in pillars]
-        r3  = [Paragraph('地支', ST['sm'])]   + [Paragraph(f'<b>{p.get("branch","")}</b>', ST['pillarb']) for p in pillars]
-        r4  = [Paragraph('十神下', ST['sm'])] + [Paragraph(p.get('sipsin_bot',''), ST['ctr']) for p in pillars]
-        r5  = [Paragraph('12운성', ST['sm'])] + [Paragraph(p.get('unseong',''), S('us', fontSize=8, textColor=C['purple'], alignment=TA_CENTER)) for p in pillars]
-        t = Table([hdr,r1,r2,r3,r4,r5], colWidths=[18*mm]+[(W-18*mm)/4]*4)
-        t.setStyle(TableStyle([
+        r1  = [Paragraph('十神上', ST['sm'])] + [
+            Paragraph(p.get('sipsin_top',''), S('st', fontSize=9, textColor=C['goldlt'], alignment=TA_CENTER))
+            for p in pillars]
+
+        # 天干 — 오행 색상 적용
+        stem_cells = []
+        stem_bgs   = []
+        for p in pillars:
+            stem = p.get('stem','')
+            cell, bg = elem_box(stem, STEM_ELEM, size=22)
+            stem_cells.append(cell)
+            stem_bgs.append(bg)
+        r2 = [Paragraph('天干', ST['sm'])] + stem_cells
+
+        # 地支 — 오행 색상 적용
+        branch_cells = []
+        branch_bgs   = []
+        for p in pillars:
+            branch = p.get('branch','')
+            cell, bg = elem_box(branch, BRANCH_ELEM, size=22)
+            branch_cells.append(cell)
+            branch_bgs.append(bg)
+        r3 = [Paragraph('地支', ST['sm'])] + branch_cells
+
+        r4  = [Paragraph('十神下', ST['sm'])] + [
+            Paragraph(p.get('sipsin_bot',''), S('sb', fontSize=9, textColor=C['muted'], alignment=TA_CENTER))
+            for p in pillars]
+        r5  = [Paragraph('12운성', ST['sm'])] + [
+            Paragraph(p.get('unseong',''), S('us', fontSize=8, textColor=C['purple'], alignment=TA_CENTER))
+            for p in pillars]
+
+        t = Table([hdr,r1,r2,r3,r4,r5], colWidths=[18*mm]+[cw]*4)
+
+        ts = TableStyle([
             ('BACKGROUND',(0,0),(-1,-1), C['card']),
-            ('BACKGROUND',(0,0),(-1,0), C['dark']),
-            ('BOX',(0,0),(-1,-1),0.8,C['gold']),
-            ('INNERGRID',(0,0),(-1,-1),0.2,C['line']),
-            ('ALIGN',(0,0),(-1,-1),'CENTER'),
-            ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
-            ('TOPPADDING',(0,0),(-1,-1),6),('BOTTOMPADDING',(0,0),(-1,-1),6),
-            ('BACKGROUND',(2,1),(2,-1), colors.HexColor('#1c1f35')),
-            ('BOX',(2,1),(2,-1),1.5,C['gold']),
-        ]))
+            ('BACKGROUND',(0,0),(-1,0),  C['dark']),
+            ('BOX',       (0,0),(-1,-1), 0.8, C['gold']),
+            ('INNERGRID', (0,0),(-1,-1), 0.2, C['line']),
+            ('ALIGN',     (0,0),(-1,-1), 'CENTER'),
+            ('VALIGN',    (0,0),(-1,-1), 'MIDDLE'),
+            ('TOPPADDING',   (0,0),(-1,-1), 6),
+            ('BOTTOMPADDING',(0,0),(-1,-1), 6),
+            # 일주(2열) 강조 테두리
+            ('BOX',(2,1),(2,-1), 1.5, C['gold']),
+        ])
+        # 天干 행(row 2) 배경색 적용
+        for col_i, bg in enumerate(stem_bgs):
+            ts.add('BACKGROUND', (col_i+1, 2), (col_i+1, 2), bg)
+        # 地支 행(row 3) 배경색 적용
+        for col_i, bg in enumerate(branch_bgs):
+            ts.add('BACKGROUND', (col_i+1, 3), (col_i+1, 3), bg)
+
+        t.setStyle(ts)
         story.append(t)
         story.append(Spacer(1, 3*mm))
 
@@ -650,7 +747,7 @@ def generate_report(data: dict, output_path: str):
     ]
     for label, text in adv_items:
         if text:
-            story.append(labeled_card(label, text))
+            story.append(labeled_card(label, safe_str(text)))
             story.append(Spacer(1, 1.5*mm))
 
     # ── 마무리 ───────────────────────────────────────────────
