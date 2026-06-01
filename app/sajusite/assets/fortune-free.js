@@ -4654,188 +4654,226 @@ window.honcheonSwitchTab = function(tab) {
 
 // ─── 멤버십 원천자료 렌더링 ────────────────────────────────────
 function renderMembershipRawData(saju, ziwei, natalChart, input) {
-  const STEM_ELEM2  = {'甲':'목','乙':'목','丙':'화','丁':'화','戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'};
-  const BRANCH_ELEM2= {'子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화','午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'};
-  const ELEM_BG2 = {'목':'rgba(20,83,45,0.8)','화':'rgba(127,29,29,0.8)','토':'rgba(120,53,15,0.8)','금':'rgba(30,41,59,0.8)','수':'rgba(30,58,95,0.8)'};
-  const ELEM_FG2 = {'목':'#4ade80','화':'#f87171','토':'#fbbf24','금':'#cbd5e1','수':'#60a5fa'};
-  const SIPSIN_KR2 = {'比肩':'비견','劫財':'겁재','食神':'식신','傷官':'상관','偏財':'편재','正財':'정재','偏官':'편관','正官':'정관','偏印':'편인','正印':'정인'};
+  const SE={'甲':'목','乙':'목','丙':'화','丁':'화','戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'};
+  const BE={'子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화','午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'};
+  const EB={목:'rgba(20,83,45,.85)',화:'rgba(127,29,29,.85)',토:'rgba(120,53,15,.85)',금:'rgba(30,41,59,.85)',수:'rgba(30,58,95,.85)'};
+  const EF={목:'#4ade80',화:'#f87171',토:'#fbbf24',금:'#cbd5e1',수:'#60a5fa'};
+  const SK={'比肩':'비견','劫財':'겁재','食神':'식신','傷官':'상관','偏財':'편재','正財':'정재','偏官':'편관','正官':'정관','偏印':'편인','正印':'정인'};
+  const SC2={'化祿':'#22c55e','化權':'#fbbf24','化科':'#60a5fa','化忌':'#ef4444'};
+  const PSYM={Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆',Pluto:'♇',Chiron:'⚷','North Node':'☊','South Node':'☋'};
+  const PCOL={Sun:'#fbbf24',Moon:'#c0c8e0',Mercury:'#a78bfa',Venus:'#f472b6',Mars:'#ef4444',Jupiter:'#22c55e',Saturn:'#94a3b8',Uranus:'#60a5fa',Neptune:'#818cf8',Pluto:'#7c6af7',Chiron:'#fbbf24','North Node':'#34d399','South Node':'#f87171'};
+  const ASPC={conjunction:'합(☌)',opposition:'대립(☍)',trine:'삼각(△)',square:'직각(□)',sextile:'육합(⚹)',quincunx:'퀸컨스'};
+  const ASCC={conjunction:'#fbbf24',opposition:'#ef4444',trine:'#22c55e',square:'#ef4444',sextile:'#60a5fa',quincunx:'#94a3b8'};
 
-  function stemBox(char) {
-    const elem = STEM_ELEM2[char]||'토';
-    return `<div style="width:52px;height:52px;background:${ELEM_BG2[elem]};border:2px solid ${ELEM_FG2[elem]};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:${ELEM_FG2[elem]};margin:0 auto;box-shadow:0 0 12px ${ELEM_FG2[elem]}40;font-family:'Noto Serif KR','serif'">${char}</div>`;
+  const sec = (title,sub) => `<div style="margin:18px 0 9px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,.22)"><span style="font-size:13px;font-weight:900;color:#d4af37;letter-spacing:.08em">${title}</span>${sub?`<span style="font-size:11px;color:#7a82a8;margin-left:8px">${sub}</span>`:''}</div>`;
+  const tdC = (t,s) => `<td style="text-align:center;padding:5px 4px;font-size:12px;color:#c8cee8;${s||''}">${t||'—'}</td>`;
+
+  function box(ch, emap, size) {
+    const sz = size||26;
+    const e = emap[ch]||'토';
+    return `<div style="width:${sz+20}px;height:${sz+20}px;background:${EB[e]};border:2px solid ${EF[e]};border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:${sz}px;font-weight:900;color:${EF[e]};margin:0 auto;box-shadow:0 0 10px ${EF[e]}30;font-family:'Noto Serif KR',serif">${ch}</div>`;
   }
-  function branchBox(char) {
-    const elem = BRANCH_ELEM2[char]||'토';
-    return `<div style="width:52px;height:52px;background:${ELEM_BG2[elem]};border:2px solid ${ELEM_FG2[elem]};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:${ELEM_FG2[elem]};margin:0 auto;box-shadow:0 0 12px ${ELEM_FG2[elem]}40;font-family:'Noto Serif KR','serif'">${char}</div>`;
-  }
 
-  const pillars = saju?.pillars||[];
-  const p_labels = ['시주','일주','월주','년주'];
-  const TH = (t,w='') => `<th style="color:#d4af37;font-size:12px;padding:7px 6px;text-align:center;background:rgba(212,175,55,0.08);${w?'width:'+w:''}">${t}</th>`;
-  const TD = (t,style='') => `<td style="text-align:center;padding:6px 4px;font-size:13px;color:#c8cee8;${style}">${t||'—'}</td>`;
-
-  // ── 사주팔자 원국 ──
+  /* ═══ 사주팔자 원국 ═══ */
+  const pillars = saju ? saju.pillars||[] : [];
+  const pL = ['시주','일주','월주','년주'];
   const sajuTable = `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">四柱八字 원국</div>
-      <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,0.6);border:1px solid rgba(212,175,55,0.2);border-radius:10px;overflow:hidden">
-        <thead><tr>${TH('구분','70px')}${pillars.map((_,i)=>`<th style="color:#e8dfc8;font-size:12px;padding:8px 4px;text-align:center;background:rgba(212,175,55,0.05)${i===1?';border:1px solid rgba(212,175,55,0.4)':''}">${p_labels[i]}</th>`).join('')}</tr></thead>
-        <tbody>
-          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神上</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:12px;color:#a89bc0${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${SIPSIN_KR2[p.stemSipsin]||p.stemSipsin||'—'}</td>`).join('')}</tr>
-          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">天干</td>${pillars.map((p,i)=>`<td style="padding:8px 3px${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}>${stemBox(p.pillar?.stem||'')}</td>`).join('')}</tr>
-          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">地支</td>${pillars.map((p,i)=>`<td style="padding:8px 3px${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}>${branchBox(p.pillar?.branch||'')}</td>`).join('')}</tr>
-          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神下</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:12px;color:#a89bc0${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${SIPSIN_KR2[p.branchSipsin]||p.branchSipsin||'—'}</td>`).join('')}</tr>
-          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">12운성</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:11px;color:#7c6af7${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${p.unseong||'—'}</td>`).join('')}</tr>
-        </tbody>
-      </table>
-      </div>
+  ${sec('四柱八字 원국')}
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,.7);border:1px solid rgba(212,175,55,.2);border-radius:10px;overflow:hidden">
+    <thead><tr>${'<th style="color:#7a82a8;font-size:11px;padding:7px 8px;background:rgba(212,175,55,.06)">구분</th>'+pL.map((l,i)=>`<th style="color:#e8dfc8;font-size:12px;padding:8px 4px;text-align:center;background:rgba(212,175,55,.05)${i===1?';border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':''}">${l}</th>`).join('')}</tr></thead>
+    <tbody>
+      <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神上</td>${pillars.map((p,i)=>tdC(SK[p.stemSipsin]||p.stemSipsin||'—',i===1?'border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':'')).join('')}</tr>
+      <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">天干</td>${pillars.map((p,i)=>`<td style="padding:7px 3px;${i===1?'border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':''}">${box(p.pillar&&p.pillar.stem||'',SE)}</td>`).join('')}</tr>
+      <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">地支</td>${pillars.map((p,i)=>`<td style="padding:7px 3px;${i===1?'border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':''}">${box(p.pillar&&p.pillar.branch||'',BE)}</td>`).join('')}</tr>
+      <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神下</td>${pillars.map((p,i)=>tdC(SK[p.branchSipsin]||p.branchSipsin||'—',i===1?'border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':'')).join('')}</tr>
+      <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">12운성</td>${pillars.map((p,i)=>tdC(`<span style="color:#7c6af7">${p.unseong||'—'}</span>`,i===1?'border-left:1.5px solid #d4af37;border-right:1.5px solid #d4af37':'')).join('')}</tr>
+    </tbody>
+  </table></div>`;
+
+  /* 팔자관계 */
+  const stems = pillars.map(p=>p.pillar&&p.pillar.stem||'');
+  const brs   = pillars.map(p=>p.pillar&&p.pillar.branch||'');
+  let relItems=[];
+  [['甲','己'],['乙','庚'],['丙','辛'],['丁','壬'],['戊','癸']].forEach(([a,b])=>{if(stems.includes(a)&&stems.includes(b))relItems.push(`<span style="background:rgba(34,197,94,.15);border:1px solid #22c55e44;border-radius:6px;padding:3px 10px;font-size:12px;color:#4ade80;font-weight:700">天干合 ${a}·${b}</span>`);});
+  [['子','午'],['丑','未'],['寅','申'],['卯','酉'],['辰','戌'],['巳','亥']].forEach(([a,b])=>{if(brs.includes(a)&&brs.includes(b))relItems.push(`<span style="background:rgba(239,68,68,.15);border:1px solid #ef444444;border-radius:6px;padding:3px 10px;font-size:12px;color:#f87171;font-weight:700">地支沖 ${a}↔${b}</span>`);});
+  [{b:['寅','午','戌'],n:'화국'},{b:['申','子','辰'],n:'수국'},{b:['巳','酉','丑'],n:'금국'},{b:['亥','卯','未'],n:'목국'}].forEach(({b,n})=>{const m=b.filter(x=>brs.includes(x));if(m.length>=2)relItems.push(`<span style="background:rgba(96,165,250,.15);border:1px solid #60a5fa44;border-radius:6px;padding:3px 10px;font-size:12px;color:#60a5fa;font-weight:700">三合 ${m.join('+')}(${n})</span>`);});
+  const relHtml = relItems.length ? `${sec('八字關係','합·충·삼합')}<div style="display:flex;flex-wrap:wrap;gap:8px">${relItems.join('')}</div>` : '';
+
+  /* 신살 */
+  const sinsal = saju ? saju.sinsal||[] : [];
+  const sinsalHtml = sinsal.length ? `${sec('神殺 분석')}<div style="display:flex;flex-wrap:wrap;gap:8px">${sinsal.map(s=>{const c=s.type==='길신'?'#22c55e':s.type==='흉신'?'#ef4444':'#94a3b8';return `<div style="background:${c}18;border:1px solid ${c}44;border-radius:8px;padding:6px 12px"><span style="color:${c};font-size:11px;font-weight:700">[${s.type||''}]</span><span style="color:#e8dfc8;font-size:12px;margin-left:6px;font-weight:600">${s.name||''}</span><span style="color:#7a82a8;font-size:11px;margin-left:8px">${s.pos||''}</span></div>`;}).join('')}</div>` : '';
+
+  /* 대운 */
+  const daewoon = saju ? saju.daewoon||[] : [];
+  const dwHtml = daewoon.length ? `${sec('大運 흐름','60년 운명')}
+  <div style="display:flex;gap:5px;flex-wrap:wrap">${daewoon.map(dw=>{
+    const isCur=dw.isCurrent||dw.is_current;
+    const gz=dw.ganzi||dw.ganzhi||''; const st=gz[0]||''; const br=gz[1]||'';
+    return `<div style="text-align:center;min-width:46px;background:${isCur?'rgba(34,197,94,.12)':'rgba(13,16,32,.7)'};border:${isCur?'2px solid #22c55e':'1px solid rgba(255,255,255,.07)'};border-radius:10px;padding:5px 3px">
+      <div style="font-size:9px;color:${isCur?'#22c55e':'#5a6080'};margin-bottom:2px">${dw.age||''}</div>
+      <div style="font-size:9px;color:#a89bc0;margin-bottom:2px">${SK[dw.stemSipsin||dw.sipsin]||''}</div>
+      ${box(st,SE,16)}<div style="margin:2px 0">${box(br,BE,16)}</div>
+      <div style="font-size:9px;color:#7c6af7">${dw.unseong||''}</div>
+      ${isCur?'<div style="font-size:9px;color:#22c55e">▶현재</div>':''}
     </div>`;
+  }).join('')}</div>` : '';
 
-  // ── 신살 ──
-  const sinsal = saju?.sinsal||[];
-  const sinsalHtml = sinsal.length ? `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">神殺 분석</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">
-        ${sinsal.map(s=>{
-          const tc = s.type==='길신'?'#22c55e':s.type==='흉신'?'#ef4444':'#94a3b8';
-          return `<div style="background:${tc}18;border:1px solid ${tc}44;border-radius:8px;padding:6px 12px">
-            <span style="color:${tc};font-size:11px;font-weight:700">[${s.type||''}]</span>
-            <span style="color:#e8dfc8;font-size:12px;margin-left:6px;font-weight:600">${s.name||''}</span>
-            <span style="color:#7a82a8;font-size:11px;margin-left:8px">${s.pos||''}</span>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>` : '';
-
-  // ── 대운 ──
-  const daewoon = saju?.daewoon||[];
-  const daewoonHtml = daewoon.length ? `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">大運 흐름</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        ${daewoon.map(dw=>{
-          const isCur = dw.isCurrent||dw.is_current;
-          const gz = dw.ganzi||dw.ganzhi||'';
-          const stem = gz[0]||''; const branch = gz[1]||'';
-          const sElem = STEM_ELEM2[stem]||'토'; const bElem = BRANCH_ELEM2[branch]||'토';
-          return `<div style="text-align:center;min-width:52px;background:${isCur?'rgba(34,197,94,0.1)':'rgba(13,16,32,0.6)'};border:${isCur?'1.5px solid #22c55e':'1px solid rgba(255,255,255,0.08)'};border-radius:10px;padding:6px 4px">
-            <div style="font-size:9px;color:${isCur?'#22c55e':'#7a82a8'};margin-bottom:3px">${dw.age||''}</div>
-            <div style="font-size:11px;color:#a89bc0;margin-bottom:4px">${SIPSIN_KR2[dw.stemSipsin||dw.sipsin]||dw.stemSipsin||''}</div>
-            <div style="width:32px;height:32px;background:${ELEM_BG2[sElem]};border:1.5px solid ${ELEM_FG2[sElem]};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:${ELEM_FG2[sElem]};margin:0 auto 3px">${stem}</div>
-            <div style="width:32px;height:32px;background:${ELEM_BG2[bElem]};border:1.5px solid ${ELEM_FG2[bElem]};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:${ELEM_FG2[bElem]};margin:0 auto 3px">${branch}</div>
-            ${isCur?'<div style="font-size:9px;color:#22c55e">현재</div>':''}
-          </div>`;
-        }).join('')}
-      </div>
-    </div>` : '';
-
-  // ── 자미두수 명반 ──
-  const zwPalaces = ziwei?.palaces||{};
-  const GRID = [
-    ['遷移宮','疾厄宮','財帛宮','子女宮'],
-    ['交友宮', null, null, '夫妻宮'],
-    ['官祿宮', null, null, '兄弟宮'],
-    ['田宅宮','福德宮','父母宮','命宮'],
-  ];
-  const zwCell = (pname, span2=false) => {
-    if (!pname) return `<td ${span2?'colspan="2"':''} style="background:rgba(8,10,20,0.9);border:1px solid rgba(212,175,55,0.1);padding:6px;vertical-align:top">
-      <div style="font-size:9px;color:#3a4060;text-align:center">명반 정보</div>
-      <div style="font-size:11px;color:#d4af37;text-align:center;margin-top:4px;font-weight:700">${input.year}/${input.month}/${input.day}</div>
-      <div style="font-size:10px;color:#5a6080;text-align:center">${input.gender==='M'?'남':'여'}성</div>
-      <div style="font-size:9px;color:#7c6af7;text-align:center;margin-top:3px">${ziwei?.wuXingJu?.name||''}</div>
+  /* ═══ 자미두수 명반 ═══ */
+  const zwP = ziwei ? ziwei.palaces||{} : {};
+  const ZWGRID=[['遷移宮','疾厄宮','財帛宮','子女宮'],['交友宮',null,null,'夫妻宮'],['官祿宮',null,null,'兄弟宮'],['田宅宮','福德宮','父母宮','命宮']];
+  function zwCell(pname) {
+    if(!pname) return `<td colspan="2" style="background:rgba(8,10,20,.95);border:1px solid rgba(212,175,55,.12);padding:8px;text-align:center;vertical-align:middle">
+      <div style="color:#d4af37;font-size:12px;font-weight:700">${input.year}/${input.month}/${input.day}</div>
+      <div style="color:#7a82a8;font-size:11px;margin:3px 0">${input.gender==='M'?'남':'여'}성</div>
+      <div style="color:#7c6af7;font-size:11px">${ziwei&&ziwei.wuXingJu&&ziwei.wuXingJu.name||''}</div>
     </td>`;
-    const p = zwPalaces[pname]||{};
-    const stars = (p.stars||[]).map(s=>{
-      const sihua = s.sihua ? `<span style="color:${s.sihua==='化祿'?'#22c55e':s.sihua==='化權'?'#fbbf24':s.sihua==='化科'?'#60a5fa':'#ef4444'};font-size:9px"> ${s.sihua}</span>` : '';
-      return `<span style="font-size:11px;font-weight:700;color:#e8dfc8">${s.name||s}${sihua}</span>`;
-    }).join(' ');
-    const isFate = pname==='命宮';
-    return `<td style="background:${isFate?'rgba(124,106,247,0.15)':'rgba(13,16,32,0.7)'};border:${isFate?'1.5px solid #7c6af7':'1px solid rgba(255,255,255,0.06)'};padding:5px;vertical-align:top;min-width:60px">
-      <div style="font-size:9px;color:${isFate?'#7c6af7':'#6a7898'}">${pname}</div>
-      <div style="font-size:9px;color:#4a5268;margin-bottom:3px">${p.ganZhi||p.ganzhi||''}</div>
-      <div style="line-height:1.5">${stars||'<span style="color:#3a4060;font-size:10px">空宮</span>'}</div>
+    const p=zwP[pname]||{}; const isFate=pname==='命宮';
+    const stars=(p.stars||[]).map(s=>{
+      const sv=s.sihua?`<span style="color:${SC2[s.sihua]};font-size:9px;font-weight:900"> ${s.sihua}</span>`:'';
+      const bv=s.brightness?`<sup style="font-size:8px;color:#7a82a8"> ${s.brightness}</sup>`:'';
+      return `<span style="color:${isFate?'#fbbf24':'#c8cee8'};font-size:11px;font-weight:700">${s.name||s}${bv}${sv}</span>`;
+    }).join('<br/>');
+    const bc=isFate?'#7c6af7':'rgba(255,255,255,.07)'; const bw=isFate?'2px':'1px';
+    return `<td style="background:${isFate?'rgba(124,106,247,.18)':'rgba(13,16,32,.75)'};border:${bw} solid ${bc};padding:6px 5px;vertical-align:top;min-width:66px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-size:9px;color:${isFate?'#7c6af7':'#5a6898'}">${pname.replace('宮','')}</span>
+        <span style="font-size:9px;color:#4a5570">${p.ganZhi||p.ganzhi||''}</span>
+      </div>
+      ${stars||'<span style="color:#2a3050;font-size:10px">空宮</span>'}
     </td>`;
-  };
-  const ziweiGrid = `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">紫微斗數 命盤</div>
-      <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse">
-        ${GRID.map((row,ri)=>`<tr>
-          ${row[1]===null
-            ? zwCell(row[0]) + zwCell(null,true) + zwCell(row[3])
-            : row.map(p=>zwCell(p)).join('')}
-        </tr>`).join('')}
-      </table>
-      </div>
+  }
+  const ziweiGrid = `${sec('紫微斗數 命盤','12궁 배치도')}
+  <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
+    ${ZWGRID.map(row=>`<tr>${row[1]===null?zwCell(row[0])+zwCell(null)+zwCell(row[3]):row.map(p=>zwCell(p)).join('')}</tr>`).join('')}
+  </table></div>`;
+
+  /* 사화 */
+  const sihua=ziwei?ziwei.sihua||[]:[];
+  const sihuaHtml=sihua.length?`${sec('四化 배치')}
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">${sihua.map(s=>`<div style="background:rgba(13,16,32,.7);border:1px solid ${SC2[s.type]||'#7a82a8'}44;border-radius:8px;padding:9px 14px;display:flex;gap:10px;align-items:center">
+    <span style="font-size:16px;font-weight:900;color:${SC2[s.type]}">${s.type}</span>
+    <div><div style="font-size:13px;font-weight:700;color:#e8dfc8">${s.star||''}</div><div style="font-size:11px;color:#7a82a8">→ ${s.palace||''}</div></div>
+  </div>`).join('')}</div>`:'';
+
+  /* 대한 */
+  const dahahn=ziwei?(ziwei.daLimit||ziwei.dahahn||ziwei.daLian||[]):[];
+  const dahahnHtml=dahahn.length?`${sec('大限 운세 흐름','10년 단위')}
+  <div style="display:flex;gap:5px;flex-wrap:wrap">${dahahn.map(d=>{
+    const isCur=d.isCurrent; const gz=d.ganZhi||d.ganzhi||''; const st=gz[0]||''; const br=gz[1]||'';
+    return `<div style="text-align:center;min-width:58px;background:${isCur?'rgba(34,197,94,.12)':'rgba(13,16,32,.7)'};border:${isCur?'2px solid #22c55e':'1px solid rgba(255,255,255,.07)'};border-radius:10px;padding:6px 3px">
+      <div style="font-size:9px;color:${isCur?'#22c55e':'#5a6080'};margin-bottom:2px">${d.age||''}</div>
+      ${box(st,SE,16)}<div style="margin:2px 0">${box(br,BE,16)}</div>
+      <div style="font-size:9px;color:#7a82a8;margin-top:2px">${d.palace||''}</div>
+      ${isCur?'<div style="font-size:9px;color:#22c55e">▶현재</div>':''}
     </div>`;
+  }).join('')}</div>`:'';
 
-  // ── 사화 ──
-  const sihua = ziwei?.sihua||[];
-  const sihuaColors = {'化祿':'#22c55e','化權':'#fbbf24','化科':'#60a5fa','化忌':'#ef4444'};
-  const sihuaHtml = sihua.length ? `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">四化 배치</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        ${sihua.map(s=>`<div style="background:rgba(13,16,32,0.7);border:1px solid ${sihuaColors[s.type]||'#7a82a8'}44;border-radius:8px;padding:8px 14px;display:flex;gap:8px;align-items:center">
-          <span style="font-size:14px;font-weight:900;color:${sihuaColors[s.type]||'#7a82a8'}">${s.type}</span>
-          <span style="font-size:13px;color:#e8dfc8;font-weight:700">${s.star||''}</span>
-          <span style="font-size:11px;color:#7a82a8">→ ${s.palace||''}</span>
-        </div>`).join('')}
-      </div>
-    </div>` : '';
+  /* 유년 */
+  const ly=ziwei?(ziwei.liuyear||ziwei.liuYear||[]):[];
+  const lyHtml=ly.length?`${sec('流年 2026 월별')}
+  <table style="width:100%;border-collapse:collapse;font-size:12px;background:rgba(13,16,32,.6);border:1px solid rgba(255,255,255,.08);border-radius:8px;overflow:hidden">
+    <thead><tr>${['월','유월간지','활성궁','운세'].map(h=>`<th style="color:#d4af37;font-size:11px;padding:5px;background:rgba(212,175,55,.07);text-align:center">${h}</th>`).join('')}</tr></thead>
+    <tbody>${ly.map(m=>`<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+      ${tdC(m.month||'')}${tdC(`<b style="color:#d4af37">${m.ganZhi||m.ganzhi||''}</b>`)}${tdC(`<span style="color:#7c6af7">${m.palace||''}</span>`)}${tdC(m.desc||'','text-align:left;color:#a89bc0')}
+    </tr>`).join('')}</tbody>
+  </table>`:'';
 
-  // ── 점성학 행성 ──
-  const planets = natalChart?.planets||[];
-  const PSYM = {Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆',Pluto:'♇',Chiron:'⚷','North Node':'☊'};
-  const PCOL = {Sun:'#fbbf24',Moon:'#c0c8e0',Mercury:'#a78bfa',Venus:'#f472b6',Mars:'#ef4444',Jupiter:'#22c55e',Saturn:'#94a3b8',Uranus:'#60a5fa',Neptune:'#818cf8',Pluto:'#7c6af7',Chiron:'#fbbf24','North Node':'#34d399'};
-  const planetsHtml = planets.length ? `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">Natal Chart · 행성 배치</div>
-      <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.2);border-radius:10px;overflow:hidden">
-        <thead><tr>${['행성','별자리','도수','Rx','하우스'].map(h=>`<th style="color:#7c6af7;font-size:11px;padding:7px 6px;text-align:center;background:rgba(124,106,247,0.08)">${h}</th>`).join('')}</tr></thead>
-        <tbody>${planets.map(p=>{
-          const id = p.id||p.name||''; const col = PCOL[id]||'#c8cee8';
-          return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-            <td style="padding:6px 8px;color:${col};font-size:12px;font-weight:700">${PSYM[id]||''} ${p.name||id}</td>
-            <td style="text-align:center;padding:6px;font-size:12px;color:#c8cee8">${p.sign||''}</td>
-            <td style="text-align:center;padding:6px;font-size:12px;color:#a89bc0">${typeof p.degree==='number'?p.degree.toFixed(2)+'°':p.degree||''}</td>
-            <td style="text-align:center;padding:6px;font-size:12px;color:#ef4444;font-weight:700">${p.retrograde?'℞':''}</td>
-            <td style="text-align:center;padding:6px;font-size:12px;color:#7c6af7">${p.house||''}</td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table>
-      </div>
-    </div>` : '';
+  /* ═══ 점성술 ═══ */
+  const planets=natalChart?natalChart.planets||[]:[];
+  const houses=natalChart?natalChart.houses||[]:[];
+  const angles=natalChart?natalChart.angles||{}:{};
+  const aspects=natalChart?natalChart.aspects||[]:[];
 
-  // ── 하우스 ──
-  const houses = natalChart?.houses||[];
-  const housesHtml = houses.length ? `
-    <div style="margin-bottom:24px">
-      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">Houses · 12하우스</div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px">
-        ${houses.slice(0,12).map((h,i)=>`<div style="background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.15);border-radius:6px;padding:5px 10px;display:flex;gap:10px;align-items:center">
-          <span style="color:#7c6af7;font-size:12px;font-weight:700;min-width:24px">${i+1}H</span>
-          <span style="color:#c8cee8;font-size:12px">${h.sign||''}</span>
-          <span style="color:#5a6080;font-size:11px">${typeof h.degree==='number'?h.degree.toFixed(1)+'°':''}</span>
-        </div>`).join('')}
-      </div>
-    </div>` : '';
+  /* SVG 천궁도 */
+  function d2xy(deg,r,cx,cy){const rad=(deg-90)*Math.PI/180;return[cx+r*Math.cos(rad),cy+r*Math.sin(rad)];}
+  const CX=160,CY=160,RO=148,RI=112,RP=88,RC=55;
+  const SSYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+  const SCOL=['#ef4444','#22c55e','#facc15','#38bdf8','#f97316','#84cc16','#f472b6','#a78bfa','#fb923c','#94a3b8','#60a5fa','#818cf8'];
+  let sv='';
+  for(let i=0;i<12;i++){
+    const [x1o,y1o]=d2xy(i*30,RO,CX,CY); const [x2o,y2o]=d2xy((i+1)*30,RO,CX,CY);
+    const [x1i,y1i]=d2xy(i*30,RI,CX,CY); const [x2i,y2i]=d2xy((i+1)*30,RI,CX,CY);
+    const [tx,ty]=d2xy(i*30+15,RO-16,CX,CY);
+    sv+=`<path d="M${x1o.toFixed(1)},${y1o.toFixed(1)} A${RO},${RO} 0 0,1 ${x2o.toFixed(1)},${y2o.toFixed(1)} L${x2i.toFixed(1)},${y2i.toFixed(1)} A${RI},${RI} 0 0,0 ${x1i.toFixed(1)},${y1i.toFixed(1)} Z" fill="${SCOL[i]}22" stroke="${SCOL[i]}55" stroke-width="0.6"/>
+    <text x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}" text-anchor="middle" font-size="11" fill="${SCOL[i]}" font-family="serif">${SSYM[i]}</text>`;
+  }
+  houses.slice(0,12).forEach((h,i)=>{
+    const hd=h.degree||h.cusp||(i*30); const [x1,y1]=d2xy(hd,RI,CX,CY); const [x2,y2]=d2xy(hd,RC,CX,CY);
+    sv+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,255,255,.1)" stroke-width="0.8"/>`;
+  });
+  planets.forEach(p=>{
+    const al=p.absoluteLongitude||0; const pid=p.id||p.name||''; const col=PCOL[pid]||'#c8cee8';
+    const [px,py]=d2xy(al,RP,CX,CY); const sym=PSYM[pid]||'·'; const isSun=pid==='Sun';
+    sv+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${isSun?9:7}" fill="${col}22" stroke="${col}" stroke-width="${isSun?1.8:0.8}"/>
+    <text x="${px.toFixed(1)}" y="${(py+4).toFixed(1)}" text-anchor="middle" font-size="${isSun?11:9}" fill="${col}" font-family="serif">${sym}</text>`;
+  });
+  const chartSvg=planets.length?`${sec('Natal Chart 천궁도')}
+  <div style="text-align:center"><svg width="320" height="320" viewBox="0 0 320 320" style="max-width:100%">
+    <circle cx="${CX}" cy="${CY}" r="${RO}" fill="rgba(8,10,24,.9)" stroke="rgba(124,106,247,.3)" stroke-width="1"/>
+    <circle cx="${CX}" cy="${CY}" r="${RI}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
+    <circle cx="${CX}" cy="${CY}" r="${RC}" fill="rgba(5,6,18,.95)" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+    ${sv}
+  </svg></div>`:'';
 
-  // ── JSON 내보내기 버튼 ──
-  const exportBtn = `
-    <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(212,175,55,0.2)">
-      <button id="gf-export-json-member" type="button"
-        style="background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(124,106,247,0.15));border:1px solid rgba(34,197,94,0.4);border-radius:10px;padding:12px 28px;color:#22c55e;font-size:14px;font-weight:700;cursor:pointer;font-family:'Pretendard',sans-serif;letter-spacing:0.04em">
-        ⬇ PDF 리포트용 JSON 내보내기
-      </button>
-      <p style="color:#5a6478;font-size:12px;margin-top:8px">내보낸 JSON으로 AI 해석 + PDF를 생성하세요</p>
+  /* 행성 테이블 */
+  const planetsHtml=planets.length?`${sec('Planets 행성 배치')}
+  <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,.7);border:1px solid rgba(124,106,247,.2);border-radius:10px;overflow:hidden;font-size:12px">
+    <thead><tr>${['행성','별자리','도수','Rx','하우스'].map(h=>`<th style="color:#7c6af7;font-size:11px;padding:7px;text-align:center;background:rgba(124,106,247,.08)">${h}</th>`).join('')}</tr></thead>
+    <tbody>${planets.map(p=>{
+      const pid=p.id||p.name||''; const col=PCOL[pid]||'#c8cee8';
+      return `<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+        <td style="padding:6px 10px;color:${col};font-weight:700">${PSYM[pid]||''} ${p.name||pid}</td>
+        ${tdC(p.sign||'')}${tdC(typeof p.degree==='number'?p.degree.toFixed(2)+'°':p.degree||'')}
+        ${tdC(p.retrograde?'<span style="color:#ef4444;font-weight:700">℞</span>':'')}${tdC(`<span style="color:#7c6af7">${p.house||''}</span>`)}
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`:'';
+
+  /* Angles */
+  const anglesHtml=Object.keys(angles).length?`${sec('Angles 주요 각도점')}
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">${[['asc','ASC 상승궁','자아·첫인상'],['mc','MC 중천','커리어·명예'],['desc','DESC 하강궁','파트너십'],['ic','IC 천저','가정·뿌리']].map(([k,label,meaning])=>{
+    const a=angles[k]||angles[k.toUpperCase()]; if(!a) return '';
+    return `<div style="background:rgba(13,16,32,.7);border:1px solid rgba(124,106,247,.2);border-radius:8px;padding:8px 12px">
+      <div style="color:#7c6af7;font-size:11px;font-weight:700">${label}</div>
+      <div style="color:#e8dfc8;font-size:13px;font-weight:700;margin:2px 0">${a.sign||''} <span style="color:#a89bc0;font-size:12px">${typeof a.degree==='number'?a.degree.toFixed(2)+'°':''}</span></div>
+      <div style="color:#5a6478;font-size:10px">${meaning}</div>
     </div>`;
+  }).join('')}</div>`:'';
 
-  return sajuTable + sinsalHtml + daewoonHtml + ziweiGrid + sihuaHtml + planetsHtml + housesHtml + exportBtn;
+  /* Houses */
+  const housesHtml=houses.length?`${sec('Houses 12하우스')}
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${houses.slice(0,12).map((h,i)=>`<div style="background:rgba(13,16,32,.7);border:1px solid rgba(124,106,247,.15);border-radius:6px;padding:5px 9px;display:flex;gap:8px;align-items:center">
+    <span style="color:#7c6af7;font-size:12px;font-weight:700;min-width:22px">${i+1}H</span>
+    <span style="color:#c8cee8;font-size:12px">${h.sign||''}</span>
+    <span style="color:#4a5268;font-size:11px">${typeof h.degree==='number'?h.degree.toFixed(1)+'°':''}</span>
+  </div>`).join('')}</div>`:'';
+
+  /* Aspects */
+  const aspectsHtml=aspects.length?`${sec('Major Aspects')}
+  <table style="width:100%;border-collapse:collapse;font-size:12px;background:rgba(13,16,32,.7);border:1px solid rgba(124,106,247,.2);border-radius:10px;overflow:hidden">
+    <thead><tr>${['행성1','각도','행성2','오차'].map(h=>`<th style="color:#7c6af7;font-size:11px;padding:6px;text-align:center;background:rgba(124,106,247,.08)">${h}</th>`).join('')}</tr></thead>
+    <tbody>${aspects.slice(0,25).map(a=>{
+      const at=a.type||a.aspect||''; const ac=ASCC[at]||'#94a3b8';
+      const p1=a.planet1||a.body1||''; const p2=a.planet2||a.body2||''; const orb=a.orb||a.difference||0;
+      return `<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+        ${tdC(`<span style="color:${PCOL[p1]||'#c8cee8'}">${PSYM[p1]||''} ${p1}</span>`)}
+        ${tdC(`<b style="color:${ac}">${ASPC[at]||at}</b>`)}
+        ${tdC(`<span style="color:${PCOL[p2]||'#c8cee8'}">${PSYM[p2]||''} ${p2}</span>`)}
+        ${tdC(typeof orb==='number'?orb.toFixed(1)+'°':orb,'color:#7a82a8')}
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`:'';
+
+  /* 내보내기 버튼 */
+  const exportBtn=`<div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(212,175,55,.2)">
+    <button id="gf-export-json-member" type="button" style="background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(124,106,247,.15));border:1px solid rgba(34,197,94,.4);border-radius:10px;padding:13px 32px;color:#22c55e;font-size:14px;font-weight:700;cursor:pointer;font-family:'Pretendard',sans-serif;letter-spacing:.04em">
+      ⬇ PDF 리포트용 JSON 내보내기
+    </button>
+    <p style="color:#5a6478;font-size:11px;margin-top:8px">JSON 저장 후 → python create_premium_report.py 실행</p>
+  </div>`;
+
+  return sajuTable+relHtml+sinsalHtml+dwHtml+ziweiGrid+sihuaHtml+dahahnHtml+lyHtml+chartSvg+planetsHtml+anglesHtml+housesHtml+aspectsHtml+exportBtn;
 }
 
 // ─── 관리자 원본 데이터 뷰 ────────────────────────────────────
@@ -5197,7 +5235,6 @@ async function tryAutoRun() {
 // ─── 마운트 ───────────────────────────────────────────────────
 
 function mount() {
-  if (new URLSearchParams(location.search).get('admin') === '1') return;
   try {
     const results = document.getElementById('results');
     if (!results) return;
@@ -5235,14 +5272,10 @@ document.addEventListener('click', e => {
   if (captured) {
     try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
     if (isCalcBtn) {
-      if (new URLSearchParams(location.search).get('admin') === '1') {
-        // admin 모드: 백그라운드 계산 실행해서 window.__adminCalcData 채우기
-        setTimeout(() => runFortune(captured).catch(console.error), 500);
-        return;
-      }
-      // 계산 버튼: 무료운세 페이지로 이동
+      // 계산 버튼: 무료운세 페이지로 이동 (admin 모드는 ?admin=1 유지)
       e.stopImmediatePropagation();
-      window.location.href = '/fortune/';
+      const adminParam = new URLSearchParams(location.search).get('admin') === '1' ? '?admin=1' : '';
+      window.location.href = '/fortune/' + adminParam;
       return;
     }
     // 그 외 버튼: 탭이 이미 마운트된 경우를 위해 tryAutoRun 직접 호출
