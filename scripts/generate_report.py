@@ -461,6 +461,75 @@ def generate_report(data: dict, output_path: str):
     story.append(card(elem_rows, [16*mm, 12*mm, W-58*mm, 30*mm]))
     story += [Spacer(1, 3*mm), Paragraph(saju.get('element_desc','오행 균형 해석 내용입니다.'), ST['body'])]
 
+    # ── 팔자 관계 (합·충·형·파·해) ───────────────────────────
+    story += sec('팔자 관계', '八字關係 · 합·충·형·파·해')
+    # 간지 합충 데이터 (기본 테이블)
+    STEM_HEP  = [('甲·己','합토'),('乙·庚','합금'),('丙·辛','합수'),('丁·壬','합목'),('戊·癸','합화')]
+    BRANCH_CHUNG = [('子·午','충'),('丑·未','충'),('寅·申','충'),('卯·酉','충'),('辰·戌','충'),('巳·亥','충')]
+    BRANCH_HEP3  = [('寅·午·戌','화국'),('申·子·辰','수국'),('巳·酉·丑','금국'),('亥·卯·未','목국')]
+
+    if pillars:
+        stems   = [p.get('stem','') for p in pillars]
+        branches= [p.get('branch','') for p in pillars]
+        rel_rows = []
+
+        # 천간 합
+        for pair, name in STEM_HEP:
+            a, b = pair.split('·')
+            if a in stems and b in stems:
+                ai = stems.index(a); bi = stems.index(b)
+                rel_rows.append([
+                    Paragraph('天干合', S('rc', fontName=BOLD_FONT, fontSize=8, textColor=C['green'], alignment=TA_CENTER)),
+                    Paragraph(f'{a} + {b} → {name}', S('rn', fontName=BOLD_FONT, fontSize=9, textColor=C['goldlt'])),
+                    Paragraph(f'{p_labels[ai]} × {p_labels[bi]}', ST['sm']),
+                ])
+        # 지지 충
+        for pair, name in BRANCH_CHUNG:
+            a, b = pair.split('·')
+            if a in branches and b in branches:
+                ai = branches.index(a); bi = branches.index(b)
+                rel_rows.append([
+                    Paragraph('地支沖', S('rc2', fontName=BOLD_FONT, fontSize=8, textColor=C['red'], alignment=TA_CENTER)),
+                    Paragraph(f'{a} ↔ {b} ({name})', S('rn2', fontName=BOLD_FONT, fontSize=9, textColor=C['red'])),
+                    Paragraph(f'{p_labels[ai]} × {p_labels[bi]}', ST['sm']),
+                ])
+        # 삼합
+        for trio, name in BRANCH_HEP3:
+            bs = trio.split('·')
+            matched = [b for b in bs if b in branches]
+            if len(matched) >= 2:
+                rel_rows.append([
+                    Paragraph('三合', S('rc3', fontName=BOLD_FONT, fontSize=8, textColor=C['blue'], alignment=TA_CENTER)),
+                    Paragraph('+'.join(matched) + f' ({name})', S('rn3', fontName=BOLD_FONT, fontSize=9, textColor=C['blue'])),
+                    Paragraph('지지 삼합 성립', ST['sm']),
+                ])
+
+        if rel_rows:
+            story.append(card(rel_rows, [18*mm, W-48*mm, 30*mm]))
+        else:
+            story.append(Paragraph('주요 합·충 관계 없음', ST['sm']))
+
+    story.append(Spacer(1, 4*mm))
+
+    # 대운 타임라인 원국 표
+    story += sec('대운(大運) 원국', '大運 · 60년 흐름 배치')
+    daewoon_raw = saju.get('daewoon', [])
+    if daewoon_raw:
+        dw_hdr2 = [[Paragraph(h, ST['lbl']) for h in ['기간','간지','십성','운세','현재']]]
+        dw_rows2 = dw_hdr2 + [[
+            Paragraph(dw.get('age',''), ST['body']),
+            Paragraph(f'<b>{dw.get("ganzhi","")}</b>', S('dw2', fontName=BOLD_FONT, fontSize=12,
+                textColor=C['green'] if dw.get('is_current') else C['gold'], alignment=TA_CENTER)),
+            Paragraph(dw.get('sipsin',''), S('ds2', fontSize=8, textColor=C['purple'], alignment=TA_CENTER)),
+            Paragraph(dw.get('desc',''), ST['sm']),
+            Paragraph('◀' if dw.get('is_current') else '', S('dc', fontSize=9, textColor=C['green'], alignment=TA_CENTER)),
+        ] for dw in daewoon_raw]
+        story.append(card(dw_rows2, [18*mm, 14*mm, 16*mm, W-66*mm, 8*mm]))
+    story.append(Spacer(1, 4*mm))
+
+    story += [hr(), Paragraph('⬇  아래는 AI 전문가 해석입니다', S('ai_sep2', fontName=BOLD_FONT, fontSize=10,
+        textColor=C['purple'], alignment=TA_CENTER, spaceBefore=6, spaceAfter=6)), hr()]
+
     # ── 03~07. 성격/직업/재물/연애/건강 심층 해석 ─────────────
     interpret = saju.get('interpret', {})
     for num, cat, emoji, color in [
@@ -531,9 +600,156 @@ def generate_report(data: dict, output_path: str):
     story += [Spacer(1, 2*mm), Paragraph(saju.get('unseong_desc','12운성 종합 해석 내용입니다.'), ST['body'])]
 
     # ═════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # PART II · 자미두수
     # ═════════════════════════════════════════════════════════
     story += part_break('PART II · 자미두수', '紫微斗數 · 命盤 完全解析')
+
+    # ── 자미두수 명반 12궁 그리드 ────────────────────────────
+    story += sec('자미두수 命盤 원국', '紫微斗數 · 12궁 배치도')
+    palaces_raw = ziwei.get('palaces', {})
+
+    # 12궁 그리드 배치 (전통 자미두수 순서: 3행 4열)
+    # 行1: 遷移 疾厄 財帛 子女
+    # 行2: 交友 [중앙정보] 夫妻
+    # 行3: 官祿 田宅 福德 父母
+    # 행4: 命宮 兄弟 (아래)  — 실제는 시계방향 배치
+    # 간단하게 4x3 그리드로 표현
+    GRID_ORDER = [
+        ['遷移宮','疾厄宮','財帛宮','子女宮'],
+        ['交友宮', None,   None,   '夫妻宮'],
+        ['官祿宮', None,   None,   '兄弟宮'],
+        ['田宅宮','福德宮','父母宮','命宮'],
+    ]
+    PALACE_COLORS = {
+        '命宮':colors.HexColor('#7c6af7'),'官祿宮':colors.HexColor('#1e3a5f'),
+        '財帛宮':colors.HexColor('#78350f'),'夫妻宮':colors.HexColor('#7f1d1d'),
+        '福德宮':colors.HexColor('#14532d'),'田宅宮':colors.HexColor('#1e293b'),
+    }
+    SIHUA_COLORS = {'旺':C['gold'],'廟':C['green'],'得':C['blue'],
+                    '平':C['muted'],'利':C['muted'],'閑':C['muted'],
+                    '陷':C['red'],'化祿':C['green'],'化權':C['gold'],
+                    '化科':C['blue'],'化忌':C['red']}
+
+    def palace_cell(pname):
+        if pname is None:
+            # 중앙 정보칸
+            info = [
+                Paragraph(f'<b>{data.get("name","—")}</b>', S('ci', fontName=BOLD_FONT, fontSize=9, textColor=C['gold'], alignment=TA_CENTER)),
+                Paragraph(data.get('birth_date',''), S('cd', fontSize=7, textColor=C['muted'], alignment=TA_CENTER)),
+                Paragraph(ziwei.get('chart_type',''), S('ct', fontSize=7, textColor=C['purple'], alignment=TA_CENTER)),
+            ]
+            t = Table([[info]], colWidths=[cw*2])
+            t.setStyle(TableStyle([
+                ('BACKGROUND',(0,0),(-1,-1), C['dark']),
+                ('BOX',(0,0),(-1,-1),0.5,C['gold']),
+                ('TOPPADDING',(0,0),(-1,-1),8),
+                ('BOTTOMPADDING',(0,0),(-1,-1),8),
+                ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+            ]))
+            return t
+
+        p = palaces_raw.get(pname, {})
+        stars  = p.get('stars','空宮')
+        ganzhi = p.get('ganzhi','')
+        is_fate = pname == '命宮'
+        bg = PALACE_COLORS.get(pname, C['card'])
+
+        name_style = S(f'pn_{pname}', fontName=BOLD_FONT, fontSize=7,
+                       textColor=C['gold'] if is_fate else C['goldlt'],
+                       alignment=TA_CENTER, leading=10)
+        gz_style   = S(f'gz_{pname}', fontSize=7, textColor=C['muted'], alignment=TA_CENTER)
+        star_style = S(f'st_{pname}', fontName=BOLD_FONT, fontSize=8,
+                       textColor=C['gold'] if is_fate else C['text'],
+                       alignment=TA_CENTER, leading=10)
+
+        # 별 이름 줄바꿈
+        star_lines = stars.replace(' · ','\n').replace('·','\n')
+        items = [
+            Paragraph(f'{pname}', name_style),
+            Paragraph(ganzhi, gz_style),
+            Paragraph(f'<b>{star_lines}</b>', star_style),
+        ]
+        t = Table([[items]], colWidths=[cw])
+        bdr_color = C['gold'] if is_fate else C['purple'] if pname in PALACE_COLORS else C['line']
+        bdr_thick = 1.5 if is_fate else 0.5
+        t.setStyle(TableStyle([
+            ('BACKGROUND',(0,0),(-1,-1), bg),
+            ('BOX',(0,0),(-1,-1), bdr_thick, bdr_color),
+            ('TOPPADDING',(0,0),(-1,-1),5),
+            ('BOTTOMPADDING',(0,0),(-1,-1),5),
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ]))
+        return t
+
+    cw = W / 4
+    for row_idx, row in enumerate(GRID_ORDER):
+        if row[1] is None:  # 중앙 2칸 병합 행
+            left  = palace_cell(row[0])
+            mid   = palace_cell(None) if row_idx == 1 else Table([['']], colWidths=[cw*2],
+                    style=[('BACKGROUND',(0,0),(-1,-1),C['dark']),('BOX',(0,0),(-1,-1),0.3,C['line'])])
+            right = palace_cell(row[3])
+            row_t = Table([[left, mid, right]], colWidths=[cw, cw*2, cw])
+        else:
+            cells = [palace_cell(p) for p in row]
+            row_t = Table([cells], colWidths=[cw]*4)
+        row_t.setStyle(TableStyle([
+            ('TOPPADDING',(0,0),(-1,-1),0),
+            ('BOTTOMPADDING',(0,0),(-1,-1),0),
+            ('LEFTPADDING',(0,0),(-1,-1),0),
+            ('RIGHTPADDING',(0,0),(-1,-1),0),
+        ]))
+        story.append(row_t)
+
+    story.append(Spacer(1, 4*mm))
+
+    # 사화 원국 표
+    story += sec('사화(四化) 원국', '四化 · 화록·화권·화과·화기')
+    sihua_list = ziwei.get('sihua', [])
+    sh_colors2 = {'化祿':C['green'],'化權':C['gold'],'化科':C['blue'],'化忌':C['red']}
+    sh_hdr = [[Paragraph(h, ST['lbl']) for h in ['구분','주성','입궁(入宮)','에너지 방향']]]
+    sh_rows = sh_hdr + [[
+        Paragraph(f'<b>{s.get("type","")}</b>', S(f'sh{i}', fontName=BOLD_FONT, fontSize=11,
+            textColor=sh_colors2.get(s.get("type",""), C['text']), alignment=TA_CENTER)),
+        Paragraph(f'<b>{s.get("star","")}</b>', S(f'ss{i}', fontName=BOLD_FONT, fontSize=10, textColor=C['goldlt'], alignment=TA_CENTER)),
+        Paragraph(s.get('palace',''), S(f'sp{i}', fontName=BOLD_FONT, fontSize=9, textColor=C['text'], alignment=TA_CENTER)),
+        Paragraph({'化祿':'재물·인연·기회 유입','化權':'권력·통제·추진력 강화',
+                   '化科':'명예·학문·귀인 활성화','化忌':'주의·집중·손실 경계'}.get(s.get('type',''),''), ST['body']),
+    ] for i, s in enumerate(sihua_list)]
+    story.append(card(sh_rows, [16*mm, 20*mm, 22*mm, W-58*mm]))
+    story.append(Spacer(1, 4*mm))
+
+    # 대한 타임라인 원국 표
+    story += sec('대한(大限) 원국', '大限 · 인생 10년 단위 배치')
+    dahahn = ziwei.get('dahahn', [])
+    if dahahn:
+        dh_hdr = [[Paragraph(h, ST['lbl']) for h in ['기간','간지','활성 궁위','현재']]]
+        dh_rows = dh_hdr + [[
+            Paragraph(d.get('age',''), ST['body']),
+            Paragraph(f'<b>{d.get("ganzhi","")}</b>', S('dhz', fontName=BOLD_FONT, fontSize=11,
+                textColor=C['green'] if d.get('is_current') else C['gold'], alignment=TA_CENTER)),
+            Paragraph(d.get('palace',''), S('dhp', fontSize=9, textColor=C['muted'], alignment=TA_CENTER)),
+            Paragraph('◀ 현재' if d.get('is_current') else '', S('dhc', fontSize=8, textColor=C['green'], alignment=TA_CENTER)),
+        ] for d in dahahn]
+        story.append(card(dh_rows, [20*mm, 16*mm, 22*mm, W-58*mm]))
+    story.append(Spacer(1, 4*mm))
+
+    # 유년 월별 원국 표
+    liuyear_months = ziwei.get('liuyear_months', [])
+    if liuyear_months:
+        story += sec('2026년 유년(流年) 월별 배치')
+        ly_hdr = [[Paragraph(h, ST['lbl']) for h in ['월','유월간지','활성 궁위','운세 흐름']]]
+        ly_rows = ly_hdr + [[
+            Paragraph(lm.get('month',''), ST['body']),
+            Paragraph(f'<b>{lm.get("ganzhi","")}</b>', S('lm', fontName=BOLD_FONT, fontSize=9, textColor=C['gold'], alignment=TA_CENTER)),
+            Paragraph(lm.get('palace',''), S('lp', fontSize=8, textColor=C['muted'], alignment=TA_CENTER)),
+            Paragraph(lm.get('desc',''), ST['body']),
+        ] for lm in liuyear_months]
+        story.append(card(ly_rows, [10*mm, 16*mm, 20*mm, W-46*mm]))
+        story.append(Spacer(1, 4*mm))
+
+    story += [hr(), Paragraph('⬇  아래는 AI 전문가 해석입니다', S('ai_sep', fontName=BOLD_FONT, fontSize=10,
+        textColor=C['purple'], alignment=TA_CENTER, spaceBefore=6, spaceAfter=6)), hr()]
 
     # ── 11. 명반 개요 ────────────────────────────────────────
     story += sec('11.  명반 개요 및 주성 분석', '命盤 · 主星')
@@ -632,6 +848,138 @@ def generate_report(data: dict, output_path: str):
     moon_sign = natal.get('moon_sign','—')
     asc_sign  = natal.get('asc_sign','—')
     planets   = natal.get('planets', [])
+    houses    = natal.get('houses', [])
+
+    # ── 네이탈 차트 원국 데이터 ──────────────────────────────
+    story += sec('네이탈 차트 원국', 'Natal Chart · Raw Data')
+
+    # 3대 별자리 요약
+    story.append(Table([[
+        Paragraph(f'☀ 태양\n{sun_sign}',  S('sg1r', fontName=BOLD_FONT, fontSize=12, textColor=C['gold'],  alignment=TA_CENTER, leading=17)),
+        Paragraph(f'🌙 달\n{moon_sign}',  S('sg2r', fontName=BOLD_FONT, fontSize=12, textColor=C['blue'],  alignment=TA_CENTER, leading=17)),
+        Paragraph(f'⬆ 상승궁\n{asc_sign}',S('sg3r', fontName=BOLD_FONT, fontSize=12, textColor=C['green'], alignment=TA_CENTER, leading=17)),
+    ]], colWidths=[W/3]*3,
+    style=[('BACKGROUND',(0,0),(-1,-1),C['card']),('BOX',(0,0),(-1,-1),0.8,C['gold']),
+           ('INNERGRID',(0,0),(-1,-1),0.3,C['purple']),
+           ('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10),
+           ('ALIGN',(0,0),(-1,-1),'CENTER')]))
+    story.append(Spacer(1, 4*mm))
+
+    # 행성 완전 테이블
+    story += subsec('Planets · 행성 배치')
+    PLANET_COLORS_MAP = {
+        'Sun':'#fbbf24','Moon':'#c0c8e0','Mercury':'#a78bfa','Venus':'#f472b6',
+        'Mars':'#ef4444','Jupiter':'#22c55e','Saturn':'#94a3b8',
+        'Uranus':'#60a5fa','Neptune':'#818cf8','Pluto':'#a78bfa',
+        'Chiron':'#fbbf24','North Node':'#34d399','South Node':'#f87171',
+    }
+    PLANET_SYMS = {
+        'Sun':'☉','Moon':'☽','Mercury':'☿','Venus':'♀','Mars':'♂',
+        'Jupiter':'♃','Saturn':'♄','Uranus':'♅','Neptune':'♆','Pluto':'♇',
+        'Chiron':'⚷','North Node':'☊','South Node':'☋',
+    }
+    ASPECT_KO = {'conjunction':'합(Conjunction)','opposition':'대립(Opposition)',
+                 'trine':'삼각(Trine)','square':'직각(Square)','sextile':'육합(Sextile)',
+                 'quincunx':'퀸컨스(Quincunx)','semisextile':'반육합(Semi-sextile)'}
+
+    if planets:
+        p_hdr = [[Paragraph(h, ST['lbl']) for h in ['행성','별자리','도수','Rx','하우스','키워드']]]
+        p_rows = p_hdr
+        for p in planets:
+            pid = p.get('id','') or p.get('name','')
+            sym = PLANET_SYMS.get(pid, pid[:2] if pid else '·')
+            pc  = colors.HexColor(PLANET_COLORS_MAP.get(pid,'#c8cee8'))
+            rx  = '℞' if p.get('retrograde') else ''
+            p_rows.append([
+                Paragraph(f'{sym} {p.get("name","") or pid}',
+                    S(f'pp{pid}', fontName=BOLD_FONT, fontSize=9, textColor=pc, leading=12)),
+                Paragraph(p.get('sign',''), ST['body']),
+                Paragraph(str(p.get('degree','')), ST['body']),
+                Paragraph(rx, S('rx', fontName=BOLD_FONT, fontSize=9, textColor=C['red'], alignment=TA_CENTER)),
+                Paragraph(str(p.get('house','')), ST['body']),
+                Paragraph(p.get('keyword',''), ST['sm']),
+            ])
+        story.append(card(p_rows, [22*mm, 20*mm, 14*mm, 8*mm, 14*mm, W-78*mm]))
+        story.append(Spacer(1, 4*mm))
+
+    # Angles (ASC/MC/DESC/IC)
+    angles_data = natal.get('angles', {})
+    if angles_data:
+        story += subsec('Angles · 주요 각도점')
+        ang_rows = [[Paragraph(h, ST['lbl']) for h in ['각도','별자리','도수','의미']]]
+        ang_map = {
+            'asc':  ('ASC 상승궁',  '자아 표현·외면적 인상'),
+            'mc':   ('MC 중천',     '커리어·사회적 목표'),
+            'desc': ('DESC 하강궁', '파트너십·타인과의 관계'),
+            'ic':   ('IC 천저',     '가정·뿌리·내면 기반'),
+        }
+        for key, (label, meaning) in ang_map.items():
+            a = angles_data.get(key) or angles_data.get(key.upper())
+            if a:
+                ang_rows.append([
+                    Paragraph(f'<b>{label}</b>', S('al', fontName=BOLD_FONT, fontSize=9, textColor=C['gold'], leading=12)),
+                    Paragraph(a.get('sign',''), ST['body']),
+                    Paragraph(str(a.get('degree',''))+'°', ST['body']),
+                    Paragraph(meaning, ST['sm']),
+                ])
+        story.append(card(ang_rows, [28*mm, 20*mm, 16*mm, W-64*mm]))
+        story.append(Spacer(1, 4*mm))
+
+    # Houses (12하우스 커스프)
+    if houses:
+        story += subsec('Houses · 12하우스 커스프')
+        HW = (W - 4*mm) / 2
+        h_hdr = [[Paragraph(h, ST['lbl']) for h in ['하우스','별자리','도수','의미']]]
+        HOUSE_MEANINGS = [
+            '자아·외모·첫인상', '재물·소유·가치관', '소통·형제·단거리 이동',
+            '가정·부모·뿌리', '창의·연애·자녀', '건강·일상·봉사',
+            '파트너십·결혼', '변환·유산·공동 자원', '철학·해외·고등 교육',
+            '커리어·명예·사회적 지위', '인맥·사회·희망', '영성·무의식·고독',
+        ]
+        h_left  = [h_hdr[0]]
+        h_right = [h_hdr[0]]
+        for i, h in enumerate(houses[:12]):
+            meaning = HOUSE_MEANINGS[i] if i < len(HOUSE_MEANINGS) else ''
+            row = [
+                Paragraph(f'<b>{i+1}하우스</b>', S(f'hw{i}', fontName=BOLD_FONT, fontSize=9, textColor=C['purple'], alignment=TA_CENTER)),
+                Paragraph(h.get('sign',''), ST['body']),
+                Paragraph(str(h.get('degree',''))+'°', ST['sm']),
+                Paragraph(meaning, ST['sm']),
+            ]
+            if i < 6: h_left.append(row)
+            else:     h_right.append(row)
+        hl = card(h_left,  [14*mm, 18*mm, 12*mm, HW-44*mm])
+        hr2= card(h_right, [14*mm, 18*mm, 12*mm, HW-44*mm])
+        story.append(Table([[hl, hr2]], colWidths=[HW, HW],
+            style=[('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0),
+                   ('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),2)]))
+        story.append(Spacer(1, 4*mm))
+
+    # Major Aspects
+    aspects = natal.get('aspects', [])
+    if aspects:
+        story += subsec('Major Aspects · 주요 행성 각도')
+        ASPECT_COLORS = {
+            'conjunction':C['gold'],'trine':C['green'],'sextile':C['blue'],
+            'square':C['red'],'opposition':C['red'],'quincunx':C['muted'],
+        }
+        asp_hdr = [[Paragraph(h, ST['lbl']) for h in ['행성1','각도','행성2','오차','의미']]]
+        asp_rows = asp_hdr
+        for asp in aspects[:20]:
+            atype = asp.get('type','') or asp.get('aspect','')
+            ac = ASPECT_COLORS.get(atype, C['muted'])
+            asp_rows.append([
+                Paragraph(PLANET_SYMS.get(asp.get('planet1',''),'') + ' ' + asp.get('planet1',''), ST['sm']),
+                Paragraph(f'<b>{ASPECT_KO.get(atype, atype)}</b>', S('at', fontName=BOLD_FONT, fontSize=8, textColor=ac, alignment=TA_CENTER, leading=11)),
+                Paragraph(PLANET_SYMS.get(asp.get('planet2',''),'') + ' ' + asp.get('planet2',''), ST['sm']),
+                Paragraph(f"{asp.get('orb',asp.get('difference','')):.1f}°" if isinstance(asp.get('orb',asp.get('difference','')), (int,float)) else str(asp.get('orb','')), ST['sm']),
+                Paragraph(asp.get('meaning',''), ST['sm']),
+            ])
+        story.append(card(asp_rows, [24*mm, 36*mm, 24*mm, 12*mm, W-96*mm]))
+        story.append(Spacer(1, 4*mm))
+
+    story += [hr(), Paragraph('⬇  아래는 AI 전문가 해석입니다', S('ai_sep3', fontName=BOLD_FONT, fontSize=10,
+        textColor=C['purple'], alignment=TA_CENTER, spaceBefore=6, spaceAfter=6)), hr()]
 
     # ── 16. 네이탈 차트 완전 해석 ─────────────────────────────
     story += sec('16.  네이탈 차트 완전 해석', 'Natal Chart Complete Interpretation')
