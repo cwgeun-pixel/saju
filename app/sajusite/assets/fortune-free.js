@@ -3438,7 +3438,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
     <div style="${D.card}border:1px solid rgba(212,175,55,0.3);margin-top:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
       <div style="display:flex;align-items:center;gap:16px">
-        <div style="width:80px;height:80px;border-radius:50%;flex-shrink:0;box-shadow:0 0 24px rgba(212,175,55,0.4),0 0 8px rgba(0,0,0,0.6);overflow:hidden;background:#0d1020;position:relative">${z.sp?`<img src="/assets/zodiac-coins.png" style="position:absolute;width:400%;height:300%;top:-${z.sp[1]*100}%;left:-${z.sp[0]*100}%;pointer-events:none">`:`<span style="font-size:40px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">${z.emoji}</span>`}</div>
+        <div style="width:80px;height:80px;border-radius:50%;flex-shrink:0;box-shadow:0 0 24px rgba(212,175,55,0.4),0 0 8px rgba(0,0,0,0.6);overflow:hidden;background:#0d1020;position:relative">${z.sp?`<img src="/assets/zodiac-coins.png" style="position:absolute;width:500%;height:375%;top:calc(-${z.sp[1]*100}% - 12.5%);left:calc(-${z.sp[0]*100}% - 12.5%);pointer-events:none">`:`<span style="font-size:40px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">${z.emoji}</span>`}</div>
         <div style="flex:1">
           <div style="color:#8a8fa8;font-size:13px;letter-spacing:0.08em;margin-bottom:4px">${t('당신의 띠는')}</div>
           <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}${t('띠 입니다')}.</div>
