@@ -4764,57 +4764,161 @@ async function runFortune(preInput = null) {
       if (bodyEl) bodyEl.innerHTML = inputHtml();
     });
 
-    // 관리자: JSON 내보내기 버튼
+    // 관리자: JSON 내보내기 버튼 (완전한 데이터 내보내기)
     document.getElementById('gf-export-json')?.addEventListener('click', () => {
       const d = window.__adminCalcData;
-      if (!d) return;
-      const exportData = {
-        name: '회원이름입력',
-        birth_date: `${d.input.year}년 ${d.input.month}월 ${d.input.day}일`,
-        birth_time: d.input.unknownTime ? '시간 미상' : `${d.input.hour}시 ${d.input.minute}분`,
-        birth_place: '출생지입력',
-        gender: d.input.gender === 'M' ? '남성' : '여성',
-        report_date: new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'}),
-        saju: {
-          pillars: d.saju?.pillars?.map(p => ({
-            stem: p.pillar?.stem || '',
-            branch: p.pillar?.branch || '',
-            sipsin_top: p.stemSipsin || '',
-            sipsin_bot: p.branchSipsin || '',
-            unseong: p.unseong || '',
-          })) || [],
-          elements: {},
-          yongsin: {},
-        },
-        ziwei: {
-          chart_type: d.ziwei?.wuXingJu?.name || '',
-          palaces: Object.fromEntries(
-            Object.entries(d.ziwei?.palaces || {}).map(([k,v]) => [k, {
-              stars: (v.stars||[]).map(s=>s.name||s).join(' · '),
-              ganzhi: v.ganZhi || '',
-            }])
-          ),
-          sihua: [],
-        },
-        natal: {
-          sun_sign: '',
-          moon_sign: '',
-          asc_sign: '',
-          planets: (d.natalChart?.planets||[]).map(p => ({
-            name: p.name || p.id || '',
-            sign: p.sign || '',
-            degree: (p.degree||0).toFixed(0) + '°',
-            house: p.house ? p.house + '하우스' : '',
-          })),
-        },
+      if (!d) { alert('계산 버튼을 먼저 눌러 데이터를 생성해주세요.'); return; }
+      const inp = d.input || {};
+      const saj = d.saju || {};
+      const zwi = d.ziwei || {};
+      const nat = d.natalChart || {};
+      const trn = d.transitChart || {};
+
+      // ── 사주 원국 완전 추출 ──
+      const SIPSIN_KR = {'比肩':'비견','劫財':'겁재','食神':'식신','傷官':'상관','偏財':'편재','正財':'정재','偏官':'편관','正官':'정관','偏印':'편인','正印':'정인'};
+      const STEM_ELEM = {'甲':'목','乙':'목','丙':'화','丁':'화','戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'};
+      const BRANCH_ELEM = {'子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화','午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'};
+
+      const pillars = (saj.pillars||[]).map(p => {
+        const pl = p.pillar || {};
+        return {
+          stem: pl.stem||'', branch: pl.branch||'',
+          stem_elem: STEM_ELEM[pl.stem]||'', branch_elem: BRANCH_ELEM[pl.branch]||'',
+          sipsin_top: SIPSIN_KR[p.stemSipsin]||p.stemSipsin||'',
+          sipsin_bot: SIPSIN_KR[p.branchSipsin]||p.branchSipsin||'',
+          unseong: p.unseong||'',
+          janggan: (pl.janggan||[]).map(j=>({stem:j.stem||'',sipsin:SIPSIN_KR[j.sipsin]||j.sipsin||'',ratio:j.ratio||0})),
+        };
+      });
+
+      // 오행 계산
+      const elemCount = {목:0,화:0,토:0,금:0,수:0};
+      pillars.forEach(p => {
+        if(p.stem_elem && elemCount[p.stem_elem]!==undefined) elemCount[p.stem_elem]+=1;
+        if(p.branch_elem && elemCount[p.branch_elem]!==undefined) elemCount[p.branch_elem]+=1;
+      });
+      const total = Object.values(elemCount).reduce((a,b)=>a+b,0)||1;
+      const elements = Object.fromEntries(Object.entries(elemCount).map(([k,v])=>[k,Math.round(v/total*100)]));
+
+      // 신살
+      const sinsal_raw = saj.sinsal||[];
+      const sinsal = sinsal_raw.map(s=>({
+        name:s.name||'', type:s.type||'', pos:s.pos||'', desc:s.desc||s.description||'',
+        hanja:s.hanja||'',
+      }));
+
+      // 대운
+      const daewoon = (saj.daewoon||[]).map((dw,i)=>({
+        age:`${dw.age}~${(dw.age||0)+9}세`,
+        ganzhi:(dw.ganzi||dw.ganzhi||''),
+        sipsin: SIPSIN_KR[dw.stemSipsin]||dw.stemSipsin||'',
+        unseong: dw.unseong||'',
+        desc:'',
+        is_current: dw.isCurrent||false,
+      }));
+
+      // ── 자미두수 완전 추출 ──
+      const palace_names = Object.keys(zwi.palaces||{});
+      const palaces_full = Object.fromEntries(
+        Object.entries(zwi.palaces||{}).map(([pname, pdata]) => {
+          const stars = (pdata.stars||[]).map(s=>({
+            name: s.name||s, brightness: s.brightness||s.wang||'', sihua: s.sihua||'',
+          }));
+          return [pname, {
+            stars_text: stars.map(s=>s.name+(s.sihua?` ${s.sihua}`:'')+(s.brightness?` [${s.brightness}]`:'')).join(' · '),
+            stars,
+            ganzhi: pdata.ganZhi||pdata.ganzhi||'',
+            mingong: pdata.isMingong||false,
+            shen_gong: pdata.isShenGong||false,
+          }];
+        })
+      );
+
+      // 사화
+      const sihua = (zwi.sihua||[]).map(s=>({
+        type: s.type||'', star: s.star||s.name||'', palace: s.palace||s.gong||'', desc:'',
+      }));
+
+      // 대한
+      const dahahn = (zwi.daLimit||zwi.dahahn||zwi.daLian||[]).map(d=>({
+        age: d.age||'', ganzhi: d.ganZhi||d.ganzhi||'',
+        palace: d.palace||d.gong||'', is_current: d.isCurrent||false, desc:'',
+      }));
+
+      // 유년
+      const liuyear_months = (zwi.liuyear||zwi.liuYear||[]).map(m=>({
+        month: m.month||'', ganzhi: m.ganZhi||'', palace: m.palace||'', desc: m.desc||'',
+      }));
+
+      // ── 점성술 완전 추출 ──
+      const SIGN_KO = ['양자리','황소자리','쌍둥이자리','게자리','사자자리','처녀자리','천칭자리','전갈자리','사수자리','염소자리','물병자리','물고기자리'];
+      const toSignName = s => {
+        if (typeof s === 'number') return SIGN_KO[s]||'';
+        if (typeof s === 'string') {
+          const idx = parseInt(s);
+          if (!isNaN(idx)) return SIGN_KO[idx]||s;
+          return s;
+        }
+        return '';
       };
+      const sunP = (nat.planets||[]).find(p=>p.id==='Sun'||p.name==='태양');
+      const moonP= (nat.planets||[]).find(p=>p.id==='Moon'||p.name==='달');
+      const ascObj = nat.angles?.asc || nat.ascendant || null;
+      const planets = (nat.planets||[]).map(p=>({
+        name: p.name||p.id||'', id: p.id||'',
+        sign: toSignName(p.sign), degree: (p.degree||0).toFixed(2)+'°',
+        house: p.house||'', retrograde: p.retrograde||false,
+        absoluteLongitude: p.absoluteLongitude||0,
+        keyword: '',
+      }));
+      const houses = (nat.houses||[]).map((h,i)=>({
+        house: i+1, sign: toSignName(h.sign||h), degree: (h.degree||0).toFixed(2)+'°',
+      }));
+
+      // ── 최종 내보내기 데이터 ──
+      const exportData = {
+        name: prompt('이름을 입력하세요:', '홍길동') || '회원',
+        birth_date: `${inp.year}년 ${inp.month}월 ${inp.day}일 (양력)`,
+        birth_time: inp.unknownTime ? '시간 미상' : `${inp.hour}시 ${inp.minute}분`,
+        birth_place: prompt('출생지를 입력하세요:', '서울특별시') || '서울특별시',
+        gender: inp.gender==='M' ? '남성' : '여성',
+        report_date: new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}),
+
+        saju: { pillars, elements, sinsal, daewoon,
+          yongsin: { yong:'', hee:'', gi:'' },
+          pillar_quote:'', daymaster_desc:'', element_desc:'',
+          daewoon_current_desc:'', unseong_desc:'',
+          interpret:{성격:'',직업:'',재물:'',연애:'',건강:''},
+        },
+
+        ziwei: { chart_type: zwi.wuXingJu?.name||'',
+          palaces: palaces_full, sihua, dahahn, liuyear_months,
+          summary:'', dahahn_current:'', liuyear:'',
+        },
+
+        natal: {
+          sun_sign:  sunP  ? toSignName(sunP.sign)  : '',
+          moon_sign: moonP ? toSignName(moonP.sign) : '',
+          asc_sign:  ascObj? toSignName(ascObj.sign): '',
+          planets, houses,
+          chart_overview:'',
+          signs_desc:{ sun:'', moon:'', asc:'' },
+          extended:{},
+        },
+
+        summary:{ lifetime:'', year_saju:'', year_ziwei:'', year_natal:'' },
+        monthly_2026:{},
+        advice:{ summary:'', direction:'', color:'', stone:'', lucky_day:'', action:'' },
+      };
+
       const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `saju_data_${d.input.year}${String(d.input.month).padStart(2,'0')}${String(d.input.day).padStart(2,'0')}.json`;
+      a.download = `saju_${inp.year}${String(inp.month).padStart(2,'0')}${String(inp.day).padStart(2,'0')}_${exportData.gender}.json`;
       a.click();
       URL.revokeObjectURL(url);
+      alert(`JSON 저장 완료!\n이제 스크립트를 실행하세요:\npython create_premium_report.py --data ${a.download} --key sk-ant-...`);
     });
 
   } catch (e) {
@@ -4887,7 +4991,11 @@ document.addEventListener('click', e => {
   if (captured) {
     try { sessionStorage.setItem('honcheon_last_input', JSON.stringify(captured)); } catch {}
     if (isCalcBtn) {
-      if (new URLSearchParams(location.search).get('admin') === '1') return; // admin: 원본 앱 표시
+      if (new URLSearchParams(location.search).get('admin') === '1') {
+        // admin 모드: 백그라운드 계산 실행해서 window.__adminCalcData 채우기
+        setTimeout(() => runFortune(captured).catch(console.error), 500);
+        return;
+      }
       // 계산 버튼: 무료운세 페이지로 이동
       e.stopImmediatePropagation();
       window.location.href = '/fortune/';
