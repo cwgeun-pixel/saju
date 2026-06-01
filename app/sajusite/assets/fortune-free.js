@@ -4745,11 +4745,15 @@ async function runFortune(preInput = null) {
       ${renderSinsal(saju)}
       ${renderZiweiSection(ziwei)}
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
-      <div style="text-align:center;padding:8px 0">
+      <div style="text-align:center;padding:8px 0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
         <button id="gf-reset" type="button"
           style="color:#7a6f8a;font-size:15px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em;transition:all 0.2s">
           ↺ ${t('다른 생년월일로 다시 보기')}
         </button>
+        ${isAdmin ? `<button id="gf-export-json" type="button"
+          style="color:#22c55e;font-size:14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Pretendard',sans-serif;transition:all 0.2s">
+          ⬇ JSON 내보내기 (PDF 리포트용)
+        </button>` : ''}
       </div>
       <p style="color:#4a4f6a;font-size:14px;text-align:center;padding-bottom:6px;line-height:1.6">
         ${t('※ 사주·자미두수·점성학 원국과 현재 날짜를 기반으로 자동 계산됩니다. 참고용으로 활용하세요.')}
@@ -4758,6 +4762,59 @@ async function runFortune(preInput = null) {
 
     document.getElementById('gf-reset')?.addEventListener('click', () => {
       if (bodyEl) bodyEl.innerHTML = inputHtml();
+    });
+
+    // 관리자: JSON 내보내기 버튼
+    document.getElementById('gf-export-json')?.addEventListener('click', () => {
+      const d = window.__adminCalcData;
+      if (!d) return;
+      const exportData = {
+        name: '회원이름입력',
+        birth_date: `${d.input.year}년 ${d.input.month}월 ${d.input.day}일`,
+        birth_time: d.input.unknownTime ? '시간 미상' : `${d.input.hour}시 ${d.input.minute}분`,
+        birth_place: '출생지입력',
+        gender: d.input.gender === 'M' ? '남성' : '여성',
+        report_date: new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'}),
+        saju: {
+          pillars: d.saju?.pillars?.map(p => ({
+            stem: p.pillar?.stem || '',
+            branch: p.pillar?.branch || '',
+            sipsin_top: p.stemSipsin || '',
+            sipsin_bot: p.branchSipsin || '',
+            unseong: p.unseong || '',
+          })) || [],
+          elements: {},
+          yongsin: {},
+        },
+        ziwei: {
+          chart_type: d.ziwei?.wuXingJu?.name || '',
+          palaces: Object.fromEntries(
+            Object.entries(d.ziwei?.palaces || {}).map(([k,v]) => [k, {
+              stars: (v.stars||[]).map(s=>s.name||s).join(' · '),
+              ganzhi: v.ganZhi || '',
+            }])
+          ),
+          sihua: [],
+        },
+        natal: {
+          sun_sign: '',
+          moon_sign: '',
+          asc_sign: '',
+          planets: (d.natalChart?.planets||[]).map(p => ({
+            name: p.name || p.id || '',
+            sign: p.sign || '',
+            degree: (p.degree||0).toFixed(0) + '°',
+            house: p.house ? p.house + '하우스' : '',
+          })),
+        },
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `saju_data_${d.input.year}${String(d.input.month).padStart(2,'0')}${String(d.input.day).padStart(2,'0')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
     });
 
   } catch (e) {
