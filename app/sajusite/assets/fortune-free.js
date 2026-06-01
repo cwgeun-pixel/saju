@@ -4631,6 +4631,213 @@ function switchTab(tabId, results) {
   });
 }
 
+// ─── 탭 전환 함수 (전역) ─────────────────────────────────────
+window.honcheonSwitchTab = function(tab) {
+  const panels = ['free','member'];
+  panels.forEach(p => {
+    const panel = document.getElementById('panel-'+p);
+    const btn   = document.getElementById('tab-'+p);
+    if (!panel || !btn) return;
+    if (p === tab) {
+      panel.style.display = 'block';
+      btn.style.color = '#d4af37';
+      btn.style.background = 'rgba(212,175,55,0.1)';
+      btn.style.borderBottom = '2px solid #d4af37';
+    } else {
+      panel.style.display = 'none';
+      btn.style.color = '#7a82a8';
+      btn.style.background = 'none';
+      btn.style.borderBottom = '2px solid transparent';
+    }
+  });
+};
+
+// ─── 멤버십 원천자료 렌더링 ────────────────────────────────────
+function renderMembershipRawData(saju, ziwei, natalChart, input) {
+  const STEM_ELEM2  = {'甲':'목','乙':'목','丙':'화','丁':'화','戊':'토','己':'토','庚':'금','辛':'금','壬':'수','癸':'수'};
+  const BRANCH_ELEM2= {'子':'수','丑':'토','寅':'목','卯':'목','辰':'토','巳':'화','午':'화','未':'토','申':'금','酉':'금','戌':'토','亥':'수'};
+  const ELEM_BG2 = {'목':'rgba(20,83,45,0.8)','화':'rgba(127,29,29,0.8)','토':'rgba(120,53,15,0.8)','금':'rgba(30,41,59,0.8)','수':'rgba(30,58,95,0.8)'};
+  const ELEM_FG2 = {'목':'#4ade80','화':'#f87171','토':'#fbbf24','금':'#cbd5e1','수':'#60a5fa'};
+  const SIPSIN_KR2 = {'比肩':'비견','劫財':'겁재','食神':'식신','傷官':'상관','偏財':'편재','正財':'정재','偏官':'편관','正官':'정관','偏印':'편인','正印':'정인'};
+
+  function stemBox(char) {
+    const elem = STEM_ELEM2[char]||'토';
+    return `<div style="width:52px;height:52px;background:${ELEM_BG2[elem]};border:2px solid ${ELEM_FG2[elem]};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:${ELEM_FG2[elem]};margin:0 auto;box-shadow:0 0 12px ${ELEM_FG2[elem]}40;font-family:'Noto Serif KR','serif'">${char}</div>`;
+  }
+  function branchBox(char) {
+    const elem = BRANCH_ELEM2[char]||'토';
+    return `<div style="width:52px;height:52px;background:${ELEM_BG2[elem]};border:2px solid ${ELEM_FG2[elem]};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:${ELEM_FG2[elem]};margin:0 auto;box-shadow:0 0 12px ${ELEM_FG2[elem]}40;font-family:'Noto Serif KR','serif'">${char}</div>`;
+  }
+
+  const pillars = saju?.pillars||[];
+  const p_labels = ['시주','일주','월주','년주'];
+  const TH = (t,w='') => `<th style="color:#d4af37;font-size:12px;padding:7px 6px;text-align:center;background:rgba(212,175,55,0.08);${w?'width:'+w:''}">${t}</th>`;
+  const TD = (t,style='') => `<td style="text-align:center;padding:6px 4px;font-size:13px;color:#c8cee8;${style}">${t||'—'}</td>`;
+
+  // ── 사주팔자 원국 ──
+  const sajuTable = `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">四柱八字 원국</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,0.6);border:1px solid rgba(212,175,55,0.2);border-radius:10px;overflow:hidden">
+        <thead><tr>${TH('구분','70px')}${pillars.map((_,i)=>`<th style="color:#e8dfc8;font-size:12px;padding:8px 4px;text-align:center;background:rgba(212,175,55,0.05)${i===1?';border:1px solid rgba(212,175,55,0.4)':''}">${p_labels[i]}</th>`).join('')}</tr></thead>
+        <tbody>
+          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神上</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:12px;color:#a89bc0${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${SIPSIN_KR2[p.stemSipsin]||p.stemSipsin||'—'}</td>`).join('')}</tr>
+          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">天干</td>${pillars.map((p,i)=>`<td style="padding:8px 3px${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}>${stemBox(p.pillar?.stem||'')}</td>`).join('')}</tr>
+          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">地支</td>${pillars.map((p,i)=>`<td style="padding:8px 3px${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}>${branchBox(p.pillar?.branch||'')}</td>`).join('')}</tr>
+          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">十神下</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:12px;color:#a89bc0${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${SIPSIN_KR2[p.branchSipsin]||p.branchSipsin||'—'}</td>`).join('')}</tr>
+          <tr><td style="color:#7a82a8;font-size:11px;padding:5px 8px;text-align:center">12운성</td>${pillars.map((p,i)=>`<td style="text-align:center;padding:5px 3px;font-size:11px;color:#7c6af7${i===1?';border-left:1px solid rgba(212,175,55,0.4);border-right:1px solid rgba(212,175,55,0.4)':''}">${p.unseong||'—'}</td>`).join('')}</tr>
+        </tbody>
+      </table>
+      </div>
+    </div>`;
+
+  // ── 신살 ──
+  const sinsal = saju?.sinsal||[];
+  const sinsalHtml = sinsal.length ? `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">神殺 분석</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${sinsal.map(s=>{
+          const tc = s.type==='길신'?'#22c55e':s.type==='흉신'?'#ef4444':'#94a3b8';
+          return `<div style="background:${tc}18;border:1px solid ${tc}44;border-radius:8px;padding:6px 12px">
+            <span style="color:${tc};font-size:11px;font-weight:700">[${s.type||''}]</span>
+            <span style="color:#e8dfc8;font-size:12px;margin-left:6px;font-weight:600">${s.name||''}</span>
+            <span style="color:#7a82a8;font-size:11px;margin-left:8px">${s.pos||''}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : '';
+
+  // ── 대운 ──
+  const daewoon = saju?.daewoon||[];
+  const daewoonHtml = daewoon.length ? `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">大運 흐름</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${daewoon.map(dw=>{
+          const isCur = dw.isCurrent||dw.is_current;
+          const gz = dw.ganzi||dw.ganzhi||'';
+          const stem = gz[0]||''; const branch = gz[1]||'';
+          const sElem = STEM_ELEM2[stem]||'토'; const bElem = BRANCH_ELEM2[branch]||'토';
+          return `<div style="text-align:center;min-width:52px;background:${isCur?'rgba(34,197,94,0.1)':'rgba(13,16,32,0.6)'};border:${isCur?'1.5px solid #22c55e':'1px solid rgba(255,255,255,0.08)'};border-radius:10px;padding:6px 4px">
+            <div style="font-size:9px;color:${isCur?'#22c55e':'#7a82a8'};margin-bottom:3px">${dw.age||''}</div>
+            <div style="font-size:11px;color:#a89bc0;margin-bottom:4px">${SIPSIN_KR2[dw.stemSipsin||dw.sipsin]||dw.stemSipsin||''}</div>
+            <div style="width:32px;height:32px;background:${ELEM_BG2[sElem]};border:1.5px solid ${ELEM_FG2[sElem]};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:${ELEM_FG2[sElem]};margin:0 auto 3px">${stem}</div>
+            <div style="width:32px;height:32px;background:${ELEM_BG2[bElem]};border:1.5px solid ${ELEM_FG2[bElem]};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:${ELEM_FG2[bElem]};margin:0 auto 3px">${branch}</div>
+            ${isCur?'<div style="font-size:9px;color:#22c55e">현재</div>':''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : '';
+
+  // ── 자미두수 명반 ──
+  const zwPalaces = ziwei?.palaces||{};
+  const GRID = [
+    ['遷移宮','疾厄宮','財帛宮','子女宮'],
+    ['交友宮', null, null, '夫妻宮'],
+    ['官祿宮', null, null, '兄弟宮'],
+    ['田宅宮','福德宮','父母宮','命宮'],
+  ];
+  const zwCell = (pname, span2=false) => {
+    if (!pname) return `<td ${span2?'colspan="2"':''} style="background:rgba(8,10,20,0.9);border:1px solid rgba(212,175,55,0.1);padding:6px;vertical-align:top">
+      <div style="font-size:9px;color:#3a4060;text-align:center">명반 정보</div>
+      <div style="font-size:11px;color:#d4af37;text-align:center;margin-top:4px;font-weight:700">${input.year}/${input.month}/${input.day}</div>
+      <div style="font-size:10px;color:#5a6080;text-align:center">${input.gender==='M'?'남':'여'}성</div>
+      <div style="font-size:9px;color:#7c6af7;text-align:center;margin-top:3px">${ziwei?.wuXingJu?.name||''}</div>
+    </td>`;
+    const p = zwPalaces[pname]||{};
+    const stars = (p.stars||[]).map(s=>{
+      const sihua = s.sihua ? `<span style="color:${s.sihua==='化祿'?'#22c55e':s.sihua==='化權'?'#fbbf24':s.sihua==='化科'?'#60a5fa':'#ef4444'};font-size:9px"> ${s.sihua}</span>` : '';
+      return `<span style="font-size:11px;font-weight:700;color:#e8dfc8">${s.name||s}${sihua}</span>`;
+    }).join(' ');
+    const isFate = pname==='命宮';
+    return `<td style="background:${isFate?'rgba(124,106,247,0.15)':'rgba(13,16,32,0.7)'};border:${isFate?'1.5px solid #7c6af7':'1px solid rgba(255,255,255,0.06)'};padding:5px;vertical-align:top;min-width:60px">
+      <div style="font-size:9px;color:${isFate?'#7c6af7':'#6a7898'}">${pname}</div>
+      <div style="font-size:9px;color:#4a5268;margin-bottom:3px">${p.ganZhi||p.ganzhi||''}</div>
+      <div style="line-height:1.5">${stars||'<span style="color:#3a4060;font-size:10px">空宮</span>'}</div>
+    </td>`;
+  };
+  const ziweiGrid = `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">紫微斗數 命盤</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse">
+        ${GRID.map((row,ri)=>`<tr>
+          ${row[1]===null
+            ? zwCell(row[0]) + zwCell(null,true) + zwCell(row[3])
+            : row.map(p=>zwCell(p)).join('')}
+        </tr>`).join('')}
+      </table>
+      </div>
+    </div>`;
+
+  // ── 사화 ──
+  const sihua = ziwei?.sihua||[];
+  const sihuaColors = {'化祿':'#22c55e','化權':'#fbbf24','化科':'#60a5fa','化忌':'#ef4444'};
+  const sihuaHtml = sihua.length ? `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">四化 배치</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${sihua.map(s=>`<div style="background:rgba(13,16,32,0.7);border:1px solid ${sihuaColors[s.type]||'#7a82a8'}44;border-radius:8px;padding:8px 14px;display:flex;gap:8px;align-items:center">
+          <span style="font-size:14px;font-weight:900;color:${sihuaColors[s.type]||'#7a82a8'}">${s.type}</span>
+          <span style="font-size:13px;color:#e8dfc8;font-weight:700">${s.star||''}</span>
+          <span style="font-size:11px;color:#7a82a8">→ ${s.palace||''}</span>
+        </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  // ── 점성학 행성 ──
+  const planets = natalChart?.planets||[];
+  const PSYM = {Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆',Pluto:'♇',Chiron:'⚷','North Node':'☊'};
+  const PCOL = {Sun:'#fbbf24',Moon:'#c0c8e0',Mercury:'#a78bfa',Venus:'#f472b6',Mars:'#ef4444',Jupiter:'#22c55e',Saturn:'#94a3b8',Uranus:'#60a5fa',Neptune:'#818cf8',Pluto:'#7c6af7',Chiron:'#fbbf24','North Node':'#34d399'};
+  const planetsHtml = planets.length ? `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">Natal Chart · 행성 배치</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.2);border-radius:10px;overflow:hidden">
+        <thead><tr>${['행성','별자리','도수','Rx','하우스'].map(h=>`<th style="color:#7c6af7;font-size:11px;padding:7px 6px;text-align:center;background:rgba(124,106,247,0.08)">${h}</th>`).join('')}</tr></thead>
+        <tbody>${planets.map(p=>{
+          const id = p.id||p.name||''; const col = PCOL[id]||'#c8cee8';
+          return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+            <td style="padding:6px 8px;color:${col};font-size:12px;font-weight:700">${PSYM[id]||''} ${p.name||id}</td>
+            <td style="text-align:center;padding:6px;font-size:12px;color:#c8cee8">${p.sign||''}</td>
+            <td style="text-align:center;padding:6px;font-size:12px;color:#a89bc0">${typeof p.degree==='number'?p.degree.toFixed(2)+'°':p.degree||''}</td>
+            <td style="text-align:center;padding:6px;font-size:12px;color:#ef4444;font-weight:700">${p.retrograde?'℞':''}</td>
+            <td style="text-align:center;padding:6px;font-size:12px;color:#7c6af7">${p.house||''}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+      </div>
+    </div>` : '';
+
+  // ── 하우스 ──
+  const houses = natalChart?.houses||[];
+  const housesHtml = houses.length ? `
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#d4af37;letter-spacing:0.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,0.2)">Houses · 12하우스</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px">
+        ${houses.slice(0,12).map((h,i)=>`<div style="background:rgba(13,16,32,0.6);border:1px solid rgba(124,106,247,0.15);border-radius:6px;padding:5px 10px;display:flex;gap:10px;align-items:center">
+          <span style="color:#7c6af7;font-size:12px;font-weight:700;min-width:24px">${i+1}H</span>
+          <span style="color:#c8cee8;font-size:12px">${h.sign||''}</span>
+          <span style="color:#5a6080;font-size:11px">${typeof h.degree==='number'?h.degree.toFixed(1)+'°':''}</span>
+        </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  // ── JSON 내보내기 버튼 ──
+  const exportBtn = `
+    <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(212,175,55,0.2)">
+      <button id="gf-export-json-member" type="button"
+        style="background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(124,106,247,0.15));border:1px solid rgba(34,197,94,0.4);border-radius:10px;padding:12px 28px;color:#22c55e;font-size:14px;font-weight:700;cursor:pointer;font-family:'Pretendard',sans-serif;letter-spacing:0.04em">
+        ⬇ PDF 리포트용 JSON 내보내기
+      </button>
+      <p style="color:#5a6478;font-size:12px;margin-top:8px">내보낸 JSON으로 AI 해석 + PDF를 생성하세요</p>
+    </div>`;
+
+  return sajuTable + sinsalHtml + daewoonHtml + ziweiGrid + sihuaHtml + planetsHtml + housesHtml + exportBtn;
+}
+
 // ─── 관리자 원본 데이터 뷰 ────────────────────────────────────
 
 function renderAdminData(saju, ziwei, natalChart, transitChart, input) {
@@ -4729,14 +4936,27 @@ async function runFortune(preInput = null) {
       ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">Born ${month}/${day}/${year} · ${gender==='F'?'Female':'Male'}</span></div>`
       : '';
 
-    // 관리자 원본 데이터 저장
+    // 원본 데이터 저장 (항상)
     window.__adminCalcData = { saju, ziwei, natalChart, transitChart, input: { year, month, day, hour, minute, gender, unknownTime } };
 
     const isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+    // 멤버십 탭 표시 조건: ?admin=1 또는 localStorage에 멤버십 키 존재
+    const isMember = isAdmin || localStorage.getItem('honcheon_membership') === '1';
 
     if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
       ${infoLine}
-      ${isAdmin ? renderAdminData(saju, ziwei, natalChart, transitChart, { year, month, day, hour, minute, gender }) : ''}
+
+      ${isMember ? `
+      <!-- 멤버십 원천자료 탭 -->
+      <div style="background:rgba(13,16,32,0.8);border:1px solid rgba(212,175,55,0.3);border-radius:14px;overflow:hidden">
+        <div style="display:flex;border-bottom:1px solid rgba(212,175,55,0.2)">
+          <button id="tab-free" onclick="honcheonSwitchTab('free')" style="flex:1;padding:11px 8px;font-size:13px;font-weight:700;color:#d4af37;background:rgba(212,175,55,0.1);border:none;cursor:pointer;font-family:'Pretendard',sans-serif;border-bottom:2px solid #d4af37">무료 운세</button>
+          <button id="tab-member" onclick="honcheonSwitchTab('member')" style="flex:1;padding:11px 8px;font-size:13px;font-weight:700;color:#7a82a8;background:none;border:none;cursor:pointer;font-family:'Pretendard',sans-serif;border-bottom:2px solid transparent">🔐 원천 자료 (멤버십)</button>
+        </div>
+
+        <!-- 무료 운세 탭 내용 -->
+        <div id="panel-free" style="padding:0">
+          <div style="display:flex;flex-direction:column;gap:14px;padding:0 2px">
       ${renderBasicFortune(saju, yp, mp, dp, gender)}
       ${renderDailyCalendar(saju, yp, mp, dp)}
       ${renderYongShin(saju)}
@@ -4745,14 +4965,33 @@ async function runFortune(preInput = null) {
       ${renderSinsal(saju)}
       ${renderZiweiSection(ziwei)}
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
+          </div>
+        </div>
+
+        <!-- 멤버십 원천자료 탭 내용 -->
+        <div id="panel-member" style="display:none;padding:16px">
+          ${renderMembershipRawData(saju, ziwei, natalChart, { year, month, day, hour, minute, gender, unknownTime })}
+        </div>
+      </div>
+      ` : `
+      ${renderBasicFortune(saju, yp, mp, dp, gender)}
+      ${renderDailyCalendar(saju, yp, mp, dp)}
+      ${renderYongShin(saju)}
+      ${renderSijunseong(saju)}
+      ${renderDaewoon(saju)}
+      ${renderSinsal(saju)}
+      ${renderZiweiSection(ziwei)}
+      ${renderNatalSection(natalChart, transitChart, unknownTime)}
+      `}
+
       <div style="text-align:center;padding:8px 0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
         <button id="gf-reset" type="button"
           style="color:#7a6f8a;font-size:15px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em;transition:all 0.2s">
           ↺ ${t('다른 생년월일로 다시 보기')}
         </button>
-        ${isAdmin ? `<button id="gf-export-json" type="button"
+        ${isMember ? `<button id="gf-export-json" type="button"
           style="color:#22c55e;font-size:14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Pretendard',sans-serif;transition:all 0.2s">
-          ⬇ JSON 내보내기 (PDF 리포트용)
+          ⬇ PDF용 JSON 내보내기
         </button>` : ''}
       </div>
       <p style="color:#4a4f6a;font-size:14px;text-align:center;padding-bottom:6px;line-height:1.6">
@@ -4762,6 +5001,11 @@ async function runFortune(preInput = null) {
 
     document.getElementById('gf-reset')?.addEventListener('click', () => {
       if (bodyEl) bodyEl.innerHTML = inputHtml();
+    });
+
+    // 멤버십 탭 내보내기 버튼도 같은 함수로 연결
+    document.getElementById('gf-export-json-member')?.addEventListener('click', () => {
+      document.getElementById('gf-export-json')?.click();
     });
 
     // 관리자: JSON 내보내기 버튼 (완전한 데이터 내보내기)
