@@ -1,14 +1,13 @@
-<!-- 사주(四柱八字) 역사와 개념을 소개하는 정적 페이지 -->
+<!-- 사주(四柱八字) 5개국어 설명 페이지 -->
 <!doctype html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>사주(四柱八字)란? — Trinity of Destiny</title>
-  <meta name="description" content="사주팔자의 역사, 천간, 지지, 오행, 대운 등 사주 명리학의 핵심 개념을 알아보세요." />
+  <title>사주 (四柱八字) — Trinity of Destiny</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Serif+SC:wght@300;400;500;700&family=Cinzel:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --gold: #C9A84C;
@@ -21,625 +20,782 @@
       --text-muted: rgba(232,224,204,0.6);
       --border: rgba(201,168,76,0.2);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Sans KR', sans-serif;
-      line-height: 1.8;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
 
-    /* ── 네비게이션 ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10,13,26,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .nav-logo {
-      font-family: 'Cinzel', serif;
-      color: var(--gold);
-      font-size: 1.1rem;
-      letter-spacing: 0.1em;
-      text-decoration: none;
-    }
-    .nav-cta {
-      background: var(--gold);
-      color: #0A0D1A;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 0.5rem 1.4rem;
-      border-radius: 2px;
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: background 0.2s;
-    }
-    .nav-cta:hover { background: var(--gold-light); }
+    /* nav */
+    nav { position:sticky; top:0; z-index:100; background:rgba(10,13,26,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .nav-logo { font-family:'Cinzel',serif; color:var(--gold); font-size:1.05rem; letter-spacing:.1em; text-decoration:none; }
+    .nav-cta { background:var(--gold); color:#0A0D1A; font-weight:700; font-size:.82rem; padding:.5rem 1.3rem; border-radius:2px; text-decoration:none; letter-spacing:.05em; transition:background .2s; }
+    .nav-cta:hover { background:var(--gold-light); }
 
-    /* ── 히어로 ── */
-    .hero {
-      text-align: center;
-      padding: 5rem 1.5rem 3.5rem;
-      background: linear-gradient(180deg, #0F1528 0%, var(--bg) 100%);
-      border-bottom: 1px solid var(--border);
-    }
-    .hero-tag {
-      display: inline-block;
-      font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      border: 1px solid var(--border);
-      padding: 0.35rem 1.2rem;
-      border-radius: 2px;
-      margin-bottom: 1.5rem;
-    }
-    .hero h1 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 700;
-      color: var(--gold-light);
-      margin-bottom: 1rem;
-    }
-    .hero-sub {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 640px;
-      margin: 0 auto 2rem;
-    }
+    /* lang switcher */
+    .lang-bar { display:flex; justify-content:center; gap:.5rem; padding:.9rem 1rem; background:var(--bg2); border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .lang-btn { font-size:.78rem; padding:.28rem .85rem; border-radius:2px; border:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; transition:all .2s; font-family:inherit; }
+    .lang-btn:hover { background:var(--gold-dim); color:var(--gold); }
+    .lang-btn.active { background:var(--gold-dim); color:var(--gold); border-color:var(--gold); }
 
-    /* ── 목차 ── */
-    .toc {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.6rem;
-      padding: 0 1.5rem 3rem;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      padding-top: 2rem;
-    }
-    .toc a {
-      font-size: 0.82rem;
-      color: var(--gold);
-      border: 1px solid var(--border);
-      padding: 0.3rem 0.9rem;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-    .toc a:hover { background: var(--gold-dim); }
+    /* hero */
+    .hero { text-align:center; padding:4.5rem 1.5rem 3rem; background:linear-gradient(180deg,#0F1528 0%,var(--bg) 100%); border-bottom:1px solid var(--border); }
+    .hero-tag { display:inline-block; font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.2em; color:var(--gold); border:1px solid var(--border); padding:.3rem 1.1rem; border-radius:2px; margin-bottom:1.4rem; }
+    .hero h1 { font-family:'Noto Serif KR',serif; font-size:clamp(1.9rem,5vw,3rem); font-weight:700; color:var(--gold-light); margin-bottom:.9rem; }
+    .hero-sub { font-size:1rem; color:var(--text-muted); max-width:620px; margin:0 auto 1.8rem; }
 
-    /* ── 본문 ── */
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem 5rem;
-    }
+    /* toc */
+    .toc { display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem; padding:1.8rem 1.5rem; background:var(--bg2); border-bottom:1px solid var(--border); }
+    .toc a { font-size:.8rem; color:var(--gold); border:1px solid var(--border); padding:.28rem .85rem; border-radius:2px; text-decoration:none; transition:background .2s; }
+    .toc a:hover { background:var(--gold-dim); }
 
-    section {
-      margin-bottom: 4rem;
-    }
-    section + section {
-      border-top: 1px solid var(--border);
-      padding-top: 4rem;
-    }
+    /* main */
+    main { max-width:860px; margin:0 auto; padding:3rem 1.5rem 5rem; }
+    section { margin-bottom:4rem; }
+    section+section { border-top:1px solid var(--border); padding-top:4rem; }
+    .section-label { font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.22em; color:var(--gold); margin-bottom:.5rem; display:block; }
+    h2 { font-family:'Noto Serif KR',serif; font-size:1.65rem; font-weight:700; color:var(--gold-light); margin-bottom:1.1rem; }
+    h3 { font-family:'Noto Serif KR',serif; font-size:1.1rem; font-weight:600; color:var(--gold); margin:2rem 0 .7rem; }
+    p { color:var(--text-muted); margin-bottom:.9rem; }
+    strong { color:var(--text); }
 
-    .section-label {
-      font-family: 'Cinzel', serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      color: var(--gold);
-      margin-bottom: 0.6rem;
-      display: block;
-    }
-    h2 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--gold-light);
-      margin-bottom: 1.2rem;
-    }
-    h3 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--gold);
-      margin: 2rem 0 0.8rem;
-    }
-    p {
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-    strong { color: var(--text); }
+    /* table */
+    .table-wrap { overflow-x:auto; margin:1.3rem 0; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    thead tr { background:var(--bg3); }
+    th { font-family:'Noto Serif KR',serif; font-weight:600; color:var(--gold); padding:.6rem .85rem; text-align:center; border:1px solid var(--border); white-space:nowrap; }
+    td { padding:.5rem .85rem; text-align:center; border:1px solid var(--border); color:var(--text-muted); }
+    tr:nth-child(even) td { background:rgba(15,21,40,.5); }
+    .char { font-family:'Noto Serif KR',serif; font-size:1.05rem; color:var(--gold-light); font-weight:700; }
 
-    /* ── 표 ── */
-    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-    thead tr { background: var(--bg3); }
-    th {
-      font-family: 'Noto Serif KR', serif;
-      font-weight: 600;
-      color: var(--gold);
-      padding: 0.65rem 0.9rem;
-      text-align: center;
-      border: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    td {
-      padding: 0.55rem 0.9rem;
-      text-align: center;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-    tr:nth-child(even) td { background: rgba(15,21,40,0.5); }
-    .char {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.1rem;
-      color: var(--gold-light);
-      font-weight: 700;
-    }
+    /* elements */
+    .element-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:.9rem; margin:1.3rem 0; }
+    .element-card { background:var(--bg2); border:1px solid var(--border); border-radius:4px; padding:1rem .9rem; text-align:center; }
+    .element-card .kanji { font-family:'Noto Serif KR',serif; font-size:1.9rem; font-weight:700; display:block; margin-bottom:.25rem; }
+    .element-card .ename { font-size:.8rem; color:var(--text-muted); }
+    .element-card .edesc { font-size:.76rem; color:var(--text-muted); margin-top:.4rem; }
+    .wood { color:#5CB85C; } .fire { color:#E85D4A; } .earth { color:#C9A84C; } .metal { color:#B0BEC5; } .water { color:#5B9BD5; }
 
-    /* ── 오행 카드 ── */
-    .element-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    .element-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.1rem 1rem;
-      text-align: center;
-    }
-    .element-card .kanji {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-    .element-card .name { font-size: 0.82rem; color: var(--text-muted); }
-    .element-card .desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; }
-    .wood   { color: #5CB85C; border-color: rgba(92,184,92,0.3); }
-    .fire   { color: #E85D4A; border-color: rgba(232,93,74,0.3); }
-    .earth  { color: #C9A84C; border-color: rgba(201,168,76,0.3); }
-    .metal  { color: #B0BEC5; border-color: rgba(176,190,197,0.3); }
-    .water  { color: #5B9BD5; border-color: rgba(91,155,213,0.3); }
+    /* pillars */
+    .pillar-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; margin:1.3rem 0; }
+    @media(max-width:540px){ .pillar-grid{grid-template-columns:repeat(2,1fr);} }
+    .pillar-card { background:var(--bg3); border:1px solid var(--border); border-radius:4px; padding:1.1rem .8rem; text-align:center; }
+    .pillar-card .pname { font-family:'Noto Serif KR',serif; font-size:1.3rem; color:var(--gold-light); font-weight:700; display:block; margin-bottom:.3rem; }
+    .pillar-card .pen { font-size:.7rem; color:var(--gold); letter-spacing:.05em; margin-bottom:.4rem; display:block; }
+    .pillar-card p { font-size:.78rem; color:var(--text-muted); margin:0; }
 
-    /* ── 강조 박스 ── */
-    .highlight-box {
-      background: var(--bg2);
-      border-left: 3px solid var(--gold);
-      padding: 1.2rem 1.5rem;
-      margin: 1.5rem 0;
-      border-radius: 0 4px 4px 0;
-    }
-    .highlight-box p { margin: 0; }
+    /* highlight */
+    .hl { background:var(--bg2); border-left:3px solid var(--gold); padding:1.1rem 1.4rem; margin:1.3rem 0; border-radius:0 4px 4px 0; }
+    .hl p { margin:0; }
 
-    /* ── 사주 4기둥 ── */
-    .pillar-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    @media (max-width: 560px) {
-      .pillar-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    .pillar-card {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.2rem 0.8rem;
-      text-align: center;
-    }
-    .pillar-card .pillar-name {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.4rem;
-      color: var(--gold-light);
-      font-weight: 700;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-    .pillar-card .pillar-en { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
-    .pillar-card p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+    /* cta */
+    .cta-box { text-align:center; padding:3rem 1.5rem; background:var(--bg2); border:1px solid var(--border); border-radius:4px; margin-top:4rem; }
+    .cta-box h2 { margin-bottom:.7rem; }
+    .cta-box p { margin-bottom:1.8rem; }
+    .btn-p { display:inline-block; background:var(--gold); color:#0A0D1A; font-weight:700; font-size:.92rem; padding:.8rem 2.3rem; border-radius:2px; text-decoration:none; letter-spacing:.05em; transition:background .2s; }
+    .btn-p:hover { background:var(--gold-light); }
+    .btn-s { display:inline-block; border:1px solid var(--gold); color:var(--gold); font-weight:600; font-size:.88rem; padding:.75rem 1.8rem; border-radius:2px; text-decoration:none; margin-left:.9rem; transition:background .2s; }
+    .btn-s:hover { background:var(--gold-dim); }
+    @media(max-width:460px){ .btn-s{margin-left:0;margin-top:.7rem;} }
 
-    /* ── CTA 섹션 ── */
-    .cta-section {
-      text-align: center;
-      padding: 3.5rem 1.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      margin-top: 4rem;
-    }
-    .cta-section h2 { margin-bottom: 0.8rem; }
-    .cta-section p { margin-bottom: 2rem; }
-    .btn-primary {
-      display: inline-block;
-      background: var(--gold);
-      color: #0A0D1A;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 0.85rem 2.5rem;
-      border-radius: 2px;
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: background 0.2s;
-    }
-    .btn-primary:hover { background: var(--gold-light); }
-    .btn-secondary {
-      display: inline-block;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 0.8rem 2rem;
-      border-radius: 2px;
-      text-decoration: none;
-      margin-left: 1rem;
-      letter-spacing: 0.03em;
-      transition: background 0.2s;
-    }
-    .btn-secondary:hover { background: var(--gold-dim); }
-    @media (max-width: 480px) {
-      .btn-secondary { margin-left: 0; margin-top: 0.8rem; }
-    }
-
-    /* ── 푸터 ── */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-    }
+    footer { text-align:center; padding:1.8rem; font-size:.78rem; color:var(--text-muted); border-top:1px solid var(--border); }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="./landing.html" class="nav-logo">TRINITY OF DESTINY</a>
-  <a href="./app/" class="nav-cta" target="_blank" rel="noopener">내 사주 보기 →</a>
+  <a href="./" class="nav-logo" id="nav-logo">TRINITY OF DESTINY</a>
+  <a href="./app/" class="nav-cta" id="nav-cta" target="_blank" rel="noopener">내 사주 보기 →</a>
 </nav>
 
-<!-- 히어로 -->
-<div class="hero">
-  <span class="hero-tag">FOUR PILLARS OF DESTINY</span>
-  <h1>사주 (四柱八字)</h1>
-  <p class="hero-sub">
-    하늘이 새겨준 운명의 설계도 — 태어난 연·월·일·시 네 기둥이 이루는 여덟 글자로
-    타고난 기질, 운세의 흐름, 인연의 궤적을 읽습니다.
-  </p>
+<div class="lang-bar">
+  <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+  <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
+  <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+  <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
 </div>
 
-<!-- 목차 -->
-<div class="toc">
-  <a href="#history">기원과 역사</a>
-  <a href="#structure">사주의 구조</a>
-  <a href="#cheongan">10 천간</a>
-  <a href="#jiji">12 지지</a>
-  <a href="#ohaeng">오행</a>
-  <a href="#daeun">대운과 세운</a>
-  <a href="#interpretation">해석 방법</a>
-</div>
+<div id="page-content"></div>
 
-<main>
+<footer id="page-footer"></footer>
 
-  <!-- 1. 기원과 역사 -->
-  <section id="history">
-    <span class="section-label">ORIGIN &amp; HISTORY</span>
-    <h2>기원과 역사</h2>
+<script>
+// ── 번역 데이터 ──────────────────────────────────────────────
+var T = {
+  ko: {
+    htmlLang: "ko",
+    heroTag: "FOUR PILLARS OF DESTINY",
+    heroTitle: "사주 (四柱八字)",
+    heroSub: "하늘이 새겨준 운명의 설계도 — 태어난 연·월·일·시 네 기둥이 이루는 여덟 글자로 타고난 기질, 운세의 흐름, 인연의 궤적을 읽습니다.",
+    toc: ["기원과 역사","사주의 구조","10 천간","12 지지","오행","대운과 세운","해석 방법"],
+    tocIds: ["history","structure","cheongan","jiji","ohaeng","daeun","interpretation"],
+    navCta: "내 사주 보기 →",
+    s1Label:"ORIGIN & HISTORY", s1Title:"기원과 역사",
+    s1h1:"고대 중국에서 시작된 운명 예측 체계",
+    s1p1:"사주팔자(四柱八字)는 중국 당나라(618~907) 시대 이허중(李虛中)이 연·월·일의 간지로 운명을 판단하던 것이 시초입니다. 이후 송나라 서자평(徐子平)이 시(時)를 추가하여 연·월·일·시 <strong>네 기둥(四柱)</strong>, 여덟 글자(八字)의 완성된 체계로 발전시켰습니다.",
+    s1h2:"한국 전래와 발전",
+    s1p2:"고려 시대를 거쳐 조선 초기에 정착되었습니다. 조선에서는 관상감(觀象監)을 통해 왕실 의례와 국정에 활용되었고, 현대에는 심리 분석·진로·궁합 등으로 재해석되고 있습니다.",
+    s1h3:"명리학의 핵심 전제",
+    s1hl:"\"하늘의 기운(天干)과 땅의 기운(地支)이 순환하며 만물을 이루고, 사람은 태어나는 순간 그 기운의 조합을 받는다. 사주는 그 조합을 해독하는 언어다.\"",
+    s2Label:"STRUCTURE", s2Title:"사주의 구조 — 네 기둥",
+    s2p:"사주는 출생 연·월·일·시 각각을 하나의 기둥(柱)으로 삼고, 각 기둥은 천간(天干) 한 글자와 지지(地支) 한 글자로 이루어집니다. 4기둥 × 2글자 = <strong>팔자(八字)</strong>입니다.",
+    pillars:[
+      {name:"年柱",en:"YEAR PILLAR",desc:"조상 기운 · 사회 환경"},
+      {name:"月柱",en:"MONTH PILLAR",desc:"부모 형제 · 직업 환경"},
+      {name:"日柱",en:"DAY PILLAR",desc:"본인 본성 · 배우자 인연"},
+      {name:"時柱",en:"HOUR PILLAR",desc:"자녀 운 · 내면 지향"},
+    ],
+    s2p2:"일간(日干) — 일주의 천간 — 이 명주 본인을 상징합니다. 나머지 일곱 글자는 일간을 기준으로 상생·상극 관계를 이루며 삶의 여러 영역을 나타냅니다.",
+    s3Label:"TEN HEAVENLY STEMS", s3Title:"10 천간 (天干)",
+    s3p:"천간은 하늘의 기운을 10가지로 나눈 것으로, 오행(木·火·土·金·水)을 각각 음(陰)·양(陽)으로 분류합니다.",
+    thCh:["천간","오행","음양","방향","계절","기질"],
+    stems:[
+      ["甲 갑","木","양","동","봄","진취적, 리더십"],
+      ["乙 을","木","음","동","봄","유연함, 적응력"],
+      ["丙 병","火","양","남","여름","열정, 표현력"],
+      ["丁 정","火","음","남","여름","섬세한 열정, 예술성"],
+      ["戊 무","土","양","중앙","환절기","안정, 포용력"],
+      ["己 기","土","음","중앙","환절기","실용성, 꼼꼼함"],
+      ["庚 경","金","양","서","가을","결단력, 강직함"],
+      ["辛 신","金","음","서","가을","예민함, 완벽주의"],
+      ["壬 임","水","양","북","겨울","지혜, 넓은 시야"],
+      ["癸 계","水","음","북","겨울","직관, 감수성"],
+    ],
+    s4Label:"TWELVE EARTHLY BRANCHES", s4Title:"12 지지 (地支)",
+    s4p:"지지는 땅의 기운을 12가지 동물과 연결하여 시간·방위·계절을 표현합니다.",
+    thBr:["지지","동물","오행","월","시간","특성"],
+    branches:[
+      ["子 자","쥐","水","11월","23~01시","지혜, 적응력"],
+      ["丑 축","소","土","12월","01~03시","성실, 인내"],
+      ["寅 인","호랑이","木","1월","03~05시","진취, 용기"],
+      ["卯 묘","토끼","木","2월","05~07시","온화, 예술"],
+      ["辰 진","용","土","3월","07~09시","카리스마, 변화"],
+      ["巳 사","뱀","火","4월","09~11시","통찰, 지략"],
+      ["午 오","말","Fire","5월","11~13시","활동력, 열정"],
+      ["未 미","양","土","6월","13~15시","배려, 예술감"],
+      ["申 신","원숭이","金","7월","15~17시","재치, 기동력"],
+      ["酉 유","닭","金","8월","17~19시","정확성, 심미안"],
+      ["戌 술","개","土","9월","19~21시","충성, 책임감"],
+      ["亥 해","돼지","Water","10월","21~23시","관대함, 복"],
+    ],
+    s4h2:"합(合)과 충(沖)",
+    s4p2:"지지끼리는 결합(三合·六合)하거나 충돌(六沖)하는 관계를 형성합니다. 이 관계는 운의 변화 타이밍과 인간관계 역학을 읽는 핵심 도구입니다.",
+    thHc:["유형","조합","의미"],
+    harmClash:[
+      ["삼합(三合)","申子辰 / 寅午戌 / 巳酉丑 / 亥卯未","같은 오행 기운의 결집"],
+      ["육합(六合)","子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未","상생 결합, 화합"],
+      ["육충(六沖)","子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥","기운의 충돌, 변동 신호"],
+    ],
+    s5Label:"FIVE ELEMENTS", s5Title:"오행 (五行)",
+    s5p:"목(木)·화(火)·토(土)·금(金)·수(水)는 우주의 다섯 가지 기본 에너지로, 상생(相生)과 상극(相剋) 두 원리로 순환합니다.",
+    elements:[
+      {kanji:"木",cls:"wood",name:"목 (나무)",desc:"성장·진취·창조\n간·담 / 동쪽 / 봄"},
+      {kanji:"火",cls:"fire",name:"화 (불)",desc:"열정·표현·확산\n심장 / 남쪽 / 여름"},
+      {kanji:"土",cls:"earth",name:"토 (흙)",desc:"안정·중재·포용\n비위 / 중앙 / 환절기"},
+      {kanji:"金",cls:"metal",name:"금 (쇠)",desc:"결단·원칙·수렴\n폐 / 서쪽 / 가을"},
+      {kanji:"水",cls:"water",name:"수 (물)",desc:"지혜·흐름·잠재\n신장 / 북쪽 / 겨울"},
+    ],
+    s5h1:"상생 (相生)",s5p1:"木→火→土→金→水→木 순서로 앞의 기운이 뒤의 기운을 생성합니다.",
+    s5h2:"상극 (相剋)",s5p2:"木→土→水→火→金→木 순서로 앞의 기운이 뒤의 기운을 억제합니다.",
+    s6Label:"MAJOR & ANNUAL CYCLES", s6Title:"대운(大運)과 세운(歲運)",
+    s6h1:"대운 — 10년 단위 운의 흐름",
+    s6p1:"출생 월주를 기준으로 10년마다 간지가 바뀌며 삶의 큰 국면 전환을 나타냅니다.",
+    s6h2:"세운 — 1년 단위 연간 운",
+    s6p2:"매년 바뀌는 세운이 원국 및 대운과 맺는 합·충 관계가 그 해 길흉의 신호입니다.",
+    s6hl:"\"대운은 파도의 방향이고, 세운은 파도의 높이입니다. 방향이 좋을 때 높은 파도가 기회가 됩니다.\"",
+    s7Label:"HOW TO READ", s7Title:"사주 해석의 핵심 요소",
+    s7h1:"① 일간 파악 — 나는 누구인가",
+    s7p1:"일주 천간이 본인입니다. 甲木이면 진취적인 큰 나무, 癸水면 섬세하고 직관적인 기질입니다.",
+    s7h2:"② 십신(十神) — 관계의 지도",
+    s7p2:"일간과 나머지 글자의 오행 관계를 10가지 역할로 분류해 삶의 각 영역을 대입합니다.",
+    s7h3:"③ 신살 / 공망",
+    s7p3:"역마살(이동), 도화살(매력), 천을귀인(귀인 조력) 등 특수 기운 표식과, 공망(空亡)으로 비어 있는 자리를 파악합니다.",
+    thSs:["십신","오행 관계","상징 영역"],
+    sinshin:[
+      ["비겁(比劫)","일간과 같은 오행","자아·형제·경쟁"],
+      ["식신·상관(食傷)","일간이 생하는 오행","표현·창의·자녀"],
+      ["편재·정재(財星)","일간이 극하는 오행","재물·부친·이성"],
+      ["편관·정관(官星)","일간을 극하는 오행","명예·직업·배우자"],
+      ["편인·정인(印星)","일간을 생하는 오행","학문·모친·보호"],
+    ],
+    ctaTitle:"지금 내 사주를 확인해 보세요",
+    ctaDesc:"태어난 연·월·일·시를 입력하면 사주팔자 원국과 AI 해석을 즉시 확인할 수 있습니다.",
+    ctaBtn:"내 사주 보기 →",
+    ctaBack:"메인으로",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
 
-    <h3>고대 중국에서 시작된 운명 예측 체계</h3>
-    <p>
-      사주팔자(四柱八字)는 중국 당나라(618~907) 시대 이허중(李虛中)이 연·월·일의 간지(干支)로
-      운명을 판단하던 것이 시초입니다. 이후 송나라 서자평(徐子平)이 시(時)를 추가하여
-      연·월·일·시 <strong>네 기둥(四柱)</strong>, 여덟 글자(八字)의 완성된 체계로 발전시켰습니다.
-      이를 자평명리(子平命理) 또는 사주팔자라 부릅니다.
-    </p>
+  en: {
+    htmlLang:"en",
+    heroTag:"FOUR PILLARS OF DESTINY",
+    heroTitle:"Saju (四柱八字)",
+    heroSub:"The blueprint of destiny written by heaven — eight characters formed by the year, month, day, and hour of your birth reveal your innate character, fate cycles, and relational patterns.",
+    toc:["Origin & History","Structure","10 Heavenly Stems","12 Earthly Branches","Five Elements","Major & Annual Cycles","How to Read"],
+    tocIds:["history","structure","cheongan","jiji","ohaeng","daeun","interpretation"],
+    navCta:"View My Chart →",
+    s1Label:"ORIGIN & HISTORY", s1Title:"Origin & History",
+    s1h1:"A Destiny System Born in Ancient China",
+    s1p1:"Saju (四柱八字) traces its origins to Li Xuhong (李虛中) of the Tang Dynasty (618–907), who used the year, month, and day stems-and-branches to divine fate. Later, Xu Ziping (徐子平) of the Song Dynasty added the birth hour, completing the <strong>Four Pillars (四柱)</strong>, Eight Characters (八字) system now known as Ziping Ming-Li.",
+    s1h2:"Transmission to Korea",
+    s1p2:"The system arrived via the Goryeo Dynasty and became established in early Joseon, where the Royal Observatory used it for court ceremonies. Today it is reinterpreted for psychology, career guidance, and compatibility analysis.",
+    s1h3:"Core Premise",
+    s1hl:"\"Heaven's energy (Heavenly Stems) and Earth's energy (Earthly Branches) cycle to form all things. At the moment of birth, a person receives a unique combination of these energies. Saju is the language that decodes that combination.\"",
+    s2Label:"STRUCTURE", s2Title:"The Four Pillars",
+    s2p:"Each of the four birth moments — year, month, day, hour — forms one Pillar (柱). Each pillar consists of one Heavenly Stem (天干) and one Earthly Branch (地支). 4 pillars × 2 characters = <strong>Eight Characters (八字)</strong>.",
+    pillars:[
+      {name:"年柱",en:"YEAR PILLAR",desc:"Ancestral energy · Social environment"},
+      {name:"月柱",en:"MONTH PILLAR",desc:"Parents & siblings · Career environment"},
+      {name:"日柱",en:"DAY PILLAR",desc:"Self · Spouse affinity"},
+      {name:"時柱",en:"HOUR PILLAR",desc:"Children · Inner direction"},
+    ],
+    s2p2:"The Day Stem (日干) represents the self. The remaining seven characters form generating and overcoming relationships with the Day Stem, mapping different life domains.",
+    s3Label:"TEN HEAVENLY STEMS", s3Title:"10 Heavenly Stems (天干)",
+    s3p:"The ten stems divide heaven's energy into ten types, each pairing an element (Wood, Fire, Earth, Metal, Water) with Yin or Yang polarity.",
+    thCh:["Stem","Element","Polarity","Direction","Season","Traits"],
+    stems:[
+      ["甲 Jiǎ","Wood","Yang","East","Spring","Ambitious, leadership"],
+      ["乙 Yǐ","Wood","Yin","East","Spring","Flexible, adaptable"],
+      ["丙 Bǐng","Fire","Yang","South","Summer","Passionate, expressive"],
+      ["丁 Dīng","Fire","Yin","South","Summer","Subtle fire, artistic"],
+      ["戊 Wù","Earth","Yang","Center","Inter-season","Stable, tolerant"],
+      ["己 Jǐ","Earth","Yin","Center","Inter-season","Practical, meticulous"],
+      ["庚 Gēng","Metal","Yang","West","Autumn","Decisive, principled"],
+      ["辛 Xīn","Metal","Yin","West","Autumn","Sensitive, perfectionist"],
+      ["壬 Rén","Water","Yang","North","Winter","Wise, broad-minded"],
+      ["癸 Guǐ","Water","Yin","North","Winter","Intuitive, introspective"],
+    ],
+    s4Label:"TWELVE EARTHLY BRANCHES", s4Title:"12 Earthly Branches (地支)",
+    s4p:"The twelve branches link Earth's energy to twelve animals, encoding time, direction, and season. Each branch also contains hidden stems (藏干) for layered meaning.",
+    thBr:["Branch","Animal","Element","Month","Time","Traits"],
+    branches:[
+      ["子 Zǐ","Rat","Water","Nov","23–01","Wise, adaptable"],
+      ["丑 Chǒu","Ox","Earth","Dec","01–03","Diligent, patient"],
+      ["寅 Yín","Tiger","Wood","Jan","03–05","Bold, courageous"],
+      ["卯 Mǎo","Rabbit","Wood","Feb","05–07","Gentle, artistic"],
+      ["辰 Chén","Dragon","Earth","Mar","07–09","Charismatic, transformative"],
+      ["巳 Sì","Snake","Fire","Apr","09–11","Insightful, strategic"],
+      ["午 Wǔ","Horse","Fire","May","11–13","Energetic, passionate"],
+      ["未 Wèi","Goat","Earth","Jun","13–15","Caring, aesthetic"],
+      ["申 Shēn","Monkey","Metal","Jul","15–17","Witty, agile"],
+      ["酉 Yǒu","Rooster","Metal","Aug","17–19","Precise, discerning"],
+      ["戌 Xū","Dog","Earth","Sep","19–21","Loyal, responsible"],
+      ["亥 Hài","Pig","Water","Oct","21–23","Generous, fortunate"],
+    ],
+    s4h2:"Harmony (合) and Clash (沖)",
+    s4p2:"Branches form combining relationships (三合 three-harmony, 六合 six-harmony) or clashing ones (六沖). These are key tools for reading timing and relationship dynamics.",
+    thHc:["Type","Combination","Meaning"],
+    harmClash:[
+      ["Three Harmony","申子辰 / 寅午戌 / 巳酉丑 / 亥卯未","Concentrated elemental energy"],
+      ["Six Harmony","子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未","Generating bond, harmony"],
+      ["Six Clash","子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥","Clash, change, movement signal"],
+    ],
+    s5Label:"FIVE ELEMENTS", s5Title:"Five Elements (五行)",
+    s5p:"Wood, Fire, Earth, Metal, and Water are the five fundamental energies of the universe, cycling through Generating (相生) and Overcoming (相剋) relationships.",
+    elements:[
+      {kanji:"木",cls:"wood",name:"Wood",desc:"Growth · Ambition · Creation\nLiver / East / Spring"},
+      {kanji:"火",cls:"fire",name:"Fire",desc:"Passion · Expression · Expansion\nHeart / South / Summer"},
+      {kanji:"土",cls:"earth",name:"Earth",desc:"Stability · Mediation · Inclusion\nSpleen / Center / Inter-season"},
+      {kanji:"金",cls:"metal",name:"Metal",desc:"Decision · Principle · Convergence\nLungs / West / Autumn"},
+      {kanji:"水",cls:"water",name:"Water",desc:"Wisdom · Flow · Latency\nKidneys / North / Winter"},
+    ],
+    s5h1:"Generating Cycle (相生)",
+    s5p1:"Wood → Fire → Earth → Metal → Water → Wood. Each element nourishes the next.",
+    s5h2:"Overcoming Cycle (相剋)",
+    s5p2:"Wood → Earth → Water → Fire → Metal → Wood. Each element controls the next.",
+    s6Label:"MAJOR & ANNUAL CYCLES", s6Title:"Major Cycles (大運) & Annual Cycles (歲運)",
+    s6h1:"Major Cycles — 10-Year Fortune Phases",
+    s6p1:"Calculated from the birth Month Pillar, stems-and-branches shift every 10 years, marking major life transitions.",
+    s6h2:"Annual Cycles — Yearly Luck",
+    s6p2:"The year's stem-branch interacts with the natal chart and current major cycle via harmony/clash signals, triggering specific events or opportunities.",
+    s6hl:"\"The major cycle sets the direction of the wave; the annual cycle determines its height. A favorable direction with a strong wave brings opportunity.\"",
+    s7Label:"HOW TO READ", s7Title:"Key Elements of Interpretation",
+    s7h1:"① Identify the Day Stem — Who Are You?",
+    s7p1:"The Day Stem is you. A Jiǎ-Wood person is like a tall, upright tree — ambitious and pioneering. A Guǐ-Water person is like mist — intuitive and sensitive.",
+    s7h2:"② The Ten Gods (十神) — Map of Relationships",
+    s7p2:"The elemental relationship between the Day Stem and each of the other seven characters defines one of ten roles, mapping every domain of life.",
+    s7h3:"③ Special Stars (神殺) / Void (空亡)",
+    s7p3:"Stars like the Traveling Star (mobility), Peach Blossom (charm), and Noble Helper indicate special energies. Void Branches mark areas of weakness or detachment.",
+    thSs:["Ten God","Element Relationship","Life Domain"],
+    sinshin:[
+      ["Peers (比劫)","Same element as Day Stem","Self · Siblings · Competition"],
+      ["Output (食傷)","Day Stem generates","Expression · Creativity · Children"],
+      ["Wealth (財星)","Day Stem overcomes","Money · Father · Romance"],
+      ["Authority (官星)","Overcomes Day Stem","Status · Career · Spouse"],
+      ["Resource (印星)","Generates Day Stem","Learning · Mother · Protection"],
+    ],
+    ctaTitle:"Discover Your Birth Chart Now",
+    ctaDesc:"Enter your birth year, month, day, and hour to instantly view your Saju chart and AI interpretation.",
+    ctaBtn:"View My Chart →",
+    ctaBack:"Back to Main",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
 
-    <h3>한국 전래와 발전</h3>
-    <p>
-      한반도에는 고려 시대를 거쳐 조선 초기에 정착되었습니다. 조선에서는 관상감(觀象監)을
-      통해 왕실 의례와 국정 운영에 활용되었고, 민간에서도 혼례·이사·개업 등 중요한 결정을
-      앞두고 널리 참조하였습니다. 현대에는 심리 분석·진로 상담·궁합 등 현실적 맥락으로
-      재해석되며 활발하게 사용됩니다.
-    </p>
+  ja: {
+    htmlLang:"ja",
+    heroTag:"FOUR PILLARS OF DESTINY",
+    heroTitle:"四柱八字 (사주)",
+    heroSub:"天が刻んだ運命の設計図 — 生まれた年・月・日・時の四本の柱が成す八文字から、生まれ持った気質、運勢の流れ、縁の軌跡を読み解きます。",
+    toc:["起源と歴史","四柱の構造","10干","12支","五行","大運と歳運","読み方"],
+    tocIds:["history","structure","cheongan","jiji","ohaeng","daeun","interpretation"],
+    navCta:"命式を見る →",
+    s1Label:"ORIGIN & HISTORY", s1Title:"起源と歴史",
+    s1h1:"古代中国に始まった運命予測体系",
+    s1p1:"四柱八字は、唐代（618〜907年）の李虛中が年・月・日の干支で運命を判断したのが起源です。その後、宋代の徐子平が時(時間)を加え、年・月・日・時の<strong>四柱</strong>、八字の完成された体系が確立されました。",
+    s1h2:"朝鮮半島への伝来と発展",
+    s1p2:"高麗時代を経て朝鮮初期に定着。朝鮮では観象監を通じ王室儀礼に活用され、現代では心理分析・進路相談・相性診断として再解釈されています。",
+    s1h3:"命理学の核心的前提",
+    s1hl:"「天の気(天干)と地の気(地支)が循環して万物を成し、人は生まれた瞬間にその気の組み合わせを受け取る。四柱はその組み合わせを解読する言語である。」",
+    s2Label:"STRUCTURE", s2Title:"四柱の構造 — 四本の柱",
+    s2p:"生まれた年・月・日・時それぞれを一本の柱(柱)とし、各柱は天干一字と地支一字で構成されます。4柱 × 2字 = <strong>八字(八字)</strong>です。",
+    pillars:[
+      {name:"年柱",en:"YEAR PILLAR",desc:"先祖の気・社会的環境"},
+      {name:"月柱",en:"MONTH PILLAR",desc:"親兄弟・職業環境"},
+      {name:"日柱",en:"DAY PILLAR",desc:"本人の本性・配偶者の縁"},
+      {name:"時柱",en:"HOUR PILLAR",desc:"子供運・内なる志向"},
+    ],
+    s2p2:"日干(日柱の天干)が命主本人を象徴します。残り七字は日干を基準に相生・相剋の関係を結び、人生の各領域を表します。",
+    s3Label:"TEN HEAVENLY STEMS", s3Title:"十干 (天干)",
+    s3p:"天干は天の気を10種類に分け、五行(木・火・土・金・水)をそれぞれ陰・陽に分類したものです。",
+    thCh:["天干","五行","陰陽","方位","季節","気質"],
+    stems:[
+      ["甲 (こう)","木","陽","東","春","積極的、リーダーシップ"],
+      ["乙 (おつ)","木","陰","東","春","柔軟性、適応力"],
+      ["丙 (へい)","火","陽","南","夏","情熱、表現力"],
+      ["丁 (てい)","火","陰","南","夏","繊細な情熱、芸術性"],
+      ["戊 (ぼ)","土","陽","中央","土用","安定、包容力"],
+      ["己 (き)","土","陰","中央","土用","実用性、几帳面"],
+      ["庚 (こう)","金","陽","西","秋","決断力、剛直"],
+      ["辛 (しん)","金","陰","西","秋","繊細、完璧主義"],
+      ["壬 (じん)","水","陽","北","冬","知恵、広い視野"],
+      ["癸 (き)","水","陰","北","冬","直感、感受性"],
+    ],
+    s4Label:"TWELVE EARTHLY BRANCHES", s4Title:"十二支 (地支)",
+    s4p:"地支は地の気を12の動物と結びつけ、時間・方位・季節を表現します。各地支は複数の天干を内蔵(蔵干)しており、複層的な気を持ちます。",
+    thBr:["地支","動物","五行","月","時間","特性"],
+    branches:[
+      ["子 (ね)","鼠","水","11月","23〜01時","知恵、適応力"],
+      ["丑 (うし)","牛","土","12月","01〜03時","誠実、忍耐"],
+      ["寅 (とら)","虎","木","1月","03〜05時","積極性、勇気"],
+      ["卯 (う)","兎","木","2月","05〜07時","穏やか、芸術"],
+      ["辰 (たつ)","龍","土","3月","07〜09時","カリスマ、変化"],
+      ["巳 (み)","蛇","火","4月","09〜11時","洞察力、策略"],
+      ["午 (うま)","馬","火","5月","11〜13時","行動力、情熱"],
+      ["未 (ひつじ)","羊","土","6月","13〜15時","思いやり、美意識"],
+      ["申 (さる)","猿","金","7月","15〜17時","機知、機動力"],
+      ["酉 (とり)","鶏","金","8月","17〜19時","正確性、審美眼"],
+      ["戌 (いぬ)","犬","土","9月","19〜21時","忠実、責任感"],
+      ["亥 (い)","猪","水","10月","21〜23時","寛大さ、福"],
+    ],
+    s4h2:"合(ごう)と沖(ちゅう)",
+    s4p2:"地支同士は三合・六合で結合したり、六沖で衝突したりします。この関係は運の変化タイミングと人間関係の力学を読む鍵です。",
+    thHc:["種類","組み合わせ","意味"],
+    harmClash:[
+      ["三合","申子辰 / 寅午戌 / 巳酉丑 / 亥卯未","同じ五行の気の結集"],
+      ["六合","子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未","相生の結合、和合"],
+      ["六沖","子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥","気の衝突、変動のシグナル"],
+    ],
+    s5Label:"FIVE ELEMENTS", s5Title:"五行",
+    s5p:"木・火・土・金・水は宇宙の五つの基本エネルギーで、相生(そうしょう)と相剋(そうこく)の二原理で循環します。",
+    elements:[
+      {kanji:"木",cls:"wood",name:"木",desc:"成長・積極性・創造\n肝臓 / 東 / 春"},
+      {kanji:"火",cls:"fire",name:"火",desc:"情熱・表現・拡散\n心臓 / 南 / 夏"},
+      {kanji:"土",cls:"earth",name:"土",desc:"安定・仲介・包容\n脾臓 / 中央 / 土用"},
+      {kanji:"金",cls:"metal",name:"金",desc:"決断・原則・収斂\n肺 / 西 / 秋"},
+      {kanji:"水",cls:"water",name:"水",desc:"知恵・流れ・潜在\n腎臓 / 北 / 冬"},
+    ],
+    s5h1:"相生 — 生み出す関係",
+    s5p1:"木→火→土→金→水→木の順に前の気が次の気を生み出します。",
+    s5h2:"相剋 — 制する関係",
+    s5p2:"木→土→水→火→金→木の順に前の気が次の気を抑制します。",
+    s6Label:"MAJOR & ANNUAL CYCLES", s6Title:"大運と歳運",
+    s6h1:"大運 — 10年単位の運の流れ",
+    s6p1:"出生月柱を基準に10年ごとに干支が変わり、人生の大きな局面転換を示します。",
+    s6h2:"歳運 — 1年単位の年間運",
+    s6p2:"毎年変わる歳運が原局・大運と結ぶ合・沖の関係が、その年の吉凶のシグナルとなります。",
+    s6hl:"「大運は波の方向、歳運は波の高さ。方向が良い時に高い波が来れば、それはチャンスとなる。」",
+    s7Label:"HOW TO READ", s7Title:"命式解釈の核心要素",
+    s7h1:"① 日干の把握 — 自分は誰か",
+    s7p1:"日柱の天干が本人を表します。甲木なら雄大な樹木のように積極的、癸水なら霧のように繊細で直感的な気質です。",
+    s7h2:"② 十神 — 関係のマップ",
+    s7p2:"日干と残り七字の五行関係を10種の役割に分類し、人生の各領域に当てはめます。",
+    s7h3:"③ 神殺・空亡",
+    s7p3:"駅馬殺(移動)・桃花殺(魅力)・天乙貴人(貴人の助け)などの特殊な気の標識と、空亡(うつろな位置)を把握します。",
+    thSs:["十神","五行関係","象徴領域"],
+    sinshin:[
+      ["比劫","日干と同じ五行","自己・兄弟・競争"],
+      ["食傷","日干が生じる五行","表現・創造・子供"],
+      ["財星","日干が剋する五行","財物・父親・異性"],
+      ["官星","日干を剋する五行","名誉・職業・配偶者"],
+      ["印星","日干を生じる五行","学問・母親・保護"],
+    ],
+    ctaTitle:"今すぐ命式を確認しましょう",
+    ctaDesc:"生年・月・日・時を入力すると、四柱八字の原局とAI解釈をすぐに確認できます。",
+    ctaBtn:"命式を見る →",
+    ctaBack:"メインへ",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
 
-    <h3>명리학의 핵심 전제</h3>
-    <div class="highlight-box">
-      <p>
-        "하늘의 기운(天干)과 땅의 기운(地支)이 순환하며 만물을 이루고, 사람은 태어나는
-        순간 그 기운의 조합을 받는다. 사주는 그 조합을 해독하는 언어다."
-      </p>
-    </div>
-    <p>
-      60갑자(六十甲子)라는 순환 주기가 우주 시간의 질서를 반영하며, 이 주기 안에서
-      개인의 생년·월·일·시를 배치하면 독자적인 기운의 지형도가 그려집니다.
-    </p>
-  </section>
+  zh: {
+    htmlLang:"zh",
+    heroTag:"FOUR PILLARS OF DESTINY",
+    heroTitle:"四柱八字",
+    heroSub:"天赋命盘的设计图 — 以出生年、月、日、时四柱八字，解读天生气质、运势流向与姻缘轨迹。",
+    toc:["起源与历史","四柱结构","十天干","十二地支","五行","大运与流年","解读方法"],
+    tocIds:["history","structure","cheongan","jiji","ohaeng","daeun","interpretation"],
+    navCta:"查看命盘 →",
+    s1Label:"ORIGIN & HISTORY", s1Title:"起源与历史",
+    s1h1:"源自古代中国的命运预测体系",
+    s1p1:"四柱八字起源于唐代（618—907年）李虛中以年、月、日干支论命。宋代徐子平进一步加入时柱，形成年、月、日、时<strong>四柱</strong>八字的完整体系，称为子平命理。",
+    s1h2:"传入朝鲜半岛与发展",
+    s1p2:"经高丽时代传入，于朝鲜初期定型。朝鲜观象监将其用于王室礼仪与国政。现代则被重新诠释为心理分析、职业规划与婚姻合婚等实用工具。",
+    s1h3:"命理学的核心前提",
+    s1hl:"「天之气（天干）与地之气（地支）循环生成万物，人在出生之瞬间接收了这一气的组合。四柱八字便是解读这一组合的语言。」",
+    s2Label:"STRUCTURE", s2Title:"四柱结构",
+    s2p:"以出生年、月、日、时各立一柱，每柱由天干一字与地支一字组成。四柱 × 二字 = <strong>八字</strong>。",
+    pillars:[
+      {name:"年柱",en:"YEAR PILLAR",desc:"祖先气运 · 社会环境"},
+      {name:"月柱",en:"MONTH PILLAR",desc:"父母兄弟 · 职业环境"},
+      {name:"日柱",en:"DAY PILLAR",desc:"本人本性 · 配偶缘分"},
+      {name:"时柱",en:"HOUR PILLAR",desc:"子女运 · 内心志向"},
+    ],
+    s2p2:"日干（日柱天干）代表命主本人。其余七字与日干构成相生、相克关系，对应人生各个领域。",
+    s3Label:"TEN HEAVENLY STEMS", s3Title:"十天干",
+    s3p:"天干将天之气分为十种，每种将五行（木、火、土、金、水）各分阴阳。",
+    thCh:["天干","五行","阴阳","方位","季节","气质"],
+    stems:[
+      ["甲","木","阳","东","春","进取心、领导力"],
+      ["乙","木","阴","东","春","柔韧性、适应力"],
+      ["丙","火","阳","南","夏","热情、表达力"],
+      ["丁","火","阴","南","夏","细腻热情、艺术性"],
+      ["戊","土","阳","中央","四季之末","稳定、包容力"],
+      ["己","土","阴","中央","四季之末","务实、细心"],
+      ["庚","金","阳","西","秋","决断力、刚直"],
+      ["辛","金","阴","西","秋","敏锐、完美主义"],
+      ["壬","水","阳","北","冬","智慧、宽广视野"],
+      ["癸","水","阴","北","冬","直觉、感受性"],
+    ],
+    s4Label:"TWELVE EARTHLY BRANCHES", s4Title:"十二地支",
+    s4p:"地支将地之气与十二生肖相联系，编码时间、方位与季节。每支内含藏干，具有复合含义。",
+    thBr:["地支","生肖","五行","月份","时辰","特性"],
+    branches:[
+      ["子","鼠","水","11月","23—01时","智慧、适应力"],
+      ["丑","牛","土","12月","01—03时","勤恳、忍耐"],
+      ["寅","虎","木","1月","03—05时","进取、勇气"],
+      ["卯","兔","木","2月","05—07时","温和、艺术"],
+      ["辰","龙","土","3月","07—09时","魅力、变化"],
+      ["巳","蛇","火","4月","09—11时","洞察、谋略"],
+      ["午","马","火","5月","11—13时","行动力、热情"],
+      ["未","羊","土","6月","13—15时","体贴、美感"],
+      ["申","猴","金","7月","15—17时","机智、灵活"],
+      ["酉","鸡","金","8月","17—19时","精确、审美"],
+      ["戌","狗","土","9月","19—21时","忠诚、责任感"],
+      ["亥","猪","水","10月","21—23时","宽厚、福气"],
+    ],
+    s4h2:"合与冲",
+    s4p2:"地支之间形成三合、六合的结合关系或六冲的冲突关系，是解读运势变化时机与人际动态的核心工具。",
+    thHc:["类型","组合","含义"],
+    harmClash:[
+      ["三合","申子辰 / 寅午戌 / 巳酉丑 / 亥卯未","同类五行气聚"],
+      ["六合","子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未","相生结合、和谐"],
+      ["六冲","子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥","气的冲突、变动信号"],
+    ],
+    s5Label:"FIVE ELEMENTS", s5Title:"五行",
+    s5p:"木、火、土、金、水是宇宙的五种基本能量，以相生（相互生成）和相克（相互制约）两个原理循环运行。",
+    elements:[
+      {kanji:"木",cls:"wood",name:"木",desc:"生长·进取·创造\n肝胆 / 东方 / 春"},
+      {kanji:"火",cls:"fire",name:"火",desc:"热情·表达·扩散\n心脏 / 南方 / 夏"},
+      {kanji:"土",cls:"earth",name:"土",desc:"稳定·调和·包容\n脾胃 / 中央 / 季末"},
+      {kanji:"金",cls:"metal",name:"金",desc:"决断·原则·收敛\n肺 / 西方 / 秋"},
+      {kanji:"水",cls:"water",name:"水",desc:"智慧·流动·潜能\n肾 / 北方 / 冬"},
+    ],
+    s5h1:"相生 — 相互生成的关系",
+    s5p1:"木→火→土→金→水→木，前者生后者。",
+    s5h2:"相克 — 相互制约的关系",
+    s5p2:"木→土→水→火→金→木，前者克后者。",
+    s6Label:"MAJOR & ANNUAL CYCLES", s6Title:"大运与流年",
+    s6h1:"大运 — 十年一换的运程",
+    s6p1:"以出生月柱为基准，每十年干支轮换一次，标志人生重大转折。",
+    s6h2:"流年 — 年度运势",
+    s6p2:"每年流年干支与原局及大运的合冲关系，构成当年吉凶的信号。",
+    s6hl:"「大运是浪潮的方向，流年是浪潮的高度。方向顺利时高浪带来机遇，反之则需谨慎。」",
+    s7Label:"HOW TO READ", s7Title:"命盘解读的核心要素",
+    s7h1:"① 日干 — 我是谁",
+    s7p1:"日柱天干代表命主本人。甲木如参天大树，进取有担当；癸水如晨雾，细腻而富直觉。",
+    s7h2:"② 十神 — 关系地图",
+    s7p2:"以日干与其余七字的五行关系，归纳为10种角色，对应人生各领域。",
+    s7h3:"③ 神煞与空亡",
+    s7p3:"驿马星（移动变化）、桃花星（魅力）、天乙贵人（贵人相助）等特殊气场标记，以及空亡（虚位）的解读。",
+    thSs:["十神","五行关系","象征领域"],
+    sinshin:[
+      ["比劫","与日干同五行","自我·兄弟·竞争"],
+      ["食伤","日干所生五行","表达·创造·子女"],
+      ["财星","日干所克五行","财富·父亲·异性"],
+      ["官星","克日干的五行","名誉·职业·配偶"],
+      ["印星","生日干的五行","学问·母亲·保护"],
+    ],
+    ctaTitle:"立即查看您的命盘",
+    ctaDesc:"输入出生年、月、日、时，即刻获取四柱八字原局与AI解读。",
+    ctaBtn:"查看命盘 →",
+    ctaBack:"返回首页",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
 
-  <!-- 2. 사주의 구조 -->
-  <section id="structure">
-    <span class="section-label">STRUCTURE</span>
-    <h2>사주의 구조 — 네 기둥</h2>
+  es: {
+    htmlLang:"es",
+    heroTag:"FOUR PILLARS OF DESTINY",
+    heroTitle:"Saju (四柱八字)",
+    heroSub:"El plano del destino escrito por el cielo — ocho caracteres formados por el año, mes, día y hora de tu nacimiento revelan tu carácter innato, los ciclos del destino y los patrones de relación.",
+    toc:["Origen e Historia","Estructura","10 Tallos Celestiales","12 Ramas Terrestres","Cinco Elementos","Ciclos Mayor y Anual","Cómo Leer"],
+    tocIds:["history","structure","cheongan","jiji","ohaeng","daeun","interpretation"],
+    navCta:"Ver Mi Carta →",
+    s1Label:"ORIGIN & HISTORY", s1Title:"Origen e Historia",
+    s1h1:"Un sistema de predicción del destino nacido en la antigua China",
+    s1p1:"Saju (四柱八字) tiene sus raíces en Li Xuhong (李虛中) de la dinastía Tang (618–907), quien usaba los tallos y ramas del año, mes y día para leer el destino. Luego, Xu Ziping (徐子平) de la dinastía Song añadió la hora de nacimiento, completando el sistema de <strong>Cuatro Pilares (四柱)</strong>, Ocho Caracteres (八字).",
+    s1h2:"Transmisión a Corea",
+    s1p2:"Llegó a través de la dinastía Goryeo y se asentó en el Joseon temprano, donde el Observatorio Real lo aplicó en ceremonias de la corte. Hoy se reinterpreta para el análisis psicológico, la orientación vocacional y la compatibilidad.",
+    s1h3:"Premisa central",
+    s1hl:"«La energía del Cielo (Tallos Celestiales) y la energía de la Tierra (Ramas Terrestres) ciclan para formar todas las cosas. Al nacer, una persona recibe una combinación única de estas energías. El Saju es el lenguaje que decodifica esa combinación.»",
+    s2Label:"STRUCTURE", s2Title:"Los Cuatro Pilares",
+    s2p:"Cada uno de los cuatro momentos de nacimiento — año, mes, día, hora — forma un Pilar (柱). Cada pilar consta de un Tallo Celestial (天干) y una Rama Terrestre (地支). 4 pilares × 2 caracteres = <strong>Ocho Caracteres (八字)</strong>.",
+    pillars:[
+      {name:"年柱",en:"YEAR PILLAR",desc:"Energía ancestral · Entorno social"},
+      {name:"月柱",en:"MONTH PILLAR",desc:"Padres y hermanos · Carrera"},
+      {name:"日柱",en:"DAY PILLAR",desc:"El yo · Afinidad conyugal"},
+      {name:"時柱",en:"HOUR PILLAR",desc:"Hijos · Dirección interior"},
+    ],
+    s2p2:"El Tallo del Día (日干) representa al propio individuo. Los otros siete caracteres forman relaciones de generación y control con el Tallo del Día, mapeando distintos ámbitos vitales.",
+    s3Label:"TEN HEAVENLY STEMS", s3Title:"10 Tallos Celestiales (天干)",
+    s3p:"Los diez tallos dividen la energía celestial en diez tipos, combinando cada elemento (Madera, Fuego, Tierra, Metal, Agua) con la polaridad Yin o Yang.",
+    thCh:["Tallo","Elemento","Polaridad","Dirección","Estación","Rasgos"],
+    stems:[
+      ["甲 Jiǎ","Madera","Yang","Este","Primavera","Ambicioso, liderazgo"],
+      ["乙 Yǐ","Madera","Yin","Este","Primavera","Flexible, adaptable"],
+      ["丙 Bǐng","Fuego","Yang","Sur","Verano","Apasionado, expresivo"],
+      ["丁 Dīng","Fuego","Yin","Sur","Verano","Fuego sutil, artístico"],
+      ["戊 Wù","Tierra","Yang","Centro","Transición","Estable, tolerante"],
+      ["己 Jǐ","Tierra","Yin","Centro","Transición","Práctico, meticuloso"],
+      ["庚 Gēng","Metal","Yang","Oeste","Otoño","Decidido, íntegro"],
+      ["辛 Xīn","Metal","Yin","Oeste","Otoño","Sensible, perfeccionista"],
+      ["壬 Rén","Agua","Yang","Norte","Invierno","Sabio, amplia visión"],
+      ["癸 Guǐ","Agua","Yin","Norte","Invierno","Intuitivo, introspectivo"],
+    ],
+    s4Label:"TWELVE EARTHLY BRANCHES", s4Title:"12 Ramas Terrestres (地支)",
+    s4p:"Las doce ramas vinculan la energía terrestre a doce animales, codificando tiempo, dirección y estación. Cada rama contiene también tallos ocultos (藏干) para capas adicionales de significado.",
+    thBr:["Rama","Animal","Elemento","Mes","Hora","Rasgos"],
+    branches:[
+      ["子 Zǐ","Rata","Agua","Nov","23–01","Sabio, adaptable"],
+      ["丑 Chǒu","Buey","Tierra","Dic","01–03","Diligente, paciente"],
+      ["寅 Yín","Tigre","Madera","Ene","03–05","Audaz, valiente"],
+      ["卯 Mǎo","Conejo","Madera","Feb","05–07","Gentil, artístico"],
+      ["辰 Chén","Dragón","Tierra","Mar","07–09","Carismático, transformador"],
+      ["巳 Sì","Serpiente","Fuego","Abr","09–11","Perspicaz, estratégico"],
+      ["午 Wǔ","Caballo","Fuego","May","11–13","Enérgico, apasionado"],
+      ["未 Wèi","Cabra","Tierra","Jun","13–15","Afectuoso, estético"],
+      ["申 Shēn","Mono","Metal","Jul","15–17","Ingenioso, ágil"],
+      ["酉 Yǒu","Gallo","Metal","Ago","17–19","Preciso, refinado"],
+      ["戌 Xū","Perro","Tierra","Sep","19–21","Leal, responsable"],
+      ["亥 Hài","Cerdo","Agua","Oct","21–23","Generoso, afortunado"],
+    ],
+    s4h2:"Armonías (合) y Choques (沖)",
+    s4p2:"Las ramas forman relaciones de armonía (三合, 六合) o choque (六沖), claves para interpretar el timing de los cambios y la dinámica relacional.",
+    thHc:["Tipo","Combinación","Significado"],
+    harmClash:[
+      ["Triple Armonía","申子辰 / 寅午戌 / 巳酉丑 / 亥卯未","Concentración elemental"],
+      ["Seis Armonías","子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未","Vínculo generador, armonía"],
+      ["Seis Choques","子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥","Conflicto, señal de cambio"],
+    ],
+    s5Label:"FIVE ELEMENTS", s5Title:"Cinco Elementos (五行)",
+    s5p:"Madera, Fuego, Tierra, Metal y Agua son las cinco energías fundamentales del universo, que ciclan a través de las relaciones de Generación (相生) y Control (相剋).",
+    elements:[
+      {kanji:"木",cls:"wood",name:"Madera",desc:"Crecimiento · Ambición · Creación\nHígado / Este / Primavera"},
+      {kanji:"火",cls:"fire",name:"Fuego",desc:"Pasión · Expresión · Expansión\nCorazón / Sur / Verano"},
+      {kanji:"土",cls:"earth",name:"Tierra",desc:"Estabilidad · Mediación · Inclusión\nBazo / Centro / Transición"},
+      {kanji:"金",cls:"metal",name:"Metal",desc:"Decisión · Principio · Convergencia\nPulmones / Oeste / Otoño"},
+      {kanji:"水",cls:"water",name:"Agua",desc:"Sabiduría · Flujo · Latencia\nRiñones / Norte / Invierno"},
+    ],
+    s5h1:"Ciclo de Generación (相生)",
+    s5p1:"Madera → Fuego → Tierra → Metal → Agua → Madera. Cada elemento nutre al siguiente.",
+    s5h2:"Ciclo de Control (相剋)",
+    s5p2:"Madera → Tierra → Agua → Fuego → Metal → Madera. Cada elemento controla al siguiente.",
+    s6Label:"MAJOR & ANNUAL CYCLES", s6Title:"Ciclo Mayor (大運) y Año (歲運)",
+    s6h1:"Ciclo Mayor — Fases de 10 Años",
+    s6p1:"Calculados desde el Pilar del Mes de nacimiento, los tallos y ramas cambian cada 10 años, marcando grandes transiciones vitales.",
+    s6h2:"Ciclo Anual — Suerte Anual",
+    s6p2:"El tallo-rama anual interactúa con la carta natal y el ciclo mayor vía armonías/choques, desencadenando eventos u oportunidades específicas.",
+    s6hl:"«El ciclo mayor fija la dirección de la ola; el ciclo anual determina su altura. Una dirección favorable con una ola poderosa trae oportunidad.»",
+    s7Label:"HOW TO READ", s7Title:"Elementos Clave de la Interpretación",
+    s7h1:"① Identificar el Tallo del Día — ¿Quién eres?",
+    s7p1:"El Tallo del Día eres tú. Un Jiǎ-Madera es como un árbol alto y recto: ambicioso y pionero. Un Guǐ-Agua es como la niebla: intuitivo y sensible.",
+    s7h2:"② Los Diez Dioses (十神) — Mapa de Relaciones",
+    s7p2:"La relación elemental entre el Tallo del Día y cada uno de los otros siete caracteres define uno de diez roles, mapeando cada ámbito de la vida.",
+    s7h3:"③ Estrellas Especiales y Vacío (空亡)",
+    s7p3:"Estrellas como la del Viajero (movilidad), Flor de Melocotón (encanto) e Ilustre Ayudante indican energías especiales. Las Ramas Vacías marcan áreas de debilidad.",
+    thSs:["Dios","Relación Elemental","Dominio Vital"],
+    sinshin:[
+      ["Pares (比劫)","Mismo elemento","Yo · Hermanos · Competencia"],
+      ["Producción (食傷)","Día genera","Expresión · Creatividad · Hijos"],
+      ["Riqueza (財星)","Día controla","Dinero · Padre · Romance"],
+      ["Autoridad (官星)","Controla al Día","Estatus · Carrera · Cónyuge"],
+      ["Recurso (印星)","Genera al Día","Aprendizaje · Madre · Protección"],
+    ],
+    ctaTitle:"Descubre Tu Carta Natal Ahora",
+    ctaDesc:"Ingresa tu año, mes, día y hora de nacimiento para ver tu carta Saju e interpretación con IA al instante.",
+    ctaBtn:"Ver Mi Carta →",
+    ctaBack:"Volver al Inicio",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+};
 
-    <p>
-      사주는 출생 연·월·일·시 각각을 하나의 기둥(柱)으로 삼고, 각 기둥은 천간(天干) 한 글자와
-      지지(地支) 한 글자로 이루어집니다. 4기둥 × 2글자 = <strong>팔자(八字)</strong>입니다.
-    </p>
+// ── 렌더링 ──────────────────────────────────────────────────
+function buildPage(d) {
+  document.documentElement.lang = d.htmlLang;
+  document.title = d.heroTitle + " — Trinity of Destiny";
+  document.getElementById('nav-cta').textContent = d.navCta;
 
-    <div class="pillar-grid">
-      <div class="pillar-card">
-        <span class="pillar-name">年柱</span>
-        <span class="pillar-en">YEAR PILLAR</span>
-        <p>타고난 조상 기운·<br/>사회적 환경</p>
-      </div>
-      <div class="pillar-card">
-        <span class="pillar-name">月柱</span>
-        <span class="pillar-en">MONTH PILLAR</span>
-        <p>부모·형제 인연·<br/>직업 환경</p>
-      </div>
-      <div class="pillar-card">
-        <span class="pillar-name">日柱</span>
-        <span class="pillar-en">DAY PILLAR</span>
-        <p>본인의 본성·<br/>배우자 인연</p>
-      </div>
-      <div class="pillar-card">
-        <span class="pillar-name">時柱</span>
-        <span class="pillar-en">HOUR PILLAR</span>
-        <p>자녀·노년 운·<br/>내면의 지향</p>
-      </div>
-    </div>
+  var tocLinks = d.toc.map(function(t,i){
+    return '<a href="#'+d.tocIds[i]+'">'+t+'</a>';
+  }).join('');
 
-    <p>
-      일간(日干) — 일주의 천간 — 이 명주(命主) 본인을 상징합니다. 나머지 일곱 글자는
-      일간을 기준으로 상생(相生)·상극(相剋) 관계를 이루며 삶의 여러 영역을 나타냅니다.
-    </p>
-  </section>
+  var pillarsHtml = d.pillars.map(function(p){
+    return '<div class="pillar-card"><span class="pname">'+p.name+'</span><span class="pen">'+p.en+'</span><p>'+p.desc+'</p></div>';
+  }).join('');
 
-  <!-- 3. 10 천간 -->
-  <section id="cheongan">
-    <span class="section-label">TEN HEAVENLY STEMS</span>
-    <h2>10 천간 (天干)</h2>
-    <p>
-      천간은 하늘의 기운을 10가지로 나눈 것으로, 오행(木·火·土·金·水)을 각각 음(陰)·양(陽)으로
-      분류합니다.
-    </p>
+  var stemsHtml = d.stems.map(function(r,i){
+    return '<tr>'+(i===0?'<td class="char">'+r[0]+'</td>':'<td class="char">'+r[0]+'</td>')+r.slice(1).map(function(c){return'<td>'+c+'</td>';}).join('')+'</tr>';
+  }).join('');
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>천간</th><th>한자</th><th>오행</th><th>음양</th><th>방향</th><th>계절</th><th>기질</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="char">갑(甲)</td><td>甲</td><td>木</td><td>양</td><td>동</td><td>봄</td><td>진취적, 리더십, 새로운 시작</td></tr>
-          <tr><td class="char">을(乙)</td><td>乙</td><td>木</td><td>음</td><td>동</td><td>봄</td><td>유연함, 적응력, 섬세함</td></tr>
-          <tr><td class="char">병(丙)</td><td>丙</td><td>火</td><td>양</td><td>남</td><td>여름</td><td>열정, 표현력, 밝음</td></tr>
-          <tr><td class="char">정(丁)</td><td>丁</td><td>火</td><td>음</td><td>남</td><td>여름</td><td>섬세한 열정, 예술성, 집중</td></tr>
-          <tr><td class="char">무(戊)</td><td>戊</td><td>土</td><td>양</td><td>중앙</td><td>환절기</td><td>안정, 포용력, 신뢰</td></tr>
-          <tr><td class="char">기(己)</td><td>己</td><td>土</td><td>음</td><td>중앙</td><td>환절기</td><td>실용성, 내실, 꼼꼼함</td></tr>
-          <tr><td class="char">경(庚)</td><td>庚</td><td>金</td><td>양</td><td>서</td><td>가을</td><td>결단력, 원칙, 강직함</td></tr>
-          <tr><td class="char">신(辛)</td><td>辛</td><td>金</td><td>음</td><td>서</td><td>가을</td><td>예민함, 완벽주의, 심미안</td></tr>
-          <tr><td class="char">임(壬)</td><td>壬</td><td>水</td><td>양</td><td>북</td><td>겨울</td><td>지혜, 포용, 넓은 시야</td></tr>
-          <tr><td class="char">계(癸)</td><td>癸</td><td>水</td><td>음</td><td>북</td><td>겨울</td><td>직관, 감수성, 깊은 내면</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+  var branchesHtml = d.branches.map(function(r){
+    return '<tr><td class="char">'+r[0]+'</td>'+r.slice(1).map(function(c){return'<td>'+c+'</td>';}).join('')+'</tr>';
+  }).join('');
 
-  <!-- 4. 12 지지 -->
-  <section id="jiji">
-    <span class="section-label">TWELVE EARTHLY BRANCHES</span>
-    <h2>12 지지 (地支)</h2>
-    <p>
-      지지는 땅의 기운을 12가지 동물(십이지신)과 연결하여 시간·방위·계절을 표현합니다.
-      각 지지는 하나 이상의 천간을 내장(지장간, 支藏干)하고 있어 복층적인 기운을 품습니다.
-    </p>
+  var harmClashHtml = d.harmClash.map(function(r){
+    return '<tr>'+r.map(function(c){return'<td>'+c+'</td>';}).join('')+'</tr>';
+  }).join('');
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>지지</th><th>동물</th><th>오행</th><th>음양</th><th>월</th><th>시간</th><th>방향</th><th>특성</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="char">자(子)</td><td>쥐</td><td>水</td><td>양</td><td>11월</td><td>23~01시</td><td>북</td><td>지혜, 적응력</td></tr>
-          <tr><td class="char">축(丑)</td><td>소</td><td>土</td><td>음</td><td>12월</td><td>01~03시</td><td>북북동</td><td>성실, 인내</td></tr>
-          <tr><td class="char">인(寅)</td><td>호랑이</td><td>木</td><td>양</td><td>1월</td><td>03~05시</td><td>동북동</td><td>진취, 용기</td></tr>
-          <tr><td class="char">묘(卯)</td><td>토끼</td><td>木</td><td>음</td><td>2월</td><td>05~07시</td><td>동</td><td>온화, 예술</td></tr>
-          <tr><td class="char">진(辰)</td><td>용</td><td>土</td><td>양</td><td>3월</td><td>07~09시</td><td>동남동</td><td>카리스마, 변화</td></tr>
-          <tr><td class="char">사(巳)</td><td>뱀</td><td>火</td><td>음</td><td>4월</td><td>09~11시</td><td>남남동</td><td>통찰, 지략</td></tr>
-          <tr><td class="char">오(午)</td><td>말</td><td>火</td><td>양</td><td>5월</td><td>11~13시</td><td>남</td><td>활동력, 열정</td></tr>
-          <tr><td class="char">미(未)</td><td>양</td><td>土</td><td>음</td><td>6월</td><td>13~15시</td><td>남남서</td><td>배려, 예술감</td></tr>
-          <tr><td class="char">신(申)</td><td>원숭이</td><td>金</td><td>양</td><td>7월</td><td>15~17시</td><td>서남서</td><td>재치, 기동력</td></tr>
-          <tr><td class="char">유(酉)</td><td>닭</td><td>金</td><td>음</td><td>8월</td><td>17~19시</td><td>서</td><td>정확성, 심미안</td></tr>
-          <tr><td class="char">술(戌)</td><td>개</td><td>土</td><td>양</td><td>9월</td><td>19~21시</td><td>서북서</td><td>충성, 책임감</td></tr>
-          <tr><td class="char">해(亥)</td><td>돼지</td><td>水</td><td>음</td><td>10월</td><td>21~23시</td><td>북북서</td><td>관대함, 복</td></tr>
-        </tbody>
-      </table>
-    </div>
+  var elemHtml = d.elements.map(function(e){
+    return '<div class="element-card"><span class="kanji '+e.cls+'">'+e.kanji+'</span><span class="ename">'+e.name+'</span><div class="edesc">'+e.desc.replace(/\n/g,'<br>')+'</div></div>';
+  }).join('');
 
-    <h3>합(合)과 충(沖)</h3>
-    <p>
-      지지끼리는 서로 결합(三合·六合)하거나 충돌(六沖)하는 관계를 형성합니다.
-      이 합·충 관계는 사주 해석에서 운의 변화 타이밍과 인간관계 역학을 읽는 핵심 도구입니다.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>유형</th><th>조합</th><th>의미</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>삼합(三合)</td><td>申子辰 / 寅午戌 / 巳酉丑 / 亥卯未</td><td>같은 오행 기운의 결집, 강화</td></tr>
-          <tr><td>육합(六合)</td><td>子丑 / 寅亥 / 卯戌 / 辰酉 / 巳申 / 午未</td><td>상생 결합, 인연·화합</td></tr>
-          <tr><td>육충(六沖)</td><td>子午 / 丑未 / 寅申 / 卯酉 / 辰戌 / 巳亥</td><td>기운의 충돌, 변동·이동 신호</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+  var ssHtml = d.sinshin.map(function(r){
+    return '<tr>'+r.map(function(c){return'<td>'+c+'</td>';}).join('')+'</tr>';
+  }).join('');
 
-  <!-- 5. 오행 -->
-  <section id="ohaeng">
-    <span class="section-label">FIVE ELEMENTS</span>
-    <h2>오행 (五行)</h2>
-    <p>
-      목(木)·화(火)·토(土)·금(金)·수(水)는 우주의 다섯 가지 기본 에너지로,
-      상생(相生)과 상극(相剋) 두 가지 원리로 순환하며 만물의 변화를 설명합니다.
-    </p>
+  var content = [
+    '<div class="hero">',
+      '<span class="hero-tag">'+d.heroTag+'</span>',
+      '<h1>'+d.heroTitle+'</h1>',
+      '<p class="hero-sub">'+d.heroSub+'</p>',
+    '</div>',
+    '<div class="toc">'+tocLinks+'</div>',
+    '<main>',
 
-    <div class="element-grid">
-      <div class="element-card">
-        <span class="kanji wood">木</span>
-        <span class="name">목 (나무)</span>
-        <div class="desc">성장·진취·창조<br/>간·담 / 동쪽 / 봄</div>
-      </div>
-      <div class="element-card">
-        <span class="kanji fire">火</span>
-        <span class="name">화 (불)</span>
-        <div class="desc">열정·표현·확산<br/>심장·소장 / 남쪽 / 여름</div>
-      </div>
-      <div class="element-card">
-        <span class="kanji earth">土</span>
-        <span class="name">토 (흙)</span>
-        <div class="desc">안정·중재·포용<br/>비위 / 중앙 / 환절기</div>
-      </div>
-      <div class="element-card">
-        <span class="kanji metal">金</span>
-        <span class="name">금 (쇠)</span>
-        <div class="desc">결단·원칙·수렴<br/>폐·대장 / 서쪽 / 가을</div>
-      </div>
-      <div class="element-card">
-        <span class="kanji water">水</span>
-        <span class="name">수 (물)</span>
-        <div class="desc">지혜·흐름·잠재<br/>신장·방광 / 북쪽 / 겨울</div>
-      </div>
-    </div>
+    // 1. 기원
+    '<section id="history">',
+      '<span class="section-label">'+d.s1Label+'</span>',
+      '<h2>'+d.s1Title+'</h2>',
+      '<h3>'+d.s1h1+'</h3><p>'+d.s1p1+'</p>',
+      '<h3>'+d.s1h2+'</h3><p>'+d.s1p2+'</p>',
+      '<h3>'+d.s1h3+'</h3><div class="hl"><p>'+d.s1hl+'</p></div>',
+    '</section>',
 
-    <h3>상생 (相生) — 서로 낳는 관계</h3>
-    <p>
-      木 → 火 → 土 → 金 → 水 → 木 순서로 앞의 기운이 뒤의 기운을 생성합니다.
-      사주에서 일간이 필요로 하는 오행을 용신(用神)이라 하고, 상생 관계를 활용해 균형을 맞춥니다.
-    </p>
+    // 2. 구조
+    '<section id="structure">',
+      '<span class="section-label">'+d.s2Label+'</span>',
+      '<h2>'+d.s2Title+'</h2>',
+      '<p>'+d.s2p+'</p>',
+      '<div class="pillar-grid">'+pillarsHtml+'</div>',
+      '<p>'+d.s2p2+'</p>',
+    '</section>',
 
-    <h3>상극 (相剋) — 서로 이기는 관계</h3>
-    <p>
-      木 → 土 → 水 → 火 → 金 → 木 순서로 앞의 기운이 뒤의 기운을 억제합니다.
-      상극 관계가 과도하면 스트레스·갈등 요인이 되고, 적절하면 견제와 균형이 됩니다.
-    </p>
+    // 3. 천간
+    '<section id="cheongan">',
+      '<span class="section-label">'+d.s3Label+'</span>',
+      '<h2>'+d.s3Title+'</h2><p>'+d.s3p+'</p>',
+      '<div class="table-wrap"><table>',
+        '<thead><tr>'+d.thCh.map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead>',
+        '<tbody>'+stemsHtml+'</tbody>',
+      '</table></div>',
+    '</section>',
 
-    <h3>격국(格局) — 일간의 힘의 세기</h3>
-    <p>
-      사주 전체의 오행 분포를 보아 일간이 강한지(身强) 약한지(身弱)를 판단합니다.
-      강한 일간에는 설기(洩氣)하거나 극하는 오행이, 약한 일간에는 생조(生助)하는 오행이
-      필요합니다. 이 균형점이 용신(用神)이자 삶의 방향입니다.
-    </p>
-  </section>
+    // 4. 지지
+    '<section id="jiji">',
+      '<span class="section-label">'+d.s4Label+'</span>',
+      '<h2>'+d.s4Title+'</h2><p>'+d.s4p+'</p>',
+      '<div class="table-wrap"><table>',
+        '<thead><tr>'+d.thBr.map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead>',
+        '<tbody>'+branchesHtml+'</tbody>',
+      '</table></div>',
+      '<h3>'+d.s4h2+'</h3><p>'+d.s4p2+'</p>',
+      '<div class="table-wrap"><table>',
+        '<thead><tr>'+d.thHc.map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead>',
+        '<tbody>'+harmClashHtml+'</tbody>',
+      '</table></div>',
+    '</section>',
 
-  <!-- 6. 대운과 세운 -->
-  <section id="daeun">
-    <span class="section-label">MAJOR &amp; ANNUAL CYCLES</span>
-    <h2>대운(大運)과 세운(歲運)</h2>
+    // 5. 오행
+    '<section id="ohaeng">',
+      '<span class="section-label">'+d.s5Label+'</span>',
+      '<h2>'+d.s5Title+'</h2><p>'+d.s5p+'</p>',
+      '<div class="element-grid">'+elemHtml+'</div>',
+      '<h3>'+d.s5h1+'</h3><p>'+d.s5p1+'</p>',
+      '<h3>'+d.s5h2+'</h3><p>'+d.s5p2+'</p>',
+    '</section>',
 
-    <h3>대운 — 10년 단위 운의 흐름</h3>
-    <p>
-      출생 월주(月柱)를 기준으로 순행(남자 양년생·여자 음년생)또는 역행하며 10년마다 간지가
-      바뀝니다. 대운은 삶의 큰 국면 전환을 나타냅니다. 예를 들어 甲子 대운이라면 그 10년 동안
-      甲(목·양)의 기운과 子(수·양)의 기운이 원국(原局)과 어떤 관계를 이루는지가 해석의 핵심입니다.
-    </p>
+    // 6. 대운
+    '<section id="daeun">',
+      '<span class="section-label">'+d.s6Label+'</span>',
+      '<h2>'+d.s6Title+'</h2>',
+      '<h3>'+d.s6h1+'</h3><p>'+d.s6p1+'</p>',
+      '<h3>'+d.s6h2+'</h3><p>'+d.s6p2+'</p>',
+      '<div class="hl"><p>'+d.s6hl+'</p></div>',
+    '</section>',
 
-    <h3>세운 — 1년 단위 연간 운</h3>
-    <p>
-      매년 바뀌는 세운(그 해의 연간지)이 원국 및 대운과 맺는 합·충 관계가 그 해 길흉의
-      신호입니다. 세운은 대운이라는 큰 흐름 위에서 구체적인 사건·기회·변화를 촉발합니다.
-    </p>
+    // 7. 해석
+    '<section id="interpretation">',
+      '<span class="section-label">'+d.s7Label+'</span>',
+      '<h2>'+d.s7Title+'</h2>',
+      '<h3>'+d.s7h1+'</h3><p>'+d.s7p1+'</p>',
+      '<h3>'+d.s7h2+'</h3><p>'+d.s7p2+'</p>',
+      '<h3>'+d.s7h3+'</h3><p>'+d.s7p3+'</p>',
+      '<div class="table-wrap"><table>',
+        '<thead><tr>'+d.thSs.map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead>',
+        '<tbody>'+ssHtml+'</tbody>',
+      '</table></div>',
+    '</section>',
 
-    <div class="highlight-box">
-      <p>
-        대운은 파도의 방향이고, 세운은 파도의 높이입니다. 방향이 좋을 때 높은 파도를 만나면
-        기회가 되고, 방향이 어긋날 때는 주의가 필요합니다.
-      </p>
-    </div>
-  </section>
+    // CTA
+    '<div class="cta-box">',
+      '<h2>'+d.ctaTitle+'</h2>',
+      '<p>'+d.ctaDesc+'</p>',
+      '<a href="./app/" class="btn-p" target="_blank" rel="noopener">'+d.ctaBtn+'</a>',
+      '<a href="./" class="btn-s">'+d.ctaBack+'</a>',
+    '</div>',
 
-  <!-- 7. 해석 방법 -->
-  <section id="interpretation">
-    <span class="section-label">HOW TO READ</span>
-    <h2>사주 해석의 핵심 요소</h2>
+    '</main>',
+  ].join('');
 
-    <h3>① 일간 파악 — 나는 누구인가</h3>
-    <p>
-      일주 천간이 본인입니다. 甲木이면 곧고 진취적인 큰 나무, 癸水면 안개처럼 섬세하고 직관적인
-      기질입니다. 모든 해석의 출발점은 일간의 특성과 강약입니다.
-    </p>
+  document.getElementById('page-content').innerHTML = content;
+  document.getElementById('page-footer').textContent = d.footer;
+}
 
-    <h3>② 십신(十神) — 관계의 지도</h3>
-    <p>
-      일간과 나머지 일곱 글자의 오행 관계를 10가지 역할(비겁·식상·재성·관성·인성)로 분류합니다.
-      재성(財星)은 재물·여성인연, 관성(官星)은 명예·직업·남성인연, 인성(印星)은 학문·어머니를
-      상징하는 식으로 삶의 각 영역을 대입합니다.
-    </p>
+function setLang(lang) {
+  if (!T[lang]) return;
+  try { localStorage.setItem('tod_lang', lang); } catch(e){}
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  buildPage(T[lang]);
+}
 
-    <h3>③ 신살(神殺) — 특수 기운의 표식</h3>
-    <p>
-      역마살(驛馬殺)은 이동·변화, 도화살(桃花殺)은 매력·인기, 천을귀인(天乙貴人)은
-      귀인의 조력을 상징합니다. 신살은 단독으로 해석하기보다 전체 구조 안에서
-      보조 정보로 활용합니다.
-    </p>
-
-    <h3>④ 공망(空亡) — 비어 있는 자리</h3>
-    <p>
-      일주를 기준으로 산출한 두 개의 지지가 공망입니다. 해당 육친이나 오행이
-      현실 구현에 약점이 될 수 있으나, 역으로 집착에서 자유로운 영역이 되기도 합니다.
-    </p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>십신</th><th>오행 관계</th><th>상징 영역</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>비겁(比劫)</td><td>일간과 같은 오행</td><td>자아·형제·경쟁</td></tr>
-          <tr><td>식신·상관(食傷)</td><td>일간이 생하는 오행</td><td>표현·창의·자녀</td></tr>
-          <tr><td>편재·정재(財星)</td><td>일간이 극하는 오행</td><td>재물·부친·이성</td></tr>
-          <tr><td>편관·정관(官星)</td><td>일간을 극하는 오행</td><td>명예·직업·배우자(여)</td></tr>
-          <tr><td>편인·정인(印星)</td><td>일간을 생하는 오행</td><td>학문·모친·보호</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <div class="cta-section">
-    <h2>지금 내 사주를 확인해 보세요</h2>
-    <p>태어난 연·월·일·시를 입력하면 사주팔자 원국과 AI 해석을 즉시 확인할 수 있습니다.</p>
-    <a href="./app/" class="btn-primary" target="_blank" rel="noopener">내 사주 보기 →</a>
-    <a href="./landing.html" class="btn-secondary">랜딩 페이지로</a>
-  </div>
-
-</main>
-
-<footer>
-  © 2025 Trinity of Destiny. All rights reserved.
-</footer>
-
+// 초기 언어 감지
+(function() {
+  var lang = 'ko';
+  try {
+    lang = localStorage.getItem('tod_lang') ||
+           localStorage.getItem('honcheon.lang') ||
+           (navigator.language || 'ko').slice(0,2);
+  } catch(e){}
+  if (!T[lang]) lang = 'ko';
+  setLang(lang);
+})();
+</script>
 </body>
 </html>
