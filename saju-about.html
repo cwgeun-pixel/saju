@@ -644,6 +644,47 @@ var T = {
   },
 };
 
+// ── 오행 상생/상극 SVG 다이어그램 ─────────────────────────────
+// 오각형 배치: 木(top) 火(top-right) 土(bottom-right) 金(bottom-left) 水(top-left)
+var OHAENG_SVG = '<div style="display:flex;justify-content:center;margin:2rem 0 1rem;">'
++ '<svg viewBox="0 0 400 400" width="320" height="320" style="max-width:100%;display:block;">'
++ '<defs>'
++ '<marker id="mg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#C9A84C"/></marker>'
++ '<marker id="mk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="rgba(232,224,204,0.35)"/></marker>'
++ '</defs>'
+// 상생 outer arrows (gold)
++ '<line x1="228" y1="81" x2="305" y2="136" stroke="#C9A84C" stroke-width="2" marker-end="url(#mg)"/>'
++ '<line x1="322" y1="190" x2="293" y2="280" stroke="#C9A84C" stroke-width="2" marker-end="url(#mg)"/>'
++ '<line x1="247" y1="313" x2="153" y2="313" stroke="#C9A84C" stroke-width="2" marker-end="url(#mg)"/>'
++ '<line x1="107" y1="280" x2="78" y2="190" stroke="#C9A84C" stroke-width="2" marker-end="url(#mg)"/>'
++ '<line x1="95" y1="136" x2="172" y2="81" stroke="#C9A84C" stroke-width="2" marker-end="url(#mg)"/>'
+// 상극 inner star arrows (dim)
++ '<line x1="211" y1="93" x2="271" y2="280" stroke="rgba(232,224,204,0.28)" stroke-width="1.5" marker-end="url(#mk)"/>'
++ '<line x1="254" y1="293" x2="95" y2="178" stroke="rgba(232,224,204,0.28)" stroke-width="1.5" marker-end="url(#mk)"/>'
++ '<line x1="102" y1="157" x2="298" y2="157" stroke="rgba(232,224,204,0.28)" stroke-width="1.5" marker-end="url(#mk)"/>'
++ '<line x1="305" y1="178" x2="146" y2="293" stroke="rgba(232,224,204,0.28)" stroke-width="1.5" marker-end="url(#mk)"/>'
++ '<line x1="129" y1="280" x2="189" y2="93" stroke="rgba(232,224,204,0.28)" stroke-width="1.5" marker-end="url(#mk)"/>'
+// 生 labels on outer arrows
++ '<text x="280" y="96" text-anchor="middle" font-size="12" fill="#C9A84C" font-family="serif">生</text>'
++ '<text x="334" y="242" text-anchor="middle" font-size="12" fill="#C9A84C" font-family="serif">生</text>'
++ '<text x="200" y="340" text-anchor="middle" font-size="12" fill="#C9A84C" font-family="serif">生</text>'
++ '<text x="60" y="242" text-anchor="middle" font-size="12" fill="#C9A84C" font-family="serif">生</text>'
++ '<text x="112" y="96" text-anchor="middle" font-size="12" fill="#C9A84C" font-family="serif">生</text>'
+// 克 center label
++ '<text x="200" y="192" text-anchor="middle" font-size="13" fill="rgba(232,224,204,0.38)" font-family="serif">克</text>'
+// Element circles
++ '<circle cx="200" cy="60" r="34" fill="#0C1A0F" stroke="#5CB85C" stroke-width="2.5"/>'
++ '<text x="200" y="71" text-anchor="middle" font-size="30" fill="#5CB85C" font-family="serif" font-weight="700">木</text>'
++ '<circle cx="333" cy="157" r="34" fill="#1A0C0C" stroke="#E85D4A" stroke-width="2.5"/>'
++ '<text x="333" y="168" text-anchor="middle" font-size="30" fill="#E85D4A" font-family="serif" font-weight="700">火</text>'
++ '<circle cx="282" cy="313" r="34" fill="#1A160A" stroke="#C9A84C" stroke-width="2.5"/>'
++ '<text x="282" y="324" text-anchor="middle" font-size="30" fill="#C9A84C" font-family="serif" font-weight="700">土</text>'
++ '<circle cx="118" cy="313" r="34" fill="#111520" stroke="#B0BEC5" stroke-width="2.5"/>'
++ '<text x="118" y="324" text-anchor="middle" font-size="30" fill="#B0BEC5" font-family="serif" font-weight="700">金</text>'
++ '<circle cx="67" cy="157" r="34" fill="#080F1C" stroke="#5B9BD5" stroke-width="2.5"/>'
++ '<text x="67" y="168" text-anchor="middle" font-size="30" fill="#5B9BD5" font-family="serif" font-weight="700">水</text>'
++ '</svg></div>';
+
 // ── 렌더링 ──────────────────────────────────────────────────
 function buildPage(d) {
   document.documentElement.lang = d.htmlLang;
@@ -735,6 +776,7 @@ function buildPage(d) {
       '<span class="section-label">'+d.s5Label+'</span>',
       '<h2>'+d.s5Title+'</h2><p>'+d.s5p+'</p>',
       '<div class="element-grid">'+elemHtml+'</div>',
+      OHAENG_SVG,
       '<h3>'+d.s5h1+'</h3><p>'+d.s5p1+'</p>',
       '<h3>'+d.s5h2+'</h3><p>'+d.s5p2+'</p>',
     '</section>',
