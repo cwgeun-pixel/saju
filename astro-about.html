@@ -1,0 +1,786 @@
+<!-- 점성술(Astrology) 5개국어 소개 페이지 -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>점성술 (Astrology) — Trinity of Destiny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cinzel:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--blue:#5B8FD5;--blue-light:#88B4EE;--blue-dim:rgba(91,143,213,0.15);--bg:#0A0D1A;--bg2:#0C1020;--bg3:#111830;--text:#E8E0CC;--text-muted:rgba(232,224,204,0.6);--border:rgba(91,143,213,0.25);--gold:#C9A84C;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.8;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,13,26,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .nav-logo{font-family:'Cinzel',serif;color:var(--blue-light);font-size:1.05rem;letter-spacing:.1em;text-decoration:none;}
+    .nav-cta{background:var(--blue);color:#fff;font-weight:700;font-size:.82rem;padding:.5rem 1.3rem;border-radius:2px;text-decoration:none;transition:background .2s;}
+    .nav-cta:hover{background:var(--blue-light);color:#0A0D1A;}
+    .lang-bar{display:flex;justify-content:center;gap:.5rem;padding:.9rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .lang-btn{font-size:.78rem;padding:.28rem .85rem;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;font-family:inherit;}
+    .lang-btn:hover,.lang-btn.active{background:var(--blue-dim);color:var(--blue-light);border-color:var(--blue);}
+    .hero{text-align:center;padding:4.5rem 1.5rem 3rem;background:linear-gradient(180deg,#090E20 0%,var(--bg) 100%);border-bottom:1px solid var(--border);}
+    .hero-tag{display:inline-block;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.22em;color:var(--blue-light);border:1px solid var(--border);padding:.3rem 1.1rem;border-radius:2px;margin-bottom:1.4rem;}
+    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.9rem,5vw,3rem);font-weight:700;color:var(--blue-light);margin-bottom:.9rem;}
+    .hero-sub{font-size:1rem;color:var(--text-muted);max-width:640px;margin:0 auto;}
+    .toc{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:1.8rem 1.5rem;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .toc a{font-size:.8rem;color:var(--blue-light);border:1px solid var(--border);padding:.28rem .85rem;border-radius:2px;text-decoration:none;transition:background .2s;}
+    .toc a:hover{background:var(--blue-dim);}
+    main{max-width:880px;margin:0 auto;padding:3rem 1.5rem 5rem;}
+    section{margin-bottom:4rem;}
+    section+section{border-top:1px solid var(--border);padding-top:4rem;}
+    .section-label{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.22em;color:var(--blue-light);margin-bottom:.5rem;display:block;}
+    h2{font-family:'Noto Serif KR',serif;font-size:1.65rem;font-weight:700;color:var(--blue-light);margin-bottom:1.1rem;}
+    h3{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:600;color:var(--blue);margin:2rem 0 .7rem;}
+    p{color:var(--text-muted);margin-bottom:.9rem;}
+    strong{color:var(--text);}
+    em{color:var(--blue-light);font-style:normal;}
+    .hl{background:var(--bg2);border-left:3px solid var(--blue);padding:1.1rem 1.4rem;margin:1.3rem 0;border-radius:0 4px 4px 0;}
+    .hl p{margin:0;}
+    .table-wrap{overflow-x:auto;margin:1.3rem 0;}
+    table{width:100%;border-collapse:collapse;font-size:.85rem;}
+    thead tr{background:var(--bg3);}
+    th{font-family:'Noto Serif KR',serif;font-weight:600;color:var(--blue-light);padding:.6rem .85rem;text-align:left;border:1px solid var(--border);}
+    td{padding:.55rem .85rem;border:1px solid var(--border);color:var(--text-muted);vertical-align:top;}
+    tr:nth-child(even) td{background:rgba(10,16,32,.5);}
+    /* 빅3 카드 */
+    .big3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.3rem 0;}
+    @media(max-width:540px){.big3{grid-template-columns:1fr;}}
+    .big3-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1.2rem 1rem;text-align:center;}
+    .big3-icon{font-size:2rem;display:block;margin-bottom:.4rem;}
+    .big3-name{font-family:'Cinzel',serif;font-size:.9rem;color:var(--blue-light);letter-spacing:.08em;display:block;margin-bottom:.4rem;}
+    .big3-desc{font-size:.8rem;color:var(--text-muted);}
+    /* 행성 그리드 */
+    .planet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.8rem;margin:1.2rem 0;}
+    .planet-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.85rem 1rem;}
+    .planet-symbol{font-size:1.3rem;display:inline-block;margin-right:.4rem;}
+    .planet-name{font-weight:700;color:var(--blue-light);font-size:.92rem;}
+    .planet-desc{font-size:.78rem;color:var(--text-muted);margin-top:.3rem;}
+    /* 하우스 그리드 */
+    .house-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.7rem;margin:1.2rem 0;}
+    .house-card{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:.75rem .9rem;}
+    .house-num{font-family:'Cinzel',serif;font-size:.75rem;color:var(--blue);letter-spacing:.08em;display:block;margin-bottom:.2rem;}
+    .house-name{font-size:.88rem;font-weight:700;color:var(--blue-light);}
+    .house-sign{font-size:.72rem;color:var(--blue);margin-left:.3rem;}
+    .house-desc{font-size:.75rem;color:var(--text-muted);margin-top:.25rem;}
+    /* 애스펙트 */
+    .aspect-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin:1.2rem 0;}
+    .aspect-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.85rem 1rem;}
+    .aspect-deg{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;display:block;margin-bottom:.25rem;}
+    .aspect-name{font-size:.88rem;font-weight:700;color:var(--text);display:block;margin-bottom:.2rem;}
+    .aspect-desc{font-size:.77rem;color:var(--text-muted);}
+    .harmonious{border-color:rgba(92,184,92,0.35);} .harmonious .aspect-deg{color:#5CB85C;}
+    .tense{border-color:rgba(232,93,74,0.35);} .tense .aspect-deg{color:#E85D4A;}
+    .neutral{border-color:rgba(201,168,76,0.35);} .neutral .aspect-deg{color:var(--gold);}
+    /* 시대별 타임라인 */
+    .timeline{margin:1.5rem 0;}
+    .tl-item{display:flex;gap:1rem;margin-bottom:1.4rem;}
+    .tl-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--blue);margin-top:.55rem;}
+    .tl-body{}
+    .tl-era{font-family:'Cinzel',serif;font-size:.75rem;color:var(--blue-light);letter-spacing:.08em;display:block;margin-bottom:.2rem;}
+    .tl-title{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.2rem;}
+    .tl-text{font-size:.82rem;color:var(--text-muted);}
+    /* CTA */
+    .cta-box{text-align:center;padding:3rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;margin-top:4rem;}
+    .cta-box h2{margin-bottom:.7rem;}
+    .cta-box p{margin-bottom:1.8rem;}
+    .btn-p{display:inline-block;background:var(--blue);color:#fff;font-weight:700;font-size:.92rem;padding:.8rem 2.3rem;border-radius:2px;text-decoration:none;transition:background .2s;}
+    .btn-p:hover{background:var(--blue-light);color:#0A0D1A;}
+    .btn-s{display:inline-block;border:1px solid var(--blue);color:var(--blue-light);font-weight:600;font-size:.88rem;padding:.75rem 1.8rem;border-radius:2px;text-decoration:none;margin-left:.9rem;transition:background .2s;}
+    .btn-s:hover{background:var(--blue-dim);}
+    @media(max-width:460px){.btn-s{margin-left:0;margin-top:.7rem;}}
+    footer{text-align:center;padding:1.8rem;font-size:.78rem;color:var(--text-muted);border-top:1px solid var(--border);}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="./" class="nav-logo" id="nav-logo">TRINITY OF DESTINY</a>
+  <a href="./app/" class="nav-cta" id="nav-cta" target="_blank" rel="noopener">천궁도 보기 →</a>
+</nav>
+<div class="lang-bar">
+  <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+  <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
+  <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+  <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
+</div>
+<div id="page-content"></div>
+<footer id="page-footer"></footer>
+
+<script>
+var T = {
+  ko: {
+    htmlLang:"ko", navCta:"천궁도 보기 →",
+    heroTag:"WESTERN ASTROLOGY", heroTitle:"점성술 (Astrology)",
+    heroSub:"고대 메소포타미아의 별 관측에서 출발하여 헬레니즘·이슬람 문명을 거쳐 현대 심리학으로 진화한 지구상 가장 오래된 운명 해석 체계 — 하늘의 행성 배치가 당신의 내면을 비추는 우주적 거울입니다.",
+    toc:["역사적 기원","세계 점성학 체계","천궁도 구조","12 하우스","애스펙트","전통 vs 현대"],
+    tocIds:["history","systems","chart","houses","aspects","modern"],
+
+    s1Label:"HISTORY", s1Title:"점성술의 역사적 기원",
+    timeline:[
+      {era:"기원전 2000년경", title:"바빌로니아 — 황도대의 탄생",
+       text:"메소포타미아 문명이 밤하늘 궤도를 30도씩 12구역으로 분할하여 최초의 황도대(Zodiac) 체계를 고안했습니다. 7,000개 이상의 천문 징조를 수록한 《에누마 아누 엔릴》은 천체 현상을 국가 길흉으로 해석한 세속 점성학(Mundane Astrology)의 초석입니다."},
+      {era:"기원전 4세기 ~ 서기 2세기", title:"헬레니즘 — 천궁도 점성학의 탄생",
+       text:"알렉산더 대왕의 정복 이후 이집트 알렉산드리아에서 바빌로니아·이집트·그리스 천문학이 융합, 개인의 출생 차트를 계산하는 '천궁도 점성학(Horoscopic Astrology)'이 확립되었습니다. 프톨레마이오스의 《테트라비블로스(Tetrabiblos)》는 서양 점성학의 성서로 자리잡았습니다."},
+      {era:"8~12세기", title:"이슬람 황금기 — 지식의 보존과 전파",
+       text:"서로마 제국 쇠퇴 후 잊혀질 뻔한 그리스 점성학을 바그다드 '지혜의 집(Bayt al-Hikma)'이 보존·발전시켰습니다. 알부마사르 등의 학자들이 이를 유럽으로 재수출하여 르네상스 점성학 부흥의 가교 역할을 했습니다."},
+      {era:"17세기 이후", title:"과학 혁명과 현대적 부활",
+       text:"뉴턴·갈릴레오의 과학 혁명으로 자연과학적 지위를 잃었지만, 20세기 앨런 레오가 '자아 탐구의 도구'로 재포장하고 칼 융(Carl Jung)의 분석심리학이 접목되면서 현대 심리 점성학으로 화려하게 부활했습니다."},
+    ],
+    s1hl:"\"과거 점성학은 국왕의 생사를 점치는 세속 점술이었으나, 현대 점성학은 억압된 무의식을 마주하게 돕는 자기 대화의 기술이자 심리적 치유의 언어로 진화했습니다.\"",
+
+    s2Label:"WORLD SYSTEMS", s2Title:"세계 주요 점성학 사상 체계",
+    systems:[
+      {name:"서양 점성학 (회귀 황도대)", en:"Western · Tropical Zodiac",
+       desc:"춘분점을 양자리 0도로 고정, 계절의 순환을 기준으로 합니다. 개인의 심리와 성격 발달 분석에 강점이 있으며 천왕성·해왕성·명왕성을 포함한 10개 행성을 다룹니다."},
+      {name:"인도 베딕 점성학 (항성 황도대)", en:"Jyotish · Sidereal Zodiac",
+       desc:"실제 밤하늘 항성 위치 기준. 서양과 약 24도 편차(아야남사)가 있습니다. 카르마와 윤회를 추적하고 '다샤(Dasha)' 생애 주기 시스템으로 사건 발생 시기를 예측하는 데 특화됩니다."},
+      {name:"중국 자미두수", en:"Zi Wei Dou Shu",
+       desc:"대수학적 좌표 체계로 생년월일시를 12궁·108개 가상 별로 배열합니다. 실제 천체가 아닌 운명 패턴을 상징하는 제국 조정의 구성원으로 별을 의인화하는 점이 독특합니다."},
+    ],
+    s2p:"각 문화권은 고유한 우주론(엠피리언 매트릭스, Empyrean Matrix)을 반영하며 독자적인 점성학 체계를 발전시켰습니다. 동양이 수학적·연대기적 계산법을 따른다면, 서양은 기하학적 천문 관측을 강조합니다.",
+
+    s3Label:"NATAL CHART", s3Title:"천궁도(Natal Chart)의 핵심 구조",
+    s3p:"천궁도는 태어난 정확한 시간·날짜·장소를 기준으로 하늘의 행성 배치를 기록한 '우주적 지도'이자 영혼의 청사진입니다. 해석의 기본 뼈대는 세 가지 질문입니다.",
+    big3q:["무엇이(What)", "어떻게(How)", "어디서(Where)"],
+    big3sub:["행성 — 내 안의 에너지와 욕구의 주체", "별자리 — 행성 에너지가 표현되는 방식", "하우스 — 에너지가 발현되는 삶의 무대"],
+    big3icon:["☉","☽","↑"],
+    big3:[
+      {icon:"☉", name:"태양 (Sun)", desc:"핵심 자아·정체성·에고 — 의식적 삶의 원동력"},
+      {icon:"☽", name:"달 (Moon)", desc:"감정·무의식·내면의 욕구 — 습관과 직관의 원천"},
+      {icon:"↑", name:"상승궁 (Ascendant)", desc:"출생 시 동쪽 지평선의 별자리 — 타인에게 비치는 첫인상과 외적 페르소나"},
+    ],
+    s3h2:"행성 체계",
+    planets:[
+      {sym:"☿", name:"수성 (Mercury)", desc:"소통·사고방식 — 일상적 의사소통과 인지 방식"},
+      {sym:"♀", name:"금성 (Venus)", desc:"사랑·미적 취향 — 가치관과 대인 매력"},
+      {sym:"♂", name:"화성 (Mars)", desc:"열정·행동·원동력 — 욕망과 추진 에너지"},
+      {sym:"♃", name:"목성 (Jupiter)", desc:"행운·확장·철학 — 사회적 성장과 기회"},
+      {sym:"♄", name:"토성 (Saturn)", desc:"책임·구조·한계 — 시험과 성숙의 스승"},
+      {sym:"♅", name:"천왕성 (Uranus)", desc:"혁신·반항 — 세대적 변혁과 돌파"},
+      {sym:"♆", name:"해왕성 (Neptune)", desc:"꿈·영성·용해 — 경계 해체와 영적 탐구"},
+      {sym:"♇", name:"명왕성 (Pluto)", desc:"변형·무의식·재생 — 심층 치유와 권력"},
+    ],
+
+    s4Label:"12 HOUSES", s4Title:"12 하우스 — 삶의 무대",
+    s4p:"행성들이 12개의 하우스 중 어디에 위치하는지가 삶의 구체적 영역에서 에너지가 어떻게 발현되는지를 결정합니다. 하우스가 비어 있어도 행성이 이동(Transit)할 때마다 해당 영역이 활성화됩니다.",
+    houses:[
+      {num:"1H", name:"자아의 집", sign:"양자리", desc:"정체성·외모·페르소나·첫인상"},
+      {num:"2H", name:"가치의 집", sign:"황소자리", desc:"재물·소유·물질적 자원·자기 가치감"},
+      {num:"3H", name:"소통의 집", sign:"쌍둥이자리", desc:"사고방식·의사소통·형제자매·단거리 여행"},
+      {num:"4H", name:"가정의 집", sign:"게자리", desc:"가정·조상·심리적 뿌리·내면의 안식처"},
+      {num:"5H", name:"유희의 집", sign:"사자자리", desc:"창조력·로맨스·취미·자기표현·자녀"},
+      {num:"6H", name:"책임의 집", sign:"처녀자리", desc:"일상적 노동·직업 환경·육체 건강·봉사"},
+      {num:"7H", name:"균형의 집", sign:"천칭자리", desc:"결혼·사업 파트너십·1:1 관계·계약"},
+      {num:"8H", name:"변형의 집", sign:"전갈자리", desc:"상속·부채·친밀감·섹슈얼리티·죽음과 재생"},
+      {num:"9H", name:"목적의 집", sign:"사수자리", desc:"종교·철학·고등 교육·장거리 여행·신념"},
+      {num:"10H", name:"성취의 집", sign:"염소자리", desc:"커리어·사회적 명성·공적 성취·권위"},
+      {num:"11H", name:"연대의 집", sign:"물병자리", desc:"우정·커뮤니티·희망·집단적 이상"},
+      {num:"12H", name:"성찰의 집", sign:"물고기자리", desc:"무의식·고독·비밀·영성·내면의 치유"},
+    ],
+    s4h2:"하우스 분류",
+    houseGroups:[
+      {type:"앵귤러 (1/4/7/10)", desc:"인생의 기둥 — 활동성(Cardinal)과 강력한 개시력"},
+      {type:"석시던트 (2/5/8/11)", desc:"자원과 축적 — 안정성(Fixed)과 앵귤러를 뒷받침하는 기반"},
+      {type:"케이던트 (3/6/9/12)", desc:"학습과 변화 — 유연성(Mutable)과 전환기적 에너지"},
+    ],
+
+    s5Label:"ASPECTS", s5Title:"애스펙트(Aspects) — 행성의 대화",
+    s5p:"애스펙트는 행성들 사이의 기하학적 각도로, 두 에너지가 '어떻게 대화하는가'를 정의합니다. 허용 범위(오브, Orb)는 일반적으로 8도 이내이며 각도가 정밀할수록 영향력이 커집니다.",
+    aspects:[
+      {cls:"neutral", deg:"0°", name:"합 (Conjunction)", desc:"두 에너지의 완전한 융합. 가장 강력한 집중력 — 객관성 확보가 어려울 수 있음"},
+      {cls:"tense", deg:"180°", name:"대립 (Opposition)", desc:"양극단의 긴장. 타인에게 자신의 에너지를 투사하거나 통합하는 과제"},
+      {cls:"tense", deg:"90°", name:"직각 (Square)", desc:"이질적 원소 간 마찰. 긴장이 성취를 향한 동력과 숙련도를 만들어냄"},
+      {cls:"harmonious", deg:"120°", name:"트라인 (Trine)", desc:"유동적 조화. 타고난 재능과 자연스러운 기회의 흐름"},
+      {cls:"harmonious", deg:"60°", name:"섹스타일 (Sextile)", desc:"부드러운 기회. 의식적 노력으로 활성화되는 재능"},
+    ],
+    s5h2:"스텔륨 (Stellium)",
+    s5p2:"세 개 이상의 행성이 하나의 하우스나 별자리에 집중되면 스텔륨이라 합니다. 해당 별자리나 하우스의 테마가 삶에서 압도적인 비중을 차지합니다.",
+
+    s6Label:"TRADITION VS MODERN", s6Title:"전통 점성학 vs 현대 심리 점성학",
+    s6p:"점성학 해석의 변천은 인류가 우주를 바라보는 철학적 시선의 변화와 궤를 같이합니다.",
+    comparison:[
+      {domain:"8하우스", trad:"죽음·실제 채무·유산·타인의 자원", mod:"심리적 재생·성적 친밀감·무의식적 변형"},
+      {domain:"12하우스", trad:"감옥·은둔·숨겨진 적·병원", mod:"무의식·영성·자아 삭제를 통한 초월"},
+    ],
+    s6hl:"\"17세기 아리스토텔레스 물리학의 붕괴와 함께 점성학은 사건 중심의 숙명론에서 내면 중심의 심리학으로 무게추를 옮겼고, 칼 융의 분석심리학과 결합하며 현대적 자아 성찰의 도구로 부활했습니다.\"",
+    s6p2:"현대 점성학은 미래를 맞추는 '물리적 예측 기술'이 아니라, 밤하늘이라는 우주적 상징의 거울을 통해 억압된 무의식을 마주하고 스스로를 통찰하도록 돕는 <strong>자기 대화의 언어</strong>입니다.",
+
+    ctaTitle:"지금 내 천궁도를 확인하세요",
+    ctaDesc:"출생 날짜·시간·장소를 입력하면 천궁도와 AI 행성 해석을 즉시 확인할 수 있습니다.",
+    ctaBtn:"천궁도 보기 →",
+    ctaBack:"메인으로",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+    thComp:["영역","전통적 해석 (외부 사건)","현대적 해석 (내적 심리)"],
+  },
+
+  en: {
+    htmlLang:"en", navCta:"View My Chart →",
+    heroTag:"WESTERN ASTROLOGY", heroTitle:"Astrology",
+    heroSub:"The oldest destiny-reading system on Earth — born from Mesopotamian star observation, refined through Hellenism and Islam, and reborn as modern psychology — the planets at your birth are a cosmic mirror reflecting your inner world.",
+    toc:["Historical Origins","World Systems","Natal Chart","12 Houses","Aspects","Traditional vs Modern"],
+    tocIds:["history","systems","chart","houses","aspects","modern"],
+
+    s1Label:"HISTORY", s1Title:"Historical Origins of Astrology",
+    timeline:[
+      {era:"c. 2000 BC", title:"Babylon — The Birth of the Zodiac",
+       text:"Mesopotamian civilization divided the celestial orbit into twelve 30° sectors to create the first Zodiac. The Enuma Anu Enlil, containing over 7,000 celestial omens, is the cornerstone of Mundane Astrology — interpreting heavenly phenomena as national fortune."},
+      {era:"4th century BC – 2nd century AD", title:"Hellenism — The Birth of Horoscopic Astrology",
+       text:"After Alexander's conquests, Babylonian, Egyptian, and Greek astronomy merged in Alexandria, giving birth to Horoscopic Astrology — the calculation of individual birth charts. Ptolemy's Tetrabiblos became the foundational text of Western astrology."},
+      {era:"8th–12th century", title:"Islamic Golden Age — Preserving and Transmitting Knowledge",
+       text:"As the Western Roman Empire fell, Baghdad's House of Wisdom (Bayt al-Hikma) preserved and advanced Greek astrological knowledge. Scholars like Abū Maʿshar reintroduced it to Europe, bridging the Renaissance revival of astrology."},
+      {era:"17th century onward", title:"Scientific Revolution and Modern Revival",
+       text:"The Newtonian revolution stripped astrology of its natural-science status. But in the 20th century, Alan Leo reframed it as a tool for self-knowledge, and Carl Jung's analytical psychology integrated with it to produce modern psychological astrology."},
+    ],
+    s1hl:"\"Ancient astrology was a statecraft oracle predicting the fate of kings. Modern astrology has evolved into a language of self-dialogue and psychological healing — helping individuals confront their suppressed unconscious through the symbolic mirror of the night sky.\"",
+
+    s2Label:"WORLD SYSTEMS", s2Title:"Major World Astrological Systems",
+    systems:[
+      {name:"Western Astrology", en:"Tropical Zodiac",
+       desc:"Fixes the vernal equinox as 0° Aries, using seasonal cycles as reference. Excels at psychological analysis and character development. Works with 10 planets including Uranus, Neptune, and Pluto."},
+      {name:"Indian Vedic Astrology", en:"Jyotish · Sidereal Zodiac",
+       desc:"Based on actual stellar positions, creating a ~24° difference (Ayanamsa) from Western. Tracks karmic destiny and specializes in event timing through the sophisticated Dasha planetary period system."},
+      {name:"Chinese Zi Wei Dou Shu", en:"Purple Star Astrology",
+       desc:"Arranges birth data into 12 palaces and 108 symbolic stars via algebraic coordinates. Stars represent members of a Royal Court — not actual celestial bodies but archetypal destiny patterns."},
+    ],
+    s2p:"Each civilization developed its own astrology reflecting a unique cosmological worldview (Empyrean Matrix). Eastern traditions emphasize mathematical and chronological calculation; Western traditions emphasize geometric astronomical observation.",
+
+    s3Label:"NATAL CHART", s3Title:"The Natal Chart Structure",
+    s3p:"The natal chart is the 'cosmic map' of the sky at the exact moment of birth — a blueprint of the soul. The interpretive framework rests on three questions.",
+    big3q:["What", "How", "Where"],
+    big3sub:["Planets — the actors, energies and drives within you", "Signs — how those energies are expressed and styled", "Houses — the stage and life domain where energy manifests"],
+    big3icon:["☉","☽","↑"],
+    big3:[
+      {icon:"☉", name:"Sun", desc:"Core self · identity · ego — the source of conscious vitality"},
+      {icon:"☽", name:"Moon", desc:"Emotions · unconscious · inner needs — the source of instinct and habit"},
+      {icon:"↑", name:"Ascendant (Rising)", desc:"The zodiac sign rising on the eastern horizon at birth — outer persona and first impressions"},
+    ],
+    s3h2:"The Planets",
+    planets:[
+      {sym:"☿", name:"Mercury", desc:"Communication · thought — daily interaction and cognitive style"},
+      {sym:"♀", name:"Venus", desc:"Love · beauty · values — aesthetic taste and interpersonal charm"},
+      {sym:"♂", name:"Mars", desc:"Passion · drive · action — the fuel of desire and momentum"},
+      {sym:"♃", name:"Jupiter", desc:"Fortune · expansion · philosophy — social growth and opportunity"},
+      {sym:"♄", name:"Saturn", desc:"Responsibility · structure · limits — the teacher of discipline and maturity"},
+      {sym:"♅", name:"Uranus", desc:"Innovation · rebellion — generational transformation and breakthroughs"},
+      {sym:"♆", name:"Neptune", desc:"Dreams · spirituality · dissolution — boundary transcendence and mysticism"},
+      {sym:"♇", name:"Pluto", desc:"Transformation · unconscious · rebirth — deep healing and power"},
+    ],
+
+    s4Label:"12 HOUSES", s4Title:"The 12 Houses — Stages of Life",
+    s4p:"The house a planet occupies determines which life domain its energy activates. An empty house is not inactive — it comes alive whenever a planet transits through it.",
+    houses:[
+      {num:"1H", name:"House of Self", sign:"Aries", desc:"Identity · appearance · persona · first impressions"},
+      {num:"2H", name:"House of Value", sign:"Taurus", desc:"Wealth · possessions · material resources · self-worth"},
+      {num:"3H", name:"House of Communication", sign:"Gemini", desc:"Mindset · communication · siblings · short travel"},
+      {num:"4H", name:"House of Home", sign:"Cancer", desc:"Home · ancestry · psychological roots · inner sanctuary"},
+      {num:"5H", name:"House of Creativity", sign:"Leo", desc:"Creativity · romance · hobbies · self-expression · children"},
+      {num:"6H", name:"House of Service", sign:"Virgo", desc:"Daily work · workplace · physical health · service"},
+      {num:"7H", name:"House of Balance", sign:"Libra", desc:"Marriage · business partnerships · 1:1 relationships · contracts"},
+      {num:"8H", name:"House of Transformation", sign:"Scorpio", desc:"Inheritance · debts · intimacy · sexuality · death and rebirth"},
+      {num:"9H", name:"House of Purpose", sign:"Sagittarius", desc:"Religion · philosophy · higher education · long travel · beliefs"},
+      {num:"10H", name:"House of Achievement", sign:"Capricorn", desc:"Career · public reputation · social achievement · authority"},
+      {num:"11H", name:"House of Community", sign:"Aquarius", desc:"Friendship · community · hopes · collective ideals"},
+      {num:"12H", name:"House of Reflection", sign:"Pisces", desc:"Unconscious · solitude · secrets · spirituality · inner healing"},
+    ],
+    s4h2:"House Classification",
+    houseGroups:[
+      {type:"Angular (1/4/7/10)", desc:"Pillars of life — Cardinal energy, powerful initiation"},
+      {type:"Succedent (2/5/8/11)", desc:"Resources and accumulation — Fixed stability, supporting Angular"},
+      {type:"Cadent (3/6/9/12)", desc:"Learning and transition — Mutable flexibility, transformative energy"},
+    ],
+
+    s5Label:"ASPECTS", s5Title:"Aspects — How Planets Converse",
+    s5p:"An aspect is the geometric angle between two planets, defining how their energies interact. The effective range (Orb) is generally within 8° — the tighter the angle, the more powerful the influence.",
+    aspects:[
+      {cls:"neutral", deg:"0°", name:"Conjunction", desc:"Complete fusion of two energies — maximum intensity, but objectivity can be difficult"},
+      {cls:"tense", deg:"180°", name:"Opposition", desc:"Tension between polarities — the task of integrating what you project onto others"},
+      {cls:"tense", deg:"90°", name:"Square", desc:"Friction between different elements — tension that drives achievement and mastery"},
+      {cls:"harmonious", deg:"120°", name:"Trine", desc:"Flowing harmony — innate talent and naturally arising opportunities"},
+      {cls:"harmonious", deg:"60°", name:"Sextile", desc:"Gentle opportunity — talent activated through conscious effort"},
+    ],
+    s5h2:"Stellium",
+    s5p2:"Three or more planets concentrated in one house or sign form a Stellium — making that sign or house's themes overwhelmingly dominant in one's life.",
+
+    s6Label:"TRADITION VS MODERN", s6Title:"Traditional vs Modern Psychological Astrology",
+    s6p:"The evolution of astrological interpretation mirrors the philosophical shift in how humanity views the cosmos.",
+    comparison:[
+      {domain:"8th House", trad:"Death, actual debts, inheritance, others' resources", mod:"Psychological rebirth, sexual intimacy, unconscious transformation"},
+      {domain:"12th House", trad:"Prison, seclusion, hidden enemies, hospitals", mod:"Unconscious, spirituality, transcendence through ego dissolution"},
+    ],
+    s6hl:"\"When Aristotle's physics collapsed in the 17th century, astrology shifted from event-predicting fatalism to inner-focused psychology. Fused with Jung's analytical psychology, it was reborn as a modern tool of self-reflection.\"",
+    s6p2:"Modern astrology is not a 'physical prediction technology' for hitting future events. It is a <strong>language of self-dialogue</strong> — using the cosmic symbols of the night sky as a mirror to confront the suppressed unconscious and gain profound self-understanding.",
+
+    ctaTitle:"Discover Your Natal Chart Now",
+    ctaDesc:"Enter your birth date, time, and place to instantly view your natal chart and AI planetary interpretation.",
+    ctaBtn:"View My Chart →",
+    ctaBack:"Back to Main",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+    thComp:["Domain","Traditional (External Events)","Modern (Inner Psychology)"],
+  },
+
+  ja: {
+    htmlLang:"ja", navCta:"ホロスコープを見る →",
+    heroTag:"WESTERN ASTROLOGY", heroTitle:"西洋占星術 (Astrology)",
+    heroSub:"古代メソポタミアの星観測に始まり、ヘレニズム・イスラム文明を経て現代心理学として進化した、地球最古の運命解釈体系 — 誕生時の惑星配置はあなたの内面を映す宇宙の鏡です。",
+    toc:["歴史的起源","世界の占星術体系","ホロスコープ","12ハウス","アスペクト","伝統 vs 現代"],
+    tocIds:["history","systems","chart","houses","aspects","modern"],
+
+    s1Label:"HISTORY", s1Title:"占星術の歴史的起源",
+    timeline:[
+      {era:"紀元前2000年頃", title:"バビロニア — 黄道帯の誕生",
+       text:"メソポタミア文明が天球軌道を30度ずつ12区域に分割し、最初の黄道帯(Zodiac)体系を考案しました。7,000以上の天文凶兆を収録した『エヌマ・アヌ・エンリル』は、天体現象を国家の吉凶として解釈する世俗占星術の礎石です。"},
+      {era:"紀元前4世紀〜紀元2世紀", title:"ヘレニズム — ホロスコープ占星術の誕生",
+       text:"アレクサンドロス大王の征服後、アレクサンドリアでバビロニア・エジプト・ギリシャ天文学が融合し、個人の出生チャートを計算するホロスコープ占星術が確立されました。プトレマイオスの『テトラビブロス』は西洋占星術の聖典となりました。"},
+      {era:"8〜12世紀", title:"イスラム黄金期 — 知識の保存と伝播",
+       text:"西ローマ帝国衰退後に忘れられかけたギリシャ占星術を、バグダッドの「知恵の家(バイト・アル＝ヒクマ)」が保存・発展させました。アブー・マアシャルらがこれをヨーロッパへ再輸出し、ルネサンス占星術復興の架け橋となりました。"},
+      {era:"17世紀以降", title:"科学革命と現代的復活",
+       text:"ニュートンとガリレオの科学革命で自然科学的地位を失いましたが、20世紀にアラン・レオが『自己探求のツール』として再提示し、カール・ユングの分析心理学と統合されて現代心理占星術として華麗に復活しました。"},
+    ],
+    s1hl:"「かつての占星術は国王の運命を占う世俗の術でしたが、現代占星術は抑圧された無意識と向き合い、自己を深く洞察する『自己対話の技術』と『心理的癒しの言語』へと進化しました。」",
+
+    s2Label:"WORLD SYSTEMS", s2Title:"世界の主要占星術体系",
+    systems:[
+      {name:"西洋占星術 (回帰黄道帯)", en:"Western · Tropical Zodiac",
+       desc:"春分点を牡羊座0度に固定し、季節の循環を基準とします。個人の心理と性格分析に強みを持ち、天王星・海王星・冥王星を含む10惑星を扱います。"},
+      {name:"インド・ヴェーディック占星術 (恒星黄道帯)", en:"Jyotish · Sidereal Zodiac",
+       desc:"実際の恒星位置を基準とするため、西洋と約24度の偏差(アヤナムサ)があります。カルマと輪廻を追跡し、「ダシャー」生涯周期システムで出来事の時期を予測することに特化しています。"},
+      {name:"中国の紫微斗数", en:"Zi Wei Dou Shu",
+       desc:"代数的座標体系で生年月日時を12宮・108の象徴的な星に配列します。星は実際の天体ではなく、運命パターンを象徴する帝国朝廷の構成員として擬人化されます。"},
+    ],
+    s2p:"各文明は独自の宇宙観(エンピリアン・マトリックス)を反映した占星術体系を発展させました。東洋が数学的・年代記的計算法に従う一方、西洋は幾何学的天文観測を重視します。",
+
+    s3Label:"NATAL CHART", s3Title:"ホロスコープ（出生チャート）の核心構造",
+    s3p:"ホロスコープは生まれた正確な時間・日付・場所を基準に、天体配置を記録した「宇宙的地図」であり魂の青写真です。解釈の基本骨格は三つの問いに集約されます。",
+    big3q:["何が(What)", "どのように(How)", "どこで(Where)"],
+    big3sub:["惑星 — 内なるエネルギーと欲求の主体", "星座 — 惑星エネルギーが表現される方式", "ハウス — エネルギーが発現される人生の舞台"],
+    big3icon:["☉","☽","↑"],
+    big3:[
+      {icon:"☉", name:"太陽 (Sun)", desc:"核心的自我・アイデンティティ・エゴ — 意識的生命力の源"},
+      {icon:"☽", name:"月 (Moon)", desc:"感情・無意識・内なる欲求 — 直感と習慣の源泉"},
+      {icon:"↑", name:"アセンダント (上昇宮)", desc:"誕生時に東の地平線に上っていた星座 — 他者に見せる外的ペルソナと第一印象"},
+    ],
+    s3h2:"惑星体系",
+    planets:[
+      {sym:"☿", name:"水星 (Mercury)", desc:"コミュニケーション・思考方式 — 日常的交流と認知スタイル"},
+      {sym:"♀", name:"金星 (Venus)", desc:"愛・美的感覚 — 価値観と対人的魅力"},
+      {sym:"♂", name:"火星 (Mars)", desc:"情熱・行動・原動力 — 欲望と推進エネルギー"},
+      {sym:"♃", name:"木星 (Jupiter)", desc:"幸運・拡大・哲学 — 社会的成長と機会"},
+      {sym:"♄", name:"土星 (Saturn)", desc:"責任・構造・限界 — 試練と成熟の教師"},
+      {sym:"♅", name:"天王星 (Uranus)", desc:"革新・反抗 — 世代的変革と突破"},
+      {sym:"♆", name:"海王星 (Neptune)", desc:"夢・霊性・溶解 — 境界超越と神秘探求"},
+      {sym:"♇", name:"冥王星 (Pluto)", desc:"変容・無意識・再生 — 深層的癒しと権力"},
+    ],
+
+    s4Label:"12 HOUSES", s4Title:"12ハウス — 人生の舞台",
+    s4p:"惑星がどのハウスに位置するかによって、その惑星のエネルギーが人生のどの領域で発現されるかが決まります。ハウスが空であっても、惑星がトランジットするたびに活性化されます。",
+    houses:[
+      {num:"1H", name:"自我の家", sign:"牡羊座", desc:"アイデンティティ・外見・ペルソナ・第一印象"},
+      {num:"2H", name:"価値の家", sign:"牡牛座", desc:"財物・所有・物質的資源・自己価値感"},
+      {num:"3H", name:"コミュニケーションの家", sign:"双子座", desc:"思考様式・意思疎通・兄弟・近距離旅行"},
+      {num:"4H", name:"家庭の家", sign:"蟹座", desc:"家庭・祖先・心理的ルーツ・内なる安らぎ"},
+      {num:"5H", name:"遊びの家", sign:"獅子座", desc:"創造力・ロマンス・趣味・自己表現・子供"},
+      {num:"6H", name:"責任の家", sign:"乙女座", desc:"日常的労働・職業環境・肉体的健康・奉仕"},
+      {num:"7H", name:"バランスの家", sign:"天秤座", desc:"結婚・ビジネスパートナーシップ・1対1の関係・契約"},
+      {num:"8H", name:"変容の家", sign:"蠍座", desc:"相続・負債・親密さ・セクシュアリティ・死と再生"},
+      {num:"9H", name:"目的の家", sign:"射手座", desc:"宗教・哲学・高等教育・長距離旅行・信念体系"},
+      {num:"10H", name:"達成の家", sign:"山羊座", desc:"キャリア・社会的名声・公的成就・権威"},
+      {num:"11H", name:"連帯の家", sign:"水瓶座", desc:"友情・コミュニティ・希望・集合的理想"},
+      {num:"12H", name:"省察の家", sign:"魚座", desc:"無意識・孤独・秘密・霊性・内面の癒し"},
+    ],
+    s4h2:"ハウスの分類",
+    houseGroups:[
+      {type:"アンギュラー (1/4/7/10)", desc:"人生の柱 — 活動性(Cardinal)と強力な開始力"},
+      {type:"サクシデント (2/5/8/11)", desc:"資源と蓄積 — 安定性(Fixed)とアンギュラーを支える基盤"},
+      {type:"ケイデント (3/6/9/12)", desc:"学習と変化 — 柔軟性(Mutable)と転換期的エネルギー"},
+    ],
+
+    s5Label:"ASPECTS", s5Title:"アスペクト — 惑星の対話",
+    s5p:"アスペクトは惑星間の幾何学的角度で、二つのエネルギーが「どのように対話するか」を定義します。有効範囲(オーブ)は通常8度以内で、角度が精密なほど影響力が大きくなります。",
+    aspects:[
+      {cls:"neutral", deg:"0°", name:"コンジャンクション (合)", desc:"二つのエネルギーの完全な融合 — 最強の集中力だが客観性確保が困難"},
+      {cls:"tense", deg:"180°", name:"オポジション (対立)", desc:"両極端の緊張 — 他者に自己のエネルギーを投影するか、統合する課題"},
+      {cls:"tense", deg:"90°", name:"スクエア (直角)", desc:"異質な元素間の摩擦 — 緊張が達成に向けた動力と熟練を生み出す"},
+      {cls:"harmonious", deg:"120°", name:"トライン (三分角)", desc:"流動的な調和 — 生まれつきの才能と自然な機会の流れ"},
+      {cls:"harmonious", deg:"60°", name:"セクスタイル (六分角)", desc:"穏やかな機会 — 意識的努力で活性化される才能"},
+    ],
+    s5h2:"ステリウム (Stellium)",
+    s5p2:"3つ以上の惑星が一つのハウスや星座に集中するとステリウムと呼びます。その星座やハウスのテーマが人生において圧倒的な比重を占めます。",
+
+    s6Label:"TRADITION VS MODERN", s6Title:"伝統占星術 vs 現代心理占星術",
+    s6p:"占星術解釈の変遷は、人類が宇宙を見る哲学的視点の変化と軌を一にしています。",
+    comparison:[
+      {domain:"第8ハウス", trad:"死・実際の負債・遺産・他者の資源", mod:"心理的再生・性的親密さ・無意識的変容"},
+      {domain:"第12ハウス", trad:"監獄・隠遁・隠れた敵・病院", mod:"無意識・霊性・エゴ消去による超越"},
+    ],
+    s6hl:"「17世紀にアリストテレス物理学が崩壊すると、占星術は出来事中心の宿命論から内面中心の心理学へと軸足を移しました。カール・ユングの分析心理学と結合し、現代的自己省察のツールとして華麗に復活しました。」",
+    s6p2:"現代占星術は未来を当てる『物理的予測技術』ではなく、夜空という宇宙的象徴の鏡を通じて抑圧された無意識と向き合い、自己を深く洞察するための<strong>自己対話の言語</strong>です。",
+
+    ctaTitle:"今すぐホロスコープを確認しましょう",
+    ctaDesc:"生年月日・時刻・出生地を入力すると、ホロスコープとAI惑星解釈をすぐに確認できます。",
+    ctaBtn:"ホロスコープを見る →",
+    ctaBack:"メインへ",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+    thComp:["領域","伝統的解釈（外部事件）","現代的解釈（内的心理）"],
+  },
+
+  zh: {
+    htmlLang:"zh", navCta:"查看星盘 →",
+    heroTag:"WESTERN ASTROLOGY", heroTitle:"西方占星术 (Astrology)",
+    heroSub:"从古代美索不达米亚的星象观测出发，经由希腊化文明与伊斯兰黄金时代，最终进化为现代心理学的地球最古老命运解读体系 — 诞生时的行星位置，是映照你内心世界的宇宙之镜。",
+    toc:["历史起源","世界体系","星盘结构","十二宫位","相位","传统 vs 现代"],
+    tocIds:["history","systems","chart","houses","aspects","modern"],
+
+    s1Label:"HISTORY", s1Title:"占星术的历史起源",
+    timeline:[
+      {era:"约公元前2000年", title:"巴比伦 — 黄道带的诞生",
+       text:"美索不达米亚文明将天球轨道以30度为单位划分为12个区域，创立了最初的黄道带(Zodiac)体系。收录逾7,000条天文征兆的《埃努玛·阿努·恩利尔》是将天象解读为国家吉凶的世俗占星术奠基之作。"},
+      {era:"公元前4世纪 ~ 公元2世纪", title:"希腊化时代 — 天宫图占星术的诞生",
+       text:"亚历山大大帝征服后，在埃及亚历山大里亚，巴比伦、埃及与希腊天文学相互融合，确立了计算个人出生星盘的\"天宫图占星术\"。托勒密的《占星四书》成为西方占星术的经典文献。"},
+      {era:"8 ~ 12世纪", title:"伊斯兰黄金时代 — 知识的保存与传播",
+       text:"西罗马帝国衰亡后，巴格达\"智慧宫(Bayt al-Hikma)\"保存并发展了几乎被遗忘的希腊占星学。阿布·马沙尔等学者将其重新传入欧洲，成为文艺复兴占星术复兴的桥梁。"},
+      {era:"17世纪以后", title:"科学革命与现代复兴",
+       text:"牛顿与伽利略的科学革命使占星术失去了自然科学的地位。但20世纪，艾伦·利奥将其重新包装为'自我探索的工具'，与荣格分析心理学结合后，以现代心理占星术的形式华丽复苏。"},
+    ],
+    s1hl:"「古代占星术是预测国王命运的世俗术数，而现代占星术已进化为一种自我对话的艺术与心理疗愈的语言——借助夜空这面宇宙象征之镜，帮助人们直面被压抑的无意识。」",
+
+    s2Label:"WORLD SYSTEMS", s2Title:"世界主要占星体系",
+    systems:[
+      {name:"西方占星术 (回归黄道)", en:"Western · Tropical Zodiac",
+       desc:"将春分点固定为白羊座0度，以季节循环为参照。擅长分析个人心理与性格发展，涉及天王星、海王星、冥王星在内的10颗行星。"},
+      {name:"印度吠陀占星术 (恒星黄道)", en:"Jyotish · Sidereal Zodiac",
+       desc:"以实际恒星位置为基准，与西方占星存在约24度偏差（阿亚南莎）。专门追踪业力与轮回，并以精密的\"命主期(Dasha)\"系统预测事件发生时机。"},
+      {name:"中国紫微斗数", en:"Zi Wei Dou Shu",
+       desc:"通过代数坐标体系将生辰八字排列于12宫与108颗象征性星曜中。这些星并非真实天体，而是象征命运模式的帝国朝廷成员，体现了独特的拟人化哲学。"},
+    ],
+    s2p:"各文明以其独特宇宙观（帝国矩阵）为基础，发展出各具特色的占星体系。东方传统强调数学与年代学计算；西方传统则注重几何天文观测。",
+
+    s3Label:"NATAL CHART", s3Title:"星盘（本命盘）的核心结构",
+    s3p:"本命盘是以出生精确时间、日期与地点为基准，记录天体配置的\"宇宙地图\"，是灵魂的蓝图。解盘的基本框架由三个问题构成。",
+    big3q:["是什么(What)", "如何(How)", "在哪里(Where)"],
+    big3sub:["行星 — 内心能量与欲望的主体", "星座 — 行星能量的表达方式", "宫位 — 能量发生的人生舞台"],
+    big3icon:["☉","☽","↑"],
+    big3:[
+      {icon:"☉", name:"太阳 (Sun)", desc:"核心自我·身份认同·自我意识 — 意识生命力的源泉"},
+      {icon:"☽", name:"月亮 (Moon)", desc:"情感·无意识·内心需求 — 直觉与习惯的根源"},
+      {icon:"↑", name:"上升星座 (Ascendant)", desc:"出生时东方地平线上升起的星座 — 呈现给他人的外在人格与第一印象"},
+    ],
+    s3h2:"行星体系",
+    planets:[
+      {sym:"☿", name:"水星 (Mercury)", desc:"沟通·思维方式 — 日常交流与认知风格"},
+      {sym:"♀", name:"金星 (Venus)", desc:"爱情·审美 — 价值观与人际魅力"},
+      {sym:"♂", name:"火星 (Mars)", desc:"热情·行动·原动力 — 欲望与推进能量"},
+      {sym:"♃", name:"木星 (Jupiter)", desc:"幸运·扩展·哲学 — 社会成长与机遇"},
+      {sym:"♄", name:"土星 (Saturn)", desc:"责任·结构·限制 — 历练与成熟的导师"},
+      {sym:"♅", name:"天王星 (Uranus)", desc:"创新·反叛 — 世代变革与突破"},
+      {sym:"♆", name:"海王星 (Neptune)", desc:"梦境·灵性·消融 — 边界超越与神秘探索"},
+      {sym:"♇", name:"冥王星 (Pluto)", desc:"转化·无意识·重生 — 深层疗愈与权力"},
+    ],
+
+    s4Label:"12 HOUSES", s4Title:"十二宫位 — 人生的舞台",
+    s4p:"行星落于哪个宫位，决定了该行星能量在人生哪个领域发挥作用。空宫并不意味着该领域无事发生，每当行星过境该宫时，相关主题便会被激活。",
+    houses:[
+      {num:"第1宫", name:"自我之宫", sign:"白羊座", desc:"身份认同·外貌·人格面具·第一印象"},
+      {num:"第2宫", name:"价值之宫", sign:"金牛座", desc:"财富·所有物·物质资源·自我价值感"},
+      {num:"第3宫", name:"沟通之宫", sign:"双子座", desc:"思维方式·交流·兄弟姐妹·短途旅行"},
+      {num:"第4宫", name:"家庭之宫", sign:"巨蟹座", desc:"家庭·祖先·心理根基·内心安全感"},
+      {num:"第5宫", name:"创意之宫", sign:"狮子座", desc:"创造力·浪漫·爱好·自我表达·子女"},
+      {num:"第6宫", name:"服务之宫", sign:"处女座", desc:"日常工作·职业环境·身体健康·服务奉献"},
+      {num:"第7宫", name:"平衡之宫", sign:"天秤座", desc:"婚姻·商业伙伴关系·一对一关系·合同"},
+      {num:"第8宫", name:"转化之宫", sign:"天蝎座", desc:"遗产·债务·亲密感·性欲·死亡与重生"},
+      {num:"第9宫", name:"目标之宫", sign:"射手座", desc:"宗教·哲学·高等教育·长途旅行·信仰体系"},
+      {num:"第10宫", name:"成就之宫", sign:"摩羯座", desc:"职业·社会声誉·公众成就·权威"},
+      {num:"第11宫", name:"联结之宫", sign:"水瓶座", desc:"友谊·社群·希望·集体理想"},
+      {num:"第12宫", name:"反思之宫", sign:"双鱼座", desc:"无意识·孤独·秘密·灵性·内心疗愈"},
+    ],
+    s4h2:"宫位分类",
+    houseGroups:[
+      {type:"始宫 (1/4/7/10)", desc:"人生支柱 — 基本星座(Cardinal)，强大的启动力"},
+      {type:"续宫 (2/5/8/11)", desc:"资源与积累 — 固定星座(Fixed)，支撑始宫的基础"},
+      {type:"变宫 (3/6/9/12)", desc:"学习与转变 — 变动星座(Mutable)，过渡期能量"},
+    ],
+
+    s5Label:"ASPECTS", s5Title:"相位 (Aspects) — 行星的对话",
+    s5p:"相位是行星之间的几何角度，定义两种能量\"如何对话\"。有效范围（容许度/Orb）通常在8度以内，角度越精确，影响力越大。",
+    aspects:[
+      {cls:"neutral", deg:"0°", name:"合相 (Conjunction)", desc:"两种能量完全融合 — 最强集中力，但客观性难以保持"},
+      {cls:"tense", deg:"180°", name:"对分相 (Opposition)", desc:"两极张力 — 向他人投射自我能量，或将对立面整合的课题"},
+      {cls:"tense", deg:"90°", name:"刑相 (Square)", desc:"不同元素间的摩擦 — 紧张催生成就的动力与熟练度"},
+      {cls:"harmonious", deg:"120°", name:"三分相 (Trine)", desc:"流动的和谐 — 与生俱来的才能与自然而然的机遇"},
+      {cls:"harmonious", deg:"60°", name:"六分相 (Sextile)", desc:"温和的机会 — 通过主动努力被激活的潜在才能"},
+    ],
+    s5h2:"星群 (Stellium)",
+    s5p2:"三颗或以上行星集中于同一宫位或星座时，称为星群。该星座或宫位的主题在人生中将占据压倒性的比重。",
+
+    s6Label:"TRADITION VS MODERN", s6Title:"传统占星术 vs 现代心理占星术",
+    s6p:"占星解读的演变，与人类宇宙观的哲学转变同步进行。",
+    comparison:[
+      {domain:"第8宫", trad:"死亡·实际债务·遗产·他人资源", mod:"心理重生·性亲密·无意识转化"},
+      {domain:"第12宫", trad:"监狱·隐遁·隐藏的敌人·医院", mod:"无意识·灵性·通过自我消融实现超越"},
+    ],
+    s6hl:"「17世纪亚里士多德物理学崩溃后，占星术从以事件为中心的宿命论转向以内心为中心的心理学。与荣格分析心理学结合后，以现代自我省察工具的面貌华丽复苏。」",
+    s6p2:"现代占星术并非预测未来的'物理预测技术'，而是一种<strong>自我对话的语言</strong> — 借助夜空这面宇宙象征之镜，帮助人们直面被压抑的无意识，获得深刻的自我洞察。",
+
+    ctaTitle:"立即查看您的本命星盘",
+    ctaDesc:"输入出生日期、时间和地点，即刻获取本命星盘与AI行星解读。",
+    ctaBtn:"查看星盘 →",
+    ctaBack:"返回首页",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+    thComp:["领域","传统解读（外部事件）","现代解读（内在心理）"],
+  },
+
+  es: {
+    htmlLang:"es", navCta:"Ver Mi Carta →",
+    heroTag:"WESTERN ASTROLOGY", heroTitle:"Astrología (Astrology)",
+    heroSub:"El sistema de lectura del destino más antiguo de la Tierra — nacido de la observación estelar mesopotámica, refinado por el helenismo y el islam, renacido como psicología moderna — los planetas en tu nacimiento son un espejo cósmico de tu mundo interior.",
+    toc:["Orígenes Históricos","Sistemas Mundiales","Carta Natal","12 Casas","Aspectos","Tradición vs Moderno"],
+    tocIds:["history","systems","chart","houses","aspects","modern"],
+
+    s1Label:"HISTORY", s1Title:"Orígenes Históricos de la Astrología",
+    timeline:[
+      {era:"c. 2000 a.C.", title:"Babilonia — El nacimiento del Zodíaco",
+       text:"La civilización mesopotámica dividió la órbita celeste en doce sectores de 30° para crear el primer sistema del Zodíaco. El Enuma Anu Enlil, con más de 7.000 presagios celestes, es la piedra angular de la Astrología Mundana — interpretando fenómenos celestes como augurios nacionales."},
+      {era:"s. IV a.C. – s. II d.C.", title:"Helenismo — El nacimiento de la Astrología Horoscópica",
+       text:"Tras las conquistas de Alejandro, astronomía babilónica, egipcia y griega se fusionaron en Alejandría, dando lugar a la Astrología Horoscópica — el cálculo de cartas natales individuales. El Tetrabiblos de Ptolomeo se convirtió en el texto fundacional de la astrología occidental."},
+      {era:"Siglos VIII–XII", title:"Edad de Oro Islámica — Preservación y transmisión del conocimiento",
+       text:"Tras la caída del Imperio Romano de Occidente, la Casa de la Sabiduría (Bayt al-Hikma) de Bagdad preservó y desarrolló el conocimiento astrológico griego. Eruditos como Abū Maʿshar lo reintrodujeron en Europa, puente del renacimiento renacentista de la astrología."},
+      {era:"Siglo XVII en adelante", title:"Revolución Científica y Revival Moderno",
+       text:"La revolución newtoniana despojó a la astrología de su estatus científico. Pero en el siglo XX, Alan Leo la reenmarcó como herramienta de autoconocimiento, y la psicología analítica de Carl Jung la integró para producir la astrología psicológica moderna."},
+    ],
+    s1hl:"\"La astrología antigua era un oráculo de Estado para predecir el destino de los reyes. La astrología moderna ha evolucionado hacia un lenguaje de autodiálogo y sanación psicológica — ayudando a los individuos a enfrentar su inconsciente reprimido a través del espejo simbólico del cielo nocturno.\"",
+
+    s2Label:"WORLD SYSTEMS", s2Title:"Principales Sistemas Astrológicos del Mundo",
+    systems:[
+      {name:"Astrología Occidental", en:"Tropical Zodiac",
+       desc:"Fija el equinoccio vernal en 0° Aries, usando los ciclos estacionales como referencia. Destaca en el análisis psicológico y el desarrollo del carácter. Trabaja con 10 planetas incluidos Urano, Neptuno y Plutón."},
+      {name:"Astrología Védica India", en:"Jyotish · Sidereal Zodiac",
+       desc:"Basada en posiciones estelares reales, con ~24° de diferencia (Ayanamsa) respecto a la occidental. Rastrea el karma kármico y se especializa en la predicción de momentos mediante el sofisticado sistema Dasha de períodos planetarios."},
+      {name:"Zi Wei Dou Shu chino", en:"Purple Star Astrology",
+       desc:"Organiza los datos de nacimiento en 12 palacios y 108 estrellas simbólicas mediante coordenadas algebraicas. Las estrellas representan miembros de una Corte Imperial — no cuerpos celestes reales sino patrones de destino arquetípicos."},
+    ],
+    s2p:"Cada civilización desarrolló su propia astrología reflejando una cosmovisión única (Matriz Empírea). Las tradiciones orientales enfatizan el cálculo matemático y cronológico; las occidentales enfatizan la observación astronómica geométrica.",
+
+    s3Label:"NATAL CHART", s3Title:"La Estructura de la Carta Natal",
+    s3p:"La carta natal es el 'mapa cósmico' del cielo en el momento exacto del nacimiento — el plano del alma. El marco interpretativo descansa en tres preguntas.",
+    big3q:["Qué (What)", "Cómo (How)", "Dónde (Where)"],
+    big3sub:["Planetas — los actores, energías e impulsos en tu interior", "Signos — cómo se expresan y estilizan esas energías", "Casas — el escenario vital donde la energía se manifiesta"],
+    big3icon:["☉","☽","↑"],
+    big3:[
+      {icon:"☉", name:"Sol (Sun)", desc:"Yo central · identidad · ego — la fuente de vitalidad consciente"},
+      {icon:"☽", name:"Luna (Moon)", desc:"Emociones · inconsciente · necesidades internas — fuente de instinto y hábito"},
+      {icon:"↑", name:"Ascendente (Rising)", desc:"El signo zodiacal en el horizonte oriental al nacer — persona exterior y primera impresión"},
+    ],
+    s3h2:"El Sistema de Planetas",
+    planets:[
+      {sym:"☿", name:"Mercurio", desc:"Comunicación · pensamiento — interacción cotidiana y estilo cognitivo"},
+      {sym:"♀", name:"Venus", desc:"Amor · belleza · valores — gusto estético y encanto interpersonal"},
+      {sym:"♂", name:"Marte", desc:"Pasión · acción · impulso — el combustible del deseo y el movimiento"},
+      {sym:"♃", name:"Júpiter", desc:"Fortuna · expansión · filosofía — crecimiento social y oportunidad"},
+      {sym:"♄", name:"Saturno", desc:"Responsabilidad · estructura · límites — el maestro de la disciplina y la madurez"},
+      {sym:"♅", name:"Urano", desc:"Innovación · rebelión — transformación generacional y avances"},
+      {sym:"♆", name:"Neptuno", desc:"Sueños · espiritualidad · disolución — trascendencia de límites y misticismo"},
+      {sym:"♇", name:"Plutón", desc:"Transformación · inconsciente · renacimiento — sanación profunda y poder"},
+    ],
+
+    s4Label:"12 HOUSES", s4Title:"Las 12 Casas — Escenarios de la Vida",
+    s4p:"La casa que ocupa un planeta determina en qué dominio vital se activa su energía. Una casa vacía no está inactiva — cobra vida cada vez que un planeta la transita.",
+    houses:[
+      {num:"Casa 1", name:"Casa del Yo", sign:"Aries", desc:"Identidad · apariencia · persona · primeras impresiones"},
+      {num:"Casa 2", name:"Casa del Valor", sign:"Tauro", desc:"Riqueza · posesiones · recursos materiales · autoestima"},
+      {num:"Casa 3", name:"Casa de la Comunicación", sign:"Géminis", desc:"Mentalidad · comunicación · hermanos · viajes cortos"},
+      {num:"Casa 4", name:"Casa del Hogar", sign:"Cáncer", desc:"Hogar · ancestros · raíces psicológicas · santuario interior"},
+      {num:"Casa 5", name:"Casa de la Creatividad", sign:"Leo", desc:"Creatividad · romance · hobbies · autoexpresión · hijos"},
+      {num:"Casa 6", name:"Casa del Servicio", sign:"Virgo", desc:"Trabajo diario · entorno laboral · salud física · servicio"},
+      {num:"Casa 7", name:"Casa del Equilibrio", sign:"Libra", desc:"Matrimonio · asociaciones · relaciones 1:1 · contratos"},
+      {num:"Casa 8", name:"Casa de la Transformación", sign:"Escorpio", desc:"Herencia · deudas · intimidad · sexualidad · muerte y renacimiento"},
+      {num:"Casa 9", name:"Casa del Propósito", sign:"Sagitario", desc:"Religión · filosofía · educación superior · viajes largos · creencias"},
+      {num:"Casa 10", name:"Casa del Logro", sign:"Capricornio", desc:"Carrera · reputación pública · logro social · autoridad"},
+      {num:"Casa 11", name:"Casa de la Comunidad", sign:"Acuario", desc:"Amistad · comunidad · esperanzas · ideales colectivos"},
+      {num:"Casa 12", name:"Casa de la Reflexión", sign:"Piscis", desc:"Inconsciente · soledad · secretos · espiritualidad · sanación interior"},
+    ],
+    s4h2:"Clasificación de Casas",
+    houseGroups:[
+      {type:"Angulares (1/4/7/10)", desc:"Pilares de la vida — energía Cardinal, fuerte poder iniciador"},
+      {type:"Sucedentes (2/5/8/11)", desc:"Recursos y acumulación — estabilidad Fija, apoyo a las Angulares"},
+      {type:"Cadentes (3/6/9/12)", desc:"Aprendizaje y transición — flexibilidad Mutable, energía de cambio"},
+    ],
+
+    s5Label:"ASPECTS", s5Title:"Aspectos — Cómo Dialogan los Planetas",
+    s5p:"Un aspecto es el ángulo geométrico entre dos planetas, que define cómo interactúan sus energías. El rango efectivo (Orbe) es generalmente dentro de 8° — cuanto más ajustado el ángulo, más poderosa la influencia.",
+    aspects:[
+      {cls:"neutral", deg:"0°", name:"Conjunción", desc:"Fusión completa de dos energías — máxima intensidad, pero la objetividad puede resultar difícil"},
+      {cls:"tense", deg:"180°", name:"Oposición", desc:"Tensión entre polos — la tarea de integrar lo que proyectas en los demás"},
+      {cls:"tense", deg:"90°", name:"Cuadratura", desc:"Fricción entre elementos distintos — la tensión genera impulso y maestría hacia el logro"},
+      {cls:"harmonious", deg:"120°", name:"Trígono", desc:"Armonía fluida — talento innato y oportunidades que surgen naturalmente"},
+      {cls:"harmonious", deg:"60°", name:"Sextil", desc:"Oportunidad suave — talento activado mediante esfuerzo consciente"},
+    ],
+    s5h2:"Stellium",
+    s5p2:"Tres o más planetas concentrados en una casa o signo forman un Stellium — haciendo que los temas de ese signo o casa sean abrumadoramente dominantes en la vida.",
+
+    s6Label:"TRADITION VS MODERN", s6Title:"Astrología Tradicional vs Psicológica Moderna",
+    s6p:"La evolución de la interpretación astrológica refleja el cambio filosófico en cómo la humanidad contempla el cosmos.",
+    comparison:[
+      {domain:"Casa 8", trad:"Muerte, deudas reales, herencia, recursos ajenos", mod:"Renacimiento psicológico, intimidad sexual, transformación inconsciente"},
+      {domain:"Casa 12", trad:"Prisión, reclusión, enemigos ocultos, hospitales", mod:"Inconsciente, espiritualidad, trascendencia a través de la disolución del ego"},
+    ],
+    s6hl:"\"Cuando la física aristotélica colapsó en el siglo XVII, la astrología se desplazó del fatalismo centrado en eventos hacia la psicología centrada en el interior. Fusionada con la psicología analítica de Jung, renació como herramienta moderna de autorreflexión.\"",
+    s6p2:"La astrología moderna no es una 'tecnología de predicción física' para acertar el futuro. Es un <strong>lenguaje de autodiálogo</strong> — usando los símbolos cósmicos del cielo nocturno como espejo para confrontar el inconsciente reprimido y alcanzar una profunda comprensión de uno mismo.",
+
+    ctaTitle:"Descubre Tu Carta Natal Ahora",
+    ctaDesc:"Ingresa tu fecha, hora y lugar de nacimiento para ver tu carta natal e interpretación planetaria con IA al instante.",
+    ctaBtn:"Ver Mi Carta →",
+    ctaBack:"Volver al Inicio",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+    thComp:["Dominio","Interpretación Tradicional (Eventos Externos)","Interpretación Moderna (Psicología Interna)"],
+  },
+};
+
+// ── 렌더링 ──────────────────────────────────────────────────
+function buildPage(d) {
+  document.documentElement.lang = d.htmlLang;
+  document.title = d.heroTitle + " — Trinity of Destiny";
+  document.getElementById('nav-cta').textContent = d.navCta;
+
+  var tocLinks = d.toc.map(function(t,i){
+    return '<a href="#'+d.tocIds[i]+'">'+t+'</a>';
+  }).join('');
+
+  var tlHtml = d.timeline.map(function(t){
+    return '<div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><span class="tl-era">'+t.era+'</span><div class="tl-title">'+t.title+'</div><div class="tl-text">'+t.text+'</div></div></div>';
+  }).join('');
+
+  var sysHtml = d.systems.map(function(s){
+    return '<div class="star-card"><span class="star-name" style="color:var(--blue-light);">'+s.name+'</span><span style="font-size:.72rem;color:var(--blue);display:block;margin-bottom:.3rem;">'+s.en+'</span><span class="star-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var big3Html = d.big3.map(function(b){
+    return '<div class="big3-card"><span class="big3-icon">'+b.icon+'</span><span class="big3-name">'+b.name+'</span><span class="big3-desc">'+b.desc+'</span></div>';
+  }).join('');
+
+  var planetsHtml = d.planets.map(function(p){
+    return '<div class="planet-card"><span class="planet-symbol">'+p.sym+'</span><span class="planet-name">'+p.name+'</span><div class="planet-desc">'+p.desc+'</div></div>';
+  }).join('');
+
+  var housesHtml = d.houses.map(function(h){
+    return '<div class="house-card"><span class="house-num">'+h.num+'</span><span class="house-name">'+h.name+'<span class="house-sign">'+h.sign+'</span></span><div class="house-desc">'+h.desc+'</div></div>';
+  }).join('');
+
+  var hgHtml = d.houseGroups.map(function(g){
+    return '<li style="color:var(--text-muted);font-size:.88rem;margin-bottom:.5rem;"><strong style="color:var(--blue-light);">'+g.type+'</strong> — '+g.desc+'</li>';
+  }).join('');
+
+  var aspectsHtml = d.aspects.map(function(a){
+    return '<div class="aspect-card '+a.cls+'"><span class="aspect-deg">'+a.deg+'</span><span class="aspect-name">'+a.name+'</span><div class="aspect-desc">'+a.desc+'</div></div>';
+  }).join('');
+
+  var compHtml = d.comparison.map(function(c){
+    return '<tr><td><strong>'+c.domain+'</strong></td><td>'+c.trad+'</td><td>'+c.mod+'</td></tr>';
+  }).join('');
+
+  var content = [
+    '<div class="hero"><span class="hero-tag">'+d.heroTag+'</span><h1>'+d.heroTitle+'</h1><p class="hero-sub">'+d.heroSub+'</p></div>',
+    '<div class="toc">'+tocLinks+'</div>',
+    '<main>',
+
+    // 1. 역사
+    '<section id="history">',
+      '<span class="section-label">'+d.s1Label+'</span>',
+      '<h2>'+d.s1Title+'</h2>',
+      '<div class="timeline">'+tlHtml+'</div>',
+      '<div class="hl"><p>'+d.s1hl+'</p></div>',
+    '</section>',
+
+    // 2. 세계 체계
+    '<section id="systems">',
+      '<span class="section-label">'+d.s2Label+'</span>',
+      '<h2>'+d.s2Title+'</h2>',
+      '<p>'+d.s2p+'</p>',
+      '<div class="planet-grid">'+sysHtml+'</div>',
+    '</section>',
+
+    // 3. 천궁도
+    '<section id="chart">',
+      '<span class="section-label">'+d.s3Label+'</span>',
+      '<h2>'+d.s3Title+'</h2>',
+      '<p>'+d.s3p+'</p>',
+      '<div class="big3">'+big3Html+'</div>',
+      '<h3>'+d.s3h2+'</h3>',
+      '<div class="planet-grid">'+planetsHtml+'</div>',
+    '</section>',
+
+    // 4. 하우스
+    '<section id="houses">',
+      '<span class="section-label">'+d.s4Label+'</span>',
+      '<h2>'+d.s4Title+'</h2>',
+      '<p>'+d.s4p+'</p>',
+      '<div class="house-grid">'+housesHtml+'</div>',
+      '<h3>'+d.s4h2+'</h3>',
+      '<ul style="padding-left:1.2rem;margin:.5rem 0;">'+hgHtml+'</ul>',
+    '</section>',
+
+    // 5. 애스펙트
+    '<section id="aspects">',
+      '<span class="section-label">'+d.s5Label+'</span>',
+      '<h2>'+d.s5Title+'</h2>',
+      '<p>'+d.s5p+'</p>',
+      '<div class="aspect-grid">'+aspectsHtml+'</div>',
+      '<h3>'+d.s5h2+'</h3><p>'+d.s5p2+'</p>',
+    '</section>',
+
+    // 6. 전통 vs 현대
+    '<section id="modern">',
+      '<span class="section-label">'+d.s6Label+'</span>',
+      '<h2>'+d.s6Title+'</h2>',
+      '<p>'+d.s6p+'</p>',
+      '<div class="table-wrap"><table>',
+        '<thead><tr>'+d.thComp.map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead>',
+        '<tbody>'+compHtml+'</tbody>',
+      '</table></div>',
+      '<div class="hl"><p>'+d.s6hl+'</p></div>',
+      '<p>'+d.s6p2+'</p>',
+    '</section>',
+
+    // CTA
+    '<div class="cta-box">',
+      '<h2>'+d.ctaTitle+'</h2>',
+      '<p>'+d.ctaDesc+'</p>',
+      '<a href="./app/" class="btn-p" target="_blank" rel="noopener">'+d.ctaBtn+'</a>',
+      '<a href="./" class="btn-s">'+d.ctaBack+'</a>',
+    '</div>',
+    '</main>',
+  ].join('');
+
+  document.getElementById('page-content').innerHTML = content;
+  document.getElementById('page-footer').textContent = d.footer;
+
+  // star-card 스타일이 없어서 인라인 추가
+  if (!document.getElementById('sc-style')) {
+    var s = document.createElement('style');
+    s.id = 'sc-style';
+    s.textContent = '.star-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.85rem 1rem;}.star-name{font-weight:700;font-size:.9rem;display:block;margin-bottom:.3rem;}.star-desc{font-size:.78rem;color:var(--text-muted);}';
+    document.head.appendChild(s);
+  }
+}
+
+function setLang(lang) {
+  if (!T[lang]) return;
+  try { localStorage.setItem('tod_lang', lang); } catch(e){}
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  buildPage(T[lang]);
+}
+
+(function() {
+  var lang = 'ko';
+  try {
+    lang = localStorage.getItem('tod_lang') ||
+           localStorage.getItem('honcheon.lang') ||
+           (navigator.language || 'ko').slice(0,2);
+  } catch(e){}
+  if (!T[lang]) lang = 'ko';
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
