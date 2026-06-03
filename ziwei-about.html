@@ -1,0 +1,757 @@
+<!-- 자미두수(紫微斗數) 5개국어 소개 페이지 -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자미두수 (紫微斗數) — Trinity of Destiny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Serif+SC:wght@300;400;500;700&family=Cinzel:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--pur:#9B59B6;--pur-light:#C07ED8;--pur-dim:rgba(155,89,182,0.15);--bg:#0A0D1A;--bg2:#0F1528;--bg3:#141B35;--text:#E8E0CC;--text-muted:rgba(232,224,204,0.6);--border:rgba(155,89,182,0.25);--gold:#C9A84C;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.8;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,13,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .nav-logo{font-family:'Cinzel',serif;color:var(--pur-light);font-size:1.05rem;letter-spacing:.1em;text-decoration:none;}
+    .nav-cta{background:var(--pur);color:#fff;font-weight:700;font-size:.82rem;padding:.5rem 1.3rem;border-radius:2px;text-decoration:none;letter-spacing:.05em;transition:background .2s;}
+    .nav-cta:hover{background:var(--pur-light);}
+    .lang-bar{display:flex;justify-content:center;gap:.5rem;padding:.9rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .lang-btn{font-size:.78rem;padding:.28rem .85rem;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;font-family:inherit;}
+    .lang-btn:hover{background:var(--pur-dim);color:var(--pur-light);}
+    .lang-btn.active{background:var(--pur-dim);color:var(--pur-light);border-color:var(--pur);}
+    .hero{text-align:center;padding:4.5rem 1.5rem 3rem;background:linear-gradient(180deg,#110B1F 0%,var(--bg) 100%);border-bottom:1px solid var(--border);}
+    .hero-tag{display:inline-block;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--pur-light);border:1px solid var(--border);padding:.3rem 1.1rem;border-radius:2px;margin-bottom:1.4rem;}
+    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.9rem,5vw,3rem);font-weight:700;color:var(--pur-light);margin-bottom:.9rem;}
+    .hero-sub{font-size:1rem;color:var(--text-muted);max-width:640px;margin:0 auto 1.8rem;}
+    .toc{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:1.8rem 1.5rem;background:var(--bg2);border-bottom:1px solid var(--border);}
+    .toc a{font-size:.8rem;color:var(--pur-light);border:1px solid var(--border);padding:.28rem .85rem;border-radius:2px;text-decoration:none;transition:background .2s;}
+    .toc a:hover{background:var(--pur-dim);}
+    main{max-width:860px;margin:0 auto;padding:3rem 1.5rem 5rem;}
+    section{margin-bottom:4rem;}
+    section+section{border-top:1px solid var(--border);padding-top:4rem;}
+    .section-label{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.22em;color:var(--pur-light);margin-bottom:.5rem;display:block;}
+    h2{font-family:'Noto Serif KR',serif;font-size:1.65rem;font-weight:700;color:var(--pur-light);margin-bottom:1.1rem;}
+    h3{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:600;color:var(--pur);margin:2rem 0 .7rem;}
+    p{color:var(--text-muted);margin-bottom:.9rem;}
+    strong{color:var(--text);}
+    .table-wrap{overflow-x:auto;margin:1.3rem 0;}
+    table{width:100%;border-collapse:collapse;font-size:.85rem;}
+    thead tr{background:var(--bg3);}
+    th{font-family:'Noto Serif KR',serif;font-weight:600;color:var(--pur-light);padding:.6rem .85rem;text-align:center;border:1px solid var(--border);white-space:nowrap;}
+    td{padding:.5rem .85rem;border:1px solid var(--border);color:var(--text-muted);}
+    tr:nth-child(even) td{background:rgba(15,21,40,.5);}
+    .char{font-family:'Noto Serif KR',serif;font-size:1rem;color:var(--pur-light);font-weight:700;}
+    .hl{background:var(--bg2);border-left:3px solid var(--pur);padding:1.1rem 1.4rem;margin:1.3rem 0;border-radius:0 4px 4px 0;}
+    .hl p{margin:0;}
+    /* 12궁 그리드 */
+    .palace-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:1.5rem 0;}
+    .palace-cell{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:.7rem .5rem;text-align:center;min-height:80px;display:flex;flex-direction:column;justify-content:center;gap:3px;}
+    .palace-cell.center{background:rgba(155,89,182,0.08);border-color:rgba(155,89,182,0.4);}
+    .palace-name{font-family:'Noto Serif KR',serif;font-size:.88rem;font-weight:700;color:var(--pur-light);}
+    .palace-en{font-size:.65rem;color:var(--pur);letter-spacing:.03em;}
+    .palace-desc{font-size:.68rem;color:var(--text-muted);margin-top:2px;}
+    /* 별 카드 */
+    .star-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem;margin:1.2rem 0;}
+    .star-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.9rem 1rem;}
+    .star-name{font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;color:var(--pur-light);display:block;margin-bottom:.3rem;}
+    .star-desc{font-size:.8rem;color:var(--text-muted);}
+    /* 길성/살성 태그 */
+    .tag-good{display:inline-block;background:rgba(92,184,92,0.15);color:#5CB85C;border:1px solid rgba(92,184,92,0.3);font-size:.68rem;padding:.1rem .5rem;border-radius:2px;margin-bottom:.4rem;}
+    .tag-bad{display:inline-block;background:rgba(232,93,74,0.15);color:#E85D4A;border:1px solid rgba(232,93,74,0.3);font-size:.68rem;padding:.1rem .5rem;border-radius:2px;margin-bottom:.4rem;}
+    /* 사화 카드 */
+    .sihua-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:1.2rem 0;}
+    @media(max-width:480px){.sihua-grid{grid-template-columns:1fr;}}
+    .sihua-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.9rem 1rem;}
+    .sihua-name{font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:700;display:block;margin-bottom:.25rem;}
+    .sihua-desc{font-size:.82rem;color:var(--text-muted);}
+    .luk{color:#C9A84C;} .kwon{color:#5B9BD5;} .kwa{color:#5CB85C;} .gi{color:#E85D4A;}
+    /* CTA */
+    .cta-box{text-align:center;padding:3rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;margin-top:4rem;}
+    .cta-box h2{margin-bottom:.7rem;}
+    .cta-box p{margin-bottom:1.8rem;}
+    .btn-p{display:inline-block;background:var(--pur);color:#fff;font-weight:700;font-size:.92rem;padding:.8rem 2.3rem;border-radius:2px;text-decoration:none;letter-spacing:.05em;transition:background .2s;}
+    .btn-p:hover{background:var(--pur-light);}
+    .btn-s{display:inline-block;border:1px solid var(--pur);color:var(--pur-light);font-weight:600;font-size:.88rem;padding:.75rem 1.8rem;border-radius:2px;text-decoration:none;margin-left:.9rem;transition:background .2s;}
+    .btn-s:hover{background:var(--pur-dim);}
+    @media(max-width:460px){.btn-s{margin-left:0;margin-top:.7rem;}}
+    footer{text-align:center;padding:1.8rem;font-size:.78rem;color:var(--text-muted);border-top:1px solid var(--border);}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="./" class="nav-logo" id="nav-logo">TRINITY OF DESTINY</a>
+  <a href="./app/" class="nav-cta" id="nav-cta" target="_blank" rel="noopener">명반 보기 →</a>
+</nav>
+
+<div class="lang-bar">
+  <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+  <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
+  <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+  <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
+</div>
+
+<div id="page-content"></div>
+<footer id="page-footer"></footer>
+
+<script>
+var T = {
+  ko: {
+    htmlLang:"ko", navCta:"명반 보기 →",
+    heroTag:"PURPLE STAR ASTROLOGY",
+    heroTitle:"자미두수 (紫微斗數)",
+    heroSub:"북극성(자미성)을 중심으로 천체의 운행을 계산하여 인간의 운명을 읽는 동양 정밀 점성술 — 사주가 인생의 전체 지도라면, 자미두수는 삶의 각 영역을 확대하는 정밀한 렌즈입니다.",
+    toc:["정의와 역사","12사항궁","14정성","보좌성·살성","해석 원리","결론"],
+    tocIds:["history","palaces","stars","aux","principles","conclusion"],
+
+    s1Label:"DEFINITION & HISTORY", s1Title:"자미두수란 무엇인가",
+    s1h1:"문자적 의미",
+    s1p1:"<strong>자미(紫微)</strong>는 은하계의 중심이자 북극성을 뜻하며 황제의 별을 상징합니다. <strong>두(斗)</strong>는 별의 움직임을 측정한다는 의미이고, <strong>수(數)</strong>는 수학적 논리로 운명을 계산한다는 뜻입니다.",
+    s1h2:"유라시아를 관통한 융합의 역사",
+    s1p2:"자미두수는 고립된 학문이 아닙니다. 기원전 5세기 이집트·바빌로니아의 천문 기술이 그리스를 거쳐 인도로 전파되었고, 9세기경 인도 승려 <strong>불공(不空)</strong>이 번역한 <em>수요경(宿曜經)</em>을 통해 인도 점성술이 중국에 보급되었습니다. 당나라의 <strong>여동빈</strong>이 이를 바탕으로 자미두수를 창안하였고, 송나라의 <strong>진희이</strong>가 체계적으로 집대성하여 오늘의 학술적 기틀을 완성했습니다.",
+    s1h3:"핵심 철학: 천인합일론(天人合一論)",
+    s1hl:"\"사주명리학이 인생의 거시적 흐름을 보여주는 '전체 지도'라면, 자미두수는 특정 영역과 사건의 징후를 선명하게 포착하는 '확대경'이다.\"",
+    s1p3:"도덕경(道德經)의 우주론에 기반하여 하늘의 별과 인간의 관계를 하나로 보는 '천인합일론'이 자미두수의 철학적 배경입니다.",
+
+    s2Label:"12 PALACES", s2Title:"명반(命盤)의 구조 — 12사항궁",
+    s2p:"자미두수는 한 장의 도표인 명반(命盤) 위에 인생의 12가지 영역을 배치하여 분석합니다. 각 궁(宮)은 삶의 특정 영역을 담당하며 별들의 배치에 따라 그 영역의 길흉이 결정됩니다.",
+    palaces:[
+      {name:"命宮",en:"Self",desc:"본질·기질·격국"},
+      {name:"兄弟宮",en:"Siblings",desc:"형제·동료·조력"},
+      {name:"夫妻宮",en:"Spouse",desc:"배우자·결혼·연애"},
+      {name:"子女宮",en:"Children",desc:"자녀·창조성·부하"},
+      {name:"財帛宮",en:"Wealth",desc:"재물·현금흐름"},
+      {name:"疾厄宮",en:"Health",desc:"건강·체질·사고"},
+      {name:"遷移宮",en:"Travel",desc:"이동·대외·이미지"},
+      {name:"交友宮",en:"Friends",desc:"인맥·친구·배신"},
+      {name:"官祿宮",en:"Career",desc:"직업·성취·지위"},
+      {name:"田宅宮",en:"Property",desc:"부동산·가정환경"},
+      {name:"福德宮",en:"Mental",desc:"정신세계·행복·복"},
+      {name:"父母宮",en:"Parents",desc:"부모·윗사람·문서"},
+    ],
+    s2h2:"신궁(身宮)의 개념",
+    s2p2:"명궁이 타고난 본질적 기질(體)이라면, 신궁(身宮)은 후천적 행동 양식과 삶의 방향(用)입니다. 생월과 생시를 조합하여 도출되며, 어느 사항궁과 겹치느냐에 따라 인생 후반기의 가치관이 결정됩니다.",
+
+    s3Label:"14 MAIN STARS", s3Title:"운명을 주도하는 14정성(主星)",
+    s3p:"명반의 각 궁에는 14개의 핵심 별이 배치되어 해당 영역의 성격을 규정합니다. 별의 영향력은 위치에 따라 묘(廟)·왕(旺)·평(平)·한(閑)·함(陷) 5단계로 조절됩니다.",
+    s3g1:"자미 성계 (6성)",
+    ziwei6:[
+      {name:"紫微 자미",desc:"권위·리더십·고독 — 황제의 별. 관리자·고위 공직에 적합"},
+      {name:"天機 천기",desc:"지혜·기획·기민함 — 변화에 능하나 예민. IT·연구직 추천"},
+      {name:"太陽 태양",desc:"명예·공익·희생 — 남성 육친 상징. 정치·교육·방송 강점"},
+      {name:"武曲 무곡",desc:"재물·결단·냉철 — 현실적 추진력. 금융·군경·금속 사업"},
+      {name:"天同 천동",desc:"복록·감성·순수 — 아이 같은 성품. 서비스·예술·복지"},
+      {name:"廉貞 염정",desc:"조직·의리·차도화 — 원칙 중시. 공직·엔터테인먼트"},
+    ],
+    s3g2:"천부 성계 (8성)",
+    tianfu8:[
+      {name:"天府 천부",desc:"안정·저장·보수 — 신중한 포용력. 은행·부동산·보수 기업"},
+      {name:"太陰 태음",desc:"부동산·여성·섬세 — 감수성 풍부. 부동산·인테리어·예술"},
+      {name:"貪狼 탐랑",desc:"욕망·사교·정도화 — 다재다능. 영업·마케팅·종교·예술"},
+      {name:"巨門 거문",desc:"언변·분석·논쟁 — 비판적 통찰. 법조계·상담·강사"},
+      {name:"天相 천상",desc:"조화·보좌·합리 — 공정하고 원만. 비서·중개·법률 보조"},
+      {name:"天梁 천량",desc:"보호·지혜·원칙 — 보수적 어른 기질. 교육·의료·전통업"},
+      {name:"七殺 칠살",desc:"카리스마·돌파·독립 — 강한 공격력. 군경·전문기술·사업"},
+      {name:"破軍 파군",desc:"변화·파괴와 재건 — 개척자 기질. 창업·신규 개발·프리랜서"},
+    ],
+    s3h3:"묘왕평한함(廟旺平閑陷) — 별의 밝기",
+    s3p2:"살성(흉성)이라도 <strong>묘(廟)·왕(旺)</strong>의 위치에서 밝게 빛나면 그 어두운 힘이 카리스마와 추진력으로 승화되는 <em>살위권(殺爲權)</em>의 작용이 일어납니다. 반대로 함(陷)의 위치에서는 X 표시가 붙어 제어력을 잃게 됩니다.",
+
+    s4Label:"SUPPORT & MALEFIC STARS", s4Title:"조력자와 방해자 — 보좌성·살성",
+    s4h1:"6길성 — 조력자",
+    good6:[
+      {name:"左輔·右弼",tag:"길",desc:"실질적 인적 조력과 세력 확장"},
+      {name:"文昌·文曲",tag:"길",desc:"지적 성취·문서·자격·학문 명예"},
+      {name:"天魁·天鉞",tag:"길",desc:"귀인의 조력과 결정적 기회 제공"},
+    ],
+    s4h2:"6살성 — 방해자",
+    bad6:[
+      {name:"擎羊·陀羅",tag:"살",desc:"날카로운 칼날 — 지연·형벌·흉터"},
+      {name:"火星·鈴星",tag:"살",desc:"급격한 폭발성 — 정서적 불안·고통"},
+      {name:"地空·地劫",tag:"살",desc:"정신적 소모 — 물질적·재물 상실"},
+    ],
+    s4hl:"살성이라도 주성이 <strong>묘왕(廟旺)</strong>이면 오히려 강력한 카리스마와 추진력(살위권)으로 작용합니다. 주성이 약한 함(陷)이면 살성의 피해가 그대로 드러납니다.",
+
+    s5Label:"INTERPRETATION PRINCIPLES", s5Title:"자미두수만의 정교한 해석 원리",
+    s5h1:"삼방사정(三方四正)",
+    s5p1:"특정 궁을 분석할 때 본궁(本宮) + 대궁(마주 보는 180°) + 삼합궁(좌우 120°) = 총 4개 궁을 묶어 입체적으로 분석합니다. 하나의 궁만 보면 편협해지므로 반드시 주변 궁까지 함께 읽어야 합니다.",
+    s5h2:"사화(四化) — 에너지의 변화",
+    s5p2:"천간에 따라 별에 붙는 네 가지 변환 에너지입니다. 어느 별에 어떤 사화가 붙는지에 따라 그 궁의 운명이 크게 달라집니다.",
+    sihua:[
+      {name:"化祿 화록",cls:"luk",desc:"풍요·재물·유리한 결과 — 그 별과 궁에 이익이 흐릅니다"},
+      {name:"化權 화권",cls:"kwon",desc:"권위·추진력·긍정적 연결 — 적극적 행동과 확장"},
+      {name:"化科 화과",cls:"kwa",desc:"명예·인정·학문적 성취 — 대외적 인지도와 귀인 인연"},
+      {name:"化忌 화기",cls:"gi",desc:"막힘·집착·불만족 — 충(沖)과 함께 작용 시 피해 극대화"},
+    ],
+    s5h3:"체(體)와 용(用)의 원리",
+    s5p3:"선천 명반은 내가 타고난 불변의 '집(體)'이고, 대운(10년)과 유년(1년)은 그 집을 가지고 이사 다니는 '동네(用)'입니다. <strong>내가 변하는 것이 아니라 처한 환경이 달라지는 것</strong> — 이것이 자미두수가 운의 변화를 읽는 핵심 원리입니다.",
+    s5h4:"공궁(空宮)과 차성안궁",
+    s5p4:"주성이 없는 방(공궁)은 대궁의 별을 빌려와 해석합니다. 이는 외부 요인이나 타인과의 상호작용이 비어 있는 영역을 채운다는 '유동적 관계 철학'을 반영합니다.",
+
+    s6Label:"CONCLUSION", s6Title:"자미두수를 대하는 올바른 자세",
+    s6hl:"\"명반은 운명이 아니라 인생의 지도다.\"",
+    s6p:"같은 임인(1962)년생이라도 한 사람은 검사가 되고 다른 사람은 평범한 직원으로 삽니다. 명반이라는 지도는 같아도 개인의 선택과 노력이 에너지의 궤적을 바꿉니다. 자미두수는 정해진 비극을 예고하는 것이 아니라, 자신의 구조를 이해하여 최선의 선택을 하도록 돕는 <strong>은밀한 우주의 지도</strong>입니다.",
+
+    ctaTitle:"지금 내 자미두수 명반을 확인하세요",
+    ctaDesc:"출생 연·월·일·시를 입력하면 자미두수 명반과 AI 해석을 즉시 확인할 수 있습니다.",
+    ctaBtn:"명반 보기 →",
+    ctaBack:"메인으로",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+
+  en: {
+    htmlLang:"en", navCta:"View My Chart →",
+    heroTag:"PURPLE STAR ASTROLOGY",
+    heroTitle:"Zi Wei Dou Shu (紫微斗數)",
+    heroSub:"The precision astrology of the East — calculated from the movements of celestial bodies centered on the Pole Star, revealing the detailed destiny map of each individual's life domains.",
+    toc:["Definition & History","12 Palaces","14 Main Stars","Support & Malefic Stars","Principles","Conclusion"],
+    tocIds:["history","palaces","stars","aux","principles","conclusion"],
+
+    s1Label:"DEFINITION & HISTORY", s1Title:"What Is Zi Wei Dou Shu?",
+    s1h1:"Meaning of the Name",
+    s1p1:"<strong>Zi Wei (紫微)</strong> refers to the Purple Star — the Pole Star, symbol of the Emperor of Heaven. <strong>Dou (斗)</strong> means to measure and calculate the movement of stars. <strong>Shu (數)</strong> means to compute fate through precise mathematical logic.",
+    s1h2:"A Eurasian Synthesis",
+    s1p2:"Zi Wei Dou Shu is not an isolated discipline. Astronomical knowledge from Egypt and Babylon (5th century BC) flowed through Greece into India, where it blended with Indian astrology. Around the 9th century, the Buddhist monk <strong>Amoghavajra (不空)</strong> translated the <em>Xiuyao Jing</em>, spreading Indian astrology in China. <strong>Lü Dongbin</strong> of the Tang Dynasty synthesized these traditions into Zi Wei Dou Shu, which was later systematized by <strong>Chen Tuan (陳希夷)</strong> of the Song Dynasty.",
+    s1h3:"Core Philosophy: Harmony of Heaven and Humanity (天人合一)",
+    s1hl:"\"If Saju (Four Pillars) is the broad map of one's life journey, Zi Wei Dou Shu is the magnifying lens that brings each domain into sharp focus.\"",
+    s1p3:"Grounded in the cosmology of the Tao Te Ching, the philosophy of Heavenly-Human Unity (天人合一) holds that celestial movements and human destiny are organically connected.",
+
+    s2Label:"12 PALACES", s2Title:"The Life Chart — 12 Palaces",
+    s2p:"The birth chart (命盤) places twelve life domains on a single grid. The stars placed in each palace determine the quality and fortune of that domain.",
+    palaces:[
+      {name:"命宮",en:"Self",desc:"Core nature · Life theme"},
+      {name:"兄弟宮",en:"Siblings",desc:"Siblings · Colleagues · Aid"},
+      {name:"夫妻宮",en:"Spouse",desc:"Partner · Marriage · Romance"},
+      {name:"子女宮",en:"Children",desc:"Children · Creativity · Staff"},
+      {name:"財帛宮",en:"Wealth",desc:"Money · Cash flow · Fortune"},
+      {name:"疾厄宮",en:"Health",desc:"Health · Constitution · Accidents"},
+      {name:"遷移宮",en:"Travel",desc:"Travel · Public image · Abroad"},
+      {name:"交友宮",en:"Friends",desc:"Network · Friends · Loyalty"},
+      {name:"官祿宮",en:"Career",desc:"Career · Achievement · Status"},
+      {name:"田宅宮",en:"Property",desc:"Real estate · Home environment"},
+      {name:"福德宮",en:"Mental",desc:"Spirituality · Happiness · Luck"},
+      {name:"父母宮",en:"Parents",desc:"Parents · Superiors · Documents"},
+    ],
+    s2h2:"The Body Palace (身宮)",
+    s2p2:"While the Life Palace (命宮) represents innate nature (體), the Body Palace (身宮) governs behavioral patterns and life direction (用) acquired over time. It is derived from birth month and hour, and the palace it overlaps determines one's values in the latter half of life.",
+
+    s3Label:"14 MAIN STARS", s3Title:"The 14 Main Stars (正星)",
+    s3p:"Fourteen principal stars are placed in the palaces to define each domain's character. Their influence is modulated by brightness levels: Miao (廟) · Wang (旺) · Ping (平) · Xian (閑) · Xian/Xian (陷).",
+    s3g1:"Zi Wei Group (6 Stars)",
+    ziwei6:[
+      {name:"紫微 Zi Wei",desc:"Authority · Leadership · Solitude — the Emperor Star. Suited for management and public office"},
+      {name:"天機 Tian Ji",desc:"Wisdom · Strategy · Agility — clever but sensitive. Ideal for IT, research, technical fields"},
+      {name:"太陽 Tai Yang",desc:"Honor · Public service · Sacrifice — symbol of male energy. Strong in politics, education, media"},
+      {name:"武曲 Wu Qu",desc:"Wealth · Decisiveness · Pragmatism — driven and realistic. Finance, military, metal industries"},
+      {name:"天同 Tian Tong",desc:"Fortune · Emotion · Innocence — childlike nature. Service, arts, welfare sectors"},
+      {name:"廉貞 Lian Zhen",desc:"Organization · Loyalty · Passionate — principled and intense. Government, entertainment"},
+    ],
+    s3g2:"Tian Fu Group (8 Stars)",
+    tianfu8:[
+      {name:"天府 Tian Fu",desc:"Stability · Conservation · Caution — tolerant and measured. Banking, real estate, corporations"},
+      {name:"太陰 Tai Yin",desc:"Property · Femininity · Sensitivity — rich emotional depth. Real estate, interior design, arts"},
+      {name:"貪狼 Tan Lang",desc:"Desire · Sociability · Spirituality — versatile and charming. Sales, marketing, arts, religion"},
+      {name:"巨門 Ju Men",desc:"Speech · Analysis · Debate — critical and probing. Law, counseling, lecturing"},
+      {name:"天相 Tian Xiang",desc:"Harmony · Support · Fairness — balanced and reasonable. Secretary, mediation, legal support"},
+      {name:"天梁 Tian Liang",desc:"Protection · Wisdom · Principle — mature and conservative. Education, medicine, traditional trades"},
+      {name:"七殺 Qi Sha",desc:"Charisma · Breakthrough · Independence — aggressive drive. Military, specialized skills, entrepreneurship"},
+      {name:"破軍 Po Jun",desc:"Change · Destruction & Rebuilding — pioneer spirit. Startups, new development, freelancing"},
+    ],
+    s3h3:"Star Brightness: Miao–Wang–Ping–Xian–Xian (廟旺平閑陷)",
+    s3p2:"Even a malefic star in a <strong>Miao (廟) or Wang (旺)</strong> position transforms its dark energy into charisma and decisive drive — the principle of <em>Sha Wei Quan (殺爲權)</em>. A star in <strong>Xian (陷)</strong> is marked 'X' on the chart, signifying weakened control and vulnerability to harm.",
+
+    s4Label:"SUPPORT & MALEFIC STARS", s4Title:"Helpers and Hinderers",
+    s4h1:"6 Auspicious Stars — Helpers",
+    good6:[
+      {name:"Zuo Fu · You Bi",tag:"good",desc:"Practical human support and expansion of influence"},
+      {name:"Wen Chang · Wen Qu",tag:"good",desc:"Intellectual achievement, documents, credentials, artistic talent"},
+      {name:"Tian Kui · Tian Yue",tag:"good",desc:"Noble helpers and decisive opportunities"},
+    ],
+    s4h2:"6 Malefic Stars — Hinderers",
+    bad6:[
+      {name:"Qing Yang · Tuo Luo",tag:"bad",desc:"Sharp blade — delays, punishment, scars"},
+      {name:"Huo Xing · Ling Xing",tag:"bad",desc:"Sudden explosions — emotional instability, pain"},
+      {name:"Di Kong · Di Jie",tag:"bad",desc:"Mental drain — material loss and wasted resources"},
+    ],
+    s4hl:"When a malefic star encounters a main star at <strong>Miao/Wang</strong> brightness, the darkness transforms into powerful charisma (Sha Wei Quan). When the main star is at Xian (陷), the malefic's damage manifests fully.",
+
+    s5Label:"INTERPRETATION PRINCIPLES", s5Title:"Principles of Zi Wei Analysis",
+    s5h1:"San Fang Si Zheng (三方四正) — Three Directions, Four Alignments",
+    s5p1:"When analyzing any palace, always read it in context with its opposite palace (180°) and the two tri-harmony palaces (120° on each side) — a total of 4 palaces examined together for a three-dimensional view.",
+    s5h2:"Si Hua (四化) — Four Transformations",
+    s5p2:"Based on the Heavenly Stem of the year, four transformation energies attach to specific stars, dramatically altering the fate of the palace they occupy.",
+    sihua:[
+      {name:"化祿 Hua Lu",cls:"luk",desc:"Abundance · Wealth · Favorable outcomes — benefits flow to this star and palace"},
+      {name:"化權 Hua Quan",cls:"kwon",desc:"Authority · Drive · Positive momentum — active expansion and leadership"},
+      {name:"化科 Hua Ke",cls:"kwa",desc:"Reputation · Recognition · Academic achievement — public esteem and noble connections"},
+      {name:"化忌 Hua Ji",cls:"gi",desc:"Obstruction · Obsession · Dissatisfaction — damage maximized when combined with Clash"},
+    ],
+    s5h3:"Ti (體) and Yong (用) — Substance and Function",
+    s5p3:"The natal chart is the unchanging 'home' (Ti/體) you were born into. Major Cycles (10-year) and Annual Cycles (1-year) are the 'neighborhoods' (Yong/用) you move through. <strong>You don't change — your environment does</strong>. This is the core principle by which Zi Wei reads the flow of fortune.",
+    s5h4:"Empty Palace (空宮) and Borrowing Stars",
+    s5p4:"A palace with no main star (empty palace) borrows the stars of the opposite palace for interpretation — reflecting the philosophy that external forces and other people fill the voids in our life.",
+
+    s6Label:"CONCLUSION", s6Title:"The Right Relationship with Your Chart",
+    s6hl:"\"The chart is not fate — it is a map of your life.\"",
+    s6p:"Two people born in the same year can follow vastly different paths: one rises to a position of power while another lives an ordinary life. The map (chart) may be the same, but personal choices and effort change the trajectory of energy. Zi Wei Dou Shu is not a prophecy of fixed tragedy — it is a <strong>secret map of the cosmos</strong> that helps you understand your own nature and make the best choices possible.",
+
+    ctaTitle:"Discover Your Zi Wei Chart Now",
+    ctaDesc:"Enter your birth year, month, day, and hour to instantly view your Zi Wei Dou Shu chart and AI interpretation.",
+    ctaBtn:"View My Chart →",
+    ctaBack:"Back to Main",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+
+  ja: {
+    htmlLang:"ja", navCta:"命盤を見る →",
+    heroTag:"PURPLE STAR ASTROLOGY",
+    heroTitle:"紫微斗数 (자미두수)",
+    heroSub:"北極星（紫微星）を中心に天体の運行を計算し、人間の運命を読み解く東洋の精密占星術 — 四柱命理が人生の全体地図なら、紫微斗数は各領域を拡大する精密なレンズです。",
+    toc:["定義と歴史","12宮","14正星","補佐星・殺星","解釈原理","結論"],
+    tocIds:["history","palaces","stars","aux","principles","conclusion"],
+
+    s1Label:"DEFINITION & HISTORY", s1Title:"紫微斗数とは",
+    s1h1:"名称の意味",
+    s1p1:"<strong>紫微(Zi Wei)</strong>は銀河の中心・北極星を指し、天帝の星を象徴します。<strong>斗(Dou)</strong>は星の動きを測定するという意味、<strong>数(Shu)</strong>は数学的論理で運命を計算するという意味を持ちます。",
+    s1h2:"ユーラシアを横断する融合の歴史",
+    s1p2:"紫微斗数は孤立した学問ではありません。エジプト・バビロニアの天文技術がギリシャを経てインドに伝わり、9世紀頃、インド僧<strong>不空(アモーガヴァジュラ)</strong>が翻訳した『宿曜経』を通じてインド占星術が中国に広まりました。唐代の<strong>呂洞賓</strong>がこれを基に紫微斗数を創案し、宋代の<strong>陳希夷</strong>が体系的に集大成しました。",
+    s1h3:"核心哲学：天人合一論",
+    s1hl:"「四柱命理が人生の大きな流れを示す『全体地図』なら、紫微斗数は特定領域と出来事の予兆を鮮明に捉える『拡大鏡』である。」",
+    s1p3:"道徳経の宇宙論に基づき、天の星と人間の関係を一体として見る「天人合一論」が紫微斗数の哲学的背景です。",
+
+    s2Label:"12 PALACES", s2Title:"命盤の構造 — 12宮",
+    s2p:"紫微斗数は一枚の図表「命盤」に人生の12領域を配置して分析します。各宮に置かれた星の組み合わせがその領域の吉凶を決定します。",
+    palaces:[
+      {name:"命宮",en:"Self",desc:"本質・気質・格局"},
+      {name:"兄弟宮",en:"Siblings",desc:"兄弟・同僚・人的助力"},
+      {name:"夫妻宮",en:"Spouse",desc:"配偶者・結婚・恋愛"},
+      {name:"子女宮",en:"Children",desc:"子供・創造性・部下"},
+      {name:"財帛宮",en:"Wealth",desc:"財物・現金・経済運"},
+      {name:"疾厄宮",en:"Health",desc:"健康・体質・事故"},
+      {name:"遷移宮",en:"Travel",desc:"移動・対外・イメージ"},
+      {name:"交友宮",en:"Friends",desc:"人脈・友人・裏切り"},
+      {name:"官祿宮",en:"Career",desc:"職業・成就・地位"},
+      {name:"田宅宮",en:"Property",desc:"不動産・家庭環境"},
+      {name:"福徳宮",en:"Mental",desc:"精神世界・幸福・福"},
+      {name:"父母宮",en:"Parents",desc:"親・目上の人・文書"},
+    ],
+    s2h2:"身宮(しんきゅう)の概念",
+    s2p2:"命宮が先天的な気質(体)なら、身宮は後天的な行動様式と人生の方向性(用)を決定します。生月と生時の組み合わせで導き出され、どの宮と重なるかによって人生後半期の価値観が定まります。",
+
+    s3Label:"14 MAIN STARS", s3Title:"運命を主導する14正星",
+    s3p:"命盤の各宮には14個の主星が配置されています。星の影響力は廟・旺・平・閑・陥の5段階で調節されます。",
+    s3g1:"紫微星系（6星）",
+    ziwei6:[
+      {name:"紫微",desc:"権威·リーダーシップ·孤独 — 皇帝の星。管理職・高位公職に適する"},
+      {name:"天機",desc:"知恵·企画·機敏 — 変化に長けるが繊細。IT・研究職・技術職"},
+      {name:"太陽",desc:"名誉·公益·犠牲 — 男性肉親の象徴。政治・教育・放送"},
+      {name:"武曲",desc:"財物·決断·冷徹 — 現実的推進力。金融・軍警・金属事業"},
+      {name:"天同",desc:"福禄·感性·純粋 — 子供のような気性。サービス・芸術・福祉"},
+      {name:"廉貞",desc:"組織·義理·熱い感情 — 原則を重視。公職・エンターテインメント"},
+    ],
+    s3g2:"天府星系（8星）",
+    tianfu8:[
+      {name:"天府",desc:"安定·貯蓄·保守 — 包容力があり慎重。銀行・不動産・保守企業"},
+      {name:"太陰",desc:"不動産·女性·繊細 — 感受性豊か。不動産・インテリア・静的芸術"},
+      {name:"貪狼",desc:"欲望·社交·多才 — 器用で魅力的。営業・マーケティング・芸術"},
+      {name:"巨門",desc:"弁舌·分析·論争 — 批判的洞察力。法曹界・相談・講師"},
+      {name:"天相",desc:"調和·補佐·公正 — 円満な性格。秘書・仲介・法律補助"},
+      {name:"天梁",desc:"保護·知恵·原則 — 保守的な大人気質。教育・医療・伝統業"},
+      {name:"七殺",desc:"カリスマ·突破·独立 — 強い攻撃力。軍警・専門技術・起業"},
+      {name:"破軍",desc:"変化·破壊と再建 — 開拓者気質。創業・新規開発・フリーランス"},
+    ],
+    s3h3:"廟旺平閑陥 — 星の明るさ",
+    s3p2:"殺星（凶星）でも<strong>廟・旺</strong>の位置で輝けば、その暗い力がカリスマと実行力に昇華される「殺為権」の作用が起きます。陥の位置では'X'が付き、制御力を失います。",
+
+    s4Label:"SUPPORT & MALEFIC STARS", s4Title:"助力者と妨害者",
+    s4h1:"6吉星 — 助力者",
+    good6:[
+      {name:"左輔·右弼",tag:"吉",desc:"実質的な人的助力と勢力拡大"},
+      {name:"文昌·文曲",tag:"吉",desc:"知的成就・文書・資格・学問的名誉"},
+      {name:"天魁·天鉞",tag:"吉",desc:"貴人の助けと決定的な機会の提供"},
+    ],
+    s4h2:"6殺星 — 妨害者",
+    bad6:[
+      {name:"擎羊·陀羅",tag:"殺",desc:"鋭い刃 — 遅延・刑罰・傷跡"},
+      {name:"火星·鈴星",tag:"殺",desc:"急激な爆発性 — 感情的不安・苦痛"},
+      {name:"地空·地劫",tag:"殺",desc:"精神的消耗 — 物質的・財物喪失"},
+    ],
+    s4hl:"殺星でも主星が廟旺であれば、強力なカリスマと推進力（殺為権）として作用します。主星が陥であれば、殺星の被害がそのまま現れます。",
+
+    s5Label:"INTERPRETATION PRINCIPLES", s5Title:"紫微斗数の解釈原理",
+    s5h1:"三方四正",
+    s5p1:"特定の宮を分析する際は、その宮（本宮）＋対宮（180°）＋三合宮（左右120°）＝計4宮を合わせて立体的に読み解きます。",
+    s5h2:"四化 — エネルギーの変化",
+    s5p2:"天干に応じて星に付く4種の変換エネルギーです。どの星にどの四化が付くかによって、その宮の運命が大きく変わります。",
+    sihua:[
+      {name:"化祿",cls:"luk",desc:"豊かさ·財物·有利な結果 — その星と宮に利益が流れます"},
+      {name:"化権",cls:"kwon",desc:"権威·推進力·ポジティブな展開 — 積極的行動と拡張"},
+      {name:"化科",cls:"kwa",desc:"名誉·認定·学問的成就 — 対外的認知度と貴人の縁"},
+      {name:"化忌",cls:"gi",desc:"停滞·執着·不満足 — 沖（充突）と合わさると被害が最大化"},
+    ],
+    s5h3:"体と用の原理",
+    s5p3:"先天命盤は変わらない'家（体）'であり、大運（10年）・流年（1年）はその家を持って引っ越す'町（用）'です。<strong>自分が変わるのではなく、置かれた環境が変わる</strong>のです。",
+    s5h4:"空宮と借星入宮",
+    s5p4:"主星のない宮（空宮）は対宮の星を借りて解釈します。これは外部要因や他者との相互作用が空白の領域を埋めるという「流動的関係哲学」を反映しています。",
+
+    s6Label:"CONCLUSION", s6Title:"命盤と向き合う正しい姿勢",
+    s6hl:"「命盤は運命ではなく、人生の地図である。」",
+    s6p:"同じ年に生まれた人でも、一人は検事になり、もう一人は平凡な会社員として生きます。地図（命盤）は同じでも、個人の選択と努力がエネルギーの軌跡を変えます。紫微斗数は定められた悲劇を予言するものではなく、自身の構造を理解してより良い選択をするための<strong>宇宙の秘密地図</strong>です。",
+
+    ctaTitle:"今すぐ紫微斗数の命盤を確認しましょう",
+    ctaDesc:"生年・月・日・時を入力すると、紫微斗数の命盤とAI解釈をすぐに確認できます。",
+    ctaBtn:"命盤を見る →",
+    ctaBack:"メインへ",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+
+  zh: {
+    htmlLang:"zh", navCta:"查看命盘 →",
+    heroTag:"PURPLE STAR ASTROLOGY",
+    heroTitle:"紫微斗數",
+    heroSub:"以北极星（紫微星）为中心，计算天体运行以推算人类命运的东方精密星命学 — 若四柱八字是人生的全局地图，紫微斗数则是放大每一个人生领域的精密镜头。",
+    toc:["定义与历史","十二宫","十四正星","辅星·煞星","解盘原理","结论"],
+    tocIds:["history","palaces","stars","aux","principles","conclusion"],
+
+    s1Label:"DEFINITION & HISTORY", s1Title:"什么是紫微斗数",
+    s1h1:"名称解义",
+    s1p1:"<strong>紫微</strong>是北极星的别称，象征天帝之星、银河中心。<strong>斗</strong>有测量、计量星象之意。<strong>数</strong>意为以严密的数理逻辑推算命运。",
+    s1h2:"横贯欧亚大陆的融合历史",
+    s1p2:"紫微斗数并非孤立的学问。公元前5世纪埃及、巴比伦的天文技术经由希腊传入印度，9世纪前后，印度高僧<strong>不空</strong>翻译的《宿曜经》将印度星命学带入中国。唐代<strong>吕洞宾</strong>以此为基础创立紫微斗数，宋代<strong>陈希夷</strong>将其体系化，奠定了现代学术基础。",
+    s1h3:"核心哲学：天人合一论",
+    s1hl:"「若四柱命理是展现人生宏观走势的'全局地图'，那么紫微斗数就是清晰捕捉特定领域与事件征兆的'放大镜'。」",
+    s1p3:"以《道德经》宇宙论为基础，将天上星辰与人间命运视为一体的'天人合一论'，是紫微斗数的哲学背景。",
+
+    s2Label:"12 PALACES", s2Title:"命盘结构 — 十二宫",
+    s2p:"紫微斗数在一张命盘上排列十二个人生领域进行分析。每宫所置的星曜组合决定该领域的吉凶祸福。",
+    palaces:[
+      {name:"命宫",en:"Self",desc:"本质·气质·格局"},
+      {name:"兄弟宫",en:"Siblings",desc:"兄弟·同僚·人脉"},
+      {name:"夫妻宫",en:"Spouse",desc:"配偶·婚姻·恋爱"},
+      {name:"子女宫",en:"Children",desc:"子女·创造力·部属"},
+      {name:"财帛宫",en:"Wealth",desc:"财物·现金流·财运"},
+      {name:"疾厄宫",en:"Health",desc:"健康·体质·事故"},
+      {name:"迁移宫",en:"Travel",desc:"移动·对外·形象"},
+      {name:"交友宫",en:"Friends",desc:"人脉·友人·忠诚"},
+      {name:"官禄宫",en:"Career",desc:"职业·成就·地位"},
+      {name:"田宅宫",en:"Property",desc:"不动产·家庭环境"},
+      {name:"福德宫",en:"Mental",desc:"精神世界·幸福·福气"},
+      {name:"父母宫",en:"Parents",desc:"父母·上司·文书"},
+    ],
+    s2h2:"身宫的概念",
+    s2p2:"命宫是先天气质（体），身宫则决定后天行为模式与人生方向（用）。由出生月份与时辰推算，与哪个宫重叠决定人生后半段的价值取向。",
+
+    s3Label:"14 MAIN STARS", s3Title:"主导命运的十四正星",
+    s3p:"命盘各宫配有14颗主星，决定该宫的性质。星曜影响力以庙·旺·平·闲·陷五个等级调节。",
+    s3g1:"紫微星系（六星）",
+    ziwei6:[
+      {name:"紫微",desc:"权威·领导力·孤独感 — 帝星。适合管理者、高级公职"},
+      {name:"天机",desc:"智慧·策划·机敏 — 善变而敏感。IT、研究、技术岗"},
+      {name:"太阳",desc:"名誉·公益·奉献 — 男性六亲象征。政治、教育、传媒"},
+      {name:"武曲",desc:"财物·决断·冷静 — 现实推进力。金融、军警、金属行业"},
+      {name:"天同",desc:"福禄·感性·纯真 — 孩子气性情。服务、艺术、福利"},
+      {name:"廉贞",desc:"组织·义气·热情 — 原则性强。公职、娱乐业"},
+    ],
+    s3g2:"天府星系（八星）",
+    tianfu8:[
+      {name:"天府",desc:"稳定·储蓄·保守 — 包容谨慎。银行、房地产、保守企业"},
+      {name:"太阴",desc:"房产·女性·细腻 — 感受性丰富。房地产、室内设计、艺术"},
+      {name:"贪狼",desc:"欲望·社交·多才 — 多才多艺。营销、销售、宗教、艺术"},
+      {name:"巨门",desc:"口才·分析·争辩 — 批判性洞察。法律、咨询、讲师"},
+      {name:"天相",desc:"和谐·辅佐·公正 — 圆融稳重。秘书、中介、法律助理"},
+      {name:"天梁",desc:"保护·智慧·原则 — 保守长者气质。教育、医疗、传统行业"},
+      {name:"七杀",desc:"魅力·突破·独立 — 强烈攻击力。军警、专业技术、创业"},
+      {name:"破军",desc:"变化·破旧立新 — 开拓者气质。创业、新品开发、自由职业"},
+    ],
+    s3h3:"庙旺平闲陷 — 星曜亮度",
+    s3p2:"即便是煞星，若处于<strong>庙·旺</strong>之位，其暗黑之力反而升华为魅力与执行力——即「杀为权」之理。陷位之星在盘上标注'X'，表示失控、易受煞星侵害。",
+
+    s4Label:"SUPPORT & MALEFIC STARS", s4Title:"助力星与煞星",
+    s4h1:"六吉星 — 助力者",
+    good6:[
+      {name:"左辅·右弼",tag:"吉",desc:"实质性人脉助力与势力扩张"},
+      {name:"文昌·文曲",tag:"吉",desc:"学术成就·文书·资格·艺术才华"},
+      {name:"天魁·天钺",tag:"吉",desc:"贵人相助与关键机遇"},
+    ],
+    s4h2:"六煞星 — 阻碍者",
+    bad6:[
+      {name:"擎羊·陀罗",tag:"煞",desc:"锋利刀刃 — 延误·刑罚·伤疤"},
+      {name:"火星·铃星",tag:"煞",desc:"急爆性 — 情绪失稳·痛苦"},
+      {name:"地空·地劫",tag:"煞",desc:"精神耗损 — 物质财富流失"},
+    ],
+    s4hl:"煞星遇主星庙旺，反而升华为强大魅力与执行力（杀为权）。主星陷位则煞星之害全显。",
+
+    s5Label:"INTERPRETATION PRINCIPLES", s5Title:"紫微斗数独特的解盘原理",
+    s5h1:"三方四正",
+    s5p1:"分析某宫时，将本宫＋对宫（180°）＋三合宫（左右120°）共四宫合并立体解读，避免片面。",
+    s5h2:"四化 — 能量的转变",
+    s5p2:"依天干，四种转化能量附着于特定星曜，大幅改变该宫命运走势。",
+    sihua:[
+      {name:"化禄",cls:"luk",desc:"丰饶·财物·有利结果 — 利益流向该星与该宫"},
+      {name:"化权",cls:"kwon",desc:"权威·推进力·积极连结 — 扩张与主动行动"},
+      {name:"化科",cls:"kwa",desc:"名誉·认可·学术成就 — 社会知名度与贵人缘"},
+      {name:"化忌",cls:"gi",desc:"阻塞·执着·不满足 — 遇冲时伤害最大化"},
+    ],
+    s5h3:"体与用的原理",
+    s5p3:"先天命盘是不变的'家（体）'，大限（十年）与流年（一年）是带着这个家迁入的'街区（用）'。<strong>改变的不是你，而是你所处的环境</strong>。",
+    s5h4:"空宫与借星入宫",
+    s5p4:"无主星的宫（空宫）借对宫之星进行解读，体现了'外部因素与他人互动填补空白'的流动关系哲学。",
+
+    s6Label:"CONCLUSION", s6Title:"以正确的态度看待命盘",
+    s6hl:"「命盘不是命运，而是人生的地图。」",
+    s6p:"同年出生之人，一人成为检察官，另一人过着平凡生活。地图（命盘）相同，但个人的选择与努力改变了能量轨迹。紫微斗数不是预言固定悲剧的工具，而是帮助你理解自身结构、做出最优选择的<strong>宇宙密图</strong>。",
+
+    ctaTitle:"立即查看您的紫微斗数命盘",
+    ctaDesc:"输入出生年、月、日、时，即刻获取紫微斗数命盘与AI解读。",
+    ctaBtn:"查看命盘 →",
+    ctaBack:"返回首页",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+
+  es: {
+    htmlLang:"es", navCta:"Ver Mi Carta →",
+    heroTag:"PURPLE STAR ASTROLOGY",
+    heroTitle:"Zi Wei Dou Shu (紫微斗數)",
+    heroSub:"La astrología de precisión oriental — calculada a partir del movimiento de los cuerpos celestes centrado en la Estrella Polar, revela el mapa del destino de cada dominio vital del individuo.",
+    toc:["Definición e Historia","12 Palacios","14 Estrellas Principales","Estrellas Auxiliares","Principios","Conclusión"],
+    tocIds:["history","palaces","stars","aux","principles","conclusion"],
+
+    s1Label:"DEFINITION & HISTORY", s1Title:"¿Qué es Zi Wei Dou Shu?",
+    s1h1:"Significado del Nombre",
+    s1p1:"<strong>Zi Wei (紫微)</strong> es la Estrella Polar — el centro de la galaxia y símbolo del Emperador Celestial. <strong>Dou (斗)</strong> significa medir y calcular el movimiento estelar. <strong>Shu (數)</strong> significa calcular el destino mediante lógica matemática precisa.",
+    s1h2:"Una síntesis euroasiática",
+    s1p2:"Zi Wei Dou Shu no es una disciplina aislada. El conocimiento astronómico de Egipto y Babilonia (siglo V a.C.) fluyó a través de Grecia hacia India. Alrededor del siglo IX, el monje budista <strong>Amoghavajra (不空)</strong> tradujo el <em>Xiuyao Jing</em>, difundiendo la astrología india en China. <strong>Lü Dongbin</strong> de la dinastía Tang sintetizó estas tradiciones, y <strong>Chen Tuan (陳希夷)</strong> de la dinastía Song las sistematizó definitivamente.",
+    s1h3:"Filosofía central: Armonía Cielo-Humanidad (天人合一)",
+    s1hl:"«Si los Cuatro Pilares (Saju) son el mapa general del viaje vital, Zi Wei Dou Shu es la lente amplificadora que enfoca cada dominio de la vida con nitidez.»",
+    s1p3:"Basada en la cosmología del Tao Te Ching, la filosofía de la Unidad Cielo-Humanidad sostiene que los movimientos celestiales y el destino humano están orgánicamente conectados.",
+
+    s2Label:"12 PALACES", s2Title:"La Carta Natal — 12 Palacios",
+    s2p:"La carta natal (命盤) distribuye doce dominios vitales en una sola cuadrícula. Las estrellas colocadas en cada palacio determinan la calidad y fortuna de ese dominio.",
+    palaces:[
+      {name:"命宮",en:"Self",desc:"Naturaleza · Tema vital"},
+      {name:"兄弟宮",en:"Siblings",desc:"Hermanos · Colegas · Apoyo"},
+      {name:"夫妻宮",en:"Spouse",desc:"Pareja · Matrimonio · Romance"},
+      {name:"子女宮",en:"Children",desc:"Hijos · Creatividad · Subordinados"},
+      {name:"財帛宮",en:"Wealth",desc:"Dinero · Flujo · Fortuna"},
+      {name:"疾厄宮",en:"Health",desc:"Salud · Constitución · Accidentes"},
+      {name:"遷移宮",en:"Travel",desc:"Viajes · Imagen pública · Exterior"},
+      {name:"交友宮",en:"Friends",desc:"Red · Amigos · Lealtad"},
+      {name:"官祿宮",en:"Career",desc:"Carrera · Logros · Estatus"},
+      {name:"田宅宮",en:"Property",desc:"Inmuebles · Entorno doméstico"},
+      {name:"福德宮",en:"Mental",desc:"Espiritualidad · Felicidad · Suerte"},
+      {name:"父母宮",en:"Parents",desc:"Padres · Superiores · Documentos"},
+    ],
+    s2h2:"El Palacio del Cuerpo (身宮)",
+    s2p2:"Si el Palacio de la Vida (命宮) representa la naturaleza innata (Ti/體), el Palacio del Cuerpo (身宮) rige los patrones conductuales y la dirección vital (Yong/用) adquiridos con el tiempo.",
+
+    s3Label:"14 MAIN STARS", s3Title:"Las 14 Estrellas Principales",
+    s3p:"Catorce estrellas principales se distribuyen en los palacios para definir el carácter de cada dominio. Su influencia se modula en cinco niveles de brillo: Miao·Wang·Ping·Xian·Xian (廟旺平閑陷).",
+    s3g1:"Grupo Zi Wei (6 estrellas)",
+    ziwei6:[
+      {name:"紫微 Zi Wei",desc:"Autoridad · Liderazgo · Soledad — la Estrella Emperatriz. Gestión y cargos públicos"},
+      {name:"天機 Tian Ji",desc:"Sabiduría · Estrategia · Agilidad — inteligente pero sensible. TI, investigación"},
+      {name:"太陽 Tai Yang",desc:"Honor · Servicio público · Sacrificio — energía masculina. Política, educación, medios"},
+      {name:"武曲 Wu Qu",desc:"Riqueza · Decisión · Pragmatismo — impulso realista. Finanzas, ejército, industria metal"},
+      {name:"天同 Tian Tong",desc:"Fortuna · Emoción · Inocencia — naturaleza infantil. Servicios, artes, bienestar"},
+      {name:"廉貞 Lian Zhen",desc:"Organización · Lealtad · Pasión — principios intensos. Gobierno, entretenimiento"},
+    ],
+    s3g2:"Grupo Tian Fu (8 estrellas)",
+    tianfu8:[
+      {name:"天府 Tian Fu",desc:"Estabilidad · Conservación · Cautela. Banca, bienes raíces, corporaciones"},
+      {name:"太陰 Tai Yin",desc:"Propiedad · Feminidad · Sensibilidad. Diseño de interiores, artes, inmuebles"},
+      {name:"貪狼 Tan Lang",desc:"Deseo · Sociabilidad · Espiritualidad — versátil y encantador. Ventas, arte, religión"},
+      {name:"巨門 Ju Men",desc:"Elocuencia · Análisis · Debate. Derecho, asesoría, docencia"},
+      {name:"天相 Tian Xiang",desc:"Armonía · Apoyo · Equidad. Secretaría, mediación, apoyo legal"},
+      {name:"天梁 Tian Liang",desc:"Protección · Sabiduría · Principios — maduro y conservador. Educación, medicina"},
+      {name:"七殺 Qi Sha",desc:"Carisma · Penetración · Independencia. Ejército, habilidades especializadas, emprendimiento"},
+      {name:"破軍 Po Jun",desc:"Cambio · Destrucción y Reconstrucción — espíritu pionero. Startups, desarrollo, freelancing"},
+    ],
+    s3h3:"Brillo Estelar: Miao–Wang–Ping–Xian–Xian",
+    s3p2:"Incluso una estrella maléfica en posición <strong>Miao (廟) o Wang (旺)</strong> transforma su energía oscura en carisma y poder decisivo — el principio <em>Sha Wei Quan</em>. En posición Xian (陷) la estrella pierde control y es marcada con 'X'.",
+
+    s4Label:"SUPPORT & MALEFIC STARS", s4Title:"Estrellas Auxiliares y Maléficas",
+    s4h1:"6 Estrellas Auspiciosas — Ayudantes",
+    good6:[
+      {name:"Zuo Fu · You Bi",tag:"bien",desc:"Apoyo humano práctico y expansión de influencia"},
+      {name:"Wen Chang · Wen Qu",tag:"bien",desc:"Logro intelectual, documentos, credenciales, talento artístico"},
+      {name:"Tian Kui · Tian Yue",tag:"bien",desc:"Nobles ayudantes y oportunidades decisivas"},
+    ],
+    s4h2:"6 Estrellas Maléficas — Obstáculos",
+    bad6:[
+      {name:"Qing Yang · Tuo Luo",tag:"mal",desc:"Hoja afilada — retrasos, castigos, cicatrices"},
+      {name:"Huo Xing · Ling Xing",tag:"mal",desc:"Explosiones repentinas — inestabilidad emocional, dolor"},
+      {name:"Di Kong · Di Jie",tag:"mal",desc:"Agotamiento mental — pérdida material y de recursos"},
+    ],
+    s4hl:"Cuando una estrella maléfica encuentra una estrella principal en brillo Miao/Wang, la oscuridad se convierte en carisma poderoso (Sha Wei Quan). En Xian (陷), el daño maléfico se manifiesta plenamente.",
+
+    s5Label:"INTERPRETATION PRINCIPLES", s5Title:"Principios de Análisis",
+    s5h1:"San Fang Si Zheng (三方四正) — Tres Direcciones, Cuatro Alineaciones",
+    s5p1:"Al analizar cualquier palacio, siempre léelo junto con el palacio opuesto (180°) y los dos palacios en tri-armonía (120° a cada lado) — 4 palacios en total para una visión tridimensional.",
+    s5h2:"Si Hua (四化) — Las Cuatro Transformaciones",
+    s5p2:"Basadas en el Tallo Celestial del año, cuatro energías de transformación se adhieren a estrellas específicas, alterando drásticamente el destino del palacio que ocupan.",
+    sihua:[
+      {name:"化禄 Hua Lu",cls:"luk",desc:"Abundancia · Riqueza · Resultados favorables"},
+      {name:"化権 Hua Quan",cls:"kwon",desc:"Autoridad · Impulso · Momentum positivo"},
+      {name:"化科 Hua Ke",cls:"kwa",desc:"Reputación · Reconocimiento · Logro académico"},
+      {name:"化忌 Hua Ji",cls:"gi",desc:"Obstáculos · Obsesión · Insatisfacción — daño máximo combinado con Choque"},
+    ],
+    s5h3:"Ti (體) y Yong (用) — Sustancia y Función",
+    s5p3:"La carta natal es el 'hogar' inmutable (Ti/體) con el que naciste. Los Ciclos Mayores (10 años) y Anuales (1 año) son los 'barrios' (Yong/用) por los que te mudas. <strong>Tú no cambias — cambia tu entorno</strong>.",
+    s5h4:"Palacio Vacío y Préstamo de Estrellas",
+    s5p4:"Un palacio sin estrella principal (palacio vacío) toma prestadas las estrellas del palacio opuesto, reflejando la filosofía de que fuerzas externas y otras personas llenan los vacíos de nuestra vida.",
+
+    s6Label:"CONCLUSION", s6Title:"La Relación Correcta con Tu Carta",
+    s6hl:"«La carta no es el destino — es un mapa de tu vida.»",
+    s6p:"Dos personas nacidas en el mismo año pueden seguir caminos completamente distintos: una asciende al poder mientras la otra lleva una vida ordinaria. El mapa (carta) puede ser el mismo, pero las elecciones personales y el esfuerzo cambian la trayectoria de la energía. Zi Wei Dou Shu no es una profecía de tragedia fija — es un <strong>mapa secreto del cosmos</strong> que te ayuda a entender tu propia naturaleza y tomar las mejores decisiones posibles.",
+
+    ctaTitle:"Descubre Tu Carta Zi Wei Ahora",
+    ctaDesc:"Ingresa tu año, mes, día y hora de nacimiento para ver tu carta Zi Wei Dou Shu e interpretación con IA al instante.",
+    ctaBtn:"Ver Mi Carta →",
+    ctaBack:"Volver al Inicio",
+    footer:"© 2025 Trinity of Destiny. All rights reserved.",
+  },
+};
+
+// ── 렌더링 ──────────────────────────────────────────────────
+function buildPage(d) {
+  document.documentElement.lang = d.htmlLang;
+  document.title = d.heroTitle + " — Trinity of Destiny";
+  document.getElementById('nav-cta').textContent = d.navCta;
+
+  var tocLinks = d.toc.map(function(t,i){
+    return '<a href="#'+d.tocIds[i]+'">'+t+'</a>';
+  }).join('');
+
+  var palacesHtml = d.palaces.map(function(p){
+    return '<div class="palace-cell"><span class="palace-name">'+p.name+'</span><span class="palace-en">'+p.en+'</span><span class="palace-desc">'+p.desc+'</span></div>';
+  }).join('');
+
+  var z6 = d.ziwei6.map(function(s){
+    return '<div class="star-card"><span class="star-name">'+s.name+'</span><span class="star-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var tf8 = d.tianfu8.map(function(s){
+    return '<div class="star-card"><span class="star-name">'+s.name+'</span><span class="star-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var g6 = d.good6.map(function(s){
+    return '<div class="star-card"><span class="tag-good">'+s.tag+'</span><span class="star-name">'+s.name+'</span><span class="star-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var b6 = d.bad6.map(function(s){
+    return '<div class="star-card"><span class="tag-bad">'+s.tag+'</span><span class="star-name">'+s.name+'</span><span class="star-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var sihuaHtml = d.sihua.map(function(s){
+    return '<div class="sihua-card"><span class="sihua-name '+s.cls+'">'+s.name+'</span><span class="sihua-desc">'+s.desc+'</span></div>';
+  }).join('');
+
+  var content = [
+    '<div class="hero">',
+      '<span class="hero-tag">'+d.heroTag+'</span>',
+      '<h1>'+d.heroTitle+'</h1>',
+      '<p class="hero-sub">'+d.heroSub+'</p>',
+    '</div>',
+    '<div class="toc">'+tocLinks+'</div>',
+    '<main>',
+
+    // 1. 역사
+    '<section id="history">',
+      '<span class="section-label">'+d.s1Label+'</span>',
+      '<h2>'+d.s1Title+'</h2>',
+      '<h3>'+d.s1h1+'</h3><p>'+d.s1p1+'</p>',
+      '<h3>'+d.s1h2+'</h3><p>'+d.s1p2+'</p>',
+      '<h3>'+d.s1h3+'</h3><div class="hl"><p>'+d.s1hl+'</p></div>',
+      '<p>'+d.s1p3+'</p>',
+    '</section>',
+
+    // 2. 12궁
+    '<section id="palaces">',
+      '<span class="section-label">'+d.s2Label+'</span>',
+      '<h2>'+d.s2Title+'</h2>',
+      '<p>'+d.s2p+'</p>',
+      '<div class="palace-grid">'+palacesHtml+'</div>',
+      '<h3>'+d.s2h2+'</h3><p>'+d.s2p2+'</p>',
+    '</section>',
+
+    // 3. 14정성
+    '<section id="stars">',
+      '<span class="section-label">'+d.s3Label+'</span>',
+      '<h2>'+d.s3Title+'</h2>',
+      '<p>'+d.s3p+'</p>',
+      '<h3>'+d.s3g1+'</h3>',
+      '<div class="star-grid">'+z6+'</div>',
+      '<h3>'+d.s3g2+'</h3>',
+      '<div class="star-grid">'+tf8+'</div>',
+      '<h3>'+d.s3h3+'</h3><p>'+d.s3p2+'</p>',
+    '</section>',
+
+    // 4. 보좌·살성
+    '<section id="aux">',
+      '<span class="section-label">'+d.s4Label+'</span>',
+      '<h2>'+d.s4Title+'</h2>',
+      '<h3>'+d.s4h1+'</h3>',
+      '<div class="star-grid">'+g6+'</div>',
+      '<h3>'+d.s4h2+'</h3>',
+      '<div class="star-grid">'+b6+'</div>',
+      '<div class="hl"><p>'+d.s4hl+'</p></div>',
+    '</section>',
+
+    // 5. 해석 원리
+    '<section id="principles">',
+      '<span class="section-label">'+d.s5Label+'</span>',
+      '<h2>'+d.s5Title+'</h2>',
+      '<h3>'+d.s5h1+'</h3><p>'+d.s5p1+'</p>',
+      '<h3>'+d.s5h2+'</h3><p>'+d.s5p2+'</p>',
+      '<div class="sihua-grid">'+sihuaHtml+'</div>',
+      '<h3>'+d.s5h3+'</h3><p>'+d.s5p3+'</p>',
+      '<h3>'+d.s5h4+'</h3><p>'+d.s5p4+'</p>',
+    '</section>',
+
+    // 6. 결론
+    '<section id="conclusion">',
+      '<span class="section-label">'+d.s6Label+'</span>',
+      '<h2>'+d.s6Title+'</h2>',
+      '<div class="hl"><p>'+d.s6hl+'</p></div>',
+      '<p>'+d.s6p+'</p>',
+    '</section>',
+
+    // CTA
+    '<div class="cta-box">',
+      '<h2>'+d.ctaTitle+'</h2>',
+      '<p>'+d.ctaDesc+'</p>',
+      '<a href="./app/" class="btn-p" target="_blank" rel="noopener">'+d.ctaBtn+'</a>',
+      '<a href="./" class="btn-s">'+d.ctaBack+'</a>',
+    '</div>',
+
+    '</main>',
+  ].join('');
+
+  document.getElementById('page-content').innerHTML = content;
+  document.getElementById('page-footer').textContent = d.footer;
+}
+
+function setLang(lang) {
+  if (!T[lang]) return;
+  try { localStorage.setItem('tod_lang', lang); } catch(e){}
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  buildPage(T[lang]);
+}
+
+(function() {
+  var lang = 'ko';
+  try {
+    lang = localStorage.getItem('tod_lang') ||
+           localStorage.getItem('honcheon.lang') ||
+           (navigator.language || 'ko').slice(0,2);
+  } catch(e){}
+  if (!T[lang]) lang = 'ko';
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
