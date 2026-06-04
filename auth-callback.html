@@ -8,21 +8,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     body { background:#0A0D1A; color:#E8E0CC; font-family:'Noto Sans KR',sans-serif;
-           display:flex; align-items:center; justify-content:center; min-height:100vh; text-align:center; }
+           display:flex; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:2rem; }
+    .wrap { max-width:320px; }
     .icon { font-size:3rem; margin-bottom:1rem; }
-    h2 { font-family:'Cinzel',serif; color:#C9A84C; margin-bottom:.6rem; }
-    p { color:rgba(232,224,204,0.6); font-size:.9rem; }
-    .spinner { width:32px; height:32px; border:3px solid rgba(201,168,76,0.2);
+    h2 { font-family:'Cinzel',serif; color:#C9A84C; margin-bottom:.6rem; font-size:1.2rem; }
+    p { color:rgba(232,224,204,0.6); font-size:.88rem; line-height:1.7; }
+    .spinner { width:36px; height:36px; border:3px solid rgba(201,168,76,0.2);
                border-top-color:#C9A84C; border-radius:50%; animation:spin 1s linear infinite; margin:1.5rem auto; }
     @keyframes spin { to { transform:rotate(360deg); } }
+    .btn { display:inline-block; margin-top:1.2rem; background:#C9A84C; color:#0A0D1A;
+           font-weight:700; font-size:.85rem; padding:.65rem 1.8rem; border-radius:4px;
+           text-decoration:none; }
   </style>
 </head>
 <body>
-<div>
+<div class="wrap">
   <div class="icon" id="icon">⏳</div>
   <h2 id="title">인증 처리 중...</h2>
   <p id="desc">잠시만 기다려 주세요.</p>
   <div class="spinner" id="spinner"></div>
+  <div id="btnWrap"></div>
 </div>
 
 <script type="module">
@@ -33,41 +38,66 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc'
   );
 
-  const params = new URLSearchParams(window.location.search);
-  const type = params.get('type');
-
-  // Supabase가 hash로 token 전달하는 경우 처리
-  const { data: { session }, error } = await supabase.auth.getSession();
-
-  if (error) {
-    document.getElementById('icon').textContent = '❌';
-    document.getElementById('title').textContent = '인증 실패';
-    document.getElementById('desc').textContent = error.message;
+  function setDone(icon, title, desc) {
+    document.getElementById('icon').textContent = icon;
+    document.getElementById('title').textContent = title;
+    document.getElementById('desc').textContent = desc;
     document.getElementById('spinner').style.display = 'none';
-    return;
   }
 
-  if (type === 'recovery') {
-    // 비밀번호 재설정 → 재설정 페이지로
-    document.getElementById('icon').textContent = '🔑';
-    document.getElementById('title').textContent = '비밀번호 재설정';
-    document.getElementById('desc').textContent = '새 비밀번호를 입력하세요.';
-    document.getElementById('spinner').style.display = 'none';
-    // TODO: 비밀번호 재설정 폼 표시
-    setTimeout(() => window.location.href = './auth.html', 2000);
-    return;
+  function setError(msg) {
+    setDone('❌', '인증 실패', msg);
+    document.getElementById('btnWrap').innerHTML =
+      '<a class="btn" href="./auth.html">로그인 페이지로</a>';
   }
 
-  if (session) {
-    document.getElementById('icon').textContent = '✅';
-    document.getElementById('title').textContent = '인증 완료!';
-    document.getElementById('desc').textContent = '잠시 후 대시보드로 이동합니다.';
-    setTimeout(() => window.location.href = './dashboard.html', 1500);
+  // ── URL에서 code 파라미터 확인 (PKCE 방식) ──
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get('code');
+  const errorMsg = url.searchParams.get('error_description');
+
+  if (errorMsg) {
+    setError(decodeURIComponent(errorMsg));
+  } else if (code) {
+    // PKCE: code를 세션으로 교환
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      setError(error.message);
+    } else {
+      setDone('✅', '인증 완료!', '대시보드로 이동합니다...');
+      setTimeout(() => window.location.href = './dashboard.html', 1200);
+    }
   } else {
-    document.getElementById('icon').textContent = '✅';
-    document.getElementById('title').textContent = '이메일 인증 완료!';
-    document.getElementById('desc').textContent = '로그인 페이지로 이동합니다.';
-    setTimeout(() => window.location.href = './auth.html', 1500);
+    // 해시 기반 토큰 처리 (이전 방식)
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+    const accessToken = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
+    const type = hashParams.get('type');
+
+    if (accessToken) {
+      const { error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
+      if (error) {
+        setError(error.message);
+      } else if (type === 'recovery') {
+        setDone('🔑', '비밀번호 재설정', '로그인 페이지로 이동합니다...');
+        setTimeout(() => window.location.href = './auth.html', 1500);
+      } else {
+        setDone('✅', '인증 완료!', '대시보드로 이동합니다...');
+        setTimeout(() => window.location.href = './dashboard.html', 1200);
+      }
+    } else {
+      // 이미 세션이 있는지 확인
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setDone('✅', '이미 로그인됨', '대시보드로 이동합니다...');
+        setTimeout(() => window.location.href = './dashboard.html', 1000);
+      } else {
+        setError('인증 토큰을 찾을 수 없습니다. 이메일 링크를 다시 클릭해 주세요.');
+      }
+    }
   }
 </script>
 </body>
