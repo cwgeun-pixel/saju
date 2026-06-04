@@ -1,0 +1,172 @@
+<!-- 로그인 후 대시보드 (구독 상태 확인 → 계산기 or 결제 페이지) -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대시보드 — Trinity of Destiny</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --gold:#C9A84C; --gold-light:#E8C870; --gold-dim:rgba(201,168,76,0.12);
+            --bg:#0A0D1A; --bg2:#0F1528; --bg3:#141B35;
+            --text:#E8E0CC; --text-muted:rgba(232,224,204,0.6); --border:rgba(201,168,76,0.2); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; min-height:100vh; }
+
+    nav { background:rgba(10,13,26,0.95); border-bottom:1px solid var(--border);
+          padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:60px; }
+    .nav-logo { font-family:'Cinzel',serif; color:var(--gold); font-size:1rem; letter-spacing:.1em; text-decoration:none; }
+    .nav-right { display:flex; align-items:center; gap:1rem; }
+    .user-email { font-size:.8rem; color:var(--text-muted); }
+    .btn-logout { background:none; border:1px solid var(--border); color:var(--text-muted);
+                  font-size:.78rem; padding:.35rem .9rem; border-radius:3px; cursor:pointer; transition:all .2s; }
+    .btn-logout:hover { border-color:var(--gold); color:var(--gold); }
+
+    main { max-width:800px; margin:0 auto; padding:3rem 1.5rem; }
+    .section-label { font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.22em; color:var(--gold); display:block; margin-bottom:.4rem; }
+    h1 { font-family:'Noto Serif KR',serif; font-size:1.8rem; font-weight:700; color:var(--gold-light); margin-bottom:2rem; }
+
+    /* 구독 상태 카드 */
+    .status-card { background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:1.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .status-badge { display:inline-flex; align-items:center; gap:.5rem; font-size:.82rem; font-weight:700; padding:.35rem .9rem; border-radius:20px; }
+    .status-badge.active { background:rgba(92,184,92,0.15); color:#5CB85C; border:1px solid rgba(92,184,92,0.3); }
+    .status-badge.inactive { background:rgba(232,93,74,0.12); color:#E85D4A; border:1px solid rgba(232,93,74,0.25); }
+    .status-info { font-size:.82rem; color:var(--text-muted); }
+
+    /* 기능 카드 그리드 */
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .feature-card { background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:1.3rem; text-decoration:none; color:var(--text); transition:border-color .2s; display:block; }
+    .feature-card:hover { border-color:var(--gold); }
+    .feature-card.locked { opacity:.5; cursor:not-allowed; }
+    .feature-icon { font-size:1.6rem; margin-bottom:.6rem; display:block; }
+    .feature-name { font-size:.95rem; font-weight:700; color:var(--gold-light); margin-bottom:.3rem; }
+    .feature-desc { font-size:.78rem; color:var(--text-muted); }
+
+    /* 결제 유도 박스 */
+    .upgrade-box { background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.03)); border:1px solid var(--border); border-radius:6px; padding:2rem; text-align:center; }
+    .upgrade-box h2 { font-family:'Noto Serif KR',serif; color:var(--gold-light); margin-bottom:.6rem; }
+    .upgrade-box p { font-size:.88rem; color:var(--text-muted); margin-bottom:1.5rem; line-height:1.7; }
+    .btn-upgrade { display:inline-block; background:var(--gold); color:#0A0D1A; font-weight:700; font-size:.95rem; padding:.85rem 2.5rem; border-radius:4px; text-decoration:none; transition:background .2s; }
+    .btn-upgrade:hover { background:var(--gold-light); }
+
+    .spinner { width:32px; height:32px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 1s linear infinite; margin:4rem auto; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="./" class="nav-logo">TRINITY OF DESTINY</a>
+  <div class="nav-right">
+    <span class="user-email" id="userEmail"></span>
+    <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
+  </div>
+</nav>
+
+<main>
+  <div class="spinner" id="spinner"></div>
+  <div id="content" style="display:none">
+    <span class="section-label">DASHBOARD</span>
+    <h1 id="greeting">안녕하세요 👋</h1>
+
+    <!-- 구독 상태 -->
+    <div class="status-card">
+      <div>
+        <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:.4rem;">구독 상태</div>
+        <span class="status-badge" id="statusBadge">확인 중...</span>
+      </div>
+      <div class="status-info" id="statusInfo"></div>
+    </div>
+
+    <!-- 구독 중일 때: 기능 카드 -->
+    <div id="subscribedView" style="display:none">
+      <div class="grid">
+        <a href="./app/" class="feature-card">
+          <span class="feature-icon">☯</span>
+          <div class="feature-name">사주 계산기</div>
+          <div class="feature-desc">四柱八字 원국 분석 및 대운 조회</div>
+        </a>
+        <a href="./app/" class="feature-card">
+          <span class="feature-icon">✦</span>
+          <div class="feature-name">자미두수 명반</div>
+          <div class="feature-desc">12궁 · 14정성 배치 분석</div>
+        </a>
+        <a href="./app/" class="feature-card">
+          <span class="feature-icon">★</span>
+          <div class="feature-name">천궁도 (점성술)</div>
+          <div class="feature-desc">출생 차트 · 행성 배치 해석</div>
+        </a>
+        <a href="./saju-about.html" class="feature-card">
+          <span class="feature-icon">📖</span>
+          <div class="feature-name">사주 가이드</div>
+          <div class="feature-desc">사주 기초부터 심화까지</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 미구독 시: 결제 유도 -->
+    <div id="unsubscribedView" style="display:none">
+      <div class="upgrade-box">
+        <h2>멤버십을 시작하세요</h2>
+        <p>사주 · 자미두수 · 점성술 풀 해석 + AI 분석 리포트<br>모든 기능을 무제한으로 이용하실 수 있습니다.</p>
+        <a href="./pricing.html" class="btn-upgrade">멤버십 시작하기 →</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  const supabase = createClient(
+    'https://smqekqdlkkqagzrvtnmh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc'
+  );
+
+  async function init() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { window.location.href = './auth.html'; return; }
+
+    const user = session.user;
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('greeting').textContent =
+      `안녕하세요, ${user.user_metadata?.full_name || user.email.split('@')[0]}님 👋`;
+
+    // 구독 상태 확인
+    const { data: sub } = await supabase
+      .from('subscriptions')
+      .select('status, current_period_end')
+      .eq('user_id', user.id)
+      .single();
+
+    const isActive = sub && sub.status === 'active' && new Date(sub.current_period_end) > new Date();
+
+    const badge = document.getElementById('statusBadge');
+    const info = document.getElementById('statusInfo');
+
+    if (isActive) {
+      badge.textContent = '✅ 멤버십 활성';
+      badge.className = 'status-badge active';
+      const end = new Date(sub.current_period_end).toLocaleDateString('ko-KR');
+      info.textContent = `다음 갱신일: ${end}`;
+      document.getElementById('subscribedView').style.display = 'block';
+    } else {
+      badge.textContent = '❌ 미구독';
+      badge.className = 'status-badge inactive';
+      info.textContent = '멤버십 가입 후 모든 기능을 이용하세요';
+      document.getElementById('unsubscribedView').style.display = 'block';
+    }
+
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  }
+
+  window.handleLogout = async function() {
+    await supabase.auth.signOut();
+    window.location.href = './auth.html';
+  };
+
+  init();
+</script>
+</body>
+</html>

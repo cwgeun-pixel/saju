@@ -1,0 +1,229 @@
+<!-- 회원가입 / 로그인 통합 페이지 -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인 / 회원가입 — Trinity of Destiny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:#C9A84C; --gold-light:#E8C870; --gold-dim:rgba(201,168,76,0.12);
+      --bg:#0A0D1A; --bg2:#0F1528; --bg3:#141B35;
+      --text:#E8E0CC; --text-muted:rgba(232,224,204,0.6);
+      --border:rgba(201,168,76,0.2); --red:#E85D4A;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1rem; }
+
+    /* 로고 */
+    .logo { font-family:'Cinzel',serif; color:var(--gold); font-size:1.1rem; letter-spacing:.15em; text-decoration:none; margin-bottom:2.5rem; display:block; text-align:center; }
+    .logo span { display:block; font-size:.65rem; color:var(--text-muted); letter-spacing:.2em; margin-top:.2rem; }
+
+    /* 카드 */
+    .card { background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:2.5rem 2rem; width:100%; max-width:420px; }
+
+    /* 탭 */
+    .tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:2rem; }
+    .tab { flex:1; padding:.7rem; text-align:center; font-size:.88rem; font-weight:600; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; transition:all .2s; background:none; border-top:none; border-left:none; border-right:none; }
+    .tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+    /* 폼 */
+    .form { display:none; flex-direction:column; gap:1.1rem; }
+    .form.active { display:flex; }
+    label { font-size:.78rem; color:var(--text-muted); display:block; margin-bottom:.3rem; }
+    input { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:4px; padding:.7rem .9rem; color:var(--text); font-size:.9rem; font-family:'Noto Sans KR',sans-serif; outline:none; transition:border .2s; }
+    input:focus { border-color:var(--gold); }
+    input::placeholder { color:rgba(232,224,204,0.3); }
+
+    /* 버튼 */
+    .btn { width:100%; padding:.85rem; background:var(--gold); color:#0A0D1A; font-weight:700; font-size:.92rem; border:none; border-radius:4px; cursor:pointer; font-family:'Noto Sans KR',sans-serif; letter-spacing:.03em; transition:background .2s; margin-top:.3rem; }
+    .btn:hover { background:var(--gold-light); }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+
+    /* 메시지 */
+    .msg { font-size:.8rem; padding:.75rem 1rem; border-radius:4px; display:none; }
+    .msg.error { background:rgba(232,93,74,0.12); border:1px solid rgba(232,93,74,0.3); color:#E85D4A; display:block; }
+    .msg.success { background:rgba(92,184,92,0.1); border:1px solid rgba(92,184,92,0.3); color:#5CB85C; display:block; }
+
+    /* 구분선 */
+    .divider { text-align:center; font-size:.75rem; color:var(--text-muted); margin:.2rem 0; position:relative; }
+    .divider::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+    .divider span { background:var(--bg2); padding:0 .8rem; position:relative; }
+
+    /* 약관 */
+    .terms { font-size:.72rem; color:var(--text-muted); text-align:center; line-height:1.6; margin-top:.3rem; }
+    .terms a { color:var(--gold); text-decoration:none; }
+
+    /* 이메일 확인 화면 */
+    .verify-screen { display:none; text-align:center; padding:1rem 0; }
+    .verify-screen .icon { font-size:3rem; margin-bottom:1rem; }
+    .verify-screen h3 { font-family:'Noto Serif KR',serif; color:var(--gold-light); margin-bottom:.6rem; }
+    .verify-screen p { font-size:.85rem; color:var(--text-muted); line-height:1.7; }
+
+    .back-link { display:block; text-align:center; margin-top:1.5rem; font-size:.8rem; color:var(--text-muted); text-decoration:none; }
+    .back-link:hover { color:var(--gold); }
+  </style>
+</head>
+<body>
+
+<a href="./" class="logo">
+  TRINITY OF DESTINY
+  <span>사주 · 자미두수 · 점성술</span>
+</a>
+
+<div class="card">
+
+  <!-- 탭 -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">로그인</button>
+    <button class="tab" onclick="switchTab('signup')">회원가입</button>
+  </div>
+
+  <!-- 메시지 -->
+  <div class="msg" id="msg"></div>
+
+  <!-- 이메일 확인 안내 (가입 후) -->
+  <div class="verify-screen" id="verifyScreen">
+    <div class="icon">📧</div>
+    <h3>이메일을 확인해 주세요</h3>
+    <p>입력하신 이메일로 인증 링크를 발송했습니다.<br>링크를 클릭하면 가입이 완료됩니다.</p>
+  </div>
+
+  <!-- 로그인 폼 -->
+  <form class="form active" id="loginForm" onsubmit="handleLogin(event)">
+    <div>
+      <label>이메일</label>
+      <input type="email" id="loginEmail" placeholder="이메일 주소" required />
+    </div>
+    <div>
+      <label>비밀번호</label>
+      <input type="password" id="loginPw" placeholder="비밀번호" required />
+    </div>
+    <button type="submit" class="btn" id="loginBtn">로그인</button>
+    <div class="terms">
+      <a href="#" onclick="forgotPassword(event)">비밀번호를 잊으셨나요?</a>
+    </div>
+  </form>
+
+  <!-- 회원가입 폼 -->
+  <form class="form" id="signupForm" onsubmit="handleSignup(event)">
+    <div>
+      <label>이름</label>
+      <input type="text" id="signupName" placeholder="이름" required />
+    </div>
+    <div>
+      <label>이메일</label>
+      <input type="email" id="signupEmail" placeholder="이메일 주소" required />
+    </div>
+    <div>
+      <label>비밀번호 (8자 이상)</label>
+      <input type="password" id="signupPw" placeholder="비밀번호" minlength="8" required />
+    </div>
+    <div>
+      <label>비밀번호 확인</label>
+      <input type="password" id="signupPw2" placeholder="비밀번호 재입력" required />
+    </div>
+    <button type="submit" class="btn" id="signupBtn">회원가입</button>
+    <div class="terms">
+      가입하면 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주합니다.
+    </div>
+  </form>
+
+</div>
+
+<a href="./" class="back-link">← 메인으로 돌아가기</a>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  const supabase = createClient(
+    'https://smqekqdlkkqagzrvtnmh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc'
+  );
+
+  // 이미 로그인된 경우 대시보드로 이동
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = './dashboard.html';
+  });
+
+  function showMsg(text, type = 'error') {
+    const el = document.getElementById('msg');
+    el.textContent = text;
+    el.className = 'msg ' + type;
+  }
+  function hideMsg() {
+    document.getElementById('msg').className = 'msg';
+  }
+
+  // 탭 전환
+  window.switchTab = function(tab) {
+    hideMsg();
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'));
+    });
+    document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+    document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+  };
+
+  // 로그인
+  window.handleLogin = async function(e) {
+    e.preventDefault();
+    hideMsg();
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.textContent = '로그인 중...';
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPw').value;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      showMsg(error.message === 'Invalid login credentials' ? '이메일 또는 비밀번호가 올바르지 않습니다.' : error.message);
+      btn.disabled = false; btn.textContent = '로그인';
+    } else {
+      window.location.href = './dashboard.html';
+    }
+  };
+
+  // 회원가입
+  window.handleSignup = async function(e) {
+    e.preventDefault();
+    hideMsg();
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value;
+    const pw = document.getElementById('signupPw').value;
+    const pw2 = document.getElementById('signupPw2').value;
+    if (pw !== pw2) { showMsg('비밀번호가 일치하지 않습니다.'); return; }
+    if (pw.length < 8) { showMsg('비밀번호는 8자 이상이어야 합니다.'); return; }
+    const btn = document.getElementById('signupBtn');
+    btn.disabled = true; btn.textContent = '처리 중...';
+    const { error } = await supabase.auth.signUp({
+      email, password: pw,
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: 'https://saju0523.pages.dev/auth-callback.html'
+      }
+    });
+    if (error) {
+      showMsg(error.message);
+      btn.disabled = false; btn.textContent = '회원가입';
+    } else {
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('verifyScreen').style.display = 'block';
+      document.querySelector('.tabs').style.display = 'none';
+    }
+  };
+
+  // 비밀번호 찾기
+  window.forgotPassword = async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    if (!email) { showMsg('이메일을 먼저 입력해 주세요.'); return; }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://saju0523.pages.dev/auth-callback.html?type=recovery'
+    });
+    if (error) { showMsg(error.message); }
+    else { showMsg('비밀번호 재설정 이메일을 발송했습니다.', 'success'); }
+  };
+</script>
+</body>
+</html>
