@@ -1,5 +1,5 @@
 // Stripe Checkout 세션 생성 Edge Function
-import Stripe from 'https://esm.sh/stripe@14?target=deno';
+import Stripe from 'https://esm.sh/stripe@14?target=deno&no-check';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
@@ -13,11 +13,18 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { user_id, email } = await req.json();
+    const body = await req.json();
+    const { user_id, email } = body;
     if (!user_id || !email) throw new Error('user_id, email 필수');
 
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
-      apiVersion: '2024-11-20.acacia',
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    const priceId  = Deno.env.get('STRIPE_PRICE_ID');
+    if (!stripeKey) throw new Error('STRIPE_SECRET_KEY not set');
+    if (!priceId)   throw new Error('STRIPE_PRICE_ID not set');
+
+    const stripe = new Stripe(stripeKey, {
+      apiVersion: '2023-10-16',
+      httpClient: Stripe.createFetchHttpClient(),
     });
 
     const supabase = createClient(
@@ -46,7 +53,7 @@ Deno.serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      line_items: [{ price: Deno.env.get('STRIPE_PRICE_ID')!, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       success_url: 'https://saju0523.pages.dev/dashboard.html?payment=success',
       cancel_url:  'https://saju0523.pages.dev/pricing.html?payment=canceled',
       metadata: { user_id },
@@ -57,6 +64,7 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err) {
+    console.error('create-checkout error:', err.message);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
