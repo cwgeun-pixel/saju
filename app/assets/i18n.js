@@ -11,23 +11,23 @@
 
   const meta = {
     ko: {
-      title: "혼천 · 사주 · 자미두수 · 천궁도 계산기",
+      title: "사주 · 자미두수 · 천궁도 계산기",
       description: "브라우저에서 안전하게 계산하는 사주, 자미두수, 천궁도 계산기입니다.",
     },
     en: {
-      title: "Hon-Cheon · Saju · Ziwei Doushu · Natal Chart Calculator",
+      title: "Saju · Ziwei Doushu · Natal Chart Calculator",
       description: "A private browser-based calculator for Saju, Ziwei Doushu, and natal astrology.",
     },
     ja: {
-      title: "渾天 · 四柱推命 · 紫微斗数 · ネイタルチャート計算機",
+      title: "四柱推命 · 紫微斗数 · ネイタルチャート計算機",
       description: "ブラウザ内で安全に計算する四柱推命、紫微斗数、ネイタルチャート計算機です。",
     },
     zh: {
-      title: "渾天 · 四柱八字 · 紫微斗數 · 星盤計算器",
+      title: "四柱八字 · 紫微斗數 · 星盤計算器",
       description: "在瀏覽器中安全計算四柱八字、紫微斗數與本命星盤。",
     },
     es: {
-      title: "Hon-Cheon · Saju · Ziwei Doushu · Carta Natal",
+      title: "Saju · Ziwei Doushu · Carta Natal",
       description: "Calculadora privada en el navegador para Saju, Ziwei Doushu y astrología natal.",
     },
   };
