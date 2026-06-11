@@ -269,6 +269,17 @@
     const results = document.getElementById('results');
     if (!results || document.getElementById('honcheon-ai-panel')) return;
     results.appendChild(createPanel());
+
+    // 계산 결과를 sessionStorage에 자동 저장
+    const txt = collectResultsText();
+    if (txt) {
+      sessionStorage.setItem('tod-calc-results', txt);
+      // premium.html에서 "계산기 열기"로 넘어온 경우 자동 복귀
+      if (sessionStorage.getItem('tod-return-to-premium')) {
+        sessionStorage.removeItem('tod-return-to-premium');
+        setTimeout(() => { window.location.href = '/premium.html'; }, 600);
+      }
+    }
   }
 
   // MutationObserver로 #results 감시
