@@ -56,6 +56,30 @@
     .terms { font-size:.72rem; color:var(--text-muted); text-align:center; line-height:1.6; margin-top:.3rem; }
     .terms a { color:var(--gold); text-decoration:none; }
 
+    /* 동의 체크박스 */
+    .consent-group { display:flex; flex-direction:column; gap:.6rem; margin-top:.3rem; }
+    .consent-row { display:flex; align-items:flex-start; gap:.6rem; font-size:.78rem; color:var(--text-muted); line-height:1.5; }
+    .consent-row input[type=checkbox] { width:15px; height:15px; flex-shrink:0; margin-top:.1rem; accent-color:var(--gold); cursor:pointer; }
+    .consent-row a { color:var(--gold); text-decoration:underline; cursor:pointer; }
+    .consent-row .req { color:var(--red); margin-left:.2rem; }
+
+    /* 모달 */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:var(--bg2); border:1px solid var(--border); border-radius:6px; max-width:520px; width:100%; max-height:80vh; display:flex; flex-direction:column; }
+    .modal-header { padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .modal-header h3 { font-family:'Noto Serif KR',serif; font-size:1rem; color:var(--gold-light); }
+    .modal-close { background:none; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer; line-height:1; }
+    .modal-close:hover { color:var(--gold); }
+    .modal-body { padding:1.2rem 1.5rem; overflow-y:auto; font-size:.78rem; color:var(--text-muted); line-height:1.8; }
+    .modal-body h4 { color:var(--gold); margin:1rem 0 .3rem; font-size:.82rem; }
+    .modal-body p { margin-bottom:.6rem; }
+    .modal-body ul { padding-left:1.2rem; margin-bottom:.6rem; }
+    .modal-body ul li { margin-bottom:.2rem; }
+    .modal-footer { padding:1rem 1.5rem; border-top:1px solid var(--border); text-align:right; }
+    .modal-agree-btn { background:var(--gold); color:#0A0D1A; font-weight:700; font-size:.82rem; border:none; padding:.55rem 1.5rem; border-radius:3px; cursor:pointer; }
+    .modal-agree-btn:hover { background:var(--gold-light); }
+
     /* 이메일 확인 화면 */
     .verify-screen { display:none; text-align:center; padding:1rem 0; }
     .verify-screen .icon { font-size:3rem; margin-bottom:1rem; }
@@ -125,11 +149,98 @@
       <label>비밀번호 확인</label>
       <input type="password" id="signupPw2" placeholder="비밀번호 재입력" required />
     </div>
-    <button type="submit" class="btn" id="signupBtn">회원가입</button>
-    <div class="terms">
-      가입하면 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주합니다.
+    <div class="consent-group">
+      <div class="consent-row">
+        <input type="checkbox" id="agreeTerms" />
+        <label for="agreeTerms" style="margin:0">
+          <a onclick="openModal('terms')">이용약관</a>을 읽고 동의합니다<span class="req">*</span>
+        </label>
+      </div>
+      <div class="consent-row">
+        <input type="checkbox" id="agreePrivacy" />
+        <label for="agreePrivacy" style="margin:0">
+          <a onclick="openModal('privacy')">개인정보처리방침</a>에 동의합니다<span class="req">*</span>
+        </label>
+      </div>
+      <div class="consent-row">
+        <input type="checkbox" id="agreeAge" />
+        <label for="agreeAge" style="margin:0">만 14세 이상임을 확인합니다<span class="req">*</span></label>
+      </div>
     </div>
+    <button type="submit" class="btn" id="signupBtn">회원가입</button>
   </form>
+
+  <!-- 이용약관 모달 -->
+  <div class="modal-overlay" id="modalTerms">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>이용약관</h3>
+        <button class="modal-close" onclick="closeModal('terms')">✕</button>
+      </div>
+      <div class="modal-body">
+        <h4>제1조 (목적)</h4>
+        <p>본 약관은 Trinity of Destiny(이하 "서비스")가 제공하는 사주·자미두수·점성술 콘텐츠 서비스의 이용 조건 및 절차, 이용자와 서비스 제공자 간의 권리·의무 및 책임사항을 규정합니다.</p>
+        <h4>제2조 (서비스 성격 및 한계)</h4>
+        <p>본 서비스가 제공하는 모든 해석은 전통적·상징적 명리학에 기반한 참고용 콘텐츠입니다. 다음 목적으로 사용할 수 없습니다.</p>
+        <ul>
+          <li>질병 진단·치료 등 의료적 판단</li>
+          <li>투자·계약 등 금융·법률적 결정</li>
+          <li>결혼·취업·사업 등 중대한 인생 결정</li>
+          <li>정신 건강·심리 상담·위기 상황에 대한 판단</li>
+        </ul>
+        <h4>제3조 (구독 및 결제)</h4>
+        <p>유료 멤버십은 월정액 자동 결제 방식으로 운영됩니다. 구독은 다음 결제일 전에 언제든 해지할 수 있으며, 해지 후에도 해당 기간 만료 시까지 서비스가 유지됩니다. 환불은 미사용 기간에 한해 요청할 수 있습니다.</p>
+        <h4>제4조 (지적재산권)</h4>
+        <p>서비스 내 모든 콘텐츠(텍스트, 이미지, 알고리즘 등)의 저작권은 서비스 제공자에게 귀속됩니다. 무단 복제·배포·상업적 이용을 금지합니다.</p>
+        <h4>제5조 (책임 제한)</h4>
+        <p>서비스 제공자는 본 서비스의 해석 결과를 바탕으로 이용자가 내린 결정과 그 결과에 대해 법적 책임을 지지 않습니다. 서비스 이용으로 발생하는 모든 결과는 이용자 본인의 책임입니다.</p>
+        <h4>제6조 (약관 변경)</h4>
+        <p>약관 변경 시 서비스 내 공지 또는 이메일로 7일 전에 안내합니다. 변경된 약관에 동의하지 않는 경우 서비스 이용을 중단하고 탈퇴할 수 있습니다.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-agree-btn" onclick="agreeAndClose('terms')">동의하고 닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개인정보처리방침 모달 -->
+  <div class="modal-overlay" id="modalPrivacy">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>개인정보처리방침</h3>
+        <button class="modal-close" onclick="closeModal('privacy')">✕</button>
+      </div>
+      <div class="modal-body">
+        <h4>수집하는 개인정보</h4>
+        <ul>
+          <li>필수: 이메일 주소, 이름</li>
+          <li>서비스 이용 시: 생년월일, 출생시각, 출생지 (계산 목적)</li>
+          <li>결제 시: 결제 수단 정보 (Stripe를 통해 처리, 당사 미보관)</li>
+        </ul>
+        <h4>수집 및 이용 목적</h4>
+        <ul>
+          <li>회원 가입 및 본인 확인</li>
+          <li>구독 서비스 제공 및 결제 처리</li>
+          <li>서비스 관련 공지 및 이메일 발송</li>
+          <li>서비스 개선을 위한 이용 통계</li>
+        </ul>
+        <h4>보유 및 이용 기간</h4>
+        <p>회원 탈퇴 시까지 보유하며, 탈퇴 후 30일 이내 파기합니다. 단, 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관합니다.</p>
+        <h4>제3자 제공</h4>
+        <p>수집된 개인정보는 아래 경우를 제외하고 제3자에게 제공하지 않습니다.</p>
+        <ul>
+          <li>Supabase Inc.: 인증 및 데이터베이스 서비스 (미국 소재)</li>
+          <li>Stripe Inc.: 결제 처리 서비스 (미국 소재)</li>
+          <li>법령에 의한 요청이 있는 경우</li>
+        </ul>
+        <h4>이용자의 권리</h4>
+        <p>이용자는 언제든지 자신의 개인정보 열람·수정·삭제·처리 정지를 요청할 수 있습니다. 문의: wnmecomm@gamil.com</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-agree-btn" onclick="agreeAndClose('privacy')">동의하고 닫기</button>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -184,10 +295,35 @@
     }
   };
 
+  // 모달
+  window.openModal = function(type) {
+    document.getElementById(type === 'terms' ? 'modalTerms' : 'modalPrivacy').classList.add('open');
+  };
+  window.closeModal = function(type) {
+    document.getElementById(type === 'terms' ? 'modalTerms' : 'modalPrivacy').classList.remove('open');
+  };
+  window.agreeAndClose = function(type) {
+    document.getElementById(type === 'terms' ? 'agreeTerms' : 'agreePrivacy').checked = true;
+    closeModal(type);
+  };
+  // 모달 바깥 클릭 시 닫기
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+  });
+
   // 회원가입
   window.handleSignup = async function(e) {
     e.preventDefault();
     hideMsg();
+    if (!document.getElementById('agreeTerms').checked) {
+      showMsg('이용약관에 동의해 주세요.'); return;
+    }
+    if (!document.getElementById('agreePrivacy').checked) {
+      showMsg('개인정보처리방침에 동의해 주세요.'); return;
+    }
+    if (!document.getElementById('agreeAge').checked) {
+      showMsg('만 14세 이상인 경우에만 가입할 수 있습니다.'); return;
+    }
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value;
     const pw = document.getElementById('signupPw').value;
