@@ -183,7 +183,7 @@
         // 클릭 시 결과 text를 sessionStorage에 저장
         panel.querySelector('#tod-premium-link').addEventListener('click', () => {
           const txt = collectResultsText();
-          if (txt) sessionStorage.setItem('tod-calc-results', txt);
+          if (txt) localStorage.setItem('tod-calc-results', txt);
         });
       }
     });
@@ -281,9 +281,9 @@
     _autoSaveTimer = setTimeout(function() {
       const txt = collectResultsText();
       if (!txt || txt.length < 200) return;
-      sessionStorage.setItem('tod-calc-results', txt);
-      if (sessionStorage.getItem('tod-return-to-premium')) {
-        sessionStorage.removeItem('tod-return-to-premium');
+      localStorage.setItem('tod-calc-results', txt);
+      if (localStorage.getItem('tod-return-to-premium')) {
+        localStorage.removeItem('tod-return-to-premium');
         obs.disconnect();
         setTimeout(function() { window.location.href = '/premium.html'; }, 400);
       }

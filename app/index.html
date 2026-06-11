@@ -756,10 +756,10 @@
         _t = setTimeout(function(){
           var txt = collectText();
           if (!txt || txt.length < 100) return;
-          sessionStorage.setItem('tod-calc-results', txt);
+          localStorage.setItem('tod-calc-results', txt);
           console.log('[TOD] 결과 저장됨', txt.length, '자');
-          if (sessionStorage.getItem('tod-return-to-premium')) {
-            sessionStorage.removeItem('tod-return-to-premium');
+          if (localStorage.getItem('tod-return-to-premium')) {
+            localStorage.removeItem('tod-return-to-premium');
             obs.disconnect();
             console.log('[TOD] premium.html로 복귀');
             setTimeout(function(){ window.location.href='/premium.html'; }, 400);

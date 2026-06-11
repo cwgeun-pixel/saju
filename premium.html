@@ -172,7 +172,7 @@
         </div>
         <div id="calc-empty">
           <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">계산기에서 계산한 후 결과를 가져오거나, 직접 입력 탭을 사용하세요.</p>
-          <a href="/app/" class="btn-plain" onclick="sessionStorage.setItem('tod-return-to-premium','1')">계산기 열기 →</a>
+          <a href="/app/" class="btn-plain" onclick="localStorage.setItem('tod-return-to-premium','1')">계산기 열기 →</a>
         </div>
       </div>
 
@@ -327,7 +327,7 @@ async function init() {
   currentSession = session;
   document.getElementById('header-user').textContent = session.user?.email || '';
 
-  const saved = sessionStorage.getItem('tod-calc-results');
+  const saved = localStorage.getItem('tod-calc-results');
   if (saved) {
     document.getElementById('calc-loaded').classList.remove('hidden');
     document.getElementById('calc-empty').classList.add('hidden');
@@ -358,7 +358,7 @@ function buildSourceText() {
   const tab = document.getElementById('tab-calc').classList.contains('active') ? 'calc' : 'manual';
 
   if (tab === 'calc') {
-    const saved = sessionStorage.getItem('tod-calc-results');
+    const saved = localStorage.getItem('tod-calc-results');
     if (saved) return saved;
     alert('계산기 결과가 없습니다. 계산기에서 계산 후 다시 시도하거나 직접 입력 탭을 사용하세요.');
     return null;
