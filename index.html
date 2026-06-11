@@ -121,8 +121,40 @@
       }
       initAuthBtn();
     </script>
+  <style>
+    #splash-overlay {
+      position:fixed; inset:0; background:#0A0D1A;
+      display:flex; align-items:center; justify-content:center;
+      z-index:99999; transition:opacity 0.4s ease;
+    }
+    #splash-overlay.fade-out { opacity:0; pointer-events:none; }
+    .splash-logo {
+      font-family:'Cinzel',serif; font-size:1.1rem; letter-spacing:0.15em;
+      color:#C9A84C; opacity:0; animation:splashFade 0.5s ease 0.1s forwards;
+    }
+    @keyframes splashFade { to { opacity:1; } }
+  </style>
   </head>
   <body>
+    <div id="splash-overlay"><span class="splash-logo">TRINITY OF DESTINY</span></div>
+    <script>
+      // React 렌더링 완료 후 오버레이 제거
+      (function() {
+        function hideSplash() {
+          var el = document.getElementById('splash-overlay');
+          if (!el) return;
+          el.classList.add('fade-out');
+          setTimeout(function(){ el.remove(); }, 450);
+        }
+        // nav가 나타나면 React가 렌더된 것으로 판단
+        var obs = new MutationObserver(function() {
+          if (document.querySelector('nav')) { obs.disconnect(); hideSplash(); }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        // 최대 3초 후 강제 제거 (보험)
+        setTimeout(hideSplash, 3000);
+      })();
+    </script>
     <script id="manus-runtime">window.__MANUS_HOST_DEV__ = false;
 (function(){"use strict";var Mr={exports:{}},Kn={};/**
  * @license React
