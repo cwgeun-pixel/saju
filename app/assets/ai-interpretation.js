@@ -1,5 +1,6 @@
 // 계산 결과 화면에 AI 해석 패널을 추가하는 스크립트 (일반 스크립트, window.supabase 사용)
 (function () {
+  console.log('[AI해석] 스크립트 로드됨 v20260611c');
   const SUPABASE_URL = 'https://smqekqdlkkqagzrvtnmh.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc';
   const INTERPRET_URL = SUPABASE_URL + '/functions/v1/interpret';
