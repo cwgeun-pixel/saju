@@ -1,4 +1,12 @@
-// 계산 결과 화면에 섹션별 AI 해석 요청 패널을 추가하는 스크립트
+// 계산 결과 화면에 섹션별 AI 해석 요청 패널을 추가하는 스크립트 (유료 회원 전용)
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const _supabase = createClient(
+  'https://smqekqdlkkqagzrvtnmh.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc'
+);
+const INTERPRET_URL = 'https://smqekqdlkkqagzrvtnmh.supabase.co/functions/v1/interpret';
+
 (function () {
   const sections = [
     { id: "personality", ko: "기본 성향", en: "Personality" },
@@ -199,9 +207,20 @@
     setResult(panel, "");
 
     try {
-      const response = await fetch("/api/interpret", {
+      // 세션 확인
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) {
+        setStatus(panel, "");
+        setResult(panel, "🔒 AI 해석은 로그인 후 이용할 수 있습니다.\n로그인하려면 상단 '로그인 / 회원가입' 버튼을 눌러 주세요.");
+        return;
+      }
+
+      const response = await fetch(INTERPRET_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
         signal: activeRequest.signal,
         body: JSON.stringify({
           section: section.id,
@@ -213,6 +232,13 @@
       });
 
       const data = await response.json();
+
+      if (response.status === 402 || data.error === 'SUBSCRIPTION_REQUIRED') {
+        setStatus(panel, "");
+        setResult(panel, "⭐ AI 해석은 유료 멤버십 전용 기능입니다.\n멤버십에 가입하면 사주·자미두수·점성술 모든 섹션의 AI 심층 해석을 이용할 수 있습니다.\n\n→ 멤버십 가입: https://saju0523.pages.dev/pricing.html");
+        return;
+      }
+
       if (!response.ok) throw new Error(data.error || text("failed"));
 
       setStatus(panel, `${text("done")} · ${data.model || "AI"}`);
