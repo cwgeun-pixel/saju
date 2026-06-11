@@ -45,28 +45,6 @@
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
     .card h3 { font-size: 14px; font-weight: 600; color: var(--gold); margin-bottom: 16px; letter-spacing: 0.5px; }
 
-    /* 폼 */
-    .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    @media (max-width: 500px) { .form-grid { grid-template-columns: repeat(2, 1fr); } }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12px; color: var(--muted); }
-    .form-group input, .form-group select {
-      height: 40px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-size: 14px; padding: 0 12px;
-      font-family: 'Pretendard', sans-serif; outline: none; transition: border-color .2s;
-    }
-    .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
-    .form-group select option { background: #10132a; }
-
-    /* 소스 선택 탭 */
-    .source-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-    .source-tab {
-      flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border);
-      background: transparent; color: var(--muted); font-size: 13px; cursor: pointer;
-      transition: all .2s; font-family: 'Pretendard', sans-serif;
-    }
-    .source-tab.active { border-color: var(--gold); background: var(--gold-soft); color: var(--gold); }
-
     /* 컨트롤 행 */
     .controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
     .controls-row select {
@@ -153,62 +131,13 @@
 
     <!-- 데이터 소스 카드 -->
     <div class="card">
-      <h3 id="card-source-title">해석 데이터 선택</h3>
-
-      <div class="source-tabs">
-        <button class="source-tab active" id="tab-calc" onclick="switchTab('calc')">
-          📊 계산기 결과 사용
-        </button>
-        <button class="source-tab" id="tab-manual" onclick="switchTab('manual')">
-          ✏️ 직접 입력
-        </button>
+      <div id="calc-loaded" class="hidden">
+        <p style="font-size:13px;color:#6a9;margin-bottom:8px;">✅ <span id="calc-loaded-txt">계산기 결과가 로드되었습니다.</span></p>
+        <p style="font-size:12px;color:var(--muted);">계산기에서 계산한 사주·자미두수·점성술 데이터를 바탕으로 해석합니다.</p>
       </div>
-
-      <!-- 계산기 결과 탭 -->
-      <div id="panel-calc">
-        <div id="calc-loaded" class="hidden">
-          <p style="font-size:13px;color:#6a9;margin-bottom:8px;">✅ <span id="calc-loaded-txt">계산기 결과가 로드되었습니다.</span></p>
-          <p style="font-size:12px;color:var(--muted);">계산기에서 계산한 사주·자미두수·점성술 데이터를 바탕으로 해석합니다.</p>
-        </div>
-        <div id="calc-empty">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">계산기에서 계산한 후 결과를 가져오거나, 직접 입력 탭을 사용하세요.</p>
-          <a href="/app/" class="btn-plain" onclick="localStorage.setItem('tod-return-to-premium','1')">계산기 열기 →</a>
-        </div>
-      </div>
-
-      <!-- 직접 입력 탭 -->
-      <div id="panel-manual" class="hidden">
-        <div class="form-grid">
-          <div class="form-group" style="grid-column:span 3">
-            <label id="lbl-year">출생 연도</label>
-            <input type="number" id="inp-year" placeholder="예: 1990" min="1900" max="2010" />
-          </div>
-        </div>
-        <div class="form-grid" style="margin-top:10px;">
-          <div class="form-group">
-            <label id="lbl-month">월</label>
-            <select id="inp-month"></select>
-          </div>
-          <div class="form-group">
-            <label id="lbl-day">일</label>
-            <select id="inp-day"></select>
-          </div>
-          <div class="form-group">
-            <label id="lbl-hour">시간</label>
-            <select id="inp-hour"></select>
-          </div>
-          <div class="form-group">
-            <label id="lbl-gender">성별</label>
-            <select id="inp-gender">
-              <option value="male" id="opt-male">남성</option>
-              <option value="female" id="opt-female">여성</option>
-            </select>
-          </div>
-          <div class="form-group" style="grid-column:span 2">
-            <label id="lbl-location">출생지 (선택)</label>
-            <input type="text" id="inp-location" placeholder="예: 서울, 부산" />
-          </div>
-        </div>
+      <div id="calc-empty">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">계산기에서 명식을 산출한 후 이 페이지로 돌아오세요.</p>
+        <a href="/app/" class="btn-plain" onclick="localStorage.setItem('tod-return-to-premium','1')">계산기 열기 →</a>
       </div>
     </div>
 
@@ -310,14 +239,6 @@ const SECTIONS = [
 
 // ── 초기화 ────────────────────────────────────────────────
 async function init() {
-  // 셀렉트 옵션 채우기
-  const monthSel = document.getElementById('inp-month');
-  const daySel   = document.getElementById('inp-day');
-  const hourSel  = document.getElementById('inp-hour');
-  for (let i=1;i<=12;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'월';monthSel.appendChild(o);}
-  for (let i=1;i<=31;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'일';daySel.appendChild(o);}
-  for (let i=0;i<=23;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'시';hourSel.appendChild(o);}
-
   const session = loadSession();
   if (!session) { showScreen('login'); return; }
 
@@ -345,46 +266,12 @@ function showScreen(name) {
   });
 }
 
-// ── 탭 전환 ────────────────────────────────────────────────
-function switchTab(tab) {
-  document.getElementById('tab-calc').classList.toggle('active', tab === 'calc');
-  document.getElementById('tab-manual').classList.toggle('active', tab === 'manual');
-  document.getElementById('panel-calc').classList.toggle('hidden', tab !== 'calc');
-  document.getElementById('panel-manual').classList.toggle('hidden', tab !== 'manual');
-}
-
 // ── 소스 텍스트 구성 ────────────────────────────────────────
 function buildSourceText() {
-  const tab = document.getElementById('tab-calc').classList.contains('active') ? 'calc' : 'manual';
-
-  if (tab === 'calc') {
-    const saved = localStorage.getItem('tod-calc-results');
-    if (saved) return saved;
-    alert('계산기 결과가 없습니다. 계산기에서 계산 후 다시 시도하거나 직접 입력 탭을 사용하세요.');
-    return null;
-  }
-
-  // 직접 입력
-  const year     = document.getElementById('inp-year').value;
-  const month    = document.getElementById('inp-month').value;
-  const day      = document.getElementById('inp-day').value;
-  const hour     = document.getElementById('inp-hour').value;
-  const gender   = document.getElementById('inp-gender').value === 'male' ? '남성' : '여성';
-  const location = document.getElementById('inp-location').value || '미입력';
-
-  if (!year || year < 1900 || year > 2010) {
-    alert('출생 연도를 올바르게 입력하세요.');
-    return null;
-  }
-
-  return `[직접 입력 출생 정보 — 사주/자미두수/점성술 차트를 직접 계산하여 해석하세요]
-
-생년월일: ${year}년 ${month}월 ${day}일 (양력)
-출생 시간: ${hour}시
-성별: ${gender}
-출생지: ${location}
-
-위 출생 정보를 바탕으로 사주팔자(四柱八字), 자미두수(紫微斗數) 명반, 서양 점성술 네이탈 차트를 계산한 뒤 해석하세요.`;
+  const saved = localStorage.getItem('tod-calc-results');
+  if (saved) return saved;
+  alert('계산기 결과가 없습니다. 계산기에서 명식을 산출한 후 이 페이지로 돌아오세요.');
+  return null;
 }
 
 // ── 전체 해석 생성 ────────────────────────────────────────────
@@ -496,61 +383,11 @@ async function sendEmail() {
 
 // ── 다국어 ────────────────────────────────────────────────────
 const LABELS = {
-  ko: {
-    subtitle: '8개 섹션 심층 해석을 한 번에 생성합니다.',
-    srcTitle: '해석 데이터 선택', tabCalc: '📊 계산기 결과 사용', tabManual: '✏️ 직접 입력',
-    calcLoaded: '계산기 결과가 로드되었습니다.',
-    lYear:'출생 연도', lMonth:'월', lDay:'일', lHour:'시간', lGender:'성별', lLoc:'출생지 (선택)',
-    male:'남성', female:'여성',
-    dShort:'요약 (2~3문장)', dStd:'표준 (4~5문장)', dPrem:'심층 (6~8문장)',
-    generate:'⭐ 전체 해석 생성', email:'📧 이메일로 받기',
-    resTitle:'해석 결과',
-    loading:'확인 중...',
-  },
-  en: {
-    subtitle: 'Generate all 8 sections of deep AI interpretation at once.',
-    srcTitle: 'Select Data Source', tabCalc: '📊 Use Calculator Results', tabManual: '✏️ Enter Manually',
-    calcLoaded: 'Calculator results loaded.',
-    lYear:'Birth Year', lMonth:'Month', lDay:'Day', lHour:'Hour', lGender:'Gender', lLoc:'Birthplace (optional)',
-    male:'Male', female:'Female',
-    dShort:'Brief (2-3 sentences)', dStd:'Standard (4-5 sentences)', dPrem:'Deep (6-8 sentences)',
-    generate:'⭐ Generate Full Report', email:'📧 Send to Email',
-    resTitle:'Interpretation Results',
-    loading:'Checking...',
-  },
-  ja: {
-    subtitle: '8セクション全解釈を一度に生成します。',
-    srcTitle: 'データソース選択', tabCalc: '📊 計算機結果を使用', tabManual: '✏️ 直接入力',
-    calcLoaded: '計算機の結果が読み込まれました。',
-    lYear:'生まれ年', lMonth:'月', lDay:'日', lHour:'時間', lGender:'性別', lLoc:'出生地 (任意)',
-    male:'男性', female:'女性',
-    dShort:'要約 (2~3文)', dStd:'標準 (4~5文)', dPrem:'詳細 (6~8文)',
-    generate:'⭐ 全解釈生成', email:'📧 メールで受け取る',
-    resTitle:'解釈結果',
-    loading:'確認中...',
-  },
-  zh: {
-    subtitle: '一次性生成8個部分的深度AI解讀。',
-    srcTitle: '選擇數據來源', tabCalc: '📊 使用計算器結果', tabManual: '✏️ 直接輸入',
-    calcLoaded: '計算器結果已載入。',
-    lYear:'出生年份', lMonth:'月', lDay:'日', lHour:'時間', lGender:'性別', lLoc:'出生地 (選填)',
-    male:'男性', female:'女性',
-    dShort:'摘要 (2~3句)', dStd:'標準 (4~5句)', dPrem:'深入 (6~8句)',
-    generate:'⭐ 生成完整解讀', email:'📧 發送到郵件',
-    resTitle:'解讀結果',
-    loading:'確認中...',
-  },
-  es: {
-    subtitle: 'Genera las 8 secciones de interpretación profunda de IA a la vez.',
-    srcTitle: 'Seleccionar Fuente de Datos', tabCalc: '📊 Usar Resultados de Calculadora', tabManual: '✏️ Ingresar Manualmente',
-    calcLoaded: 'Resultados de calculadora cargados.',
-    lYear:'Año de Nacimiento', lMonth:'Mes', lDay:'Día', lHour:'Hora', lGender:'Género', lLoc:'Lugar de Nacimiento (opcional)',
-    male:'Masculino', female:'Femenino',
-    dShort:'Breve (2-3 oraciones)', dStd:'Estándar (4-5 oraciones)', dPrem:'Profunda (6-8 oraciones)',
-    generate:'⭐ Generar Informe Completo', email:'📧 Enviar por Email',
-    resTitle:'Resultados de Interpretación',
-    loading:'Verificando...',
-  },
+  ko: { subtitle:'8개 섹션 심층 해석을 한 번에 생성합니다.', calcLoaded:'계산기 결과가 로드되었습니다.', dShort:'요약 (2~3문장)', dStd:'표준 (4~5문장)', dPrem:'심층 (6~8문장)', generate:'⭐ 전체 해석 생성', email:'📧 이메일로 받기', resTitle:'해석 결과', loading:'확인 중...' },
+  en: { subtitle:'Generate all 8 sections of deep AI interpretation at once.', calcLoaded:'Calculator results loaded.', dShort:'Brief (2-3 sentences)', dStd:'Standard (4-5 sentences)', dPrem:'Deep (6-8 sentences)', generate:'⭐ Generate Full Report', email:'📧 Send to Email', resTitle:'Interpretation Results', loading:'Checking...' },
+  ja: { subtitle:'8セクション全解釈を一度に生成します。', calcLoaded:'計算機の結果が読み込まれました。', dShort:'要約 (2~3文)', dStd:'標準 (4~5文)', dPrem:'詳細 (6~8文)', generate:'⭐ 全解釈生成', email:'📧 メールで受け取る', resTitle:'解釈結果', loading:'確認中...' },
+  zh: { subtitle:'一次性生成8個部分的深度AI解讀。', calcLoaded:'計算器結果已載入。', dShort:'摘要 (2~3句)', dStd:'標準 (4~5句)', dPrem:'深入 (6~8句)', generate:'⭐ 生成完整解讀', email:'📧 發送到郵件', resTitle:'解讀結果', loading:'確認中...' },
+  es: { subtitle:'Genera las 8 secciones de interpretación profunda de IA a la vez.', calcLoaded:'Resultados de calculadora cargados.', dShort:'Breve (2-3 oraciones)', dStd:'Estándar (4-5 oraciones)', dPrem:'Profunda (6-8 oraciones)', generate:'⭐ Generar Informe Completo', email:'📧 Enviar por Email', resTitle:'Resultados de Interpretación', loading:'Verificando...' },
 };
 
 function applyLang(rawLang) {
@@ -558,18 +395,7 @@ function applyLang(rawLang) {
   document.getElementById('sel-lang').value = lang;
   const L = LABELS[lang];
   document.getElementById('main-subtitle').textContent   = L.subtitle;
-  document.getElementById('card-source-title').textContent = L.srcTitle;
-  document.getElementById('tab-calc').textContent        = L.tabCalc;
-  document.getElementById('tab-manual').textContent      = L.tabManual;
   document.getElementById('calc-loaded-txt').textContent = L.calcLoaded;
-  document.getElementById('lbl-year').textContent        = L.lYear;
-  document.getElementById('lbl-month').textContent       = L.lMonth;
-  document.getElementById('lbl-day').textContent         = L.lDay;
-  document.getElementById('lbl-hour').textContent        = L.lHour;
-  document.getElementById('lbl-gender').textContent      = L.lGender;
-  document.getElementById('lbl-location').textContent    = L.lLoc;
-  document.getElementById('opt-male').textContent        = L.male;
-  document.getElementById('opt-female').textContent      = L.female;
   document.getElementById('opt-short').textContent       = L.dShort;
   document.getElementById('opt-standard').textContent    = L.dStd;
   document.getElementById('opt-premium').textContent     = L.dPrem;
