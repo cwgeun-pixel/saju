@@ -740,16 +740,24 @@
     <script defer src="./assets/ai-interpretation.js?v=20260611c"></script>
     <script type="module" src="./sajusite/assets/fortune-free.js?v=20260531b"></script>
     <script>
-    /* premium.html 복귀 플로우 — 300ms 폴링 방식 */
-    console.log('[TOD] v3 loaded');
+    /* premium.html 복귀 플로우 — 300ms 폴링 */
+    console.log('[TOD] v4 loaded');
     (function() {
       var saved = false;
+      var lastLen = -1;
       var id = setInterval(function() {
         if (saved) return;
         var el = document.getElementById('results');
-        if (!el) return;
+        if (!el) {
+          if (lastLen !== -2) { lastLen = -2; console.log('[TOD] #results 없음'); }
+          return;
+        }
         var txt = (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
-        if (txt.length < 100) return;
+        if (txt.length !== lastLen) {
+          lastLen = txt.length;
+          console.log('[TOD] #results 텍스트 길이:', txt.length);
+        }
+        if (txt.length < 30) return;
         saved = true;
         clearInterval(id);
         localStorage.setItem('tod-calc-results', txt);
