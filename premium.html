@@ -249,19 +249,53 @@
   </div><!-- /s-main -->
 </div><!-- /container -->
 
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+<script>
+/* CDN 의존성 없음 — localStorage에서 직접 세션 읽기 */
+const SUPABASE_URL   = 'https://smqekqdlkkqagzrvtnmh.supabase.co';
+const SUPABASE_ANON  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc';
+const STORAGE_KEY    = 'sb-smqekqdlkkqagzrvtnmh-auth-token';
+const INTERPRET_URL  = SUPABASE_URL + '/functions/v1/interpret';
+const SEND_URL       = SUPABASE_URL + '/functions/v1/send-report';
 
-const SUPABASE_URL  = 'https://smqekqdlkkqagzrvtnmh.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc';
-const INTERPRET_URL = SUPABASE_URL + '/functions/v1/interpret';
-const SEND_URL      = SUPABASE_URL + '/functions/v1/send-report';
+/* localStorage에서 세션 직접 읽기 (라이브러리 불필요) */
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    if (!d.access_token) return null;
+    /* 만료 체크 — expires_at 은 초 단위 */
+    if (d.expires_at && d.expires_at < Math.floor(Date.now() / 1000)) return null;
+    return d; /* { access_token, user: { id, email } } */
+  } catch { return null; }
+}
 
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+/* 구독 확인 — Supabase REST API 직접 호출 */
+async function checkSubscription(token) {
+  /* 1순위: is_subscribed() RPC */
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/is_subscribed', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token, 'apikey':SUPABASE_ANON },
+      body: '{}',
+    });
+    if (r.ok) { const v = await r.json(); if (typeof v === 'boolean') return v; }
+  } catch {}
+  /* 2순위: subscriptions 테이블 직접 조회 */
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/subscriptions?select=status,current_period_end&limit=1', {
+      headers: { 'Authorization':'Bearer '+token, 'apikey':SUPABASE_ANON },
+    });
+    if (r.ok) {
+      const rows = await r.json();
+      if (rows.length > 0) return rows[0].status === 'active' && new Date(rows[0].current_period_end) > new Date();
+    }
+  } catch {}
+  return false;
+}
 
 let currentSession = null;
 let allResults = [];
-let initialized = false;
 
 const SECTIONS = [
   { id:'personality', ko:'기본 성향',    en:'Personality'     },
@@ -275,62 +309,35 @@ const SECTIONS = [
 ];
 
 // ── 초기화 ────────────────────────────────────────────────
-async function runInit(session) {
-  if (initialized) return;
-  initialized = true;
-  currentSession = session;
-  document.getElementById('header-user').textContent = session.user.email;
+async function init() {
+  // 셀렉트 옵션 채우기
+  const monthSel = document.getElementById('inp-month');
+  const daySel   = document.getElementById('inp-day');
+  const hourSel  = document.getElementById('inp-hour');
+  for (let i=1;i<=12;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'월';monthSel.appendChild(o);}
+  for (let i=1;i<=31;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'일';daySel.appendChild(o);}
+  for (let i=0;i<=23;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'시';hourSel.appendChild(o);}
 
-  // 구독 확인
-  let isPremium = false;
-  try {
-    const { data: rpcData, error: rpcErr } = await sb.rpc('is_subscribed');
-    isPremium = rpcErr ? await checkTableFallback(session.user.id) : !!rpcData;
-  } catch { isPremium = false; }
+  const session = loadSession();
+  if (!session) { showScreen('login'); return; }
 
+  const isPremium = await checkSubscription(session.access_token);
   if (!isPremium) { showScreen('upgrade'); return; }
 
-  // sessionStorage에서 계산기 결과 불러오기
-  const savedResults = sessionStorage.getItem('tod-calc-results');
-  if (savedResults) {
+  currentSession = session;
+  document.getElementById('header-user').textContent = session.user?.email || '';
+
+  const saved = sessionStorage.getItem('tod-calc-results');
+  if (saved) {
     document.getElementById('calc-loaded').classList.remove('hidden');
     document.getElementById('calc-empty').classList.add('hidden');
   }
 
   showScreen('main');
-  applyLang(navigator.language?.slice(0,2) || 'ko');
+  applyLang(localStorage.getItem('honcheon.lang') || localStorage.getItem('tod_lang') || 'ko');
 }
 
-// 셀렉트 옵션 채우기 (DOM 준비 후 즉시)
-(function buildSelects() {
-  const monthSel = document.getElementById('inp-month');
-  const daySel   = document.getElementById('inp-day');
-  const hourSel  = document.getElementById('inp-hour');
-  for (let i=1; i<=12; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'월'; monthSel.appendChild(o); }
-  for (let i=1; i<=31; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'일'; daySel.appendChild(o); }
-  for (let i=0; i<=23; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'시'; hourSel.appendChild(o); }
-})();
-
-// onAuthStateChange 로 세션 감지 (getSession보다 신뢰성 높음)
-sb.auth.onAuthStateChange(async (event, session) => {
-  if (session) {
-    await runInit(session);
-  } else {
-    showScreen('login');
-  }
-});
-// 이미 로그인된 경우를 위한 즉시 확인
-sb.auth.getSession().then(({ data: { session } }) => {
-  if (session) runInit(session);
-  else showScreen('login');
-});
-
-async function checkTableFallback(userId) {
-  const { data } = await sb.from('subscriptions')
-    .select('status,current_period_end')
-    .eq('user_id', userId).maybeSingle();
-  return data?.status === 'active' && new Date(data.current_period_end) > new Date();
-}
+window.addEventListener('DOMContentLoaded', init);
 
 function showScreen(name) {
   ['loading','login','upgrade','main'].forEach(s => {
@@ -602,14 +609,10 @@ document.getElementById('sel-lang').addEventListener('change', function() {
   applyLang(this.value);
 });
 
-// 저장된 언어 적용
-const savedLang = localStorage.getItem('honcheon.lang') || localStorage.getItem('tod_lang');
-if (savedLang) applyLang(savedLang);
-
-// 모듈 스코프 함수를 인라인 onclick에서 접근할 수 있도록 전역 노출
-window.switchTab   = switchTab;
-window.generateAll = generateAll;
-window.sendEmail   = sendEmail;
+// 언어 변경 이벤트
+document.getElementById('sel-lang').addEventListener('change', function() {
+  applyLang(this.value);
+});
 </script>
 </body>
 </html>
