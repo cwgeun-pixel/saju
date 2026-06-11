@@ -111,19 +111,22 @@ const SEND_REPORT_URL = 'https://smqekqdlkkqagzrvtnmh.supabase.co/functions/v1/s
 
   async function checkPremiumStatus() {
     try {
-      const { data: { session } } = await _supabase.auth.getSession();
+      const { data: { session }, error: sessErr } = await _supabase.auth.getSession();
+      console.log('[AI해석] 세션:', session ? `uid=${session.user.id}` : '없음', sessErr || '');
       if (!session) return false;
 
-      // 1순위: security definer 함수 (RLS 우회, 가장 신뢰성 높음)
+      // 1순위: security definer 함수 (RLS 우회)
       const { data: rpcData, error: rpcError } = await _supabase.rpc('is_subscribed');
+      console.log('[AI해석] is_subscribed():', rpcData, rpcError?.message || '');
       if (!rpcError) return !!rpcData;
 
-      // 2순위: 직접 테이블 조회 (RLS가 올바르게 적용된 경우)
-      const { data } = await _supabase
+      // 2순위: 직접 테이블 조회
+      const { data, error: tblError } = await _supabase
         .from('subscriptions')
         .select('status, current_period_end')
         .eq('user_id', session.user.id)
         .maybeSingle();
+      console.log('[AI해석] 테이블 조회:', data, tblError?.message || '');
       return data?.status === 'active' && new Date(data.current_period_end) > new Date();
     } catch (e) {
       console.error('[AI해석] 구독 확인 실패:', e);
