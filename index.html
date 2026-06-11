@@ -43,35 +43,60 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc'
       );
 
+      const btnBase = [
+        'font-family:"Cinzel",serif',
+        'font-size:0.75rem',
+        'letter-spacing:0.08em',
+        'padding:0.4rem 1rem',
+        'border-radius:3px',
+        'text-decoration:none',
+        'white-space:nowrap',
+        'transition:all 0.2s',
+        'z-index:9999',
+        'cursor:pointer',
+      ].join(';');
+
       function injectAuthBtn(isLoggedIn) {
-        if (document.getElementById('nav-auth-btn')) return;
+        if (document.getElementById('nav-auth-wrap')) return;
         const nav = document.querySelector('nav');
         if (!nav) return;
-        const btn = document.createElement('a');
-        btn.id = 'nav-auth-btn';
-        btn.href = isLoggedIn ? './dashboard.html' : './auth.html';
-        btn.textContent = isLoggedIn ? '대시보드' : '로그인 / 회원가입';
-        btn.style.cssText = [
-          'font-family:"Cinzel",serif',
-          'font-size:0.75rem',
-          'letter-spacing:0.08em',
-          'color:#0A0D1A',
-          'background:#C9A84C',
-          'padding:0.4rem 1rem',
-          'border-radius:3px',
-          'text-decoration:none',
-          'white-space:nowrap',
-          'transition:background 0.2s',
-          'position:absolute',
-          'right:1rem',
-          'top:50%',
-          'transform:translateY(-50%)',
-          'z-index:9999',
-        ].join(';');
-        btn.addEventListener('mouseenter', () => btn.style.background = '#E8C870');
-        btn.addEventListener('mouseleave', () => btn.style.background = '#C9A84C');
+
+        const wrap = document.createElement('div');
+        wrap.id = 'nav-auth-wrap';
+        wrap.style.cssText = 'position:absolute;right:1rem;top:50%;transform:translateY(-50%);z-index:9999;display:flex;align-items:center;gap:0.5rem;';
+
+        if (isLoggedIn) {
+          const dash = document.createElement('a');
+          dash.href = './dashboard.html';
+          dash.textContent = '대시보드';
+          dash.style.cssText = btnBase + ';color:#0A0D1A;background:#C9A84C;';
+          dash.addEventListener('mouseenter', () => dash.style.background = '#E8C870');
+          dash.addEventListener('mouseleave', () => dash.style.background = '#C9A84C');
+
+          const logout = document.createElement('button');
+          logout.textContent = '로그아웃';
+          logout.style.cssText = btnBase + ';color:rgba(232,213,163,0.6);background:none;border:1px solid rgba(201,168,76,0.3);';
+          logout.addEventListener('mouseenter', () => { logout.style.color='#C9A84C'; logout.style.borderColor='rgba(201,168,76,0.7)'; });
+          logout.addEventListener('mouseleave', () => { logout.style.color='rgba(232,213,163,0.6)'; logout.style.borderColor='rgba(201,168,76,0.3)'; });
+          logout.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.reload();
+          });
+
+          wrap.appendChild(dash);
+          wrap.appendChild(logout);
+        } else {
+          const login = document.createElement('a');
+          login.href = './auth.html';
+          login.textContent = '로그인 / 회원가입';
+          login.style.cssText = btnBase + ';color:#0A0D1A;background:#C9A84C;';
+          login.addEventListener('mouseenter', () => login.style.background = '#E8C870');
+          login.addEventListener('mouseleave', () => login.style.background = '#C9A84C');
+          wrap.appendChild(login);
+        }
+
         nav.style.position = 'relative';
-        nav.appendChild(btn);
+        nav.appendChild(wrap);
       }
 
       async function initAuthBtn() {
