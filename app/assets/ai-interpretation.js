@@ -113,13 +113,20 @@ const SEND_REPORT_URL = 'https://smqekqdlkkqagzrvtnmh.supabase.co/functions/v1/s
     try {
       const { data: { session } } = await _supabase.auth.getSession();
       if (!session) return false;
+
+      // 1순위: security definer 함수 (RLS 우회, 가장 신뢰성 높음)
+      const { data: rpcData, error: rpcError } = await _supabase.rpc('is_subscribed');
+      if (!rpcError) return !!rpcData;
+
+      // 2순위: 직접 테이블 조회 (RLS가 올바르게 적용된 경우)
       const { data } = await _supabase
         .from('subscriptions')
         .select('status, current_period_end')
         .eq('user_id', session.user.id)
         .maybeSingle();
       return data?.status === 'active' && new Date(data.current_period_end) > new Date();
-    } catch {
+    } catch (e) {
+      console.error('[AI해석] 구독 확인 실패:', e);
       return false;
     }
   }
