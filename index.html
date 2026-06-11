@@ -61,9 +61,12 @@
         const nav = document.querySelector('nav');
         if (!nav) return;
 
+        // nav 안의 우측 flex 컨테이너(언어 선택기 포함)를 찾아 그 앞에 삽입
+        const rightFlex = nav.querySelector('div.hidden') || nav.querySelector('div[class*="flex"]');
+
         const wrap = document.createElement('div');
         wrap.id = 'nav-auth-wrap';
-        wrap.style.cssText = 'position:absolute;right:1rem;top:50%;transform:translateY(-50%);z-index:9999;display:flex;align-items:center;gap:0.5rem;';
+        wrap.style.cssText = 'display:flex;align-items:center;gap:0.5rem;margin-left:0.75rem;';
 
         if (isLoggedIn) {
           const dash = document.createElement('a');
@@ -95,8 +98,13 @@
           wrap.appendChild(login);
         }
 
-        nav.style.position = 'relative';
-        nav.appendChild(wrap);
+        if (rightFlex) {
+          rightFlex.appendChild(wrap);
+        } else {
+          nav.style.position = 'relative';
+          wrap.style.cssText += ';position:absolute;right:1rem;top:50%;transform:translateY(-50%);';
+          nav.appendChild(wrap);
+        }
       }
 
       async function initAuthBtn() {
