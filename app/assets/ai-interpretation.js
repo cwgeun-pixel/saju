@@ -92,9 +92,8 @@
   function collectResultsText() {
     const el = document.getElementById('results');
     if (!el) return '';
-    const clone = el.cloneNode(true);
-    clone.querySelectorAll('#honcheon-ai-panel, button, select').forEach(n => n.remove());
-    return clone.innerText.replace(/\n{3,}/g, '\n\n').trim();
+    // cloneNode detached 상태에서 innerText 빈값 반환 → 라이브 요소에서 직접 추출
+    return (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
   }
 
   async function checkPremium() {

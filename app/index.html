@@ -746,9 +746,8 @@
       function collectText() {
         var el = document.getElementById('results');
         if (!el) return '';
-        var clone = el.cloneNode(true);
-        clone.querySelectorAll('button,select').forEach(function(n){n.remove();});
-        return (clone.innerText||'').replace(/\n{3,}/g,'\n\n').trim();
+        // cloneNode 후 detached 상태에서 innerText가 빈값 반환 → 라이브 요소에서 직접 추출
+        return (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
       }
       var _t = null;
       new MutationObserver(function(_,obs){
