@@ -94,15 +94,15 @@
 
 <a href="./" class="logo">
   TRINITY OF DESTINY
-  <span>사주 · 자미두수 · 점성술</span>
+  <span id="logo-sub">사주 · 자미두수 · 점성술</span>
 </a>
 
 <div class="card">
 
   <!-- 탭 -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('login')">로그인</button>
-    <button class="tab" onclick="switchTab('signup')">회원가입</button>
+    <button class="tab active" id="tab-login" onclick="switchTab('login')">로그인</button>
+    <button class="tab" id="tab-signup" onclick="switchTab('signup')">회원가입</button>
   </div>
 
   <!-- 메시지 -->
@@ -111,60 +111,60 @@
   <!-- 이메일 확인 안내 (가입 후) -->
   <div class="verify-screen" id="verifyScreen">
     <div class="icon">📧</div>
-    <h3>이메일을 확인해 주세요</h3>
-    <p>입력하신 이메일로 인증 링크를 발송했습니다.<br>링크를 클릭하면 가입이 완료됩니다.</p>
+    <h3 id="verify-title">이메일을 확인해 주세요</h3>
+    <p id="verify-desc">입력하신 이메일로 인증 링크를 발송했습니다.<br>링크를 클릭하면 가입이 완료됩니다.</p>
   </div>
 
   <!-- 로그인 폼 -->
   <form class="form active" id="loginForm" onsubmit="handleLogin(event)">
     <div>
-      <label>이메일</label>
+      <label id="label-login-email">이메일</label>
       <input type="email" id="loginEmail" placeholder="이메일 주소" required />
     </div>
     <div>
-      <label>비밀번호</label>
+      <label id="label-login-pw">비밀번호</label>
       <input type="password" id="loginPw" placeholder="비밀번호" required />
     </div>
     <button type="submit" class="btn" id="loginBtn">로그인</button>
     <div class="terms">
-      <a href="#" onclick="forgotPassword(event)">비밀번호를 잊으셨나요?</a>
+      <a href="#" id="forgot-pw-link" onclick="forgotPassword(event)">비밀번호를 잊으셨나요?</a>
     </div>
   </form>
 
   <!-- 회원가입 폼 -->
   <form class="form" id="signupForm" onsubmit="handleSignup(event)">
     <div>
-      <label>이름</label>
+      <label id="label-signup-name">이름</label>
       <input type="text" id="signupName" placeholder="이름" required />
     </div>
     <div>
-      <label>이메일</label>
+      <label id="label-signup-email">이메일</label>
       <input type="email" id="signupEmail" placeholder="이메일 주소" required />
     </div>
     <div>
-      <label>비밀번호 (8자 이상)</label>
+      <label id="label-signup-pw">비밀번호 (8자 이상)</label>
       <input type="password" id="signupPw" placeholder="비밀번호" minlength="8" required />
     </div>
     <div>
-      <label>비밀번호 확인</label>
+      <label id="label-signup-pw2">비밀번호 확인</label>
       <input type="password" id="signupPw2" placeholder="비밀번호 재입력" required />
     </div>
     <div class="consent-group">
       <div class="consent-row">
         <input type="checkbox" id="agreeTerms" />
         <label for="agreeTerms" style="margin:0">
-          <a onclick="openModal('terms')">이용약관</a>을 읽고 동의합니다<span class="req">*</span>
+          <a id="terms-link" onclick="openModal('terms')">이용약관</a><span id="consent-terms-suffix">을 읽고 동의합니다</span><span class="req">*</span>
         </label>
       </div>
       <div class="consent-row">
         <input type="checkbox" id="agreePrivacy" />
         <label for="agreePrivacy" style="margin:0">
-          <a onclick="openModal('privacy')">개인정보처리방침</a>에 동의합니다<span class="req">*</span>
+          <a id="privacy-link" onclick="openModal('privacy')">개인정보처리방침</a><span id="consent-privacy-suffix">에 동의합니다</span><span class="req">*</span>
         </label>
       </div>
       <div class="consent-row">
         <input type="checkbox" id="agreeAge" />
-        <label for="agreeAge" style="margin:0">만 14세 이상임을 확인합니다<span class="req">*</span></label>
+        <label for="agreeAge" id="consent-age-label" style="margin:0">만 14세 이상임을 확인합니다<span class="req">*</span></label>
       </div>
     </div>
     <button type="submit" class="btn" id="signupBtn">회원가입</button>
@@ -174,10 +174,10 @@
   <div class="modal-overlay" id="modalTerms">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>이용약관</h3>
+        <h3 id="modal-terms-title">이용약관</h3>
         <button class="modal-close" onclick="closeModal('terms')">✕</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modal-terms-body">
         <h4>제1조 (목적)</h4>
         <p>본 약관은 Trinity of Destiny(이하 "서비스")가 제공하는 사주·자미두수·점성술 콘텐츠 서비스의 이용 조건 및 절차, 이용자와 서비스 제공자 간의 권리·의무 및 책임사항을 규정합니다.</p>
         <h4>제2조 (서비스 성격 및 한계)</h4>
@@ -198,7 +198,7 @@
         <p>약관 변경 시 서비스 내 공지 또는 이메일로 7일 전에 안내합니다. 변경된 약관에 동의하지 않는 경우 서비스 이용을 중단하고 탈퇴할 수 있습니다.</p>
       </div>
       <div class="modal-footer">
-        <button class="modal-agree-btn" onclick="agreeAndClose('terms')">동의하고 닫기</button>
+        <button class="modal-agree-btn" id="modal-terms-agree" onclick="agreeAndClose('terms')">동의하고 닫기</button>
       </div>
     </div>
   </div>
@@ -207,10 +207,10 @@
   <div class="modal-overlay" id="modalPrivacy">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>개인정보처리방침</h3>
+        <h3 id="modal-privacy-title">개인정보처리방침</h3>
         <button class="modal-close" onclick="closeModal('privacy')">✕</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modal-privacy-body">
         <h4>수집하는 개인정보</h4>
         <ul>
           <li>필수: 이메일 주소, 이름</li>
@@ -237,14 +237,14 @@
         <p>이용자는 언제든지 자신의 개인정보 열람·수정·삭제·처리 정지를 요청할 수 있습니다. 문의: wnmecomm@gamil.com</p>
       </div>
       <div class="modal-footer">
-        <button class="modal-agree-btn" onclick="agreeAndClose('privacy')">동의하고 닫기</button>
+        <button class="modal-agree-btn" id="modal-privacy-agree" onclick="agreeAndClose('privacy')">동의하고 닫기</button>
       </div>
     </div>
   </div>
 
 </div>
 
-<a href="./" class="back-link">← 메인으로 돌아가기</a>
+<a href="./" class="back-link" id="back-link">← 메인으로 돌아가기</a>
 
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
@@ -360,6 +360,140 @@
     if (error) { showMsg(error.message); }
     else { showMsg('비밀번호 재설정 이메일을 발송했습니다.', 'success'); }
   };
+</script>
+
+<script>
+// auth 페이지 다국어 번역
+(function() {
+  const lang = localStorage.getItem('honcheon.lang') || localStorage.getItem('tod_lang') || 'ko';
+  if (lang === 'ko') return;
+
+  const T = {
+    en: {
+      'logo-sub': 'Saju · Ziwei Doushu · Astrology',
+      'tab-login': 'Log In', 'tab-signup': 'Sign Up',
+      'verify-title': 'Check your email',
+      'verify-desc': 'We sent a confirmation link to your email address.<br>Click the link to complete registration.',
+      'label-login-email': 'Email', 'label-login-pw': 'Password',
+      'loginEmail-ph': 'Email address', 'loginPw-ph': 'Password',
+      'loginBtn': 'Log In', 'forgot-pw-link': 'Forgot your password?',
+      'label-signup-name': 'Name', 'label-signup-email': 'Email',
+      'label-signup-pw': 'Password (8+ characters)', 'label-signup-pw2': 'Confirm Password',
+      'signupName-ph': 'Your name', 'signupEmail-ph': 'Email address',
+      'signupPw-ph': 'Password', 'signupPw2-ph': 'Re-enter password',
+      'signupBtn': 'Sign Up',
+      'terms-link': 'Terms of Service', 'consent-terms-suffix': ' — I have read and agree',
+      'privacy-link': 'Privacy Policy', 'consent-privacy-suffix': ' — I agree',
+      'consent-age-label': 'I confirm I am 14 years of age or older',
+      'modal-terms-title': 'Terms of Service', 'modal-terms-agree': 'Agree & Close',
+      'modal-privacy-title': 'Privacy Policy', 'modal-privacy-agree': 'Agree & Close',
+      'back-link': '← Back to main',
+      'modal-terms-body': `<h4>Article 1 — Purpose</h4><p>These terms govern the use of the Saju, Ziwei Doushu, and astrology content service provided by Trinity of Destiny ("Service"), including rights, obligations, and responsibilities between users and the provider.</p><h4>Article 2 — Nature & Limitations</h4><p>All interpretations are reference content based on traditional symbolic systems. They may NOT be used for:</p><ul><li>Medical decisions including diagnosis or treatment</li><li>Financial or legal decisions such as investments or contracts</li><li>Major life decisions such as marriage, employment, or business</li><li>Mental health, counseling, or crisis situations</li></ul><h4>Article 3 — Subscription & Payment</h4><p>Paid memberships are billed monthly via automatic renewal. You may cancel at any time before the next billing date. Service continues until the end of the paid period. Refunds may be requested for unused periods.</p><h4>Article 4 — Intellectual Property</h4><p>All content (text, images, algorithms) is owned by the service provider. Unauthorized reproduction, distribution, or commercial use is prohibited.</p><h4>Article 5 — Limitation of Liability</h4><p>The service provider is not legally responsible for any decisions made or consequences arising from the use of this service. All outcomes are the sole responsibility of the user.</p><h4>Article 6 — Changes to Terms</h4><p>Material changes will be notified via the service or email at least 7 days in advance. Continued use after changes constitutes acceptance.</p>`,
+      'modal-privacy-body': `<h4>Information Collected</h4><ul><li>Required: email address, name</li><li>Service use: date of birth, birth time, birthplace (for calculation purposes)</li><li>Payment: payment method info (processed via Stripe; not stored by us)</li></ul><h4>Purpose of Collection</h4><ul><li>Member registration and identity verification</li><li>Subscription service delivery and payment processing</li><li>Service announcements and email communications</li><li>Usage statistics for service improvement</li></ul><h4>Retention Period</h4><p>Data is retained until account deletion, then permanently deleted within 30 days. Exceptions apply where required by law.</p><h4>Third-Party Sharing</h4><p>Personal data is not shared with third parties except:</p><ul><li>Supabase Inc. — authentication and database services (US)</li><li>Stripe Inc. — payment processing (US)</li><li>When required by law</li></ul><h4>Your Rights</h4><p>You may request access, correction, deletion, or restriction of your personal data at any time. Contact: wnmecomm@gamil.com</p>`
+    },
+    ja: {
+      'logo-sub': '四柱推命 · 紫微斗数 · 占星術',
+      'tab-login': 'ログイン', 'tab-signup': '新規登録',
+      'verify-title': 'メールをご確認ください',
+      'verify-desc': 'ご入力のメールアドレスに認証リンクを送信しました。<br>リンクをクリックすると登録が完了します。',
+      'label-login-email': 'メールアドレス', 'label-login-pw': 'パスワード',
+      'loginEmail-ph': 'メールアドレス', 'loginPw-ph': 'パスワード',
+      'loginBtn': 'ログイン', 'forgot-pw-link': 'パスワードをお忘れですか？',
+      'label-signup-name': 'お名前', 'label-signup-email': 'メールアドレス',
+      'label-signup-pw': 'パスワード（8文字以上）', 'label-signup-pw2': 'パスワード確認',
+      'signupName-ph': 'お名前', 'signupEmail-ph': 'メールアドレス',
+      'signupPw-ph': 'パスワード', 'signupPw2-ph': 'パスワードを再入力',
+      'signupBtn': '新規登録',
+      'terms-link': '利用規約', 'consent-terms-suffix': 'を読み、同意します',
+      'privacy-link': 'プライバシーポリシー', 'consent-privacy-suffix': 'に同意します',
+      'consent-age-label': '満14歳以上であることを確認します',
+      'modal-terms-title': '利用規約', 'modal-terms-agree': '同意して閉じる',
+      'modal-privacy-title': 'プライバシーポリシー', 'modal-privacy-agree': '同意して閉じる',
+      'back-link': '← メインに戻る',
+      'modal-terms-body': `<h4>第1条（目的）</h4><p>本規約は、Trinity of Destinyが提供する四柱推命・紫微斗数・占星術コンテンツサービスの利用条件および利用者とサービス提供者間の権利・義務・責任事項を定めます。</p><h4>第2条（サービスの性質と限界）</h4><p>本サービスの解釈はすべて伝統的・象徴的な参考コンテンツです。以下の目的には使用できません：</p><ul><li>疾病の診断・治療等の医療的判断</li><li>投資・契約等の金融・法律的決定</li><li>結婚・就職・事業等の重大な人生の決定</li><li>精神健康・心理相談・危機状況に関する判断</li></ul><h4>第3条（サブスクリプションと支払い）</h4><p>有料メンバーシップは月額自動更新制です。次回請求日前にいつでも解約でき、解約後も期間満了まで利用可能です。未使用期間の返金をリクエストできます。</p><h4>第4条（知的財産権）</h4><p>サービス内のすべてのコンテンツの著作権はサービス提供者に帰属します。無断複製・配布・商業利用を禁じます。</p><h4>第5条（免責事項）</h4><p>サービス提供者は、本サービスの解釈結果に基づいてユーザーが行った決定とその結果について法的責任を負いません。</p>`,
+      'modal-privacy-body': `<h4>収集する個人情報</h4><ul><li>必須：メールアドレス、お名前</li><li>サービス利用時：生年月日、出生時刻、出生地（計算目的）</li><li>決済時：支払い情報（Stripe経由で処理、当社未保管）</li></ul><h4>収集・利用目的</h4><ul><li>会員登録および本人確認</li><li>サブスクリプションサービスの提供と決済処理</li><li>サービス関連のお知らせおよびメール送信</li><li>サービス改善のための利用統計</li></ul><h4>保有期間</h4><p>退会まで保有し、退会後30日以内に削除します。法令により保存が必要な場合は該当期間保管します。</p><h4>第三者提供</h4><ul><li>Supabase Inc.：認証・データベースサービス（米国）</li><li>Stripe Inc.：決済処理サービス（米国）</li><li>法令による要請がある場合</li></ul><h4>利用者の権利</h4><p>個人情報の閲覧・修正・削除・処理停止をいつでもリクエストできます。お問い合わせ：wnmecomm@gamil.com</p>`
+    },
+    zh: {
+      'logo-sub': '四柱八字 · 紫微斗數 · 占星術',
+      'tab-login': '登入', 'tab-signup': '註冊',
+      'verify-title': '請確認您的電子郵件',
+      'verify-desc': '我們已將確認連結發送至您的電子郵件。<br>點擊連結即可完成註冊。',
+      'label-login-email': '電子郵件', 'label-login-pw': '密碼',
+      'loginEmail-ph': '電子郵件地址', 'loginPw-ph': '密碼',
+      'loginBtn': '登入', 'forgot-pw-link': '忘記密碼？',
+      'label-signup-name': '姓名', 'label-signup-email': '電子郵件',
+      'label-signup-pw': '密碼（8位以上）', 'label-signup-pw2': '確認密碼',
+      'signupName-ph': '您的姓名', 'signupEmail-ph': '電子郵件地址',
+      'signupPw-ph': '密碼', 'signupPw2-ph': '再次輸入密碼',
+      'signupBtn': '註冊',
+      'terms-link': '使用條款', 'consent-terms-suffix': '，我已閱讀並同意',
+      'privacy-link': '隱私政策', 'consent-privacy-suffix': '，我同意',
+      'consent-age-label': '我確認我已滿14歲',
+      'modal-terms-title': '使用條款', 'modal-terms-agree': '同意並關閉',
+      'modal-privacy-title': '隱私政策', 'modal-privacy-agree': '同意並關閉',
+      'back-link': '← 返回主頁',
+      'modal-terms-body': `<h4>第一條（目的）</h4><p>本條款規定Trinity of Destiny提供的四柱八字、紫微斗數及占星術內容服務的使用條件，以及用戶與服務提供者之間的權利義務。</p><h4>第二條（服務性質與限制）</h4><p>本服務所有解讀均為傳統象徵性參考內容，不得用於：</p><ul><li>疾病診斷、治療等醫療判斷</li><li>投資、合約等金融法律決定</li><li>婚姻、就業、事業等重大人生決定</li><li>心理健康、心理諮詢及危機處理</li></ul><h4>第三條（訂閱與付款）</h4><p>付費會員採月費自動續訂制。可於下次扣款日前隨時取消，取消後服務持續至當期結束。未使用期間可申請退款。</p><h4>第四條（知識產權）</h4><p>服務內所有內容之著作權歸服務提供者所有，禁止未經授權的複製、散布或商業使用。</p><h4>第五條（責任限制）</h4><p>服務提供者對用戶基於本服務解讀結果所做的決定及其後果概不負責。</p>`,
+      'modal-privacy-body': `<h4>收集的個人資料</h4><ul><li>必要：電子郵件地址、姓名</li><li>使用服務時：出生日期、出生時間、出生地（計算目的）</li><li>付款時：付款資訊（由Stripe處理，本公司不保存）</li></ul><h4>收集與使用目的</h4><ul><li>會員註冊及身份驗證</li><li>訂閱服務提供及付款處理</li><li>服務相關通知及電子郵件發送</li><li>服務改善統計分析</li></ul><h4>保存期限</h4><p>保存至帳戶刪除，刪除後30日內銷毀。依法律規定需保存者除外。</p><h4>第三方提供</h4><ul><li>Supabase Inc.：身份驗證及資料庫服務（美國）</li><li>Stripe Inc.：付款處理服務（美國）</li><li>依法律要求時</li></ul><h4>用戶權利</h4><p>您可隨時要求查閱、更正、刪除或限制處理您的個人資料。聯絡：wnmecomm@gamil.com</p>`
+    },
+    es: {
+      'logo-sub': 'Saju · Ziwei Doushu · Astrología',
+      'tab-login': 'Iniciar sesión', 'tab-signup': 'Registrarse',
+      'verify-title': 'Revisa tu correo electrónico',
+      'verify-desc': 'Hemos enviado un enlace de confirmación a tu correo.<br>Haz clic en el enlace para completar el registro.',
+      'label-login-email': 'Correo electrónico', 'label-login-pw': 'Contraseña',
+      'loginEmail-ph': 'Dirección de correo', 'loginPw-ph': 'Contraseña',
+      'loginBtn': 'Iniciar sesión', 'forgot-pw-link': '¿Olvidaste tu contraseña?',
+      'label-signup-name': 'Nombre', 'label-signup-email': 'Correo electrónico',
+      'label-signup-pw': 'Contraseña (mínimo 8 caracteres)', 'label-signup-pw2': 'Confirmar contraseña',
+      'signupName-ph': 'Tu nombre', 'signupEmail-ph': 'Dirección de correo',
+      'signupPw-ph': 'Contraseña', 'signupPw2-ph': 'Repite la contraseña',
+      'signupBtn': 'Registrarse',
+      'terms-link': 'Términos de uso', 'consent-terms-suffix': ' — He leído y acepto',
+      'privacy-link': 'Política de privacidad', 'consent-privacy-suffix': ' — Acepto',
+      'consent-age-label': 'Confirmo que tengo 14 años o más',
+      'modal-terms-title': 'Términos de uso', 'modal-terms-agree': 'Aceptar y cerrar',
+      'modal-privacy-title': 'Política de privacidad', 'modal-privacy-agree': 'Aceptar y cerrar',
+      'back-link': '← Volver al inicio',
+      'modal-terms-body': `<h4>Artículo 1 — Objeto</h4><p>Estos términos regulan el uso del servicio de contenido de Saju, Ziwei Doushu y astrología proporcionado por Trinity of Destiny, incluyendo condiciones, derechos y responsabilidades entre usuarios y el proveedor.</p><h4>Artículo 2 — Naturaleza y limitaciones</h4><p>Todas las interpretaciones son contenido de referencia de carácter tradicional y simbólico. NO pueden usarse para:</p><ul><li>Decisiones médicas, incluyendo diagnóstico o tratamiento</li><li>Decisiones financieras o legales como inversiones o contratos</li><li>Decisiones importantes de vida como matrimonio, empleo o negocios</li><li>Situaciones de salud mental, asesoramiento o crisis</li></ul><h4>Artículo 3 — Suscripción y pago</h4><p>La membresía de pago se renueva automáticamente cada mes. Puedes cancelar en cualquier momento antes del próximo cobro. El servicio continúa hasta el final del período pagado. Se pueden solicitar reembolsos por períodos no utilizados.</p><h4>Artículo 4 — Propiedad intelectual</h4><p>Todos los contenidos del servicio son propiedad del proveedor. Se prohíbe la reproducción, distribución o uso comercial no autorizados.</p><h4>Artículo 5 — Limitación de responsabilidad</h4><p>El proveedor no asume responsabilidad legal por las decisiones tomadas ni sus consecuencias basadas en el uso de este servicio.</p>`,
+      'modal-privacy-body': `<h4>Información recopilada</h4><ul><li>Obligatorio: dirección de correo electrónico, nombre</li><li>Uso del servicio: fecha de nacimiento, hora de nacimiento, lugar de nacimiento (para cálculos)</li><li>Pago: datos de pago (procesados por Stripe; no almacenados por nosotros)</li></ul><h4>Finalidad de la recopilación</h4><ul><li>Registro de miembros y verificación de identidad</li><li>Prestación del servicio de suscripción y procesamiento de pagos</li><li>Comunicaciones y avisos relacionados con el servicio</li><li>Estadísticas de uso para mejorar el servicio</li></ul><h4>Período de conservación</h4><p>Los datos se conservan hasta la eliminación de la cuenta y se destruyen en un plazo de 30 días. Se aplican excepciones según la legislación vigente.</p><h4>Transferencia a terceros</h4><ul><li>Supabase Inc.: servicios de autenticación y base de datos (EE.UU.)</li><li>Stripe Inc.: procesamiento de pagos (EE.UU.)</li><li>Cuando lo exija la ley</li></ul><h4>Tus derechos</h4><p>Puedes solicitar acceso, corrección, eliminación o restricción de tus datos personales en cualquier momento. Contacto: wnmecomm@gamil.com</p>`
+    }
+  };
+
+  const t = T[lang];
+  if (!t) return;
+
+  // textContent 치환
+  const textIds = ['logo-sub','tab-login','tab-signup','verify-title','label-login-email',
+    'label-login-pw','loginBtn','forgot-pw-link','label-signup-name','label-signup-email',
+    'label-signup-pw','label-signup-pw2','signupBtn','terms-link','consent-terms-suffix',
+    'privacy-link','consent-privacy-suffix','consent-age-label','modal-terms-title',
+    'modal-terms-agree','modal-privacy-title','modal-privacy-agree','back-link'];
+  textIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && t[id]) el.textContent = t[id];
+  });
+
+  // innerHTML 치환 (verify-desc는 <br> 포함)
+  const el = document.getElementById('verify-desc');
+  if (el && t['verify-desc']) el.innerHTML = t['verify-desc'];
+
+  // 모달 body innerHTML 치환
+  ['modal-terms-body','modal-privacy-body'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && t[id]) el.innerHTML = t[id];
+  });
+
+  // placeholder 치환
+  const phMap = {
+    'loginEmail': 'loginEmail-ph', 'loginPw': 'loginPw-ph',
+    'signupName': 'signupName-ph', 'signupEmail': 'signupEmail-ph',
+    'signupPw': 'signupPw-ph', 'signupPw2': 'signupPw2-ph'
+  };
+  Object.entries(phMap).forEach(([inputId, key]) => {
+    const el = document.getElementById(inputId);
+    if (el && t[key]) el.placeholder = t[key];
+  });
+})();
 </script>
 </body>
 </html>
