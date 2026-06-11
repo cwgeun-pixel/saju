@@ -249,14 +249,15 @@
   </div><!-- /s-main -->
 </div><!-- /container -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
 const SUPABASE_URL  = 'https://smqekqdlkkqagzrvtnmh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc';
 const INTERPRET_URL = SUPABASE_URL + '/functions/v1/interpret';
 const SEND_URL      = SUPABASE_URL + '/functions/v1/send-report';
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let currentSession = null;
 let allResults = [];
@@ -604,6 +605,11 @@ document.getElementById('sel-lang').addEventListener('change', function() {
 // 저장된 언어 적용
 const savedLang = localStorage.getItem('honcheon.lang') || localStorage.getItem('tod_lang');
 if (savedLang) applyLang(savedLang);
+
+// 모듈 스코프 함수를 인라인 onclick에서 접근할 수 있도록 전역 노출
+window.switchTab   = switchTab;
+window.generateAll = generateAll;
+window.sendEmail   = sendEmail;
 </script>
 </body>
 </html>
