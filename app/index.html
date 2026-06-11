@@ -739,6 +739,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script defer src="./assets/ai-interpretation.js?v=20260611c"></script>
     <script type="module" src="./sajusite/assets/fortune-free.js?v=20260531b"></script>
+    <script>
+    /* premium.html 복귀 플로우 — 인라인 (캐시 무관) */
+    console.log('[TOD] inline script loaded');
+    (function() {
+      function collectText() {
+        var el = document.getElementById('results');
+        if (!el) return '';
+        var clone = el.cloneNode(true);
+        clone.querySelectorAll('button,select').forEach(function(n){n.remove();});
+        return (clone.innerText||'').replace(/\n{3,}/g,'\n\n').trim();
+      }
+      var _t = null;
+      new MutationObserver(function(_,obs){
+        clearTimeout(_t);
+        _t = setTimeout(function(){
+          var txt = collectText();
+          if (!txt || txt.length < 100) return;
+          sessionStorage.setItem('tod-calc-results', txt);
+          console.log('[TOD] 결과 저장됨', txt.length, '자');
+          if (sessionStorage.getItem('tod-return-to-premium')) {
+            sessionStorage.removeItem('tod-return-to-premium');
+            obs.disconnect();
+            console.log('[TOD] premium.html로 복귀');
+            setTimeout(function(){ window.location.href='/premium.html'; }, 400);
+          }
+        }, 500);
+      }).observe(document.body, {childList:true, subtree:true});
+    })();
+    </script>
     <link rel="stylesheet" crossorigin href="./assets/index-DvxU4PqU.css" />
   </head>
   <body>
