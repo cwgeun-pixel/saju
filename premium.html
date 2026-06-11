@@ -17,6 +17,7 @@
       --amber: #f59e0b; --amber-soft: rgba(245,158,11,0.1);
     }
     html, body { background: var(--bg); color: var(--text); font-family: 'Pretendard', sans-serif; min-height: 100vh; }
+    .hidden { display: none !important; }
 
     /* 헤더 */
     .site-header {
@@ -259,6 +260,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let currentSession = null;
 let allResults = [];
+let initialized = false;
 
 const SECTIONS = [
   { id:'personality', ko:'기본 성향',    en:'Personality'     },
@@ -272,27 +274,18 @@ const SECTIONS = [
 ];
 
 // ── 초기화 ────────────────────────────────────────────────
-(async function init() {
-  // 셀렉트 옵션 채우기
-  const monthSel = document.getElementById('inp-month');
-  const daySel   = document.getElementById('inp-day');
-  const hourSel  = document.getElementById('inp-hour');
-  for (let i=1; i<=12; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'월'; monthSel.appendChild(o); }
-  for (let i=1; i<=31; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'일'; daySel.appendChild(o); }
-  for (let i=0; i<=23; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'시'; hourSel.appendChild(o); }
-
-  // 세션 확인
-  const { data: { session } } = await sb.auth.getSession();
-
-  if (!session) { showScreen('login'); return; }
+async function runInit(session) {
+  if (initialized) return;
+  initialized = true;
   currentSession = session;
   document.getElementById('header-user').textContent = session.user.email;
 
   // 구독 확인
-  const { data: rpcData, error: rpcErr } = await sb.rpc('is_subscribed');
-  const isPremium = rpcErr
-    ? await checkTableFallback(session.user.id)
-    : !!rpcData;
+  let isPremium = false;
+  try {
+    const { data: rpcData, error: rpcErr } = await sb.rpc('is_subscribed');
+    isPremium = rpcErr ? await checkTableFallback(session.user.id) : !!rpcData;
+  } catch { isPremium = false; }
 
   if (!isPremium) { showScreen('upgrade'); return; }
 
@@ -305,7 +298,31 @@ const SECTIONS = [
 
   showScreen('main');
   applyLang(navigator.language?.slice(0,2) || 'ko');
+}
+
+// 셀렉트 옵션 채우기 (DOM 준비 후 즉시)
+(function buildSelects() {
+  const monthSel = document.getElementById('inp-month');
+  const daySel   = document.getElementById('inp-day');
+  const hourSel  = document.getElementById('inp-hour');
+  for (let i=1; i<=12; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'월'; monthSel.appendChild(o); }
+  for (let i=1; i<=31; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'일'; daySel.appendChild(o); }
+  for (let i=0; i<=23; i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'시'; hourSel.appendChild(o); }
 })();
+
+// onAuthStateChange 로 세션 감지 (getSession보다 신뢰성 높음)
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (session) {
+    await runInit(session);
+  } else {
+    showScreen('login');
+  }
+});
+// 이미 로그인된 경우를 위한 즉시 확인
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) runInit(session);
+  else showScreen('login');
+});
 
 async function checkTableFallback(userId) {
   const { data } = await sb.from('subscriptions')
