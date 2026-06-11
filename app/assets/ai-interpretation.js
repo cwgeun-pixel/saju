@@ -269,22 +269,32 @@
     const results = document.getElementById('results');
     if (!results || document.getElementById('honcheon-ai-panel')) return;
     results.appendChild(createPanel());
+  }
 
-    // 계산 결과를 sessionStorage에 자동 저장
-    const txt = collectResultsText();
-    if (txt) {
+  // 결과 자동 저장 + premium.html 복귀 (500ms 디바운스)
+  // mountPanel은 #results 첫 등장 시 한 번만 실행되지만,
+  // 실제 계산 결과는 그 이후에 채워지므로 별도로 감시한다.
+  let _autoSaveTimer = null;
+  function scheduleAutoSave(obs) {
+    clearTimeout(_autoSaveTimer);
+    _autoSaveTimer = setTimeout(function() {
+      const txt = collectResultsText();
+      if (!txt || txt.length < 200) return;
       sessionStorage.setItem('tod-calc-results', txt);
-      // premium.html에서 "계산기 열기"로 넘어온 경우 자동 복귀
       if (sessionStorage.getItem('tod-return-to-premium')) {
         sessionStorage.removeItem('tod-return-to-premium');
-        setTimeout(() => { window.location.href = '/premium.html'; }, 600);
+        obs.disconnect();
+        setTimeout(function() { window.location.href = '/premium.html'; }, 400);
       }
-    }
+    }, 500);
   }
 
   // MutationObserver로 #results 감시
-  new MutationObserver(mountPanel)
-    .observe(document.body, { childList: true, subtree: true });
+  var _bodyObs = new MutationObserver(function(_, obs) {
+    mountPanel();
+    scheduleAutoSave(obs);
+  });
+  _bodyObs.observe(document.body, { childList: true, subtree: true });
 
   // 언어 변경 이벤트
   document.addEventListener('change', e => {
