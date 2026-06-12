@@ -133,7 +133,7 @@
     <div class="card">
       <div id="calc-loaded" class="hidden">
         <p style="font-size:13px;color:#6a9;margin-bottom:8px;">✅ <span id="calc-loaded-txt">계산기 결과가 로드되었습니다.</span></p>
-        <p style="font-size:12px;color:var(--muted);">계산기에서 계산한 사주·자미두수·점성술 데이터를 바탕으로 해석합니다.</p>
+        <p id="calc-loaded-desc" style="font-size:12px;color:var(--muted);">계산기에서 계산한 사주·자미두수·점성술 데이터를 바탕으로 해석합니다.</p>
       </div>
       <div id="calc-empty">
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">계산기에서 명식을 산출한 후 이 페이지로 돌아오세요.</p>
@@ -342,7 +342,7 @@ async function generateAll() {
   }
 
   progressBar.style.width = '100%';
-  progressTxt.textContent = '✅ 전체 해석 완료';
+  progressTxt.textContent = LABELS[lang]?.done || '✅ 전체 해석 완료';
   btn.disabled = false;
 
   if (allResults.length > 0) {
@@ -383,11 +383,11 @@ async function sendEmail() {
 
 // ── 다국어 ────────────────────────────────────────────────────
 const LABELS = {
-  ko: { subtitle:'8개 섹션 심층 해석을 한 번에 생성합니다.', calcLoaded:'계산기 결과가 로드되었습니다.', dShort:'요약 (2~3문장)', dStd:'표준 (4~5문장)', dPrem:'심층 (6~8문장)', generate:'⭐ 전체 해석 생성', email:'📧 이메일로 받기', resTitle:'해석 결과', loading:'확인 중...' },
-  en: { subtitle:'Generate all 8 sections of deep AI interpretation at once.', calcLoaded:'Calculator results loaded.', dShort:'Brief (2-3 sentences)', dStd:'Standard (4-5 sentences)', dPrem:'Deep (6-8 sentences)', generate:'⭐ Generate Full Report', email:'📧 Send to Email', resTitle:'Interpretation Results', loading:'Checking...' },
-  ja: { subtitle:'8セクション全解釈を一度に生成します。', calcLoaded:'計算機の結果が読み込まれました。', dShort:'要約 (2~3文)', dStd:'標準 (4~5文)', dPrem:'詳細 (6~8文)', generate:'⭐ 全解釈生成', email:'📧 メールで受け取る', resTitle:'解釈結果', loading:'確認中...' },
-  zh: { subtitle:'一次性生成8個部分的深度AI解讀。', calcLoaded:'計算器結果已載入。', dShort:'摘要 (2~3句)', dStd:'標準 (4~5句)', dPrem:'深入 (6~8句)', generate:'⭐ 生成完整解讀', email:'📧 發送到郵件', resTitle:'解讀結果', loading:'確認中...' },
-  es: { subtitle:'Genera las 8 secciones de interpretación profunda de IA a la vez.', calcLoaded:'Resultados de calculadora cargados.', dShort:'Breve (2-3 oraciones)', dStd:'Estándar (4-5 oraciones)', dPrem:'Profunda (6-8 oraciones)', generate:'⭐ Generar Informe Completo', email:'📧 Enviar por Email', resTitle:'Resultados de Interpretación', loading:'Verificando...' },
+  ko: { subtitle:'8개 섹션 심층 해석을 한 번에 생성합니다.', calcLoaded:'계산기 결과가 로드되었습니다.', calcDesc:'계산기에서 계산한 사주·자미두수·점성술 데이터를 바탕으로 해석합니다.', dShort:'요약 (2~3문장)', dStd:'표준 (4~5문장)', dPrem:'심층 (6~8문장)', generate:'⭐ 전체 해석 생성', email:'📧 이메일로 받기', resTitle:'해석 결과', loading:'확인 중...', done:'✅ 전체 해석 완료' },
+  en: { subtitle:'Generate all 8 sections of deep AI interpretation at once.', calcLoaded:'Calculator results loaded.', calcDesc:'Interprets based on Saju, Ziwei Doushu, and Astrology data from the calculator.', dShort:'Brief (2-3 sentences)', dStd:'Standard (4-5 sentences)', dPrem:'Deep (6-8 sentences)', generate:'⭐ Generate Full Report', email:'📧 Send to Email', resTitle:'Interpretation Results', loading:'Checking...', done:'✅ Interpretation Complete' },
+  ja: { subtitle:'8セクション全解釈を一度に生成します。', calcLoaded:'計算機の結果が読み込まれました。', calcDesc:'計算機の四柱推命・紫微斗數・占星術データをもとに解釈します。', dShort:'要約 (2~3文)', dStd:'標準 (4~5文)', dPrem:'詳細 (6~8文)', generate:'⭐ 全解釈生成', email:'📧 メールで受け取る', resTitle:'解釈結果', loading:'確認中...', done:'✅ 全解釈完了' },
+  zh: { subtitle:'一次性生成8個部分的深度AI解讀。', calcLoaded:'計算器結果已載入。', calcDesc:'根據計算器中的四柱、紫微斗數及占星術資料進行解讀。', dShort:'摘要 (2~3句)', dStd:'標準 (4~5句)', dPrem:'深入 (6~8句)', generate:'⭐ 生成完整解讀', email:'📧 發送到郵件', resTitle:'解讀結果', loading:'確認中...', done:'✅ 完整解讀完成' },
+  es: { subtitle:'Genera las 8 secciones de interpretación profunda de IA a la vez.', calcLoaded:'Resultados de calculadora cargados.', calcDesc:'Interpreta basándose en los datos de Saju, Ziwei Doushu y Astrología de la calculadora.', dShort:'Breve (2-3 oraciones)', dStd:'Estándar (4-5 oraciones)', dPrem:'Profunda (6-8 oraciones)', generate:'⭐ Generar Informe Completo', email:'📧 Enviar por Email', resTitle:'Resultados de Interpretación', loading:'Verificando...', done:'✅ Interpretación Completa' },
 };
 
 function applyLang(rawLang) {
@@ -396,6 +396,7 @@ function applyLang(rawLang) {
   const L = LABELS[lang];
   document.getElementById('main-subtitle').textContent   = L.subtitle;
   document.getElementById('calc-loaded-txt').textContent = L.calcLoaded;
+  document.getElementById('calc-loaded-desc').textContent = L.calcDesc;
   document.getElementById('opt-short').textContent       = L.dShort;
   document.getElementById('opt-standard').textContent    = L.dStd;
   document.getElementById('opt-premium').textContent     = L.dPrem;
@@ -429,11 +430,6 @@ function applyLang(rawLang) {
   document.querySelector('#s-upgrade p').innerHTML    = uP;
   document.querySelector('#s-upgrade a').textContent  = uBtn;
 }
-
-// 언어 변경 시 레이블 업데이트
-document.getElementById('sel-lang').addEventListener('change', function() {
-  applyLang(this.value);
-});
 
 // 언어 변경 이벤트
 document.getElementById('sel-lang').addEventListener('change', function() {
