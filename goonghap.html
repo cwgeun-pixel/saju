@@ -147,6 +147,27 @@
     .btn-upsell { flex-shrink: 0; display: inline-block; background: var(--gold); color: #07091a; font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity .2s; }
     .btn-upsell:hover { opacity: .85; }
 
+    /* Traits */
+    .traits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    @media(max-width: 560px) { .traits-grid { grid-template-columns: 1fr; } }
+    .trait-box { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .trait-head { font-size: 12px; color: var(--gold); font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+    .trait-ilju-tag { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 10px; letter-spacing: 2px; }
+    .trait-desc { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: 6px; }
+    .trait-desc strong { color: var(--text); }
+    .yinyang-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; flex-wrap: wrap; }
+    .yinyang-badge { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 12px; border: 1px solid; }
+    .badge-yang { color: #e57355; border-color: rgba(229,115,85,0.4); background: rgba(229,115,85,0.08); }
+    .badge-yin  { color: #5b9bd5; border-color: rgba(91,155,213,0.4);  background: rgba(91,155,213,0.08);  }
+
+    /* Area scores */
+    .area-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .area-label-txt { width: 72px; font-size: 12px; color: var(--muted); flex-shrink: 0; }
+    .area-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .area-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #c9a84c, #e8c97a); }
+    .area-stars { width: 70px; font-size: 11px; color: var(--gold); text-align: right; flex-shrink: 0; letter-spacing: 1px; }
+    .area-note { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 6px; }
+
     /* Disclaimer */
     .disclaimer { margin-top: 20px; font-size: 12px; color: var(--muted); line-height: 1.8; border-top: 1px solid var(--border); padding-top: 16px; }
   </style>
@@ -251,11 +272,24 @@
       </div>
     </div>
 
+    <!-- 두 사람 특성 -->
+    <div class="interp-block">
+      <h4>두 사람의 일주 특성</h4>
+      <div class="traits-grid" id="r-traits-grid"></div>
+      <div id="r-yinyang"></div>
+    </div>
+
     <!-- 점수 -->
     <div class="score-section">
       <div class="stars" id="r-stars"></div>
       <div class="score-title" id="r-score-title"></div>
       <div class="score-subtitle" id="r-score-sub"></div>
+    </div>
+
+    <!-- 영역별 궁합 -->
+    <div class="interp-block">
+      <h4>영역별 궁합 분석</h4>
+      <div id="r-areas"></div>
     </div>
 
     <!-- 해석 -->
@@ -355,6 +389,72 @@ function branchRelLabel(rel, brA, brB) {
   if (rel === 'TRIO')  return { tag: ko + ' 삼합(三合)', cls: 'branch-good', desc: '일지가 같은 삼합국에 속해 조화롭습니다.' };
   if (rel === 'CLASH') return { tag: ko + ' 충(沖)',    cls: 'branch-bad',  desc: '일지가 충을 이루어 갈등이 생길 수 있습니다.' };
   return { tag: ko + ' 중립', cls: '', desc: '일지 간에 특별한 합·충 관계가 없습니다.' };
+}
+
+/* ── 일주 특성 설명 ── */
+const STEM_DESC = {
+  '甲':'강한 리더십과 성장 지향성을 지닙니다. 굳은 의지와 책임감이 돋보입니다.',
+  '乙':'유연하고 섬세한 감수성을 가집니다. 적응력과 친화력이 뛰어납니다.',
+  '丙':'밝고 활발한 에너지로 주변을 이끕니다. 열정적이며 솔직한 표현력이 강합니다.',
+  '丁':'따뜻하고 지혜로우며 내면이 깊습니다. 신중하고 섬세한 감정선을 가집니다.',
+  '戊':'안정적이고 중후한 기운을 지닙니다. 신뢰감을 주며 실용적인 면이 강합니다.',
+  '己':'꼼꼼하고 내실 있는 성격입니다. 배려심이 깊고 조용한 헌신을 이어갑니다.',
+  '庚':'원칙적이고 결단력이 강합니다. 정의감이 높고 맺고 끊음이 분명합니다.',
+  '辛':'예민하고 세련된 감각을 지닙니다. 완벽주의적이며 높은 심미안을 가집니다.',
+  '壬':'포용력이 넓고 지략이 뛰어납니다. 유연한 사고로 큰 그림을 읽습니다.',
+  '癸':'직관적이고 감성이 풍부합니다. 내면의 깊이와 창의력이 돋보입니다.',
+};
+const BRANCH_DESC = {
+  '子':'총명하고 기민합니다. 감수성이 풍부하며 변화에 빠르게 대응합니다.',
+  '丑':'성실하고 묵묵히 노력합니다. 신뢰받는 존재이며 끈기가 강합니다.',
+  '寅':'용감하고 진취적입니다. 리더십과 도전 정신이 넘칩니다.',
+  '卯':'온화하고 창의적입니다. 대인관계가 원만하며 예술적 감각이 있습니다.',
+  '辰':'이상이 높고 추진력이 강합니다. 큰 그림을 그리며 기획력이 탁월합니다.',
+  '巳':'깊고 신비로운 매력을 지닙니다. 직관력과 통찰력이 뛰어납니다.',
+  '午':'열정적이고 표현력이 강합니다. 카리스마가 넘치며 주변을 이끕니다.',
+  '未':'섬세하고 예술적입니다. 배려심이 깊고 감수성이 풍부합니다.',
+  '申':'영리하고 다재다능합니다. 현실적이며 빠른 상황 판단력을 지닙니다.',
+  '酉':'완벽주의적이고 세련됩니다. 높은 심미안과 분석력을 지닙니다.',
+  '戌':'충직하고 의리가 강합니다. 원칙을 지키며 헌신적인 면이 있습니다.',
+  '亥':'지혜롭고 자유로운 영혼입니다. 철학적 사고와 넓은 시야를 지닙니다.',
+};
+
+/* ── 영역별 궁합 점수 ── */
+function getAreaScores(stemRel, brRel, siA, siB) {
+  const complementary = (siA % 2) !== (siB % 2);
+
+  const EMOT = { 'A_GEN_B':4,'B_GEN_A':4,'SAME':3,'A_CTRL_B':2,'B_CTRL_A':2 };
+  const COMM = { 'A_GEN_B':3,'B_GEN_A':3,'SAME':4,'A_CTRL_B':2,'B_CTRL_A':2 };
+  const STAB = { 'A_GEN_B':3,'B_GEN_A':4,'SAME':4,'A_CTRL_B':2,'B_CTRL_A':2 };
+
+  let emotion  = EMOT[stemRel];
+  let comm     = COMM[stemRel];
+  let stability= STAB[stemRel];
+  if (complementary) comm = Math.min(5, comm + 1);
+  if (brRel === 'HEX' || brRel === 'TRIO') { emotion = Math.min(5, emotion + 1); stability = Math.min(5, stability + 1); }
+  if (brRel === 'CLASH') { emotion = Math.max(1, emotion - 1); stability = Math.max(1, stability - 1); }
+
+  const EMOT_NOTE = {
+    'A_GEN_B':'서로에 대한 이해와 배려가 감정적 교감을 깊게 만들어 줍니다.',
+    'B_GEN_A':'상대방의 따뜻한 지지가 감정적 안정과 신뢰를 가져다줍니다.',
+    'SAME':   '같은 기운으로 공감이 쉽지만, 감정의 파동이 함께 커질 수 있습니다.',
+    'A_CTRL_B':'강한 끌림 속에 감정 기복이 존재합니다. 섬세한 배려가 중요합니다.',
+    'B_CTRL_A':'강한 끌림 속에 감정 기복이 존재합니다. 섬세한 배려가 중요합니다.',
+  }[stemRel];
+  const commNote = complementary
+    ? '음양이 달라 서로의 다른 시각이 대화를 풍부하고 균형 있게 만듭니다.'
+    : '같은 음양으로 공감대는 높지만, 서로 다른 의견을 수용하는 연습이 필요합니다.';
+  let stabilityNote = {
+    'A_GEN_B':'한쪽이 에너지를 많이 쏟는 구조이므로 역할 분담에 주의가 필요합니다.',
+    'B_GEN_A':'상대방의 든든한 지원이 현실적 안정감과 생활의 리듬을 높여줍니다.',
+    'SAME':   '비슷한 방식으로 현실을 바라보아 생활 패턴이 잘 맞는 편입니다.',
+    'A_CTRL_B':'에너지 충돌이 생길 수 있어 명확한 역할 구분이 도움이 됩니다.',
+    'B_CTRL_A':'에너지 충돌이 생길 수 있어 명확한 역할 구분이 도움이 됩니다.',
+  }[stemRel];
+  if (brRel === 'HEX' || brRel === 'TRIO') stabilityNote += ' 일지의 합(合)으로 일상의 조화가 더욱 뛰어납니다.';
+  if (brRel === 'CLASH') stabilityNote += ' 다만 일지 충(沖)으로 일상에서 마찰이 생길 수 있습니다.';
+
+  return { emotion, comm, stability, emotionNote: EMOT_NOTE, commNote, stabilityNote };
 }
 
 /* ── 점수 & 해석 ── */
@@ -531,6 +631,46 @@ function calculate() {
   brTagEl.className = 'branch-tag ' + brInfo.cls;
   document.getElementById('r-branch-label').textContent = brInfo.desc;
   document.getElementById('r-advice').textContent = res.advice;
+
+  // 일주 특성
+  document.getElementById('r-traits-grid').innerHTML = [
+    { name: nameA, ilju: iljuA },
+    { name: nameB, ilju: iljuB },
+  ].map(({ name, ilju }) =>
+    `<div class="trait-box">
+      <div class="trait-head">${name}</div>
+      <div class="trait-ilju-tag">${ilju.stem}${ilju.branch} <span style="font-size:14px;color:var(--muted);letter-spacing:0">${ilju.stemKo}${ilju.branchKo}일</span></div>
+      <div class="trait-desc"><strong>${ilju.stem} ${ilju.stemKo}간 (${ilju.ohaengFull})</strong> — ${STEM_DESC[ilju.stem]}</div>
+      <div class="trait-desc"><strong>${ilju.branch} ${ilju.branchKo}지</strong> — ${BRANCH_DESC[ilju.branch]}</div>
+    </div>`
+  ).join('');
+
+  const yangA = iljuA.si % 2 === 0;
+  const yangB = iljuB.si % 2 === 0;
+  document.getElementById('r-yinyang').innerHTML =
+    `<div class="yinyang-row">
+      <span class="yinyang-badge ${yangA ? 'badge-yang' : 'badge-yin'}">${yangA ? '양(陽)' : '음(陰)'}</span>
+      <span>${nameA}</span>
+      <span style="color:var(--border);margin:0 2px">·</span>
+      <span class="yinyang-badge ${yangB ? 'badge-yang' : 'badge-yin'}">${yangB ? '양(陽)' : '음(陰)'}</span>
+      <span>${nameB}</span>
+      <span style="margin-left:auto;font-size:12px">${yangA !== yangB ? '음양이 달라 서로 보완합니다.' : '같은 극성으로 공감대가 높으나 균형이 중요합니다.'}</span>
+    </div>`;
+
+  // 영역별 궁합
+  const areas = getAreaScores(stemRel, res.brRel, iljuA.si, iljuB.si);
+  document.getElementById('r-areas').innerHTML = [
+    { label: '감정·교감', score: areas.emotion,   note: areas.emotionNote },
+    { label: '소통·대화', score: areas.comm,      note: areas.commNote },
+    { label: '현실·안정', score: areas.stability, note: areas.stabilityNote },
+  ].map(a =>
+    `<p class="area-note">${a.note}</p>
+    <div class="area-row">
+      <span class="area-label-txt">${a.label}</span>
+      <div class="area-bar"><div class="area-fill" style="width:${a.score * 20}%"></div></div>
+      <span class="area-stars">${'★'.repeat(a.score)}${'☆'.repeat(5 - a.score)}</span>
+    </div>`
+  ).join('');
 
   // 결과 표시
   const resultsEl = document.getElementById('results');
