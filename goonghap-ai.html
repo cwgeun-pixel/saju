@@ -1,0 +1,606 @@
+<!-- AI 궁합 심층 해석 페이지 — 구독 회원 전용 -->
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 궁합 심층 해석 · Trinity of Destiny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:    #07091a; --card:  #10132a; --card2: #0d1024;
+      --border:#1e2140; --gold:  #c9a84c; --gold-s:rgba(201,168,76,0.12);
+      --text:  #e0ddd5; --muted: #6a7090; --red:   #e05555;
+      --amber: #f59e0b;
+    }
+    html, body { background: var(--bg); color: var(--text); font-family: 'Noto Serif KR', serif; min-height: 100vh; }
+    .hidden { display: none !important; }
+
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; border-bottom: 1px solid var(--border);
+      background: rgba(7,9,26,0.92); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px);
+    }
+    .nav-logo { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; letter-spacing: 2px; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-user { font-size: 12px; color: var(--muted); }
+    .nav-back { color: var(--muted); font-size: 13px; text-decoration: none; border: 1px solid var(--border); padding: 6px 14px; border-radius: 4px; transition: border-color .2s, color .2s; }
+    .nav-back:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 48px 20px 32px; }
+    .hero-tag { display: inline-block; font-family: 'Cormorant Garamond', serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; color: var(--gold); border: 1px solid rgba(201,168,76,0.35); padding: 5px 18px; border-radius: 20px; margin-bottom: 18px; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px,5vw,42px); font-weight: 600; color: var(--gold); margin-bottom: 10px; }
+    .hero p { color: var(--muted); font-size: 14px; line-height: 1.8; }
+
+    /* Container */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 16px 80px; }
+
+    /* State screens */
+    .state { text-align: center; padding: 80px 20px; }
+    .state h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold); margin-bottom: 12px; }
+    .state p  { color: var(--muted); font-size: 14px; line-height: 1.8; margin-bottom: 24px; }
+
+    /* Card */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; margin-bottom: 20px; }
+    .card-title { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 1px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .card-title::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+
+    /* Persons grid */
+    .persons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media(max-width: 560px) { .persons-grid { grid-template-columns: 1fr; } }
+    .person-card { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 20px 18px; }
+    .person-label { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; margin-bottom: 16px; }
+
+    /* Fields */
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+    .field input, .field select {
+      width: 100%; height: 38px; background-color: #0d1024;
+      border: 1px solid var(--border); border-radius: 6px;
+      color: #e0ddd5; font-size: 14px; padding: 0 12px;
+      font-family: 'Noto Serif KR', serif; outline: none; transition: border-color .2s;
+    }
+    .field input:focus, .field select:focus { border-color: rgba(201,168,76,0.6); }
+    .field input::placeholder { color: var(--muted); }
+    .field select {
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; cursor: pointer;
+    }
+    .field select option { background-color: #0d1024; color: #e0ddd5; }
+    .date-row { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr; gap: 8px; }
+
+    /* Controls row */
+    .controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 4px; }
+    .controls-row select { height: 40px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; padding: 0 12px; font-family: 'Noto Serif KR', serif; outline: none; }
+    .controls-row select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; cursor: pointer; }
+    .controls-row select option { background-color: #0d1024; color: #e0ddd5; }
+
+    /* Buttons */
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 48px; padding: 0 28px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #c9a84c, #e8c97a); color: #07091a;
+      font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Noto Serif KR', serif;
+      transition: opacity .2s; white-space: nowrap;
+    }
+    .btn-gold:hover { opacity: .88; }
+    .btn-gold:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-outline-gold { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 22px; border-radius: 8px; border: 1px solid var(--gold); color: var(--gold); background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: 'Noto Serif KR', serif; transition: background .2s; }
+    .btn-outline-gold:hover { background: var(--gold-s); }
+    .btn-secondary { height: 42px; padding: 0 20px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 13px; cursor: pointer; font-family: 'Noto Serif KR', serif; text-decoration: none; display: inline-flex; align-items: center; }
+
+    /* Error */
+    .error-msg { color: var(--red); font-size: 13px; text-align: center; padding: 8px 0; }
+
+    /* Progress */
+    .progress-wrap { margin-bottom: 8px; }
+    .progress-bar-bg { background: var(--border); border-radius: 4px; height: 4px; margin: 6px 0; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width .3s; width: 0; }
+    .progress-text { font-size: 12px; color: var(--muted); }
+
+    /* Result sections */
+    .section-card { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .section-header { background: var(--card2); padding: 14px 20px; display: flex; align-items: center; gap: 10px; }
+    .section-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
+    .section-body { padding: 20px; background: var(--card); }
+    .section-body p { font-size: 14px; line-height: 2.1; color: var(--text); white-space: pre-wrap; }
+    .section-loading { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; padding: 4px 0; }
+    .dot-spin { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Ilju summary row */
+    .ilju-summary { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .ilju-box { text-align: center; }
+    .ilju-name { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .ilju-chars { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,7vw,58px); font-weight: 600; line-height: 1; letter-spacing: 4px; margin-bottom: 4px; }
+    .ilju-ko { font-size: 13px; color: var(--muted); }
+    .ohaeng-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 12px; border-radius: 20px; border: 1px solid; margin-top: 4px; }
+    .ohaeng-木 { color:#5dbe6e; border-color:rgba(93,190,110,0.4); background:rgba(93,190,110,0.08); }
+    .ohaeng-火 { color:#e57355; border-color:rgba(229,115,85,0.4);  background:rgba(229,115,85,0.08);  }
+    .ohaeng-土 { color:#d4a84b; border-color:rgba(212,168,75,0.4);  background:rgba(212,168,75,0.08);  }
+    .ohaeng-金 { color:#a8b8c8; border-color:rgba(168,184,200,0.4); background:rgba(168,184,200,0.08); }
+    .ohaeng-水 { color:#5b9bd5; border-color:rgba(91,155,213,0.4);  background:rgba(91,155,213,0.08);  }
+    .rel-center { text-align: center; }
+    .rel-symbol { font-size: 24px; margin-bottom: 2px; color: var(--gold); }
+    .rel-label  { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+    /* Hint */
+    .hint { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">✦ TRINITY OF DESTINY</a>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-user"></span>
+    <a class="nav-back" href="/goonghap.html">← 무료 궁합</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">PREMIUM · AI 심층 분석 · 宮合</div>
+  <h1>AI 궁합 심층 해석</h1>
+  <p>두 사람의 일주(日柱)를 바탕으로 AI가 5가지 영역을 깊이 분석합니다.</p>
+</div>
+
+<div class="container">
+
+  <!-- 로딩 상태 -->
+  <div id="s-loading" class="state">
+    <p style="color:var(--muted)">확인 중...</p>
+  </div>
+
+  <!-- 미로그인 -->
+  <div id="s-login" class="state hidden">
+    <h2>로그인이 필요합니다</h2>
+    <p>AI 궁합 심층 해석은 회원 전용 서비스입니다.<br>로그인 후 이용해 주세요.</p>
+    <a class="btn-gold" href="/fortune/index.html">로그인 / 회원가입</a>
+  </div>
+
+  <!-- 미구독 -->
+  <div id="s-upgrade" class="state hidden">
+    <h2>구독이 필요합니다</h2>
+    <p>AI 궁합 심층 해석은 프리미엄 구독자 전용입니다.<br>구독 후 사주·자미두수·점성술 전체 해석과 함께 이용하실 수 있습니다.</p>
+    <a class="btn-gold" href="/premium.html">구독 시작하기</a>
+  </div>
+
+  <!-- 메인 -->
+  <div id="s-main" class="hidden">
+
+    <!-- 입력 카드 -->
+    <div class="card">
+      <div class="card-title">두 사람의 생년월일</div>
+
+      <div class="persons-grid">
+        <div class="person-card">
+          <div class="person-label">본인 (A)</div>
+          <div class="field">
+            <label>이름 (선택)</label>
+            <input id="nameA" type="text" placeholder="이름" maxlength="20" />
+          </div>
+          <div class="field">
+            <label>생년월일</label>
+            <div class="date-row">
+              <input id="yearA" type="text" inputmode="numeric" placeholder="연도 (예: 1990)" maxlength="4" />
+              <select id="monthA">
+                <option value="">월</option>
+                <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+                <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+                <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+                <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+              </select>
+              <select id="dayA"><option value="">일</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="person-card">
+          <div class="person-label">상대방 (B)</div>
+          <div class="field">
+            <label>이름 (선택)</label>
+            <input id="nameB" type="text" placeholder="이름" maxlength="20" />
+          </div>
+          <div class="field">
+            <label>생년월일</label>
+            <div class="date-row">
+              <input id="yearB" type="text" inputmode="numeric" placeholder="연도 (예: 1990)" maxlength="4" />
+              <select id="monthB">
+                <option value="">월</option>
+                <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+                <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+                <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+                <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+              </select>
+              <select id="dayB"><option value="">일</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p id="err-msg" class="error-msg hidden"></p>
+
+      <div class="controls-row">
+        <select id="sel-lang">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="zh">繁體中文</option>
+          <option value="es">Español</option>
+        </select>
+        <select id="sel-depth">
+          <option value="standard">표준 (4~5문장)</option>
+          <option value="short">간결 (2~3문장)</option>
+          <option value="premium">심층 (6~8문장)</option>
+        </select>
+        <button class="btn-gold" id="btn-analyze" onclick="startAnalysis()">✦ AI 궁합 분석 시작</button>
+      </div>
+      <p class="hint">양력(陽曆) 생년월일을 입력해 주세요.</p>
+    </div>
+
+    <!-- 결과 카드 -->
+    <div class="card hidden" id="results-card">
+      <div class="card-title">AI 궁합 심층 해석</div>
+
+      <!-- 진행 바 -->
+      <div id="progress-wrap" class="progress-wrap hidden">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+        <div class="progress-text" id="progress-text"></div>
+      </div>
+
+      <!-- 일주 요약 -->
+      <div class="ilju-summary" id="ilju-summary" style="display:none">
+        <div class="ilju-box">
+          <div class="ilju-name" id="r-nameA"></div>
+          <div class="ilju-chars" id="r-iljuA"></div>
+          <div class="ilju-ko" id="r-iljuA-ko"></div>
+          <span class="ohaeng-badge" id="r-ohaengA"></span>
+        </div>
+        <div class="rel-center">
+          <div class="rel-symbol" id="r-symbol"></div>
+          <div class="rel-label"  id="r-rel-label"></div>
+        </div>
+        <div class="ilju-box">
+          <div class="ilju-name" id="r-nameB"></div>
+          <div class="ilju-chars" id="r-iljuB"></div>
+          <div class="ilju-ko" id="r-iljuB-ko"></div>
+          <span class="ohaeng-badge" id="r-ohaengB"></span>
+        </div>
+      </div>
+
+      <!-- 섹션 결과들 -->
+      <div id="sections-container"></div>
+    </div>
+
+  </div><!-- /s-main -->
+
+</div><!-- /container -->
+
+<script>
+/* ── 상수 ── */
+const SUPABASE_URL  = 'https://smqekqdlkkqagzrvtnmh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtcWVrcWRsa2txYWd6cnZ0bm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDkzODcsImV4cCI6MjA5NjE4NTM4N30.VomC09MBc9vEs9A-vZIiwM_LAoUrODXRZHFAX0CEvjc';
+const STORAGE_KEY   = 'sb-smqekqdlkkqagzrvtnmh-auth-token';
+const INTERPRET_URL = SUPABASE_URL + '/functions/v1/interpret';
+
+const SECTIONS = [
+  { id: 'goonghap_ohaeng',      label: '오행 관계 심층 분석' },
+  { id: 'goonghap_personality', label: '성격 궁합' },
+  { id: 'goonghap_love',        label: '연애·감정 궁합' },
+  { id: 'goonghap_conflict',    label: '갈등 포인트와 극복법' },
+  { id: 'goonghap_future',      label: '장기 전망과 핵심 메시지' },
+];
+
+/* ── 60갑자 계산 ── */
+const STEMS      = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const BRANCHES   = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const STEMS_KO   = ['갑','을','병','정','무','기','경','신','임','계'];
+const BRANCHES_KO= ['자','축','인','묘','진','사','오','미','신','유','술','해'];
+const OHAENG     = ['木','火','土','金','水'];
+const OHAENG_FULL= ['목(木)','화(火)','토(土)','금(金)','수(水)'];
+const YANG_YIN   = ['양(陽)','음(陰)'];
+
+const REF = new Date('2000-01-01T00:00:00');
+const REF_IDX = 43;
+
+function getIlju(y, m, d) {
+  const date = new Date(y, m - 1, d);
+  const diff = Math.round((date - REF) / 86400000);
+  const idx  = ((REF_IDX + diff) % 60 + 60) % 60;
+  const si = idx % 10; const bi = idx % 12;
+  return {
+    stem: STEMS[si], stemKo: STEMS_KO[si],
+    branch: BRANCHES[bi], branchKo: BRANCHES_KO[bi],
+    ohaeng: OHAENG[Math.floor(si / 2)],
+    ohaengFull: OHAENG_FULL[Math.floor(si / 2)],
+    yinyang: YANG_YIN[si % 2],
+    si, bi,
+  };
+}
+
+const GEN  = { '木':'火','火':'土','土':'金','金':'水','水':'木' };
+const CTRL = { '木':'土','火':'金','土':'水','金':'木','水':'火' };
+
+function getStemRel(a, b) {
+  if (a === b) return 'SAME';
+  if (GEN[a] === b)  return 'A_GEN_B';
+  if (GEN[b] === a)  return 'B_GEN_A';
+  if (CTRL[a] === b) return 'A_CTRL_B';
+  return 'B_CTRL_A';
+}
+
+const YUKHAP = [[0,1],[2,11],[3,10],[4,9],[5,8],[6,7]];
+const SAMHAP = [[8,0,4],[11,3,7],[2,6,10],[5,9,1]];
+
+function getBranchRel(ai, bi) {
+  if (ai === bi) return 'NEUTRAL';
+  for (const p of YUKHAP) { if ((p[0]===ai&&p[1]===bi)||(p[1]===ai&&p[0]===bi)) return 'HEX'; }
+  if (Math.abs(ai - bi) === 6) return 'CLASH';
+  for (const t of SAMHAP) { if (t.includes(ai) && t.includes(bi)) return 'TRIO'; }
+  return 'NEUTRAL';
+}
+
+function stemRelText(rel, a, b) {
+  if (rel === 'A_GEN_B') return a.ohaeng + '(' + a.ohaengFull + ')이 ' + b.ohaeng + '(' + b.ohaengFull + ')을 生하는 상생(相生)';
+  if (rel === 'B_GEN_A') return b.ohaeng + '(' + b.ohaengFull + ')이 ' + a.ohaeng + '(' + a.ohaengFull + ')을 生하는 상생(相生)';
+  if (rel === 'SAME')    return '두 사람 모두 ' + a.ohaeng + '(' + a.ohaengFull + ') 비화(比和)';
+  if (rel === 'A_CTRL_B') return a.ohaeng + '(' + a.ohaengFull + ')이 ' + b.ohaeng + '(' + b.ohaengFull + ')을 剋하는 상극(相剋)';
+  return b.ohaeng + '(' + b.ohaengFull + ')이 ' + a.ohaeng + '(' + a.ohaengFull + ')을 剋하는 상극(相剋)';
+}
+
+function branchRelText(rel) {
+  if (rel === 'HEX')   return '육합(六合) — 일지가 합을 이루어 조화로운 관계';
+  if (rel === 'TRIO')  return '삼합(三合) — 같은 삼합국에 속하여 시너지가 강함';
+  if (rel === 'CLASH') return '충(沖) — 일지가 충돌하여 갈등 가능성 있음';
+  return '중립 — 특별한 합·충 없음';
+}
+
+function stemRelSymbol(rel) {
+  return { 'A_GEN_B':'→','B_GEN_A':'←','SAME':'≡','A_CTRL_B':'⊃','B_CTRL_A':'⊂' }[rel] || '↔';
+}
+function stemRelLabel(rel) {
+  return { 'A_GEN_B':'상생(相生)','B_GEN_A':'상생(相生)','SAME':'비화(比和)','A_CTRL_B':'상극(相剋)','B_CTRL_A':'상극(相剋)' }[rel] || '';
+}
+
+function buildSourceText(nameA, iljuA, yA, mA, dA, nameB, iljuB, yB, mB, dB, stemRel, brRel) {
+  const scoreBase = { 'A_GEN_B':4,'B_GEN_A':4,'SAME':3,'A_CTRL_B':2,'B_CTRL_A':2 }[stemRel];
+  let score = scoreBase;
+  if (brRel === 'HEX' || brRel === 'TRIO') score = Math.min(5, score + 1);
+  if (brRel === 'CLASH') score = Math.max(1, score - 1);
+  const stars = '★'.repeat(score) + '☆'.repeat(5 - score);
+
+  return `=== 두 사람의 사주 일주 정보 ===
+
+[본인] ${nameA}
+  생년월일: ${yA}년 ${mA}월 ${dA}일 (양력)
+  일주(日柱): ${iljuA.stem}${iljuA.branch} (${iljuA.stemKo}${iljuA.branchKo}일)
+  일간(日干): ${iljuA.stem} ${iljuA.stemKo} — ${iljuA.yinyang}${iljuA.ohaengFull}
+  일지(日支): ${iljuA.branch} ${iljuA.branchKo}
+  일간 오행: ${iljuA.ohaeng}
+
+[상대방] ${nameB}
+  생년월일: ${yB}년 ${mB}월 ${dB}일 (양력)
+  일주(日柱): ${iljuB.stem}${iljuB.branch} (${iljuB.stemKo}${iljuB.branchKo}일)
+  일간(日干): ${iljuB.stem} ${iljuB.stemKo} — ${iljuB.yinyang}${iljuB.ohaengFull}
+  일지(日支): ${iljuB.branch} ${iljuB.branchKo}
+  일간 오행: ${iljuB.ohaeng}
+
+=== 오행 관계 분석 ===
+일간 관계: ${stemRelText(stemRel, iljuA, iljuB)}
+일지 관계: ${iljuA.branchKo}${iljuB.branchKo} (${iljuA.branch}${iljuB.branch}) — ${branchRelText(brRel)}
+종합 궁합 점수: ${stars} (${score}/5점)`;
+}
+
+/* ── 날짜 드롭다운 ── */
+function fillDays(monthId, dayId) {
+  const m = parseInt(document.getElementById(monthId).value) || 1;
+  const y = parseInt(document.getElementById(monthId.replace('month','year')).value) || 2000;
+  const max = new Date(y, m, 0).getDate();
+  const sel = document.getElementById(dayId);
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">일</option>';
+  for (let i = 1; i <= max; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = i + '일';
+    if (i == cur) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+
+['A','B'].forEach(p => {
+  document.addEventListener('DOMContentLoaded', () => fillDays('month'+p, 'day'+p));
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('month'+p).addEventListener('change', () => fillDays('month'+p, 'day'+p));
+    ['input','change'].forEach(ev => document.getElementById('year'+p).addEventListener(ev, () => fillDays('month'+p, 'day'+p)));
+  });
+});
+
+/* ── 인증 ── */
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    if (!d.access_token) return null;
+    if (d.expires_at && d.expires_at < Math.floor(Date.now() / 1000)) return null;
+    return d;
+  } catch { return null; }
+}
+
+async function checkSubscription(token) {
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/is_subscribed', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token, 'apikey':SUPABASE_ANON },
+      body: '{}',
+    });
+    if (r.ok) { const v = await r.json(); if (typeof v === 'boolean') return v; }
+  } catch {}
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/subscriptions?select=status,current_period_end&limit=1', {
+      headers: { 'Authorization':'Bearer '+token, 'apikey':SUPABASE_ANON },
+    });
+    if (r.ok) {
+      const rows = await r.json();
+      if (rows.length > 0) return rows[0].status === 'active' && new Date(rows[0].current_period_end) > new Date();
+    }
+  } catch {}
+  return false;
+}
+
+let currentSession = null;
+
+function showState(name) {
+  ['loading','login','upgrade','main'].forEach(s =>
+    document.getElementById('s-' + s).classList.toggle('hidden', s !== name)
+  );
+}
+
+async function init() {
+  const session = loadSession();
+  if (!session) { showState('login'); return; }
+  const ok = await checkSubscription(session.access_token);
+  if (!ok) { showState('upgrade'); return; }
+  currentSession = session;
+  document.getElementById('nav-user').textContent = session.user?.email || '';
+
+  /* URL 파라미터로 날짜 미리 채우기 */
+  const p = new URLSearchParams(location.search);
+  if (p.get('yA')) document.getElementById('yearA').value = p.get('yA');
+  if (p.get('mA')) document.getElementById('monthA').value = p.get('mA');
+  if (p.get('yB')) document.getElementById('yearB').value = p.get('yB');
+  if (p.get('mB')) document.getElementById('monthB').value = p.get('mB');
+  if (p.get('nameA')) document.getElementById('nameA').value = p.get('nameA');
+  if (p.get('nameB')) document.getElementById('nameB').value = p.get('nameB');
+  if (p.get('mA')) { fillDays('monthA','dayA'); if (p.get('dA')) document.getElementById('dayA').value = p.get('dA'); }
+  if (p.get('mB')) { fillDays('monthB','dayB'); if (p.get('dB')) document.getElementById('dayB').value = p.get('dB'); }
+
+  showState('main');
+}
+
+window.addEventListener('DOMContentLoaded', init);
+
+/* ── 분석 시작 ── */
+async function startAnalysis() {
+  const err = document.getElementById('err-msg');
+  err.classList.add('hidden');
+
+  const yA = parseInt(document.getElementById('yearA').value);
+  const mA = parseInt(document.getElementById('monthA').value);
+  const dA = parseInt(document.getElementById('dayA').value);
+  const yB = parseInt(document.getElementById('yearB').value);
+  const mB = parseInt(document.getElementById('monthB').value);
+  const dB = parseInt(document.getElementById('dayB').value);
+
+  if (!yA || !mA || !dA || !yB || !mB || !dB) {
+    err.textContent = '두 사람의 생년월일을 모두 입력해 주세요.';
+    err.classList.remove('hidden'); return;
+  }
+  if (yA < 1900 || yA > 2030 || yB < 1900 || yB > 2030) {
+    err.textContent = '연도는 1900~2030 사이로 입력해 주세요.';
+    err.classList.remove('hidden'); return;
+  }
+
+  const nameA = document.getElementById('nameA').value.trim() || '본인';
+  const nameB = document.getElementById('nameB').value.trim() || '상대방';
+  const lang  = document.getElementById('sel-lang').value;
+  const depth = document.getElementById('sel-depth').value;
+
+  const iljuA = getIlju(yA, mA, dA);
+  const iljuB = getIlju(yB, mB, dB);
+  const stemRel = getStemRel(iljuA.ohaeng, iljuB.ohaeng);
+  const brRel   = getBranchRel(iljuA.bi, iljuB.bi);
+  const sourceText = buildSourceText(nameA, iljuA, yA, mA, dA, nameB, iljuB, yB, mB, dB, stemRel, brRel);
+
+  /* 일주 요약 표시 */
+  document.getElementById('r-nameA').textContent = nameA;
+  document.getElementById('r-iljuA').textContent = iljuA.stem + iljuA.branch;
+  document.getElementById('r-iljuA-ko').textContent = iljuA.stemKo + iljuA.branchKo + '일';
+  const oaEl = document.getElementById('r-ohaengA');
+  oaEl.textContent = iljuA.ohaengFull; oaEl.className = 'ohaeng-badge ohaeng-' + iljuA.ohaeng;
+  document.getElementById('r-nameB').textContent = nameB;
+  document.getElementById('r-iljuB').textContent = iljuB.stem + iljuB.branch;
+  document.getElementById('r-iljuB-ko').textContent = iljuB.stemKo + iljuB.branchKo + '일';
+  const obEl = document.getElementById('r-ohaengB');
+  obEl.textContent = iljuB.ohaengFull; obEl.className = 'ohaeng-badge ohaeng-' + iljuB.ohaeng;
+  document.getElementById('r-symbol').textContent    = stemRelSymbol(stemRel);
+  document.getElementById('r-rel-label').textContent = stemRelLabel(stemRel);
+  document.getElementById('ilju-summary').style.display = 'grid';
+
+  /* UI 초기화 */
+  const btn = document.getElementById('btn-analyze');
+  btn.disabled = true;
+  const resultsCard = document.getElementById('results-card');
+  const container   = document.getElementById('sections-container');
+  const progressWrap= document.getElementById('progress-wrap');
+  const progressBar = document.getElementById('progress-bar');
+  const progressTxt = document.getElementById('progress-text');
+  resultsCard.classList.remove('hidden');
+  progressWrap.classList.remove('hidden');
+  container.innerHTML = '';
+  resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  /* 섹션 카드 미리 생성 */
+  SECTIONS.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'section-card';
+    div.id = 'sec-' + s.id;
+    div.innerHTML =
+      `<div class="section-header">
+        <span class="section-num">${i + 1}</span>
+        <span class="section-title">${s.label}</span>
+      </div>
+      <div class="section-body">
+        <div class="section-loading"><div class="dot-spin"></div><span>분석 중...</span></div>
+        <p id="text-${s.id}" style="display:none"></p>
+      </div>`;
+    container.appendChild(div);
+  });
+
+  /* 순차 API 호출 */
+  for (let i = 0; i < SECTIONS.length; i++) {
+    const s = SECTIONS[i];
+    progressBar.style.width = Math.round((i / SECTIONS.length) * 100) + '%';
+    progressTxt.textContent = '(' + (i + 1) + '/' + SECTIONS.length + ') ' + s.label + ' 분석 중...';
+
+    try {
+      const res = await fetch(INTERPRET_URL, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + currentSession.access_token },
+        body: JSON.stringify({ section: s.id, language: lang, depth, sourceText }),
+      });
+      const data = await res.json();
+      const secEl = document.getElementById('sec-' + s.id);
+      const loading = secEl.querySelector('.section-loading');
+      const textEl  = document.getElementById('text-' + s.id);
+      loading.style.display = 'none';
+      textEl.style.display  = 'block';
+      if (data.text) {
+        textEl.textContent = data.text;
+      } else {
+        textEl.style.color = 'var(--red)';
+        textEl.textContent = '오류: ' + (data.error || '알 수 없는 오류');
+      }
+    } catch (e) {
+      const secEl = document.getElementById('sec-' + s.id);
+      secEl.querySelector('.section-loading').style.display = 'none';
+      const textEl = document.getElementById('text-' + s.id);
+      textEl.style.display = 'block'; textEl.style.color = 'var(--red)';
+      textEl.textContent = '네트워크 오류가 발생했습니다.';
+    }
+  }
+
+  progressBar.style.width = '100%';
+  progressTxt.textContent = '✅ 분석 완료';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

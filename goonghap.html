@@ -316,7 +316,7 @@
         사주 전체(년·월·일·시 8글자)와 자미두수·점성술을 통합한
         심층 궁합은 AI 전체 해석 서비스에서 받아보실 수 있습니다.
       </p>
-      <a class="btn-upsell" href="/premium.html">AI 심층 해석 →</a>
+      <a class="btn-upsell" id="btn-ai-deep" href="/goonghap-ai.html">AI 심층 해석 →</a>
     </div>
 
     <p class="disclaimer">
@@ -671,6 +671,13 @@ function calculate() {
       <span class="area-stars">${'★'.repeat(a.score)}${'☆'.repeat(5 - a.score)}</span>
     </div>`
   ).join('');
+
+  // AI 심층 해석 버튼에 URL 파라미터 주입
+  const deepBtn = document.getElementById('btn-ai-deep');
+  if (deepBtn) {
+    const params = new URLSearchParams({ yA, mA: mA||'', dA: dA||'', nameA, yB, mB: mB||'', dB: dB||'', nameB });
+    deepBtn.href = '/goonghap-ai.html?' + params.toString();
+  }
 
   // 결과 표시
   const resultsEl = document.getElementById('results');
