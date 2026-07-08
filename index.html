@@ -216,6 +216,39 @@ Error generating stack: `+l.message+`
 </script>
 
     <div id="root"></div>
+    <script>
+    /* 사주 카드 '자세히 보기' 옆에 '무료 궁합 보기' 버튼 인젝션 */
+    (function() {
+      var done = false;
+      function inject() {
+        if (done) return;
+        var a = document.querySelector('a[href*="saju-about"]');
+        if (!a) return;
+        if (document.querySelector('a[href*="goonghap"]')) { done = true; return; }
+        done = true;
+        var btn = document.createElement('a');
+        btn.href = '/goonghap.html';
+        btn.textContent = '💑 무료 궁합 보기';
+        var base = a.getAttribute('style') || '';
+        btn.style.cssText = [
+          'display:inline-flex','align-items:center','gap:5px',
+          'background:transparent',
+          'border:1px solid rgba(201,168,76,0.55)',
+          'color:#c9a84c','font-size:inherit','font-weight:600',
+          'padding:0.65em 1.3em','border-radius:3px',
+          'text-decoration:none','transition:background 0.2s',
+          'white-space:nowrap','margin-left:10px',
+        ].join(';');
+        btn.onmouseover = function(){ this.style.background='rgba(201,168,76,0.12)'; };
+        btn.onmouseout  = function(){ this.style.background='transparent'; };
+        a.parentNode.insertBefore(btn, a.nextSibling);
+      }
+      var obs = new MutationObserver(inject);
+      obs.observe(document.documentElement, { childList: true, subtree: true });
+      inject();
+      setTimeout(function(){ obs.disconnect(); }, 20000);
+    })();
+    </script>
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
