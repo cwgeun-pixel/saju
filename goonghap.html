@@ -57,13 +57,30 @@
     .field { margin-bottom: 14px; }
     .field label { display: block; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
     .field input, .field select {
-      width: 100%; height: 38px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--text); font-size: 14px; padding: 0 12px;
+      width: 100%; height: 38px;
+      background-color: #0d1024;
+      border: 1px solid var(--border);
+      border-radius: 6px; color: #e0ddd5; font-size: 14px; padding: 0 12px;
       font-family: 'Noto Serif KR', serif; outline: none; transition: border-color .2s;
-      color-scheme: dark; /* 드롭다운 옵션 목록도 다크 테마 적용 */
     }
-    .field input:focus, .field select:focus { border-color: rgba(201,168,76,0.5); }
+    .field input:focus, .field select:focus { border-color: rgba(201,168,76,0.6); }
     .field input::placeholder { color: var(--muted); }
+    /* 숫자 스피너 제거 */
+    .field input[type="text"] { -moz-appearance: textfield; }
+    /* 셀렉트 커스텀 화살표 */
+    .field select {
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      cursor: pointer;
+    }
+    /* 드롭다운 옵션 배경 */
+    .field select option {
+      background-color: #0d1024;
+      color: #e0ddd5;
+    }
     .date-row { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr; gap: 8px; }
 
     /* ── Button ── */
@@ -164,7 +181,7 @@
         <div class="field">
           <label>생년월일</label>
           <div class="date-row">
-            <input id="yearA" type="number" placeholder="연도" min="1920" max="2010" />
+            <input id="yearA" type="text" inputmode="numeric" placeholder="연도 (예: 1990)" maxlength="4" />
             <select id="monthA">
               <option value="">월</option>
               <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
@@ -189,7 +206,7 @@
         <div class="field">
           <label>생년월일</label>
           <div class="date-row">
-            <input id="yearB" type="number" placeholder="연도" min="1920" max="2010" />
+            <input id="yearB" type="text" inputmode="numeric" placeholder="연도 (예: 1990)" maxlength="4" />
             <select id="monthB">
               <option value="">월</option>
               <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
@@ -441,10 +458,11 @@ function fillDays(monthId, dayId) {
   }
 }
 
+// 페이지 로드 시 일 드롭다운 미리 채우기 (기본 31일)
+['A','B'].forEach(p => fillDays('month'+p, 'day'+p));
+
 ['A','B'].forEach(p => {
-  // 월: change로 즉시 반영
   document.getElementById('month'+p).addEventListener('change', () => fillDays('month'+p, 'day'+p));
-  // 연도: input(타이핑 중) + change(포커스 이탈) 둘 다 감지
   ['input','change'].forEach(ev => {
     document.getElementById('year'+p).addEventListener(ev, () => fillDays('month'+p, 'day'+p));
   });
@@ -467,8 +485,8 @@ function calculate() {
     err.classList.remove('hidden');
     return;
   }
-  if (yA < 1900 || yA > 2020 || yB < 1900 || yB > 2020) {
-    err.textContent = '연도는 1900~2020 사이로 입력해 주세요.';
+  if (isNaN(yA) || isNaN(yB) || yA < 1900 || yA > 2030 || yB < 1900 || yB > 2030) {
+    err.textContent = '연도는 1900~2030 사이 숫자로 입력해 주세요.';
     err.classList.remove('hidden');
     return;
   }
