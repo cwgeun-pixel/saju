@@ -60,6 +60,7 @@
       width: 100%; height: 38px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
       border-radius: 6px; color: var(--text); font-size: 14px; padding: 0 12px;
       font-family: 'Noto Serif KR', serif; outline: none; transition: border-color .2s;
+      color-scheme: dark; /* 드롭다운 옵션 목록도 다크 테마 적용 */
     }
     .field input:focus, .field select:focus { border-color: rgba(201,168,76,0.5); }
     .field input::placeholder { color: var(--muted); }
@@ -441,8 +442,11 @@ function fillDays(monthId, dayId) {
 }
 
 ['A','B'].forEach(p => {
-  ['month','year'].forEach(f => {
-    document.getElementById(f + p).addEventListener('change', () => fillDays('month'+p, 'day'+p));
+  // 월: change로 즉시 반영
+  document.getElementById('month'+p).addEventListener('change', () => fillDays('month'+p, 'day'+p));
+  // 연도: input(타이핑 중) + change(포커스 이탈) 둘 다 감지
+  ['input','change'].forEach(ev => {
+    document.getElementById('year'+p).addEventListener(ev, () => fillDays('month'+p, 'day'+p));
   });
 });
 
