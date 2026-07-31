@@ -87,3 +87,10 @@
 - [x] scripts/infographic/template.html — 1080×1920 세로형, 오행 팔레트, 7블록 레이아웃.
 - [x] scripts/infographic/render.js — puppeteer-core + 로컬 Chrome 스크린샷.
 - [x] 홍길동 샘플 PNG 1장 산출 및 육안 검증.
+
+## 2026-07-31 인포그래픽 자미두수·점성술 확장.
+
+- [x] normalize.py 3영역 확장 — infographic_saju/ziwei/natal.json 산출.
+- [x] template_ziwei.html — 12궁 명반 4×4 격자(지지 고정 위치) + 사화 + 대한 타임라인.
+- [x] template_natal.html — 빅3(태양·달·상승) + 행성 배치 + 어스펙트 + 영역 카드.
+- [x] render.js 템플릿 인자화. 3종 PNG 산출 및 육안 검증.

@@ -108,3 +108,12 @@
 - 오행 팔레트: 목 #2E9E6B / 화 #D64545 / 토 #D9A441 / 금 #C9CDD2 / 수 #1F3A5F. 금 배경은 밝아서 글자색을 어둡게(metal-fix 클래스).
 - 폰트: Noto Serif KR + Noto Serif TC 폴백(한자 두부 방지), Google Fonts 웹폰트라 렌더링 시 네트워크 필요.
 - 다음 단계 후보: 디자인 조정 → 사이트 결과 페이지에 html-to-image로 공유 카드 기능.
+
+## 2026-07-31 인포그래픽 자미두수·점성술 확장
+
+- normalize.py가 3개 JSON을 한 번에 산출. render.js는 `node render.js <data.json> <out.png> [template.html]` 형태로 템플릿 인자화 (기본 template_saju.html).
+- 자미두수 명반: 궁 위치를 ganzhi의 지지로 계산 (BRANCH_GRID — 巳午未申 상단, 시계방향 고정). 중앙 2×2는 명궁 주성 + 국(木三局) + 요약. 명궁 금테, 현재 대한 궁에 大限 배지.
+- 사화 색: 化祿 녹 / 化權 금 / 化科 청(#4A90D9) / 化忌 적.
+- 점성술: 별자리 기호(♎ 등)가 Chrome에서 이모지로 렌더링됨 → **U+FE0E(variation selector)를 기호 뒤에 붙여 텍스트 글리프 강제**. 템플릿 JS는 `︎` 이스케이프, normalize의 footer_line은 파이썬 `︎` 이스케이프.
+- 별자리 색 = 4원소 (불 적 / 흙 금 / 공기 회백 / 물 청). 어스펙트 색 = 조화(트라인·섹스타일) 녹 / 긴장(스퀘어·어포지션) 적 / 컨정션 금.
+- 레이아웃 1920px 초과 시 하단 푸터가 잘림(overflow hidden) — 새 블록 추가 시 반드시 PNG로 하단 확인.

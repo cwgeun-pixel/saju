@@ -15,15 +15,17 @@ function findChrome() {
 }
 
 async function main() {
+  // 사용법: node render.js <data.json> <out.png> [template.html]
   const here = __dirname;
-  const dataPath = process.argv[2] || path.join(here, 'infographic.json');
+  const dataPath = process.argv[2] || path.join(here, 'infographic_saju.json');
   const outPath = process.argv[3] || path.join(here, 'output', 'infographic.png');
+  const templatePath = process.argv[4] || path.join(here, 'template_saju.html');
 
   const data = fs.readFileSync(dataPath, 'utf-8');
-  const template = fs.readFileSync(path.join(here, 'template.html'), 'utf-8');
+  const template = fs.readFileSync(templatePath, 'utf-8');
   const html = template.replace('__DATA_JSON__', () => data.trim());
 
-  const renderedPath = path.join(here, 'rendered.html');
+  const renderedPath = path.join(here, 'rendered_' + path.basename(templatePath, '.html') + '.html');
   fs.writeFileSync(renderedPath, html, 'utf-8');
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
 
