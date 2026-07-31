@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "name": "홍길동",
+    "birth": "1971년 9월 22일 (양력) 20시 00분",
+    "place": "서울특별시",
+    "gender": "남성"
+  },
+  "pillars": [
+    {
+      "label": "시주",
+      "gan": "丙",
+      "ji": "戌",
+      "gan_el": "화",
+      "ji_el": "토",
+      "gan_color": "#D64545",
+      "ji_color": "#D9A441",
+      "sipsin_top": "겁재",
+      "sipsin_bot": "상관"
+    },
+    {
+      "label": "일주",
+      "gan": "庚",
+      "ji": "戌",
+      "gan_el": "금",
+      "ji_el": "토",
+      "gan_color": "#C9CDD2",
+      "ji_color": "#D9A441",
+      "sipsin_top": "일간",
+      "sipsin_bot": "상관"
+    },
+    {
+      "label": "월주",
+      "gan": "丁",
+      "ji": "酉",
+      "gan_el": "화",
+      "ji_el": "금",
+      "gan_color": "#D64545",
+      "ji_color": "#C9CDD2",
+      "sipsin_top": "정인",
+      "sipsin_bot": "정관"
+    },
+    {
+      "label": "연주",
+      "gan": "辛",
+      "ji": "亥",
+      "gan_el": "금",
+      "ji_el": "수",
+      "gan_color": "#C9CDD2",
+      "ji_color": "#1F3A5F",
+      "sipsin_top": "겁재",
+      "sipsin_bot": "편인"
+    }
+  ],
+  "elements": [
+    {
+      "kor": "목",
+      "hanja": "木",
+      "pct": 10,
+      "color": "#2E9E6B",
+      "mark": "부족"
+    },
+    {
+      "kor": "화",
+      "hanja": "火",
+      "pct": 25,
+      "color": "#D64545",
+      "mark": ""
+    },
+    {
+      "kor": "토",
+      "hanja": "土",
+      "pct": 30,
+      "color": "#D9A441",
+      "mark": "과다"
+    },
+    {
+      "kor": "금",
+      "hanja": "金",
+      "pct": 25,
+      "color": "#C9CDD2",
+      "mark": ""
+    },
+    {
+      "kor": "수",
+      "hanja": "水",
+      "pct": 10,
+      "color": "#1F3A5F",
+      "mark": "부족"
+    }
+  ],
+  "day_master": {
+    "char": "庚金",
+    "element": "금",
+    "color": "#C9CDD2",
+    "title": "단단하게 벼려진 강철과 보검",
+    "desc": "庚金(경금)은 강철·보검의 기운입니다. 원칙과 결단력이 강하며, 한번 정한 목표는 끝까지 밀어붙이는 뚝심이…"
+  },
+  "sections": [
+    {
+      "icon": "💰",
+      "heading": "재물",
+      "body": "재성이 시주·년주에 위치하여 말년에 재물이 모이는 구조입니다."
+    },
+    {
+      "icon": "❤️",
+      "heading": "애정",
+      "body": "배우자 자리에 정관이 위치하여 원칙적이고 책임감 강한 배우자와의 인연입니다."
+    },
+    {
+      "icon": "💼",
+      "heading": "직업",
+      "body": "庚金의 결단력과 丁火 용신의 창의성이 결합되어 전문직·기술직에서 두각을 나타냅니다."
+    }
+  ],
+  "luck_cycle": [
+    {
+      "age": 3,
+      "gz": "戊戌",
+      "current": false
+    },
+    {
+      "age": 13,
+      "gz": "己亥",
+      "current": false
+    },
+    {
+      "age": 23,
+      "gz": "庚子",
+      "current": true
+    },
+    {
+      "age": 33,
+      "gz": "辛丑",
+      "current": false
+    },
+    {
+      "age": 43,
+      "gz": "壬寅",
+      "current": false
+    },
+    {
+      "age": 53,
+      "gz": "癸卯",
+      "current": false
+    },
+    {
+      "age": 63,
+      "gz": "甲辰",
+      "current": false
+    },
+    {
+      "age": 73,
+      "gz": "乙巳",
+      "current": false
+    }
+  ],
+  "yongsin": "丁火 (정화) 정인",
+  "conclusion": "庚金 일간의 가장 큰 강점은 결단력과 실행력입니다."
+}

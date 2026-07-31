@@ -94,3 +94,17 @@
 - premium은 medium, 그 외는 low reasoning으로 낮춰 응답 지연을 줄였다.
 - server.log에 section, depth, sourceChars, 완료 시간을 남기도록 했다.
 - 38자 테스트는 약 10초, 4만 자 입력 테스트는 약 19초 안팎으로 200 응답을 확인했다.
+
+
+## 2026-07-31 사주 인포그래픽 파이프라인 1단계
+
+- 위치: `scripts/infographic/` (normalize.py, template.html, render.js).
+- 파이프라인: `complete_sample.json` → normalize.py → `infographic.json` → render.js(템플릿에 JSON 주입) → 1080×1920 PNG.
+- 데이터가 이미 구조화(유형 A)라서 LLM 파싱 불필요. 순수 매핑 + 길이 절단(cut 함수, 문장 경계 우선)만 수행.
+- Puppeteer 대신 **puppeteer-core + 로컬 Chrome** 사용 — Chromium 다운로드(120MB) 회피. Chrome 없으면 Edge 폴백.
+- 주입 방식: 템플릿 스크립트의 `__DATA_JSON__` 플레이스홀더를 render.js가 문자열 치환. ⚠️ 주의 두 가지 — (1) 템플릿 주석에 플레이스홀더 문구를 쓰면 replace가 주석을 먼저 치환해버림(실제로 발생했던 버그), (2) JSON에 `$` 패턴이 있으면 깨지므로 함수 치환 `replace(k, () => data)` 사용.
+- 현재 대운 판정: daewoon에는 isCurrent가 없어서 seyun의 isCurrent 나이로 역산.
+- 일간 타이틀 10종은 normalize.py의 DAYMASTER_TITLES 고정 카피 (LLM 미사용).
+- 오행 팔레트: 목 #2E9E6B / 화 #D64545 / 토 #D9A441 / 금 #C9CDD2 / 수 #1F3A5F. 금 배경은 밝아서 글자색을 어둡게(metal-fix 클래스).
+- 폰트: Noto Serif KR + Noto Serif TC 폴백(한자 두부 방지), Google Fonts 웹폰트라 렌더링 시 네트워크 필요.
+- 다음 단계 후보: 디자인 조정 → 사이트 결과 페이지에 html-to-image로 공유 카드 기능.

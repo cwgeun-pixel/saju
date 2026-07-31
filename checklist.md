@@ -80,3 +80,10 @@
 - [x] 실제 요청이 오래 걸리지 않도록 서버 입력 길이와 추론 강도 조정.
 - [x] 요청 시작/완료 로그 추가.
 - [x] 서버 재시작 후 API 응답 확인.
+
+## 2026-07-31 사주 인포그래픽 파이프라인 1단계.
+
+- [x] scripts/infographic/normalize.py — complete_sample.json → 고정 스키마 infographic.json 변환 + 길이 검증.
+- [x] scripts/infographic/template.html — 1080×1920 세로형, 오행 팔레트, 7블록 레이아웃.
+- [x] scripts/infographic/render.js — puppeteer-core + 로컬 Chrome 스크린샷.
+- [x] 홍길동 샘플 PNG 1장 산출 및 육안 검증.
