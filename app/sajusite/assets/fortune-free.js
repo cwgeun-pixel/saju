@@ -3565,8 +3565,9 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
   // ── 사주원국 미니 차트 (일주만 선명, 나머지 블러) ──
   const ELEM_COLOR = {'목':'#22c55e','화':'#ef4444','토':'#d97706','금':'#94a3b8','수':'#60a5fa'};
   const pillarLabels = [t('시주'), t('일주'), t('월주'), t('연주')];
-  // pillars 순서: 0=시주 1=월주 2=일주 3=년주 → 표시 순서: 시,일,월,년
-  const displayOrder = [0, 2, 1, 3];
+  // 엔진 calculateSaju의 pillars 순서가 이미 [시주, 일주, 월주, 년주]다.
+  // 예전 주석이 1과 2를 뒤바꿔 적어둔 탓에 일주/월주가 서로 바뀌어 표시되고 있었다.
+  const displayOrder = [0, 1, 2, 3];
   const pillarCols = displayOrder.map((idx, colIdx) => {
     const p     = saju.pillars[idx];
     const pl    = p?.pillar || {};
@@ -3578,8 +3579,8 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
     const bCol  = ELEM_COLOR[bElem] || '#94a3b8';
     const sipTop = p?.stemSipsin  || '';
     const sipBot = p?.branchSipsin|| '';
-    const isDay  = (idx === 2);
-    const blur   = isDay ? '' : 'filter:blur(5px);user-select:none;';
+    const isDay  = (idx === 1);
+    const blur   = ''; // 무료 공개 — 네 기둥 모두 보여준다
 
     return `
       <div style="text-align:center;flex:1;min-width:0">
@@ -3599,7 +3600,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.4),transparent)"></div>
       <div style="font-size:10px;color:#5a6478;letter-spacing:0.1em;text-align:center;margin-bottom:10px">四柱八字</div>
       <div style="display:flex;gap:8px;justify-content:center">${pillarCols}</div>
-      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:10px">${new URLSearchParams(location.search).get('admin')==='1' ? '' : '🔒 일주 공개 · 나머지는 멤버십에서 확인'}</div>
+      
     </div>`;
 
   return `<div style="${D.wrap}">
@@ -4233,7 +4234,7 @@ function renderZiweiSection(chart) {
     const pi = PALACE_INFO[p] || { emoji:'⭐', label:p, desc:'', color:'#a78bfa' };
     const pc = pi.color;
     const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : t('공궁');
-    return `<div style="${D.card}border-top:2px solid ${pc}30;opacity:0.55;filter:blur(0.3px);position:relative;">
+    return `<div style="${D.card}border-top:2px solid ${pc}30;position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}40,transparent)"></div>
       <div class="hc-zw-head">
         <span style="font-size:20px">${pi.emoji}</span>
@@ -4262,7 +4263,7 @@ function renderZiweiSection(chart) {
           const pi = PALACE_INFO[name] || {};
           const isLife = (name === '命宮');
           const mains = getMainStars(p || {}).map(s=>s.name||s).slice(0,2).join(' ');
-          const blur = isLife ? '' : 'filter:blur(5px);user-select:none;';
+          const blur = ''; // 무료 공개 — 12궁 모두 보여준다
           const border = isLife ? '1.5px solid #d4af37' : '1px solid rgba(255,255,255,0.06)';
           const bg = isLife ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.02)';
           return `<div style="background:${bg};border:${border};border-radius:6px;padding:5px 4px;text-align:center;${blur}">
@@ -4272,7 +4273,6 @@ function renderZiweiSection(chart) {
           </div>`;
         }).join('')}
       </div>
-      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:8px">🔒 명궁 공개 · 나머지는 멤버십에서 확인</div>
     </div>`;
 
   const wu = chart.wuXingJu;
@@ -4400,7 +4400,8 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
   const PLANET_COLORS = {'☀️':'#fbbf24','🌙':'#c0c8e0','⬆️':'#34d399','♃':'#a78bfa','♀':'#f472b6'};
 
   // ── 천궁도 SVG 휠 차트 (태양 별자리만 선명, 나머지 블러) ──
-  const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+  // ︎: 별자리 기호를 이모지가 아닌 텍스트 글리프로 강제한다
+  const SIGN_SYMBOLS = ['♈︎','♉︎','♊︎','♋︎','♌︎','♍︎','♎︎','♏︎','♐︎','♑︎','♒︎','♓︎'];
   const SIGN_COLORS  = ['#ef4444','#22c55e','#facc15','#38bdf8','#f97316','#84cc16','#f472b6','#a78bfa','#fb923c','#94a3b8','#60a5fa','#818cf8'];
   const planets = natalChart?.planets || [];
   const PLANET_SYMS = {Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆',Pluto:'♇',Chiron:'⚷','North Node':'☊'};
@@ -4435,12 +4436,13 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     const x1i = cx + rInner * Math.cos(rad1), y1i = cy + rInner * Math.sin(rad1);
     const x2i = cx + rInner * Math.cos(rad2), y2i = cy + rInner * Math.sin(rad2);
     const tx  = cx + (rOuter - 14) * Math.cos(radM), ty = cy + (rOuter - 14) * Math.sin(radM);
-    const fill = isSun ? SIGN_COLORS[i] + '40' : 'rgba(255,255,255,0.03)';
-    const stroke = isSun ? SIGN_COLORS[i] : 'rgba(255,255,255,0.08)';
-    const blurAttr = isSun ? '' : `filter="url(#blur)"`;
+    // 무료 공개 — 블러를 걷고, 태양 별자리만 강조되도록 대비만 남긴다
+    const fill = isSun ? SIGN_COLORS[i] + '40' : SIGN_COLORS[i] + '14';
+    const stroke = isSun ? SIGN_COLORS[i] : SIGN_COLORS[i] + '55';
+    const blurAttr = '';
     return `<g ${blurAttr}>
       <path d="M ${x1s.toFixed(1)} ${y1s.toFixed(1)} A ${rOuter} ${rOuter} 0 0 1 ${x2s.toFixed(1)} ${y2s.toFixed(1)} L ${x2i.toFixed(1)} ${y2i.toFixed(1)} A ${rInner} ${rInner} 0 0 0 ${x1i.toFixed(1)} ${y1i.toFixed(1)} Z" fill="${fill}" stroke="${stroke}" stroke-width="${isSun?1.5:0.5}"/>
-      <text x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}" text-anchor="middle" font-size="${isSun?13:11}" fill="${isSun?SIGN_COLORS[i]:'rgba(255,255,255,0.25)'}" font-family="serif">${SIGN_SYMBOLS[i]}</text>
+      <text x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}" text-anchor="middle" font-size="${isSun?13:11}" fill="${isSun?SIGN_COLORS[i]:SIGN_COLORS[i]+'aa'}" font-family="serif">${SIGN_SYMBOLS[i]}</text>
     </g>`;
   }).join('');
 
@@ -4450,8 +4452,8 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     const absLong = p.absoluteLongitude ?? ((toSignIdx(p.sign) * 30) + (p.degree || 0));
     const [px, py] = degToXY(absLong, rPlanet, cx, cy);
     const sym = PLANET_SYMS[p.id] || p.id?.charAt(0) || '·';
-    const color = isSunPlanet ? '#fbbf24' : 'rgba(255,255,255,0.2)';
-    const blurAttr = isSunPlanet ? '' : `filter="url(#blur)"`;
+    const color = isSunPlanet ? '#fbbf24' : 'rgba(200,208,224,0.85)';
+    const blurAttr = '';
     return `<g ${blurAttr}>
       <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${isSunPlanet?9:7}" fill="${isSunPlanet?'rgba(251,191,36,0.15)':'rgba(255,255,255,0.04)'}" stroke="${color}" stroke-width="${isSunPlanet?1.5:0.8}"/>
       <text x="${px.toFixed(1)}" y="${(py+4).toFixed(1)}" text-anchor="middle" font-size="${isSunPlanet?11:9}" fill="${color}" font-family="serif">${sym}</text>
@@ -4479,7 +4481,6 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
         <!-- 중심 태양 표시 -->
         <text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="13" fill="rgba(251,191,36,0.6)" font-family="serif">☉</text>
       </svg>
-      <div style="font-size:11px;color:#4a5268;text-align:center;margin-top:6px">🔒 태양 별자리(${SIGN_SYMBOLS[sunIdx]}) 공개 · 나머지는 멤버십에서 확인</div>
     </div>` : '';
 
   // ── 별자리 소개 배너 ──

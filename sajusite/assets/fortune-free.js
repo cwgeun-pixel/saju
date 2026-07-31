@@ -2692,7 +2692,7 @@ function renderZiweiSection(chart) {
     const pi = PALACE_INFO[p] || { emoji:'⭐', label:p, desc:'', color:'#a78bfa' };
     const pc = pi.color;
     const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : '공궁';
-    return `<div style="${D.card}border-top:2px solid ${pc}30;opacity:0.55;filter:blur(0.3px);position:relative;">
+    return `<div style="${D.card}border-top:2px solid ${pc}30;position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}40,transparent)"></div>
       <div class="hc-zw-head">
         <span style="font-size:20px">${pi.emoji}</span>
