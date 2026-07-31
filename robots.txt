@@ -1,14 +1,30 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+
+# 로그인·계정·결제 화면은 색인 대상이 아니다 (비로그인 시 빈 화면이라 품질 평가에 불리)
+Disallow: /auth.html
+Disallow: /auth-callback.html
+Disallow: /dashboard.html
+Disallow: /premium.html
+Disallow: /goonghap-ai.html
+
+# 개인 계산 결과 화면은 입력값에 따라 매번 달라져 색인할 의미가 없다
+Disallow: /fortune/
+Disallow: /card.html
+
+# 내부 산출물·스크립트
+Disallow: /scripts/
+Disallow: /manus-storage/
+Disallow: /supabase/
+
+# 광고 심사·게재 크롤러는 전체 허용 (차단 시 애드센스 심사가 진행되지 않는다)
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+Sitemap: https://saju0523.pages.dev/sitemap.xml
