@@ -1819,6 +1819,33 @@ function captureMainFormInput() {
 
 // ─── Imperial Cosmic 렌더 헬퍼 ─────────────────────────────────────
 
+
+// 용신 카드 3종의 레이아웃. 좁은 화면에서 3열을 유지하면 설명이 두세 글자씩 끊겨
+// 읽을 수 없으므로, 640px 이하에서는 1열로 내리고 카드 머리를 가로로 눕힌다.
+const YONG_CSS = `<style>
+.hc-yong-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hc-yong-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.hc-elem-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px}
+.hc-elem-name{font-size:18px;font-weight:600;white-space:nowrap}
+.hc-elem-val{white-space:nowrap}
+.hc-yong-head{text-align:center;margin-bottom:8px}
+.hc-yong-icon{font-size:28px;margin-bottom:4px}
+.hc-yong-badge{font-weight:800;font-size:17px;padding:3px 10px;border-radius:10px;display:inline-block}
+.hc-yong-elem{text-align:center;border-radius:8px;padding:6px;margin-bottom:8px;font-size:20px}
+.hc-yong-role{color:#8a8fa8;font-size:12px;text-align:center;line-height:1.4;margin-bottom:8px}
+.hc-yong-desc{border-radius:8px;padding:10px;color:#b0b8d0;font-size:12px;line-height:1.7;text-align:left}
+@media (max-width:640px){
+  .hc-yong-grid{grid-template-columns:1fr;gap:10px}
+  .hc-yong-duo{grid-template-columns:1fr;gap:10px}
+  .hc-yong-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .hc-yong-head{display:flex;align-items:center;gap:8px;margin-bottom:0}
+  .hc-yong-icon{font-size:22px;margin-bottom:0}
+  .hc-yong-elem{margin-bottom:0;padding:4px 12px;white-space:nowrap}
+  .hc-yong-role{margin-bottom:0;flex:1;text-align:right;font-size:13px}
+  .hc-yong-desc{font-size:14px;line-height:1.75;padding:12px}
+}
+</style>`;
+
 const D = {
   wrap:   'background:linear-gradient(135deg,#0d1020 0%,#111428 50%,#0a0e1a 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);',
   card:   'background:linear-gradient(135deg,#131726 0%,#161b2e 100%);border:1px solid rgba(212,175,55,0.2);border-radius:14px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,0.4),0 0 0 1px rgba(124,106,247,0.05);position:relative;overflow:hidden;',
@@ -2057,9 +2084,9 @@ function renderYongShin(saju) {
   const elemBars = Object.entries(ys.elems).map(([e, cnt]) => {
     const pct = Math.round((cnt/total)*100);
     return `<div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-        <span style="color:${ELEM_CLR[e]};font-size:18px;font-weight:600">${ELEM_KO[e]}</span>
-        <span style="${D.sub}">${cnt}개 · ${pct}%</span>
+      <div class="hc-elem-row">
+        <span class="hc-elem-name" style="color:${ELEM_CLR[e]}">${ELEM_KO[e]}</span>
+        <span class="hc-elem-val" style="${D.sub}">${cnt}개 · ${pct}%</span>
       </div>
       ${dGauge(pct, ELEM_CLR[e])}
     </div>`;
@@ -2094,17 +2121,19 @@ function renderYongShin(saju) {
     const roleKey = role==='용신'?'가장 필요한 기운':role==='희신'?'보조 도움 기운':'조심해야 할 기운';
     const isGi = role==='기신';
     const detailDesc = elem ? (YONG_DESC[role]?.[elem] || '') : '';
-    return `<div style="${D.card}border-left:3px solid ${c};border-top:1px solid ${c}30;">
+    return `<div class="hc-yong-card" style="${D.card}border-left:3px solid ${c};border-top:1px solid ${c}30;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,${c}60,transparent)"></div>
-      <div style="text-align:center;margin-bottom:8px">
-        <div style="font-size:28px;margin-bottom:4px;filter:drop-shadow(0 0 8px ${c}60)">${role==='용신'?'✨':role==='희신'?'🌟':'⚠️'}</div>
-        <span style="background:linear-gradient(135deg,${c}30,${c}15);color:${c};font-weight:800;font-size:17px;padding:3px 10px;border-radius:10px;border:1px solid ${c}40;display:inline-block">${t(role)}</span>
+      <div class="hc-yong-top">
+        <div class="hc-yong-head">
+          <div class="hc-yong-icon" style="filter:drop-shadow(0 0 8px ${c}60)">${role==='용신'?'✨':role==='희신'?'🌟':'⚠️'}</div>
+          <span class="hc-yong-badge" style="background:linear-gradient(135deg,${c}30,${c}15);color:${c};border:1px solid ${c}40">${t(role)}</span>
+        </div>
+        <div class="hc-yong-elem" style="background:${c}12">
+          <span style="color:${c};font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? ELEM_KO[elem] : '-'}</span>
+        </div>
+        <div class="hc-yong-role">${t(roleKey)}</div>
       </div>
-      <div style="text-align:center;background:${c}12;border-radius:8px;padding:6px;margin-bottom:8px">
-        <span style="color:${c};font-size:20px;font-weight:700;font-family:'Cormorant Garamond',serif">${elem ? ELEM_KO[elem] : '-'}</span>
-      </div>
-      <div style="color:#8a8fa8;font-size:12px;text-align:center;line-height:1.4;margin-bottom:8px">${t(roleKey)}</div>
-      ${detailDesc ? `<div style="background:${isGi?'rgba(248,113,113,0.06)':'rgba(212,175,55,0.06)'};border:1px solid ${c}20;border-radius:8px;padding:10px;color:#b0b8d0;font-size:12px;line-height:1.7;text-align:left">${detailDesc}</div>` : ''}
+      ${detailDesc ? `<div class="hc-yong-desc" style="background:${isGi?'rgba(248,113,113,0.06)':'rgba(212,175,55,0.06)'};border:1px solid ${c}20">${detailDesc}</div>` : ''}
     </div>`;
   }
 
@@ -2113,7 +2142,7 @@ function renderYongShin(saju) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('C', t('용신 분석'), t('일간 강약과 오행 균형'))}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div class="hc-yong-duo">
       <div style="${D.card}border:1px solid rgba(212,175,55,0.2);">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent)"></div>
         <div style="color:#7a6f8a;font-size:13px;margin-bottom:8px;letter-spacing:0.05em">${t('일간 강약')}</div>
@@ -2132,11 +2161,12 @@ function renderYongShin(saju) {
         ${elemBars}
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div class="hc-yong-grid">
       ${yongCard('용신', ys.yong, '용신', '')}
       ${yongCard('희신', ys.hee,  '희신', '')}
       ${yongCard('기신', ys.gi,   '기신', '')}
     </div>
+    ${YONG_CSS}
   </div>`;
 }
 
