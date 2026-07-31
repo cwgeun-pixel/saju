@@ -1,20 +1,22 @@
-/* 인포그래픽 카드 스타일 — 1080×1920 고정 레이아웃을 뷰포트 폭에 맞춰 scale로 축소해 모바일에 대응 */
-:root {
+/* 인포그래픽 카드 스타일 — 1080×1920 고정 레이아웃을 뷰포트 폭에 맞춰 scale로 축소해 모바일에 대응
+   card.html(문서 루트)과 결과 페이지 임베드(shadow root) 양쪽에서 그대로 쓰이므로
+   페이지 전역에 손대는 규칙(body 등)은 여기 두지 않는다. */
+:root, :host {
   --bg: #14171f; --bg2: #1c202b; --card: #202634; --line: #333b4d;
   --ink: #f0ead8; --sub: #a8a291; --gold: #d9a441;
   --good: #2E9E6B; --watch: #D64545;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #0d1016; color: var(--ink);
+.hc-deck, .hc-deck * { margin: 0; padding: 0; box-sizing: border-box; }
+.hc-deck {
+  color: var(--ink);
   font-family: 'Noto Sans KR', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
 }
 .serif { font-family: 'Noto Serif KR', 'Noto Serif TC', serif; }
 .hanja { font-family: 'Noto Serif TC', 'Noto Serif KR', serif; }
 
 /* ── 스케일 래퍼: 카드는 항상 1080×1920으로 그리고 축소만 한다 ── */
-#deck { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 18px 0 60px; }
 .card-slot { width: calc(1080px * var(--k)); height: calc(1920px * var(--k)); position: relative; }
 .card {
   width: 1080px; height: 1920px;
@@ -275,18 +277,7 @@ body {
 .gh-btag { font-size: 27px; font-weight: 700; color: var(--bc); }
 .gh-bdesc { font-size: 21px; color: var(--sub); margin-top: 6px; line-height: 1.45; word-break: keep-all; }
 
-/* ── 화면용 UI (PNG에는 포함되지 않음) ── */
-#bar {
-  position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; overflow-x: auto;
-  padding: 12px 14px; background: rgba(13,16,22,.92); backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
-}
-#bar button {
-  flex: none; font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px;
-  border: 1px solid var(--line); background: var(--card); color: var(--sub); cursor: pointer;
-}
-#bar button.on { border-color: var(--gold); color: var(--gold); background: rgba(217,164,65,.12); }
-#msg { padding: 40px 24px; text-align: center; color: var(--sub); font-size: 15px; line-height: 1.7; }
+/* ── 카드 아래 동작 버튼 (PNG에는 포함되지 않음) ── */
 .card-actions { display: flex; gap: 10px; justify-content: center; margin-top: -6px; }
 .card-actions button {
   font: inherit; font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 999px;
@@ -295,6 +286,16 @@ body {
 .card-actions button:disabled { opacity: .55; cursor: default; }
 
 /* 내보내기 모드: 스케일 1, 장식 제거 */
-body.export #bar, body.export .card-actions { display: none; }
-body.export #deck { gap: 0; padding: 0; }
-body.export .card-slot { border-radius: 0; box-shadow: none; }
+.hc-deck.export { gap: 0; }
+.hc-deck.export .card-actions { display: none; }
+.hc-deck.export .card-slot { border-radius: 0; box-shadow: none; }
+
+/* 결과 페이지에 끼워 넣을 때의 머리말 */
+.hc-embed-title {
+  display: flex; align-items: center; gap: 8px; align-self: stretch;
+  font-size: 13px; color: var(--sub); letter-spacing: .06em; margin-bottom: 2px;
+}
+.hc-embed-title::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none;
+}
+.hc-embed-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }

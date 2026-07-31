@@ -8,12 +8,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/js/infographic/cards.css?v=20260731">
+<link rel="stylesheet" href="/js/infographic/cards.css?v=20260731b">
+<style>
+  /* 이 페이지 전용 골격. 카드 자체 스타일은 cards.css가 담당한다. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1016; color: #f0ead8; font-family: 'Noto Sans KR', system-ui, sans-serif; }
+  #deck { padding: 18px 0 60px; }
+  #bar {
+    position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; overflow-x: auto;
+    padding: 12px 14px; background: rgba(13,16,22,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid #333b4d;
+  }
+  #bar button {
+    flex: none; font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px;
+    border: 1px solid #333b4d; background: #202634; color: #a8a291; cursor: pointer;
+  }
+  #bar button.on { border-color: #d9a441; color: #d9a441; background: rgba(217,164,65,.12); }
+  #msg { padding: 40px 24px; text-align: center; color: #a8a291; font-size: 15px; line-height: 1.7; }
+  body.export #bar { display: none; }
+  body.export #deck { padding: 0; }
+</style>
 </head>
 <body>
 <nav id="bar"></nav>
 <div id="msg">계산하는 중…</div>
-<main id="deck"></main>
+<main id="deck" class="hc-deck"></main>
 
 <script type="module">
 import { calculateSaju } from '/app/sajusite/assets/orrery-core/saju.js';
@@ -148,7 +167,7 @@ function buildNav(data, only) {
   deck.querySelectorAll('.card-slot').forEach((s) => io.observe(s));
 }
 
-if (isExport) document.body.classList.add('export');
+if (isExport) { document.body.classList.add('export'); deck.classList.add('export'); }
 addEventListener('resize', applyScale);
 main().catch((e) => {
   msg.textContent = '오류: ' + e.message;

@@ -1,38 +1,56 @@
 // 카드 DOM을 외부 라이브러리 없이 PNG로 굽고 저장·공유하는 모듈 (SVG foreignObject + canvas)
 
-// 웹폰트를 CSS에서 읽어 data URI로 인라인해야 SVG 안에서 글자가 깨지지 않는다
+// 웹폰트를 data URI로 인라인해야 SVG 안에서 한글·한자가 시스템 폰트로 떨어지지 않는다
 let fontCssPromise = null;
+
+async function inlineOneFace(cssText) {
+  const url = cssText.match(/url\(["']?([^"')]+)["']?\)/);
+  if (!url) return null;
+  try {
+    const buf = await (await fetch(url[1])).arrayBuffer();
+    let bin = '';
+    const bytes = new Uint8Array(buf);
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return cssText.replace(url[0], `url(data:font/woff2;base64,${btoa(bin)})`);
+  } catch {
+    return null; // 개별 폰트 실패는 무시하고 나머지로 진행
+  }
+}
+
 async function inlinedFontCss() {
   if (fontCssPromise) return fontCssPromise;
   fontCssPromise = (async () => {
-    const faces = [];
+    const faceTexts = [];
     for (const sheet of document.styleSheets) {
-      let rules;
-      try { rules = sheet.cssRules; } catch { continue; } // 교차 출처 시트는 건너뛴다
-      if (!rules) continue;
-      for (const rule of rules) {
-        if (rule.constructor.name !== 'CSSFontFaceRule') continue;
-        const src = rule.style.getPropertyValue('src');
-        const url = src && src.match(/url\("?([^")]+)"?\)/);
-        if (!url) continue;
-        try {
-          const buf = await (await fetch(url[1])).arrayBuffer();
-          let bin = '';
-          const bytes = new Uint8Array(buf);
-          for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-          faces.push(rule.cssText.replace(url[0], `url(data:font/woff2;base64,${btoa(bin)})`));
-        } catch { /* 개별 폰트 실패는 무시하고 나머지로 진행 */ }
+      let rules = null;
+      try { rules = sheet.cssRules; } catch { rules = null; }
+      if (rules) {
+        for (const rule of rules) {
+          if (rule.constructor.name === 'CSSFontFaceRule') faceTexts.push(rule.cssText);
+        }
+        continue;
       }
+      // 교차 출처라 cssRules를 못 읽는 경우(구글 폰트 등)는 직접 받아서 파싱한다
+      if (!sheet.href) continue;
+      try {
+        const text = await (await fetch(sheet.href)).text();
+        faceTexts.push(...(text.match(/@font-face\s*{[^}]*}/g) || []));
+      } catch { /* 접근 불가한 시트는 건너뛴다 */ }
     }
-    return faces.join('\n');
+    const inlined = await Promise.all(faceTexts.map(inlineOneFace));
+    return inlined.filter(Boolean).join('\n');
   })();
   return fontCssPromise;
 }
 
-// 문서의 모든 CSS 규칙을 모아 SVG 안에 심는다
-function collectCss() {
+// 카드를 그리는 데 필요한 CSS 규칙을 모은다.
+// shadow root 안의 카드는 문서 스타일시트에 규칙이 없으므로 호출부가 css를 직접 넘긴다.
+function collectCss(root) {
+  const sheets = root && root.styleSheets && root.styleSheets.length
+    ? root.styleSheets
+    : document.styleSheets;
   const out = [];
-  for (const sheet of document.styleSheets) {
+  for (const sheet of sheets) {
     let rules;
     try { rules = sheet.cssRules; } catch { continue; }
     if (!rules) continue;
@@ -44,21 +62,31 @@ function collectCss() {
   return out.join('\n');
 }
 
-/** 카드 요소를 1080×1920 PNG Blob으로 굽는다. */
-export async function cardToBlob(cardEl, scale = 1) {
+/**
+ * 카드 요소를 1080×1920 PNG Blob으로 굽는다.
+ * @param {Element} cardEl
+ * @param {{css?: string, root?: Document|ShadowRoot}} [opts] css를 주면 그대로 쓰고, 없으면 root에서 모은다.
+ */
+export async function cardToBlob(cardEl, opts = {}) {
   const W = 1080, H = 1920;
-  const [fontCss, css] = [await inlinedFontCss(), collectCss()];
+  const scale = 1;
+  const fontCss = await inlinedFontCss();
+  const css = opts.css != null ? opts.css : collectCss(opts.root || cardEl.getRootNode());
 
   const clone = cardEl.cloneNode(true);
   clone.style.transform = 'none';
   clone.style.position = 'static';
   clone.style.margin = '0';
 
+  // cards.css의 초기화(box-sizing 등)가 .hc-deck 하위로 한정돼 있으므로
+  // 복제본도 반드시 .hc-deck 안에 넣어야 원본과 같은 폭으로 그려진다.
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <foreignObject width="100%" height="100%">
 <div xmlns="http://www.w3.org/1999/xhtml">
 <style>${fontCss}\n${css}</style>
+<div class="hc-deck" style="--k:1;display:block">
 ${new XMLSerializer().serializeToString(clone)}
+</div>
 </div>
 </foreignObject></svg>`;
 
@@ -96,7 +124,7 @@ function download(blob, filename) {
  * 카드에 저장/공유 버튼을 붙인다.
  * 공유 API를 지원하는 기기(대부분의 모바일)면 공유 시트를, 아니면 저장만 노출한다.
  */
-export function attachShareButtons(root, { name = '운세' } = {}) {
+export function attachShareButtons(root, { name = '운세', css = null } = {}) {
   const canShare = typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [new File([''], 'x.png', { type: 'image/png' })] });
 
@@ -118,7 +146,7 @@ export function attachShareButtons(root, { name = '운세' } = {}) {
       btn.disabled = true;
       btn.textContent = '만드는 중…';
       try {
-        const blob = await cardToBlob(card);
+        const blob = await cardToBlob(card, { css });
         if (!blob) throw new Error('이미지 변환에 실패했습니다.');
         const filename = `${name}_${label}.png`;
         if (act === 'share') {

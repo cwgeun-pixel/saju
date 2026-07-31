@@ -232,3 +232,22 @@ fortune-free.js는 스타일시트 없이 인라인 스타일만 쓰던 파일�
 - 원인: `wrap.style.background = "hsl(var(--card, 0 0% 100%))"`. `--card`는 일부 페이지에만 정의돼 있어 /fortune/ 등에서는 폴백값인 흰색이 적용된다. select의 color는 페이지에서 상속된 흰색.
 - 어두운 색을 직접 지정하는 방식으로 바꿨다(`rgba(13,16,32,0.92)` 배경 + `#e8dfc8` 글자). CSS 변수 폴백에 기대지 않는다.
 - i18n.js는 사본이 5벌인데 HTML이 참조하는 4벌(app/assets, app/sajusite/assets, assets, sajusite/assets)에 적용했다. `saju-main/`은 참조되지 않아 제외.
+
+## 2026-07-31 결과 페이지 카드 임베드
+
+무료운세 결과의 각 섹션 끝에 인포그래픽 카드를 저장 버튼과 함께 끼워 넣었다.
+- 사주(신살 뒤): saju, sipsin, luck 3장
+- 자미두수 뒤: ziwei, year 2장
+- 점성술 뒤: natal 1장
+궁합 카드는 상대 정보가 필요하므로 제외. card.html에서는 그대로 7장 모두 나온다.
+
+### shadow DOM을 쓴 이유
+cards.css에는 `* { margin:0 }`, `body { ... }` 같은 전역 초기화가 있어 그대로 결과 페이지에 넣으면 본문 레이아웃이 통째로 깨진다. `<iframe>`도 후보였지만 높이 동기화가 필요하고 엔진을 다시 돌려야 해서, **shadow root에 CSS를 통째로 주입하는 방식**을 택했다. 결과 페이지의 body 배경·폰트가 그대로인지 매번 확인할 것.
+
+### 그 과정에서 정리한 것
+- `:root` -> `:root, :host` 로 바꿔 문서와 shadow 양쪽에서 변수가 잡히게 했다.
+- 전역 초기화를 `.hc-deck, .hc-deck *` 로 한정하고, `body`/`#deck`/`#bar`/`#msg` 같은 페이지 골격 규칙은 card.html 안으로 옮겼다.
+- **함정**: 전역 `*` 초기화를 `.hc-deck` 하위로 한정한 뒤 share.js의 PNG가 오른쪽으로 잘렸다. SVG 안에 복제한 카드가 `.hc-deck` 밖에 있어 `box-sizing:border-box`를 못 받았기 때문. 복제본을 `.hc-deck`으로 감싸 해결했다.
+- @font-face는 shadow root 안에서 무시될 수 있어 `ensureFonts()`가 문서 head에 구글 폰트 링크를 한 번만 넣는다. 페이지별 HTML 수정이 필요 없다.
+- share.js의 `inlinedFontCss()`는 교차출처 시트에서 `cssRules`가 막히므로, 실패하면 `sheet.href`를 fetch해 `@font-face` 블록을 정규식으로 뽑아내는 폴백을 추가했다.
+- `cardToBlob(el, {css})` — shadow root 안 카드는 document.styleSheets에 규칙이 없어 호출부가 CSS를 직접 넘긴다.

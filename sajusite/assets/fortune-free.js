@@ -1,8 +1,9 @@
 // 무료 운세 패널 — 사주 · 자미두수 · 점성학 세 시스템 통합 (다크 테마)
 import { calculateSaju } from './orrery-core/saju.js';
 import { getFourPillars, analyzePillarRelations } from './orrery-core/pillars.js';
-import { createChart } from './orrery-core/ziwei.js';
+import { createChart, getDaxianList, calculateLiunian } from './orrery-core/ziwei.js';
 import { calculateNatal, ZODIAC_KO, PLANET_KO } from './orrery-core/natal.js';
+import { mountSectionCards } from '/js/infographic/embed.js';
 
 // ─── 사주 상수 ────────────────────────────────────────────────
 
@@ -3153,8 +3154,11 @@ async function runFortune(preInput = null) {
       ${renderSijunseong(saju)}
       ${renderDaewoon(saju)}
       ${renderSinsal(saju)}
+      <div data-cards="saju,sipsin,luck" data-cards-title="사주 요약 카드 · 저장해서 간직하세요"></div>
       ${renderZiweiSection(ziwei)}
+      <div data-cards="ziwei,year" data-cards-title="자미두수 요약 카드 · 저장해서 간직하세요"></div>
       ${renderNatalSection(natalChart, transitChart, unknownTime)}
+      <div data-cards="natal" data-cards-title="점성술 요약 카드 · 저장해서 간직하세요"></div>
       <div style="text-align:center;padding:8px 0">
         <button id="gf-reset" type="button"
           style="color:#7a6f8a;font-size:15px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em;transition:all 0.2s">
@@ -3167,6 +3171,21 @@ async function runFortune(preInput = null) {
     </div>`;
 
     centerCurrentDaewoon();
+
+    // 각 섹션 끝의 자리표시자에 인포그래픽 카드를 채운다 (실패해도 본문에는 영향 없음)
+    (async () => {
+      try {
+        const thisYear = new Date().getFullYear();
+        await mountSectionCards({
+          saju, ziwei, natalChart,
+          daxian: getDaxianList(ziwei),
+          liunian: calculateLiunian(ziwei, thisYear),
+          input: { year, month, day, hour, minute, gender, unknownTime },
+          seyunGanzi: getFourPillars(thisYear, 7, 1, 12, 0, false)[0],
+          name: '', thisYear,
+        });
+      } catch (e) { console.error('카드 렌더 실패', e); }
+    })();
 
     document.getElementById('gf-reset')?.addEventListener('click', () => {
       if (bodyEl) bodyEl.innerHTML = inputHtml();
