@@ -1,0 +1,125 @@
+<!-- 실제 계산 엔진 결과를 인포그래픽 카드 6종으로 보여주는 모바일 우선 페이지 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>내 운세 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/js/infographic/cards.css?v=20260731">
+</head>
+<body>
+<nav id="bar"></nav>
+<div id="msg">계산하는 중…</div>
+<main id="deck"></main>
+
+<script type="module">
+import { calculateSaju } from '/app/sajusite/assets/orrery-core/saju.js';
+import { createChart, getDaxianList, calculateLiunian } from '/app/sajusite/assets/orrery-core/ziwei.js';
+import { calculateNatal } from '/app/sajusite/assets/orrery-core/natal.js';
+import { getFourPillars } from '/app/sajusite/assets/orrery-core/pillars.js';
+import { normalize } from '/js/infographic/normalize.js';
+import { CARD_DEFS, renderAll } from '/js/infographic/cards.js';
+
+// 일부 정적 호스트가 clean-URL 리다이렉트로 쿼리스트링을 버리므로 해시 파라미터도 받는다
+const qs = new URLSearchParams(location.search || location.hash.replace(/^#/, ''));
+const isExport = qs.get('export') === '1';
+const msg = document.getElementById('msg');
+const deck = document.getElementById('deck');
+
+// 입력 확보 순서: 쿼리스트링 → sessionStorage(계산기에서 넘어온 값)
+function readInput() {
+  if (qs.has('y')) {
+    return {
+      year: +qs.get('y'), month: +qs.get('m'), day: +qs.get('d'),
+      hour: +(qs.get('h') ?? 12), minute: +(qs.get('mi') ?? 0),
+      gender: qs.get('g') === 'F' ? 'F' : 'M',
+      unknownTime: qs.get('unknown') === '1',
+      name: qs.get('name') || '',
+    };
+  }
+  try {
+    const raw = sessionStorage.getItem('honcheon_last_input');
+    if (raw) {
+      const i = JSON.parse(raw);
+      if (i && i.year) return { ...i, name: i.name || '' };
+    }
+  } catch (_) { /* 파싱 실패 시 아래 안내로 */ }
+  return null;
+}
+
+// 카드 폭을 뷰포트에 맞춰 축소 (내보내기 모드는 1:1)
+function applyScale() {
+  const k = isExport ? 1 : Math.min(1, (document.documentElement.clientWidth - 24) / 1080);
+  document.documentElement.style.setProperty('--k', k);
+}
+
+async function main() {
+  const input = readInput();
+  if (!input) {
+    msg.innerHTML = '생년월일 정보가 없습니다.<br>계산기에서 운세를 먼저 확인한 뒤 다시 열어주세요.';
+    return;
+  }
+
+  const { year, month, day, hour, minute, gender, unknownTime } = input;
+  const thisYear = new Date().getFullYear();
+
+  const saju = calculateSaju({ year, month, day, hour, minute, gender, unknownTime });
+  const ziwei = createChart(year, month, day, unknownTime ? 12 : hour, 0, gender === 'M');
+  const natalChart = await calculateNatal({ year, month, day, hour, minute, unknownTime });
+  const daxian = getDaxianList(ziwei);
+  const liunian = calculateLiunian(ziwei, thisYear);
+  const [seyunGanzi] = getFourPillars(thisYear, 7, 1, 12, 0, false);
+
+  const data = normalize({
+    saju, ziwei, natalChart, daxian, liunian,
+    input: { year, month, day, hour, minute, gender, unknownTime },
+    seyunGanzi, name: input.name, thisYear,
+  });
+
+  const only = qs.get('card') ? qs.get('card').split(',') : null;
+  const html = renderAll(data, only);
+  // 각 카드를 스케일 슬롯으로 감싼다
+  deck.innerHTML = html.replace(/<article class="card"/g, '<div class="card-slot"><article class="card"')
+                       .replace(/<\/article>/g, '</article></div>');
+  msg.style.display = 'none';
+
+  if (!isExport) buildNav(only);
+  applyScale();
+  document.body.dataset.ready = '1';
+}
+
+function buildNav(only) {
+  const bar = document.getElementById('bar');
+  const defs = only ? CARD_DEFS.filter((c) => only.includes(c.id)) : CARD_DEFS;
+  bar.innerHTML = defs.map((c, i) =>
+    `<button data-go="card-${c.id}" class="${i === 0 ? 'on' : ''}">${c.label}</button>`).join('');
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.getElementById(btn.dataset.go)?.closest('.card-slot')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  // 스크롤 위치에 따라 활성 탭 갱신
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) {
+      if (!en.isIntersecting) continue;
+      const id = en.target.querySelector('.card')?.id;
+      bar.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.go === id));
+    }
+  }, { threshold: 0.5 });
+  deck.querySelectorAll('.card-slot').forEach((s) => io.observe(s));
+}
+
+if (isExport) document.body.classList.add('export');
+addEventListener('resize', applyScale);
+main().catch((e) => {
+  msg.textContent = '오류: ' + e.message;
+  document.body.dataset.ready = 'error';
+  console.error(e);
+});
+</script>
+</body>
+</html>

@@ -117,3 +117,32 @@
 - 점성술: 별자리 기호(♎ 등)가 Chrome에서 이모지로 렌더링됨 → **U+FE0E(variation selector)를 기호 뒤에 붙여 텍스트 글리프 강제**. 템플릿 JS는 `︎` 이스케이프, normalize의 footer_line은 파이썬 `︎` 이스케이프.
 - 별자리 색 = 4원소 (불 적 / 흙 금 / 공기 회백 / 물 청). 어스펙트 색 = 조화(트라인·섹스타일) 녹 / 긴장(스퀘어·어포지션) 적 / 컨정션 금.
 - 레이아웃 1920px 초과 시 하단 푸터가 잘림(overflow hidden) — 새 블록 추가 시 반드시 PNG로 하단 확인.
+
+## 2026-07-31 인포그래픽 실제 데이터 연동
+
+### 가장 중요한 발견
+- `scripts/complete_sample.json`과 `make_sample.py`는 **손으로 쓴 가짜 데이터**다. 실제 엔진 출력과 필드명·값이 모두 다르다. (예: 가짜는 태양 천칭자리, 실제는 처녀자리)
+- 실제 계산은 브라우저에서 `app/sajusite/assets/orrery-core/`(@orrery/core esbuild 추출본)가 수행한다. `fortune-free.js`가 이걸 import한다.
+- 런타임 결과는 `window.__adminCalcData = { saju, ziwei, natalChart, transitChart, input }`에 원본 객체 그대로 들어있다. sessionStorage에는 **입력값만** 들어있다(`honcheon_last_input`).
+
+### 실제 엔진 필드 (가짜 샘플과 다른 부분)
+- `saju.pillars`는 **[시주, 일주, 월주, 년주]** 순서. 일간은 `pillars[1].pillar.stem`. 엔진이 `i===1`일 때 stemSipsin을 '本元'으로 박는 것으로 확인.
+- pillar 구조: `{pillar:{ganzi,stem,branch}, stemSipsin, branchSipsin, unseong, sinsal, jigang}` — 십신/운성 모두 **한자**.
+- `saju.specialSals`는 배열이 아니라 `{yangin:[인덱스], baekho:bool, ...}` 형태.
+- 자미두수 궁 이름은 `命宮`만 宮이 붙고 나머지는 `兄弟, 夫妻, 財帛...`처럼 접미사 없음.
+- 궁 별 구조: `{name, zhi, gan, ganZhi, stars:[{name,brightness,siHua}], isShenGong}` — **siHua는 대문자 H**.
+- `getDaxianList`, `calculateLiunian`은 ziwei.js에 export돼 있지만 fortune-free.js가 import하지 않아 사이트에서는 미사용.
+- natal `sign`은 **영어**(Virgo, Taurus). planets 14개(Chiron/NorthNode/SouthNode/Fortuna 포함), aspects는 29개까지 나와 필터링 필요. `degreeInSign`/`isRetrograde`가 정확한 필드명.
+
+### 구조 결정
+- 파이썬 normalize.py를 버리고 **JS 모듈로 이전**했다. 이유: 브라우저(모바일 조회)와 puppeteer(PNG 배치)가 **동일한 코드 경로**를 쓰게 하려고. 정규화 로직이 두 벌로 갈라지는 것을 막는 게 핵심.
+- 카드는 항상 1080x1920으로 그리고 `transform: scale(var(--k))`로 축소만 한다. 반응형 리플로우를 쓰지 않으므로 모바일과 PNG가 픽셀 단위로 동일하다.
+- 해석 문구는 LLM 없이 `interpret-data.js`의 고정 테이블 + 규칙으로 생성. 결정적이라 레이아웃이 절대 깨지지 않고 API 비용도 없다.
+- `.c-body { justify-content: center }` — 카드마다 내용 길이가 달라 남는 세로 여백을 위아래로 나눈다. space-between은 제목과 본문을 갈라놓아 부적합.
+
+### 함정
+- `npx serve`가 `/card.html?a=b`를 `/card`로 clean-URL 리다이렉트하며 **쿼리스트링을 버린다**. 그래서 card.html은 쿼리와 **해시 파라미터를 모두** 받는다. puppeteer도 해시를 쓴다.
+- 별자리·행성 기호(♎☉)는 Chrome에서 이모지로 렌더링된다. 뒤에 U+FE0E를 붙여 텍스트 글리프를 강제한다 (cards.js의 `vs()` 헬퍼).
+
+### 미해결 (사이트 본체 버그, 이번 작업 범위 밖)
+`fortune-free.js`가 일간을 `pillars[2]`(월주)에서 읽는 곳이 4군데 있다 — 3203(computeYongShin), 3406, 3688, 3757(renderDaewoon). 3907은 pillars[1]로 올바르게 읽는다. 무료운세의 용신·신강신약·대운 십신이 월간 기준으로 계산되고 있을 가능성이 높다. 인포그래픽 쪽 normalize.js는 pillars[1]로 올바르게 구현했으므로 **사이트 결과와 카드 결과가 다를 수 있다**.

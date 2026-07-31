@@ -1,0 +1,261 @@
+/* 인포그래픽 카드 스타일 — 1080×1920 고정 레이아웃을 뷰포트 폭에 맞춰 scale로 축소해 모바일에 대응 */
+:root {
+  --bg: #14171f; --bg2: #1c202b; --card: #202634; --line: #333b4d;
+  --ink: #f0ead8; --sub: #a8a291; --gold: #d9a441;
+  --good: #2E9E6B; --watch: #D64545;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1016; color: var(--ink);
+  font-family: 'Noto Sans KR', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.serif { font-family: 'Noto Serif KR', 'Noto Serif TC', serif; }
+.hanja { font-family: 'Noto Serif TC', 'Noto Serif KR', serif; }
+
+/* ── 스케일 래퍼: 카드는 항상 1080×1920으로 그리고 축소만 한다 ── */
+#deck { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 18px 0 60px; }
+.card-slot { width: calc(1080px * var(--k)); height: calc(1920px * var(--k)); position: relative; }
+.card {
+  width: 1080px; height: 1920px;
+  transform: scale(var(--k)); transform-origin: top left;
+  position: absolute; top: 0; left: 0;
+  background: radial-gradient(1200px 800px at 50% -10%, #232a3a 0%, var(--bg) 55%);
+  display: flex; flex-direction: column;
+  padding: 44px 56px 36px; gap: 18px; overflow: hidden;
+  border-radius: 0;
+}
+.card-slot { border-radius: calc(28px * var(--k)); overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+
+/* ── 공통 헤더/푸터 ── */
+.c-head { text-align: center; flex: none; }
+.kicker { letter-spacing: 8px; font-size: 22px; color: var(--gold); font-weight: 500; }
+.c-name { font-size: 50px; font-weight: 700; margin-top: 6px; font-family: 'Noto Serif KR', serif; }
+.c-birth { font-size: 23px; color: var(--sub); margin-top: 6px; }
+/* 카드마다 내용 길이가 달라 남는 세로 여백을 위아래로 균등 분배한다 (제목-본문 인접은 유지) */
+.c-body { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; justify-content: center; }
+.c-foot { margin-top: auto; text-align: center; flex: none; padding-top: 10px; }
+.c-concl { font-size: 26px; line-height: 1.45; word-break: keep-all; color: var(--ink); font-family: 'Noto Serif KR', serif; }
+.c-concl:not(:empty)::before { content: '❝ '; color: var(--gold); }
+.c-concl:not(:empty)::after { content: ' ❞'; color: var(--gold); }
+.cta {
+  display: inline-block; margin-top: 14px; font-size: 21px; letter-spacing: 2px;
+  color: var(--gold); border: 1px solid var(--gold); border-radius: 999px; padding: 10px 34px;
+}
+.sec-title {
+  font-size: 24px; font-weight: 700; color: var(--gold); letter-spacing: 4px;
+  display: flex; align-items: center; gap: 14px; margin-bottom: -4px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.note { font-size: 22px; color: var(--sub); line-height: 1.5; word-break: keep-all; }
+.note.center { text-align: center; }
+
+/* ── 히어로 ── */
+.hero {
+  display: flex; align-items: center; gap: 30px;
+  background: linear-gradient(135deg, var(--card), var(--bg2));
+  border: 1px solid var(--line); border-radius: 26px; padding: 24px 34px;
+}
+.dm-badge, .yh-gz {
+  width: 150px; height: 150px; flex: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px; font-weight: 700;
+  border: 3px solid var(--dm, var(--gold)); color: var(--dm, var(--gold));
+  background: rgba(255,255,255,.03);
+}
+.yh-gz { --dm: var(--gold); font-size: 52px; }
+.hero-txt { flex: 1; min-width: 0; }
+.dm-title { font-size: 34px; font-weight: 700; line-height: 1.3; }
+.dm-desc { font-size: 23px; color: var(--sub); line-height: 1.55; margin-top: 10px; word-break: keep-all; }
+
+/* ── 원국 4주 ── */
+.pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.pillar { text-align: center; }
+.p-label { font-size: 22px; color: var(--sub); margin-bottom: 8px; }
+.p-char {
+  border-radius: 16px; padding: 8px 0; font-size: 58px; font-weight: 700;
+  color: #fff; line-height: 1.15;
+}
+.p-char + .p-char { margin-top: 8px; }
+.p-char.dark-ink { color: #2b2f38; }
+.p-sip { font-size: 20px; color: var(--sub); margin-top: 8px; line-height: 1.4; }
+
+/* ── 가로 막대 (오행·십신 공용) ── */
+.bars { display: flex; flex-direction: column; gap: 11px; }
+.bar-row { display: flex; align-items: center; gap: 14px; }
+.b-name { width: 130px; font-size: 25px; font-weight: 600; flex: none; }
+.b-sub { font-size: 20px; color: var(--sub); }
+.b-track { flex: 1; height: 26px; background: var(--bg2); border-radius: 13px; overflow: hidden; }
+.b-fill { height: 100%; border-radius: 13px; }
+.b-val { width: 44px; text-align: right; font-size: 24px; color: var(--sub); flex: none; }
+.b-mark { width: 72px; flex: none; text-align: center; font-size: 19px; border-radius: 11px; padding: 3px 0; }
+.b-mark.over { background: rgba(214,69,69,.18); color: #e88; }
+.b-mark.under { background: rgba(31,58,95,.55); color: #8ab; }
+
+/* ── 신강신약 게이지 ── */
+.strength { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px 24px; }
+.st-gauge { position: relative; height: 20px; background: var(--bg2); border-radius: 10px; overflow: hidden; }
+.st-fill { height: 100%; background: linear-gradient(90deg, #4A90D9, var(--gold), #D64545); border-radius: 10px; }
+.st-mid { position: absolute; top: -4px; bottom: -4px; left: 50%; width: 2px; background: rgba(255,255,255,.35); }
+.st-row { display: flex; align-items: baseline; gap: 16px; margin-top: 14px; }
+.st-type { font-size: 30px; font-weight: 700; color: var(--gold); }
+.st-yong { font-size: 22px; color: var(--sub); }
+.st-yong b { color: var(--ink); }
+.st-desc { font-size: 22px; color: var(--sub); margin-top: 8px; line-height: 1.5; word-break: keep-all; }
+
+/* ── 신살 ── */
+.sals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.sal { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--sc); border-radius: 14px; padding: 13px 16px; }
+.sal-top { display: flex; align-items: center; gap: 10px; }
+.sal-name { font-size: 25px; font-weight: 700; }
+.sal-type { font-size: 17px; color: var(--sc); border: 1px solid var(--sc); border-radius: 8px; padding: 1px 8px; }
+.sal-hanja { font-size: 19px; color: var(--sub); margin-top: 3px; }
+.sal-desc { font-size: 20px; color: var(--sub); margin-top: 6px; line-height: 1.45; word-break: keep-all; }
+
+/* ── 십이운성 ── */
+.unseong { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.un { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 0; text-align: center; }
+.un-label { font-size: 20px; color: var(--sub); }
+.un-ko { font-size: 28px; font-weight: 700; margin-top: 4px; }
+.un-hanja { font-size: 21px; color: var(--gold); margin-top: 2px; }
+
+/* ── 세운 / 대운 ── */
+.seyun {
+  display: flex; align-items: center; gap: 26px;
+  background: linear-gradient(135deg, var(--card), var(--bg2));
+  border: 1px solid var(--line); border-radius: 24px; padding: 22px 30px;
+}
+.sy-gz {
+  width: 130px; height: 130px; flex: none; border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; font-weight: 700; color: #14171f; background: var(--gold);
+}
+.sy-year { font-size: 30px; font-weight: 700; }
+.sy-desc { font-size: 22px; color: var(--sub); line-height: 1.5; margin-top: 8px; word-break: keep-all; }
+.dw-list { display: flex; flex-direction: column; gap: 9px; }
+.dw {
+  display: flex; align-items: center; gap: 20px; position: relative;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 11px 22px;
+}
+.dw.now { border-color: var(--gold); background: rgba(217,164,65,.1); }
+.dw-age { width: 90px; font-size: 23px; color: var(--sub); flex: none; }
+.dw-gz { width: 110px; font-size: 30px; font-weight: 700; flex: none; }
+.dw-sip { width: 110px; font-size: 22px; flex: none; }
+.dw-un { flex: 1; font-size: 22px; color: var(--sub); }
+.dw.now .dw-age, .dw.now .dw-gz { color: var(--gold); }
+.dw-badge { font-size: 18px; background: var(--gold); color: #14171f; border-radius: 9px; padding: 2px 12px; font-weight: 700; }
+
+/* ── 자미두수 명반 ── */
+.chart { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 196px); gap: 9px; }
+.palace {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 11px 12px 9px; display: flex; flex-direction: column; overflow: hidden;
+}
+.palace.ming { border: 2px solid var(--gold); background: rgba(217,164,65,.08); }
+.pl-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.pl-name { font-size: 20px; color: var(--gold); font-weight: 600; }
+.pl-badge { font-size: 15px; background: var(--gold); color: #14171f; border-radius: 7px; padding: 1px 7px; font-weight: 700; }
+.pl-badge.shen { background: #4A90D9; color: #fff; }
+.pl-stars { flex: 1; margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+.pl-stars span { font-size: 21px; color: var(--sub); line-height: 1.25; }
+.pl-stars span.main { font-size: 24px; color: var(--ink); font-weight: 600; }
+.pl-stars i { font-style: normal; font-size: 16px; color: var(--gold); margin-left: 2px; }
+.pl-stars em {
+  font-style: normal; font-size: 15px; color: #fff; border-radius: 5px;
+  padding: 0 5px; margin-left: 4px; vertical-align: middle;
+}
+.pl-gz { font-size: 18px; color: var(--sub); }
+.chart-center {
+  grid-row: 2 / span 2; grid-column: 2 / span 2;
+  background: linear-gradient(135deg, var(--card), var(--bg2));
+  border: 1px solid var(--line); border-radius: 18px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 20px 26px; gap: 8px;
+}
+.cc-star { font-size: 62px; font-weight: 700; color: var(--gold); text-shadow: 0 0 30px rgba(217,164,65,.35); }
+.cc-ju { font-size: 24px; color: var(--sub); letter-spacing: 3px; }
+.cc-desc { font-size: 21px; line-height: 1.5; word-break: keep-all; }
+.dx-list { display: flex; flex-direction: column; gap: 8px; }
+.dx {
+  display: flex; align-items: center; gap: 18px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 9px 20px;
+}
+.dx.now { border-color: var(--gold); background: rgba(217,164,65,.1); }
+.dx-age { width: 130px; font-size: 22px; color: var(--sub); flex: none; }
+.dx-gz { width: 100px; font-size: 26px; font-weight: 700; flex: none; }
+.dx-pal { width: 130px; font-size: 22px; flex: none; }
+.dx-star { flex: 1; font-size: 21px; color: var(--sub); text-align: right; }
+.dx.now .dx-age, .dx.now .dx-gz, .dx.now .dx-pal { color: var(--gold); }
+
+/* ── 점성술 ── */
+.big3 {
+  display: flex; justify-content: space-around;
+  background: linear-gradient(135deg, var(--card), var(--bg2));
+  border: 1px solid var(--line); border-radius: 26px; padding: 24px 30px;
+}
+.b3 { text-align: center; }
+.b3-sym {
+  width: 112px; height: 112px; border-radius: 50%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 54px; border: 3px solid var(--bc); color: var(--bc);
+  background: rgba(255,255,255,.03);
+}
+.b3-label { font-size: 21px; color: var(--gold); margin-top: 10px; font-weight: 700; }
+.b3-sign { font-size: 25px; font-weight: 600; margin-top: 3px; }
+.b3-sub { font-size: 19px; color: var(--sub); margin-top: 2px; }
+.pl-rows, .as-rows { display: flex; flex-direction: column; gap: 7px; }
+.pr, .as {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 8px 22px;
+}
+.pr-name { width: 190px; font-size: 23px; font-weight: 600; flex: none; }
+.pr-sign { width: 220px; font-size: 22px; flex: none; }
+.pr-sign .z { font-size: 25px; margin-right: 7px; }
+.pr-deg { width: 100px; font-size: 21px; color: var(--sub); flex: none; }
+.pr-house { flex: 1; font-size: 21px; color: var(--sub); text-align: right; }
+.rx { color: #e88; font-size: 18px; margin-left: 4px; }
+.as-pair { flex: 1; display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; }
+.as-sym { font-size: 28px; width: 42px; text-align: center; }
+.as-type { width: 130px; font-size: 21px; }
+.as-orb { width: 70px; font-size: 20px; color: var(--sub); text-align: right; }
+
+/* ── 올해 흐름 ── */
+.sihua { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
+.sh { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 15px 12px; text-align: center; }
+.sh-type { display: inline-block; font-size: 20px; font-weight: 700; color: #fff; border-radius: 999px; padding: 3px 16px; }
+.sh-star { font-size: 28px; font-weight: 600; margin-top: 9px; }
+.sh-pal { font-size: 20px; color: var(--sub); margin-top: 3px; }
+.months { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.mo {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px 0; text-align: center;
+}
+.mo-n { font-size: 25px; font-weight: 700; }
+.mo-p { font-size: 20px; color: var(--sub); margin-top: 4px; }
+.mo.good { border-color: var(--good); background: rgba(46,158,107,.14); }
+.mo.good .mo-n { color: var(--good); }
+.mo.watch { border-color: var(--watch); background: rgba(214,69,69,.14); }
+.mo.watch .mo-n { color: #e88; }
+.legend { display: flex; justify-content: center; gap: 28px; font-size: 20px; color: var(--sub); }
+.legend i { display: inline-block; width: 13px; height: 13px; border-radius: 50%; margin-right: 7px; }
+.dot.good { background: var(--good); }
+.dot.flat { background: var(--line); }
+.dot.watch { background: var(--watch); }
+
+/* ── 화면용 UI (PNG에는 포함되지 않음) ── */
+#bar {
+  position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; overflow-x: auto;
+  padding: 12px 14px; background: rgba(13,16,22,.92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+#bar button {
+  flex: none; font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card); color: var(--sub); cursor: pointer;
+}
+#bar button.on { border-color: var(--gold); color: var(--gold); background: rgba(217,164,65,.12); }
+#msg { padding: 40px 24px; text-align: center; color: var(--sub); font-size: 15px; line-height: 1.7; }
+
+/* 내보내기 모드: 스케일 1, 장식 제거 */
+body.export #bar { display: none; }
+body.export #deck { gap: 0; padding: 0; }
+body.export .card-slot { border-radius: 0; box-shadow: none; }

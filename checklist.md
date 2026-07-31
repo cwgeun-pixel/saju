@@ -94,3 +94,15 @@
 - [x] template_ziwei.html — 12궁 명반 4×4 격자(지지 고정 위치) + 사화 + 대한 타임라인.
 - [x] template_natal.html — 빅3(태양·달·상승) + 행성 배치 + 어스펙트 + 영역 카드.
 - [x] render.js 템플릿 인자화. 3종 PNG 산출 및 육안 검증.
+
+## 2026-07-31 인포그래픽 실제 데이터 연동 + 카드 6종.
+
+- [x] 실제 계산 엔진(orrery-core) 런타임 반환 구조 확인 (진단 페이지로 덤프).
+- [x] js/infographic/interpret-data.js — 고정 해석 카피 테이블 (LLM 미사용).
+- [x] js/infographic/normalize.js — 엔진 실제 필드 기준 카드 6종 데이터 변환.
+- [x] js/infographic/cards.js + cards.css — 1080x1920 고정 레이아웃 + scale 축소 모바일 대응.
+- [x] card.html — sessionStorage/해시 파라미터로 입력 받아 엔진 호출 후 카드 렌더.
+- [x] fortune/index.html 네비게이션에 "카드로 보기" 진입점 추가.
+- [x] render.js — card.html을 열어 카드별 PNG 배치 산출.
+- [x] 모바일 390px 및 PNG 1080x1920 양쪽 검증.
+- [ ] (별도) fortune-free.js 일간 인덱스 버그 수정 — pillars[2]를 일간으로 읽는 4곳.

@@ -1,4 +1,4 @@
 node_modules/
-rendered.html
 output/
-rendered_*.html
+_*.js
+_*.html
