@@ -301,10 +301,12 @@
     wrap.style.right = "16px";
     wrap.style.bottom = "16px";
     wrap.style.zIndex = "50";
-    wrap.style.background = "hsl(var(--card, 0 0% 100%))";
-    wrap.style.border = "1px solid hsl(var(--border, 214 32% 91%))";
+    // --card/--border는 이 스크립트를 쓰는 페이지 일부에만 정의돼 있어, 없으면 흰색으로 폴백되며
+    // 아래 select의 흰 글자와 겹쳐 컨트롤이 통째로 보이지 않는다. 어두운 색을 직접 지정한다.
+    wrap.style.background = "rgba(13, 16, 32, 0.92)";
+    wrap.style.border = "1px solid rgba(212, 175, 55, 0.35)";
     wrap.style.borderRadius = "8px";
-    wrap.style.boxShadow = "0 8px 20px rgba(15, 23, 42, 0.12)";
+    wrap.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.45)";
     wrap.style.padding = "6px";
 
     const select = document.createElement("select");
@@ -312,6 +314,7 @@
     select.setAttribute("aria-label", "Language");
     select.style.border = "0";
     select.style.background = "transparent";
+    select.style.color = "#e8dfc8";
     select.style.fontSize = "13px";
     select.style.outline = "none";
     supported.forEach((code) => {

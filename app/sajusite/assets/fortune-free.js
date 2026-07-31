@@ -3379,6 +3379,19 @@ const HC_CSS = `<style>
 }
 .hc-dw-hint{display:none;font-size:12px;color:#6b7280;text-align:right;margin-top:-4px;margin-bottom:6px}
 
+/* 자미두수 나머지 9궁: 2열이면 칸이 145px로 줄어 궁 이름이 한 글자씩 세로로 쪼개진다.
+   1열로 내리고 카드 머리를 한 줄에 정리한다. */
+.hc-zw-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hc-zw-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.hc-zw-name{white-space:nowrap}
+.hc-zw-stars{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:8px}
+@media (max-width:640px){
+  .hc-zw-grid{grid-template-columns:1fr;gap:10px}
+  .hc-zw-title{flex:1;min-width:0}
+  .hc-zw-stars{flex-wrap:wrap}
+  .hc-zw-stars .hc-zw-starnames{white-space:nowrap}
+}
+
 /* 일진 7일 스트립: 칸이 35px인데 이모지가 40px라 넘치던 것 */
 @media (max-width:640px){ .hc-week-cell{overflow:hidden} .hc-week-cell *{max-width:100%} }
 
@@ -4221,16 +4234,16 @@ function renderZiweiSection(chart) {
     const starNames = mains.length > 0 ? mains.map(s=>s.name).join('·') : t('공궁');
     return `<div style="${D.card}border-top:2px solid ${pc}30;opacity:0.55;filter:blur(0.3px);position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${pc}40,transparent)"></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <div class="hc-zw-head">
         <span style="font-size:20px">${pi.emoji}</span>
-        <div style="flex:1">
-          <div style="color:#c8b89a;font-weight:700;font-size:15px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(p)}</div>
+        <div class="hc-zw-title" style="flex:1">
+          <div class="hc-zw-name" style="color:#c8b89a;font-weight:700;font-size:15px;font-family:'Cormorant Garamond',serif">${getPalaceLabel(p)}</div>
           <div style="color:#5a5f7a;font-size:11px">${getPalaceDesc(p)}</div>
         </div>
-        <span style="background:rgba(124,106,247,0.08);color:#6b6f8a;font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid rgba(124,106,247,0.15)">${palace.ganZhi}</span>
+        <span style="background:rgba(124,106,247,0.08);color:#6b6f8a;font-size:11px;padding:2px 7px;border-radius:6px;border:1px solid rgba(124,106,247,0.15);white-space:nowrap">${palace.ganZhi}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(15,12,35,0.4);border-radius:8px;border:1px solid rgba(212,175,55,0.08)">
-        <span style="color:#d4af37;font-size:14px;font-family:'Cormorant Garamond',serif;font-weight:600">${starNames}</span>
+      <div class="hc-zw-stars" style="background:rgba(15,12,35,0.4);border:1px solid rgba(212,175,55,0.08)">
+        <span class="hc-zw-starnames" style="color:#d4af37;font-size:14px;font-family:'Cormorant Garamond',serif;font-weight:600">${starNames}</span>
         <span style="color:#5a5f7a;font-size:12px">· ${t('멤버십에서 상세 해석 확인')}</span>
       </div>
     </div>`;
@@ -4283,7 +4296,7 @@ function renderZiweiSection(chart) {
         <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4af37;box-shadow:0 0 6px #d4af3780"></span>
         <span style="color:#9d8aa0;font-size:13px">${t('멤버십 전용')} · ${t('나머지 9궁')}</span>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="hc-zw-grid">
         ${premiumPreviewCards}
       </div>
     </div>
