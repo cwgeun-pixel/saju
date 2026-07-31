@@ -3200,7 +3200,7 @@ function computeElements(saju) {
 // ─── 용신 분석 ───────────────────────────────────────────────
 
 function computeYongShin(saju) {
-  const dayMaster = saju.pillars[2]?.pillar?.stem;
+  const dayMaster = saju.pillars[1]?.pillar?.stem;
   const dayElem   = STEM_ELEM[dayMaster] || '토';
   const elems     = computeElements(saju);
 
@@ -3403,7 +3403,7 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
   const scores = computeBasicScores(saju, mp, dp, gender);
   const b = saju.pillars[3].pillar.branch;
   const z = ZODIAC_ANIMAL[b];
-  const dayMaster = saju.pillars[2]?.pillar?.stem || '';
+  const dayMaster = saju.pillars[1]?.pillar?.stem || '';
 
   const CATEGORIES = [
     { key:'성향',   emoji:'🌟', color:'#9d8ff5', desc:t('타고난 기질과 성격의 흐름') },
@@ -3685,7 +3685,7 @@ function renderYongShin(saju) {
 // ─── D. 12운성 ────────────────────────────────────────────────
 
 function renderSijunseong(saju) {
-  const dayMaster = saju.pillars[2]?.pillar?.stem;
+  const dayMaster = saju.pillars[1]?.pillar?.stem;
   if (!dayMaster) return '';
   const PILLAR_NAMES = [t('년주'),t('월주'),t('일주'),t('시주')];
   const PILLAR_AGE   = [t('초년운 (0~15세)'),t('청년운 (15~35세)'),t('중년운 (35~50세)'),t('말년운 (50세~)')];
@@ -3754,9 +3754,9 @@ function renderDaewoon(saju) {
   const genderLabel = gender === 'F' ? '여' : '남';
 
   // 순행/역행 판단 (양남음녀 순행, 음남양녀 순행)
-  const dayStem = saju.pillars[2]?.pillar?.stem || '';
+  const yearStem = saju.pillars[3]?.pillar?.stem || '';
   const YANG_STEMS = new Set(['甲','丙','戊','庚','壬']);
-  const isYang = YANG_STEMS.has(dayStem);
+  const isYang = YANG_STEMS.has(yearStem);
   const isMale = gender !== 'F';
   const isForward = (isYang && isMale) || (!isYang && !isMale);
   const flowLabel = isForward ? t('순행') : t('역행');

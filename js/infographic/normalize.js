@@ -55,8 +55,9 @@ function cardSaju(saju) {
   const GENERATED_BY = { 화: '목', 토: '화', 금: '토', 수: '금', 목: '수' };
   const CONTROLS = { 목: '토', 화: '금', 토: '수', 금: '목', 수: '화' };
   const GENERATES = { 목: '화', 화: '토', 토: '금', 금: '수', 수: '목' };
+  // 임계값은 사이트 무료운세(fortune-free.js computeYongShin)와 동일하게 맞춘다
   const support = counts[dayElem] + counts[GENERATED_BY[dayElem]];
-  const isStrong = support >= 5;
+  const isStrong = support >= 4;
   const isWeak = support <= 2;
   const strength = {
     type: isStrong ? '신강' : isWeak ? '신약' : '중화',
