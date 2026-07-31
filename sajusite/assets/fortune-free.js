@@ -1820,9 +1820,10 @@ function captureMainFormInput() {
 // ─── Imperial Cosmic 렌더 헬퍼 ─────────────────────────────────────
 
 
-// 용신 카드 3종의 레이아웃. 좁은 화면에서 3열을 유지하면 설명이 두세 글자씩 끊겨
-// 읽을 수 없으므로, 640px 이하에서는 1열로 내리고 카드 머리를 가로로 눕힌다.
-const YONG_CSS = `<style>
+// 결과 화면 공용 스타일. 이 파일은 원래 인라인 스타일만 쓰지만, 좁은 화면 대응은
+// 미디어 쿼리 없이는 불가능해 레이아웃 속성만 클래스로 분리해 여기 모은다.
+// bodyEl.innerHTML이 매 렌더마다 통째로 교체되므로 중복 누적되지 않는다.
+const HC_CSS = `<style>
 .hc-yong-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .hc-yong-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .hc-elem-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px}
@@ -1843,6 +1844,24 @@ const YONG_CSS = `<style>
   .hc-yong-elem{margin-bottom:0;padding:4px 12px;white-space:nowrap}
   .hc-yong-role{margin-bottom:0;flex:1;text-align:right;font-size:13px}
   .hc-yong-desc{font-size:14px;line-height:1.75;padding:12px}
+}
+
+/* 띠 블록: 이모지 원 + 설명이 한 줄에 갇혀 카드 밖으로 넘쳐 잘리던 것을 막는다 */
+.hc-zodiac{display:flex;align-items:center;gap:16px}
+.hc-zodiac-body{flex:1;min-width:0}
+.hc-zodiac-years{word-break:break-all;overflow-wrap:anywhere}
+@media (max-width:640px){
+  .hc-zodiac{gap:12px}
+  .hc-zodiac-emoji{width:56px!important;height:56px!important;font-size:30px!important}
+  .hc-zodiac-years{font-size:12px!important;line-height:1.5}
+}
+
+/* 섹션 머리말: 배지·제목·부제가 한 줄에 눌려 글자가 쪼개지던 것을 줄바꿈 허용으로 푼다 */
+.hc-sechead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,0.15)}
+@media (max-width:640px){
+  .hc-sechead{gap:8px}
+  .hc-sechead .hc-sechead-sub{flex-basis:100%;font-size:13px!important;order:3}
+  .hc-sechead .hc-sechead-date{margin-left:auto;white-space:nowrap;font-size:12px!important;padding:3px 10px!important}
 }
 </style>`;
 
@@ -1871,10 +1890,10 @@ function scoreBadge(pct) {
 }
 
 function sectionHeader(letter, title, subtitle) {
-  return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,0.15)">
+  return `<div class="hc-sechead">
     <span style="background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(124,106,247,0.2));color:#d4af37;font-size:14px;font-weight:800;padding:3px 9px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);box-shadow:0 0 12px rgba(212,175,55,0.15);letter-spacing:0.05em">${letter}</span>
     <span style="${D.hdr}">${title}</span>
-    <span style="${D.sub};font-size:15px">${subtitle}</span>
+    <span class="hc-sechead-sub" style="${D.sub};font-size:15px">${subtitle}</span>
   </div>`;
 }
 
@@ -1963,12 +1982,12 @@ function renderBasicFortune(saju, yp, mp, dp, gender) {
   const zodiacBlock = z ? `
     <div style="${D.card}border:1px solid rgba(212,175,55,0.3);margin-top:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
-      <div style="display:flex;align-items:center;gap:16px">
-        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
-        <div style="flex:1">
+      <div class="hc-zodiac">
+        <div class="hc-zodiac-emoji" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(124,106,247,0.15));border:2px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 0 20px rgba(212,175,55,0.2)">${z.emoji}</div>
+        <div class="hc-zodiac-body">
           <div style="color:#8a8fa8;font-size:13px;letter-spacing:0.08em;margin-bottom:4px">${t('당신의 띠는')}</div>
           <div style="background:linear-gradient(135deg,#e8d5a3,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:24px;font-family:'Cormorant Garamond',serif">${t('animal.'+b)}띠 입니다.</div>
-          <div style="color:#7a6f8a;font-size:13px;margin-top:4px">${z.years}년생 · ${dayMaster}일간</div>
+          <div class="hc-zodiac-years" style="color:#7a6f8a;font-size:13px;margin-top:4px">${z.years}년생 · ${dayMaster}일간</div>
           <div style="color:#c0c8e0;font-size:15px;margin-top:8px;line-height:1.7">${t('trait.'+b)}</div>
         </div>
       </div>
@@ -2028,11 +2047,11 @@ function renderDailyCalendar(saju, yp, mp, dp) {
   const todayDate = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
 
   return `<div style="${D.wrap}">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,0.15)">
+    <div class="hc-sechead">
       <span style="background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(124,106,247,0.2));color:#d4af37;font-size:14px;font-weight:800;padding:3px 9px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);box-shadow:0 0 12px rgba(212,175,55,0.15);letter-spacing:0.05em">B</span>
       <span style="${D.hdr}">${t('오늘의 운세')}</span>
-      <span style="${D.sub};font-size:15px">${t('일진 분석')}</span>
-      <span style="margin-left:auto;background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.3);border-radius:20px;padding:4px 14px;color:#d4af37;font-size:14px;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">📅 ${todayDate}</span>
+      <span class="hc-sechead-sub" style="${D.sub};font-size:15px">${t('일진 분석')}</span>
+      <span class="hc-sechead-date" style="margin-left:auto;background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.3);border-radius:20px;padding:4px 14px;color:#d4af37;font-size:14px;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:0.03em">📅 ${todayDate}</span>
     </div>
     <div style="${D.card}border:1px solid rgba(212,175,55,0.25);margin-bottom:12px;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.7),transparent)"></div>
@@ -2166,7 +2185,6 @@ function renderYongShin(saju) {
       ${yongCard('희신', ys.hee,  '희신', '')}
       ${yongCard('기신', ys.gi,   '기신', '')}
     </div>
-    ${YONG_CSS}
   </div>`;
 }
 
@@ -3053,7 +3071,7 @@ async function runFortune(preInput = null) {
       ? `<div style="text-align:right;margin-bottom:8px"><span style="${D.sub}">${year}년 ${month}월 ${day}일 · ${gender==='F'?t('여'):t('남')}</span></div>`
       : '';
 
-    if (bodyEl) bodyEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
+    if (bodyEl) bodyEl.innerHTML = `${HC_CSS}<div style="display:flex;flex-direction:column;gap:16px">
       ${infoLine}
       ${renderBasicFortune(saju, yp, mp, dp, gender)}
       ${renderDailyCalendar(saju, yp, mp, dp)}

@@ -186,3 +186,21 @@ fortune-free.js는 스타일시트 없이 인라인 스타일만 쓰던 파일�
 ### 주의
 `sajusite/assets/fortune-free.js` 사본은 `yongCard(label, elem, role, desc)`로 **시그니처가 다르고** `getElemName` 대신 `ELEM_KO`를 쓴다. 같은 패치를 그대로 적용할 수 없어 별도로 맞췄다. 두 사본은 이 외에도 계속 갈라지고 있으므로, 언젠가 한쪽으로 정리하는 편이 좋다.
 데스크톱(1280px) 렌더는 변경 전후 픽셀 동일함을 확인했다.
+
+## 2026-07-31 결과 화면 가로 넘침 진단
+
+브라우저에서 `scrollWidth > clientWidth`인 요소를 훑어 원인을 특정했다. 375px 뷰포트에서 `#fortune-root`의 scrollWidth가 466px — **페이지 전체가 가로로 넘쳐** 모든 섹션이 잘려 보이던 상태.
+
+| 요소 | 표시 폭 | 실제 폭 | 원인 |
+|---|---|---|---|
+| 대운 차트 | 293 | **425** | `grid-template-columns:repeat(10,1fr)` 고정 10열 |
+| 12운성 | 66/칸 | 108 | 고정 4열 |
+| 띠 블록 | 255 | 277 | flex 자식의 기본 `min-width:auto` + 년생 문자열이 안 쪼개짐 |
+| 일진 셀 | 35 | 40 | 이모지 폭 |
+
+**대운 차트 하나가 페이지 전체 오버플로의 주범**이다. 이걸 고치기 전까지는 다른 섹션을 아무리 손봐도 화면이 계속 잘린다.
+
+### 이번에 고친 것
+- `YONG_CSS` -> `HC_CSS`로 승격해 `bodyEl.innerHTML` 최상단에 1회만 주입한다. 섹션마다 style을 넣던 방식보다 관리가 쉽고, innerHTML 통째 교체라 중복도 없다.
+- 띠 블록: flex 자식에 `min-width:0`을 줘야 축소가 시작된다(기본 `min-width:auto`가 min-content로 버팀). 년생 문자열은 `·`로만 이어져 있어 `overflow-wrap:anywhere`가 필요했다.
+- `sectionHeader`에 `flex-wrap:wrap` + 모바일에서 부제 `flex-basis:100%;order:3`. '오늘의 운세'는 sectionHeader를 안 쓰고 같은 마크업을 하드코딩해 둔 별도 헤더였어서 따로 맞췄다.
