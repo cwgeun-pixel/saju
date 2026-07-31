@@ -83,3 +83,12 @@ th { background: var(--bg2); color: var(--gold); font-weight: 600; }
   max-width: 640px; margin: 0 auto .8rem; color: var(--gold);
   opacity: .9; line-height: 1.7; word-break: keep-all;
 }
+
+/* 법적 문서 페이지의 언어 선택기 (사이트 i18n 스크립트를 싣지 않으므로 자체 제공) */
+#legal-lang {
+  margin-left: auto; font: inherit; font-size: .8rem; padding: .4rem .7rem;
+  border-radius: 2px; border: 1px solid var(--border);
+  background: var(--bg2); color: var(--text); cursor: pointer;
+}
+nav:has(#legal-lang) { gap: .8rem; }
+@media (max-width: 520px) { #legal-lang { font-size: .75rem; padding: .35rem .5rem; } }
