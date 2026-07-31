@@ -1,0 +1,79 @@
+/* 약관·개인정보·문의 등 정적 문서 페이지 공용 스타일 (기존 소개 페이지 디자인 토큰을 그대로 따른다) */
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C870;
+  --gold-dim: rgba(201, 168, 76, 0.15);
+  --bg: #0A0D1A;
+  --bg2: #0F1528;
+  --text: #E8E0CC;
+  --text-muted: rgba(232, 224, 204, 0.6);
+  --border: rgba(201, 168, 76, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Noto Sans KR', system-ui, sans-serif; line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 13, 26, 0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.nav-logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.05rem; letter-spacing: .1em; text-decoration: none; }
+.nav-cta {
+  background: var(--gold); color: #0A0D1A; font-weight: 700; font-size: .82rem;
+  padding: .5rem 1.3rem; border-radius: 2px; text-decoration: none; letter-spacing: .05em;
+}
+.nav-cta:hover { background: var(--gold-light); }
+
+main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+h1 {
+  font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.9rem;
+  letter-spacing: .04em; margin-bottom: .6rem; line-height: 1.35;
+}
+.updated { color: var(--text-muted); font-size: .82rem; margin-bottom: 2.5rem; }
+h2 {
+  color: var(--gold); font-size: 1.15rem; margin: 2.4rem 0 .9rem;
+  padding-bottom: .5rem; border-bottom: 1px solid var(--border);
+}
+h3 { color: var(--text); font-size: 1rem; margin: 1.6rem 0 .5rem; }
+p { margin-bottom: .9rem; font-size: .93rem; }
+ul, ol { margin: 0 0 1.1rem 1.3rem; }
+li { margin-bottom: .4rem; font-size: .93rem; }
+a { color: var(--gold); }
+strong { color: var(--gold-light); }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1.2rem; font-size: .89rem; }
+th, td { border: 1px solid var(--border); padding: .6rem .8rem; text-align: left; vertical-align: top; }
+th { background: var(--bg2); color: var(--gold); font-weight: 600; }
+.note {
+  background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold);
+  border-radius: 2px; padding: 1rem 1.2rem; margin: 1.4rem 0; font-size: .89rem;
+}
+.contact-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 2px;
+  padding: 1.4rem 1.5rem; margin: 1.5rem 0;
+}
+.contact-box a { font-size: 1.05rem; font-weight: 600; word-break: break-all; }
+.back-link { display: inline-block; margin-top: 2.5rem; color: var(--text-muted); text-decoration: none; font-size: .88rem; }
+.back-link:hover { color: var(--gold); }
+
+/* 전 페이지 공용 푸터 */
+.site-footer {
+  border-top: 1px solid var(--border); padding: 2rem 1.5rem;
+  text-align: center; font-size: .78rem; color: var(--text-muted);
+}
+.site-footer nav { all: unset; display: block; margin-bottom: .8rem; }
+.site-footer a { color: var(--text-muted); text-decoration: none; margin: 0 .55rem; }
+.site-footer a:hover { color: var(--gold); }
+.site-footer .disclaimer {
+  max-width: 640px; margin: .9rem auto 0; line-height: 1.7; opacity: .85; word-break: keep-all;
+}
+@media (max-width: 520px) {
+  nav { padding: 0 1rem; }
+  main { padding: 2rem 1.1rem 3rem; }
+  h1 { font-size: 1.5rem; }
+  .site-footer a { display: inline-block; margin: .25rem .5rem; }
+}
