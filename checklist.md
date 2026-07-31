@@ -188,3 +188,10 @@
 - [x] 개인정보처리방침에서 회원가입·결제·Stripe·Supabase 항목 제거.
 - [x] pricing.html noindex + sitemap/robots에서 제외.
 - [ ] (유료화 시) initAuthBtn 복원, 약관·방침 되돌리기, 업셀 문구 복원.
+
+## 2026-07-31 푸터 다국어화.
+
+- [x] js/site-footer.js — 5개 언어 자체 처리, 정적 한국어 푸터를 교체.
+- [x] i18n.js에 data-no-i18n 제외 규칙 추가 (언어 혼재 원인 차단).
+- [x] 소개 페이지 setLang에 푸터 갱신 연결.
+- [x] 5개 언어 x 4개 페이지 렌더링 + 실시간 전환 검증.

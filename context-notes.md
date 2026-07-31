@@ -324,3 +324,14 @@ auth.html 모달 안에 5개 언어로 작성돼 있었지만 독립 URL이 없�
 ### 죽은 코드 (건드리지 않음)
 `fortune-free.js`의 `membershipCard()`, `createTabs()`, `createMembershipPanel()`은 정의만 있고 호출되지 않는다. 예전 UI 잔재로 화면에 나오지 않아 그대로 뒀다.
 `?admin=1`일 때 뜨는 멤버십 원천자료 탭도 관리자 전용이라 유지했다.
+
+## 2026-07-31 푸터 다국어화
+
+### 증상이 '한국어 고정'보다 나빴다
+푸터를 한국어로 하드코딩했더니, `i18n.js`의 MutationObserver가 **자기 사전에 있는 단어만** 골라 번역해 언어가 섞였다. 영어 설정에서 `홈 / Saju / Ziwei Doushu / 점성술`처럼 나왔다. 사전에 '사주', '자미두수'는 있고 '홈', '점성술'은 없어서 생긴 일이다.
+
+### 해결
+- `js/site-footer.js` — 5개 언어를 자체 테이블로 갖고 `.site-footer`를 통째로 다시 그린다. HTML에는 한국어 푸터를 정적으로 남겨 크롤러·애드센스 심사가 읽을 수 있게 하고, 스크립트가 방문자 언어로 교체하는 구조.
+- `i18n.js`의 `shouldSkip()`에 `data-no-i18n` 조상 검사를 추가하고 푸터에 그 속성을 달았다. **자체 다국어 처리를 하는 영역은 반드시 이 속성을 달아야** 사전이 덧칠하지 않는다.
+- 언어 전환 경로가 두 갈래라 둘 다 연결했다. 메인 사이트는 `honcheon:langchange` 이벤트, 소개 페이지는 자체 `setLang()`이라 이벤트를 안 쏘므로 `window.renderSiteFooter()`를 직접 호출하게 했다.
+- 저장 키도 두 개다(`honcheon.lang` / 소개 페이지의 `tod_lang`). site-footer.js는 둘 다 본다.

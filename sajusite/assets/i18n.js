@@ -254,6 +254,9 @@
   function shouldSkip(node) {
     const parent = node.parentElement;
     if (!parent) return true;
+    // data-no-i18n 영역은 자체 다국어 처리를 하므로 건드리지 않는다
+    // (안 막으면 사전에 있는 단어만 번역돼 언어가 섞인다)
+    if (parent.closest && parent.closest("[data-no-i18n]")) return true;
     return ["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "OPTION"].includes(parent.tagName);
   }
 
