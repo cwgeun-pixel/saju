@@ -178,3 +178,13 @@
 - [x] 4. meta description·canonical 전 페이지 보강, sitemap.xml 생성.
 - [x] 5. robots.txt에서 계정·결과 페이지 색인 제외, 광고 크롤러 허용.
 - [ ] (승인 후) ads.txt 생성 — 게시자 ID 발급 필요.
+
+## 2026-07-31 무료 전용 운영 전환.
+
+- [x] index.html 로그인/회원가입 버튼 노출 중단 (initAuthBtn 호출만 주석).
+- [x] 결과 화면 멤버십 업셀 5종 제거 (신살·자미두수·9궁·점성술 배너).
+- [x] 전 페이지 푸터에 '멤버십 추후 공개' 안내 문구.
+- [x] 약관 제3~5조를 무료 운영 기준으로 개정 (구독·환불 조항 대체).
+- [x] 개인정보처리방침에서 회원가입·결제·Stripe·Supabase 항목 제거.
+- [x] pricing.html noindex + sitemap/robots에서 제외.
+- [ ] (유료화 시) initAuthBtn 복원, 약관·방침 되돌리기, 업셀 문구 복원.

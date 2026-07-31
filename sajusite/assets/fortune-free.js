@@ -2592,15 +2592,8 @@ function renderSinsal(saju) {
     </div>`;
   }
 
-  // 무료판 업그레이드 유도 배너 (다크 골드 스타일)
-  const upgradeBanner = `<div style="background:linear-gradient(135deg,rgba(212,175,55,0.10),rgba(251,191,36,0.06));border:1px solid rgba(212,175,55,0.30);border-radius:14px;padding:14px 18px;margin-top:4px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.55),transparent)"></div>
-    <span style="font-size:22px;flex-shrink:0">🔐</span>
-    <div>
-      <div style="font-weight:700;font-size:13px;color:#d4af37;letter-spacing:0.3px">멤버십 전용 · 상세 해석 제공</div>
-      <div style="font-size:12px;color:#9d8a5a;margin-top:2px">각 신살의 연애·직업·건강 영역별 심층 분석, AI 종합 해석을 멤버십에서 확인하세요.</div>
-    </div>
-  </div>`;
+  // 무료 전용 운영 기간: 업그레이드 배너를 노출하지 않는다 (유료화 시 문구 복원)
+  const upgradeBanner = '';
 
   // 다크 테마 래퍼 - 나머지 섹션과 동일한 배경
   return `<div style="background:linear-gradient(135deg,#0d1020 0%,#111428 50%,#0a0e1a 100%);border-radius:18px;padding:24px;border:1px solid rgba(212,175,55,0.15);box-shadow:0 4px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(212,175,55,0.08);position:relative;overflow:hidden">
@@ -2735,14 +2728,6 @@ function renderZiweiSection(chart) {
       </div>
     </div>
 
-    <!-- 멤버십 업그레이드 배너 -->
-    <div style="margin-top:16px;padding:16px 18px;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.08));border:1px solid rgba(212,175,55,0.25);border-radius:14px;display:flex;align-items:center;gap:14px">
-      <span style="font-size:28px">🔐</span>
-      <div style="flex:1">
-        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 자미두수 12궁 완전 해석</div>
-        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">형제·자녀·질액·천이·교우·관록·전택·복덕·부모궁 + 사화 분석 + 대운·유년 연계 해석을 멤버십에서 확인하세요.</div>
-      </div>
-    </div>
   </div>`;
 }
 
@@ -2942,22 +2927,6 @@ function renderNatalSection(natalChart, transitChart, unknownTime) {
     ${ascCard}
     ${transitCard}
 
-    <!-- 유료 항목 미리보기 -->
-    <div style="margin-top:20px">
-      <div style="font-size:12px;color:#6b7280;letter-spacing:0.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#d4af37"></span>
-        멤버십 전용 · 심층 점성술 해석 ${ASTRO_PREMIUM_ITEMS.length}종
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-        ${premiumGrid}
-      </div>
-      <div style="background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(124,106,247,0.06));border:1px solid rgba(212,175,55,0.25);border-radius:12px;padding:16px;text-align:center;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent)"></div>
-        <div style="font-size:20px;margin-bottom:6px">🔐</div>
-        <div style="color:#d4af37;font-weight:700;font-size:15px;margin-bottom:4px">멤버십 전용 · 점성술 완전 해석</div>
-        <div style="color:#9d8aa0;font-size:13px;line-height:1.6">네이탈 차트 완전 해석 · 트랜짓 미래운 · 솔라리턴 1년 운세 · 심리 점성학 · 직업·재물·연애 심층 분석 · 궁합 · 아스트로카토그래피 등 ${ASTRO_PREMIUM_ITEMS.length}가지 해석을 멤버십에서 확인하세요.</div>
-      </div>
-    </div>
   </div>`;
 }
 

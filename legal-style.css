@@ -77,3 +77,9 @@ th { background: var(--bg2); color: var(--gold); font-weight: 600; }
   h1 { font-size: 1.5rem; }
   .site-footer a { display: inline-block; margin: .25rem .5rem; }
 }
+
+/* 무료 전용 운영 안내 (유료화 시 이 문구와 관련 표기를 함께 정리할 것) */
+.site-footer .free-notice {
+  max-width: 640px; margin: 0 auto .8rem; color: var(--gold);
+  opacity: .9; line-height: 1.7; word-break: keep-all;
+}
