@@ -147,6 +147,39 @@ export const ASPECT_INFO = {
   square: { ko: '스퀘어', sym: '□', color: '#D64545', tone: '긴장' },
   opposition: { ko: '어포지션', sym: '☍', color: '#D64545', tone: '대립' },
 };
+// ── 궁합 (goonghap.html의 판정 규칙과 동일하게 유지) ──
+export const OHAENG_GEN = { 목: '화', 화: '토', 토: '금', 금: '수', 수: '목' };
+export const OHAENG_CTRL = { 목: '토', 화: '금', 토: '수', 금: '목', 수: '화' };
+export const BRANCH_IDX = { 子: 0, 丑: 1, 寅: 2, 卯: 3, 辰: 4, 巳: 5, 午: 6, 未: 7, 申: 8, 酉: 9, 戌: 10, 亥: 11 };
+export const YUKHAP = [[0, 1], [2, 11], [3, 10], [4, 9], [5, 8], [6, 7]];
+export const SAMHAP = [[8, 0, 4], [11, 3, 7], [2, 6, 10], [5, 9, 1]];
+
+export const STEM_REL_INFO = {
+  SAME: { base: 3, symbol: '≡', label: '비화(比和)', title: '편안하고 닮은 인연',
+    desc: '같은 기운이라 말이 잘 통하고 처음부터 편안합니다. 다만 장단점도 함께 닮아 서로를 보완할 유연함이 필요합니다.' },
+  A_GEN_B: { base: 4, symbol: '→', label: '상생(相生)', title: '이끌고 키워주는 인연',
+    desc: '앞사람의 기운이 뒷사람을 살려주는 흐름입니다. 주는 쪽이 지치지 않도록 균형을 의식하면 오래갑니다.' },
+  B_GEN_A: { base: 4, symbol: '←', label: '상생(相生)', title: '받쳐주고 채워주는 인연',
+    desc: '뒷사람의 기운이 앞사람을 살려주는 흐름입니다. 든든한 지지가 정서적 안정으로 이어집니다.' },
+  A_CTRL_B: { base: 2, symbol: '⊃', label: '상극(相剋)', title: '강렬하고 역동적인 인연',
+    desc: '끌림이 강한 만큼 주도권 마찰도 생깁니다. 통제보다 동행으로 방향을 잡으면 추진력이 됩니다.' },
+  B_CTRL_A: { base: 2, symbol: '⊂', label: '상극(相剋)', title: '강렬하고 역동적인 인연',
+    desc: '끌림이 강한 만큼 주도권 마찰도 생깁니다. 서로의 페이스를 존중하면 가장 단단한 유대가 됩니다.' },
+};
+export const BRANCH_REL_INFO = {
+  HEX: { tag: '육합(六合)', color: '#2E9E6B', desc: '일지가 합을 이루어 일상의 결이 잘 맞습니다.' },
+  TRIO: { tag: '삼합(三合)', color: '#2E9E6B', desc: '같은 삼합국에 속해 방향이 자연스럽게 모입니다.' },
+  CLASH: { tag: '충(沖)', color: '#D64545', desc: '일지가 충이라 예상 못한 마찰이 생길 수 있습니다.' },
+  NEUTRAL: { tag: '중립', color: '#C9CDD2', desc: '일지 간 특별한 합·충이 없는 담백한 관계입니다.' },
+};
+export const GOONGHAP_SCORE = {
+  5: { stars: '★★★★★', label: '금상첨화 — 일지까지 조화를 이룹니다.' },
+  4: { stars: '★★★★☆', label: '좋은 인연입니다.' },
+  3: { stars: '★★★☆☆', label: '무난하고 안정적인 인연입니다.' },
+  2: { stars: '★★☆☆☆', label: '노력이 필요한 인연입니다.' },
+  1: { stars: '★☆☆☆☆', label: '많은 인내와 이해가 필요합니다.' },
+};
+
 // 하우스 12종 키워드
 export const HOUSE_KEY = [
   '자아·외모', '재물·소유', '소통·형제', '가정·뿌리', '연애·창작', '일상·건강',

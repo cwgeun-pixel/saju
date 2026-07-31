@@ -40,6 +40,7 @@ function parseArgs() {
   }));
   if (!a.y || !a.m || !a.d) {
     console.error('사용법: node render.js --y=1971 --m=9 --d=22 --h=20 --mi=0 --g=M --name=홍길동 [--card=saju,natal] [--out=output]');
+    console.error('  궁합 카드: 상대 정보를 --y2 --m2 --d2 --g2 --name2 로 함께 넘긴다');
     process.exit(1);
   }
   return a;
@@ -55,6 +56,11 @@ async function main() {
     g: a.g || 'M', unknown: a.unknown || '0', name: a.name || '', export: '1',
   });
   if (a.card) params.set('card', a.card);
+  if (a.y2) {
+    params.set('y2', a.y2); params.set('m2', a.m2); params.set('d2', a.d2);
+    params.set('h2', a.h2 ?? '12'); params.set('mi2', a.mi2 ?? '0');
+    params.set('g2', a.g2 || 'F'); params.set('name2', a.name2 || '');
+  }
 
   const { server, port } = await serve();
   const browser = await puppeteer.launch({ executablePath: findChrome(), headless: 'new' });

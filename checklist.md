@@ -105,4 +105,13 @@
 - [x] fortune/index.html 네비게이션에 "카드로 보기" 진입점 추가.
 - [x] render.js — card.html을 열어 카드별 PNG 배치 산출.
 - [x] 모바일 390px 및 PNG 1080x1920 양쪽 검증.
-- [ ] (별도) fortune-free.js 일간 인덱스 버그 수정 — pillars[2]를 일간으로 읽는 4곳.
+- [x] fortune-free.js 일간 인덱스 버그 수정 — pillars[2]를 일간으로 읽는 4곳.
+
+## 2026-07-31 버그 수정 + 카드 저장/공유 + 궁합 카드.
+
+- [x] fortune-free.js 일간 인덱스 버그 수정 (서빙 사본 2곳).
+- [x] goonghap.html / goonghap-ai.html 일주 기준값(REF_IDX) 오류 수정.
+- [x] js/infographic/share.js — 외부 라이브러리 없이 카드 PNG 저장·공유.
+- [x] 궁합 카드 추가 (일주 오행 관계 + 영역별 점수 + 일지 합충).
+- [x] goonghap.html에 "카드로 보기" 진입점 추가.
+- [x] 사이트 결과와 카드 결과 값 일치 검증 (일간·용신·궁합 전 항목).

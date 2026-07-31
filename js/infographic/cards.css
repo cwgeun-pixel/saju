@@ -242,6 +242,39 @@ body {
 .dot.flat { background: var(--line); }
 .dot.watch { background: var(--watch); }
 
+/* ── 궁합 ── */
+.gh-pair { display: flex; align-items: center; gap: 20px; }
+.gh-face {
+  flex: 1; text-align: center; background: var(--card); border: 1px solid var(--line);
+  border-radius: 22px; padding: 24px 16px;
+}
+.gh-badge {
+  width: 168px; height: 96px; margin: 0 auto; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 50px; font-weight: 700; color: #fff; letter-spacing: 2px;
+}
+.gh-badge.dark-ink { color: #2b2f38; }
+.gh-name { font-size: 28px; font-weight: 700; margin-top: 14px; }
+.gh-elem { font-size: 22px; color: var(--sub); margin-top: 4px; }
+.gh-trait { font-size: 20px; color: var(--sub); margin-top: 8px; line-height: 1.4; word-break: keep-all; }
+.gh-rel { flex: none; width: 130px; text-align: center; }
+.gh-sym { font-size: 62px; color: var(--gold); line-height: 1; }
+.gh-rel-label { font-size: 21px; color: var(--sub); margin-top: 10px; }
+.gh-score {
+  text-align: center; background: linear-gradient(135deg, var(--card), var(--bg2));
+  border: 1px solid var(--line); border-radius: 22px; padding: 22px 20px;
+}
+.gh-stars { font-size: 42px; color: var(--gold); letter-spacing: 6px; }
+.gh-title { font-size: 34px; font-weight: 700; margin-top: 10px; }
+.gh-scorelabel { font-size: 22px; color: var(--sub); margin-top: 8px; word-break: keep-all; }
+.b-stars { width: 150px; flex: none; text-align: right; font-size: 24px; color: var(--gold); letter-spacing: 2px; }
+.gh-branch {
+  background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--bc);
+  border-radius: 16px; padding: 16px 20px;
+}
+.gh-btag { font-size: 27px; font-weight: 700; color: var(--bc); }
+.gh-bdesc { font-size: 21px; color: var(--sub); margin-top: 6px; line-height: 1.45; word-break: keep-all; }
+
 /* ── 화면용 UI (PNG에는 포함되지 않음) ── */
 #bar {
   position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; overflow-x: auto;
@@ -254,8 +287,14 @@ body {
 }
 #bar button.on { border-color: var(--gold); color: var(--gold); background: rgba(217,164,65,.12); }
 #msg { padding: 40px 24px; text-align: center; color: var(--sub); font-size: 15px; line-height: 1.7; }
+.card-actions { display: flex; gap: 10px; justify-content: center; margin-top: -6px; }
+.card-actions button {
+  font: inherit; font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card); color: var(--gold); cursor: pointer;
+}
+.card-actions button:disabled { opacity: .55; cursor: default; }
 
 /* 내보내기 모드: 스케일 1, 장식 제거 */
-body.export #bar { display: none; }
+body.export #bar, body.export .card-actions { display: none; }
 body.export #deck { gap: 0; padding: 0; }
 body.export .card-slot { border-radius: 0; box-shadow: none; }

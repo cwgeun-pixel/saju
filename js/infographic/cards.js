@@ -252,6 +252,66 @@ function renderYear(d, meta) {
   return shell('year', `紫微斗數 · ${y.year} 유년`, meta, body, '');
 }
 
+// ── 7. 궁합 ──────────────────────────────────
+function renderGoonghap(d, meta) {
+  const g = d.goonghap;
+  const face = (p) => `
+    <div class="gh-face">
+      <div class="gh-badge hanja ${onLight(p.color) ? 'dark-ink' : ''}" style="background:${p.color}">${esc(p.gan)}${esc(p.ji)}</div>
+      <div class="gh-name">${esc(p.name)}</div>
+      <div class="gh-elem"><span class="hanja">${esc(p.hanja)}</span> ${esc(p.elem)} 일간</div>
+      <div class="gh-trait">${esc(p.title)}</div>
+    </div>`;
+
+  const body = `
+  <section class="gh-pair">
+    ${face(g.a)}
+    <div class="gh-rel">
+      <div class="gh-sym">${esc(g.symbol)}</div>
+      <div class="gh-rel-label">${esc(g.relLabel)}</div>
+    </div>
+    ${face(g.b)}
+  </section>
+
+  <div class="gh-score">
+    <div class="gh-stars">${esc(g.stars)}</div>
+    <div class="gh-title serif">${esc(g.title)}</div>
+    <div class="gh-scorelabel">${esc(g.scoreLabel)}</div>
+  </div>
+
+  ${title('영역별 궁합')}
+  <div class="bars">
+    ${g.areas.map((a) => `
+      <div class="bar-row">
+        <div class="b-name">${esc(a.label)}</div>
+        <div class="b-track"><div class="b-fill" style="width:${a.score * 20}%;background:${a.color}"></div></div>
+        <div class="b-stars">${'★'.repeat(a.score)}${'☆'.repeat(5 - a.score)}</div>
+      </div>`).join('')}
+  </div>
+
+  ${title('일지 관계')}
+  <div class="gh-branch" style="--bc:${g.branch.color}">
+    <div class="gh-btag hanja">${esc(g.branch.tag)}</div>
+    <div class="gh-bdesc">${esc(g.branch.desc)}</div>
+  </div>
+  <div class="note">${esc(g.desc)}</div>
+  <div class="note">${esc(g.yinyang)}</div>`;
+
+  const head = { name: `${g.a.name} · ${g.b.name}`, birth: g.flow, gender: '궁합', age: g.score * 20 };
+  return `
+<article class="card" id="card-goonghap" data-card="goonghap">
+  <header class="c-head">
+    <div class="kicker">宮合 · 두 사람의 결</div>
+    <div class="c-name">${esc(head.name)}</div>
+    <div class="c-birth hanja">${esc(g.flow)}</div>
+  </header>
+  <div class="c-body">${body}</div>
+  <footer class="c-foot">
+    <div class="cta">saju0523.pages.dev</div>
+  </footer>
+</article>`;
+}
+
 export const CARD_DEFS = [
   { id: 'saju', label: '사주 원국', render: renderSaju },
   { id: 'sipsin', label: '십신·신살', render: renderSipsin },
@@ -259,9 +319,18 @@ export const CARD_DEFS = [
   { id: 'ziwei', label: '자미두수', render: renderZiwei },
   { id: 'natal', label: '점성술', render: renderNatal },
   { id: 'year', label: '올해 흐름', render: renderYear },
+  { id: 'goonghap', label: '궁합', render: renderGoonghap, needs: 'goonghap' },
 ];
 
 export function renderAll(data, ids) {
-  const defs = ids && ids.length ? CARD_DEFS.filter((c) => ids.includes(c.id)) : CARD_DEFS;
+  let defs = CARD_DEFS.filter((c) => !c.needs || data[c.needs]);
+  if (ids && ids.length) defs = defs.filter((c) => ids.includes(c.id));
   return defs.map((c) => c.render(data, data.meta)).join('');
+}
+
+/** 실제로 렌더될 카드 정의만 돌려준다 (탭 구성용). */
+export function availableCards(data, ids) {
+  let defs = CARD_DEFS.filter((c) => !c.needs || data[c.needs]);
+  if (ids && ids.length) defs = defs.filter((c) => ids.includes(c.id));
+  return defs;
 }

@@ -20,8 +20,9 @@ import { calculateSaju } from '/app/sajusite/assets/orrery-core/saju.js';
 import { createChart, getDaxianList, calculateLiunian } from '/app/sajusite/assets/orrery-core/ziwei.js';
 import { calculateNatal } from '/app/sajusite/assets/orrery-core/natal.js';
 import { getFourPillars } from '/app/sajusite/assets/orrery-core/pillars.js';
-import { normalize } from '/js/infographic/normalize.js';
-import { CARD_DEFS, renderAll } from '/js/infographic/cards.js';
+import { normalize, cardGoonghap } from '/js/infographic/normalize.js';
+import { availableCards, renderAll } from '/js/infographic/cards.js';
+import { attachShareButtons } from '/js/infographic/share.js';
 
 // 일부 정적 호스트가 clean-URL 리다이렉트로 쿼리스트링을 버리므로 해시 파라미터도 받는다
 const qs = new URLSearchParams(location.search || location.hash.replace(/^#/, ''));
@@ -47,6 +48,27 @@ function readInput() {
       if (i && i.year) return { ...i, name: i.name || '' };
     }
   } catch (_) { /* 파싱 실패 시 아래 안내로 */ }
+  return null;
+}
+
+// 궁합 상대 (있을 때만 궁합 카드가 붙는다)
+function readPartner() {
+  if (qs.has('y2')) {
+    return {
+      year: +qs.get('y2'), month: +qs.get('m2'), day: +qs.get('d2'),
+      hour: +(qs.get('h2') ?? 12), minute: +(qs.get('mi2') ?? 0),
+      gender: qs.get('g2') === 'F' ? 'F' : 'M',
+      unknownTime: qs.get('unknown2') === '1',
+      name: qs.get('name2') || '',
+    };
+  }
+  try {
+    const raw = sessionStorage.getItem('honcheon_goonghap_partner');
+    if (raw) {
+      const i = JSON.parse(raw);
+      if (i && i.year) return i;
+    }
+  } catch (_) { /* 없으면 궁합 카드 생략 */ }
   return null;
 }
 
@@ -79,6 +101,16 @@ async function main() {
     seyunGanzi, name: input.name, thisYear,
   });
 
+  const partner = readPartner();
+  if (partner) {
+    const sajuB = calculateSaju({
+      year: partner.year, month: partner.month, day: partner.day,
+      hour: partner.hour, minute: partner.minute,
+      gender: partner.gender, unknownTime: partner.unknownTime,
+    });
+    data.goonghap = cardGoonghap(saju, sajuB, input.name, partner.name);
+  }
+
   const only = qs.get('card') ? qs.get('card').split(',') : null;
   const html = renderAll(data, only);
   // 각 카드를 스케일 슬롯으로 감싼다
@@ -86,14 +118,17 @@ async function main() {
                        .replace(/<\/article>/g, '</article></div>');
   msg.style.display = 'none';
 
-  if (!isExport) buildNav(only);
+  if (!isExport) {
+    buildNav(data, only);
+    attachShareButtons(deck, { name: data.meta.name || '내운세' });
+  }
   applyScale();
   document.body.dataset.ready = '1';
 }
 
-function buildNav(only) {
+function buildNav(data, only) {
   const bar = document.getElementById('bar');
-  const defs = only ? CARD_DEFS.filter((c) => only.includes(c.id)) : CARD_DEFS;
+  const defs = availableCards(data, only);
   bar.innerHTML = defs.map((c, i) =>
     `<button data-go="card-${c.id}" class="${i === 0 ? 'on' : ''}">${c.label}</button>`).join('');
   bar.addEventListener('click', (e) => {

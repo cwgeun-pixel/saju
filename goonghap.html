@@ -308,6 +308,15 @@
       <p id="r-advice"></p>
     </div>
 
+    <!-- 카드 이미지 -->
+    <div class="upsell">
+      <p>
+        <strong>궁합 결과를 카드 이미지로 저장하세요.</strong><br>
+        휴대폰에 저장하거나 바로 공유할 수 있는 세로형 카드로 만들어 드립니다.
+      </p>
+      <a class="btn-upsell" id="btn-card" href="/card.html">🃏 카드로 보기 →</a>
+    </div>
+
     <!-- 프리미엄 업셀 -->
     <div class="upsell">
       <p>
@@ -336,9 +345,10 @@ const BRANCHES_KO = ['자','축','인','묘','진','사','오','미','신','유'
 const OHAENG      = ['木','火','土','金','水'];
 const OHAENG_FULL = ['목(木)','화(火)','토(土)','금(金)','수(水)'];
 
-/* 기준일: 2000-01-01 = 丁未(정미) = 60갑자 index 43 */
+/* 기준일: 2000-01-01 = 戊午(무오) = 60갑자 index 54
+   (1900-01-01 甲戌 index 10 + 36524일 = 54. orrery-core 엔진 계산과도 일치) */
 const REF = new Date('2000-01-01T00:00:00');
-const REF_IDX = 43;
+const REF_IDX = 54;
 
 function getIlju(y, m, d) {
   const date = new Date(y, m - 1, d);
@@ -700,6 +710,17 @@ function calculate() {
   if (deepBtn) {
     const params = new URLSearchParams({ yA, mA: mA||'', dA: dA||'', nameA, yB, mB: mB||'', dB: dB||'', nameB });
     deepBtn.href = '/goonghap-ai.html?' + params.toString();
+  }
+
+  // 카드 페이지로 넘길 두 사람의 생년월일 (시간 정보가 없으므로 정오 기준)
+  const cardBtn = document.getElementById('btn-card');
+  if (cardBtn) {
+    const cp = new URLSearchParams({
+      y: yA, m: mA, d: dA, h: '12', mi: '0', g: 'M', name: nameA,
+      y2: yB, m2: mB, d2: dB, h2: '12', mi2: '0', g2: 'F', name2: nameB,
+      card: 'goonghap',
+    });
+    cardBtn.href = '/card.html#' + cp.toString();
   }
 
   // 결과 표시

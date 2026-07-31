@@ -146,3 +146,26 @@
 
 ### 미해결 (사이트 본체 버그, 이번 작업 범위 밖)
 `fortune-free.js`가 일간을 `pillars[2]`(월주)에서 읽는 곳이 4군데 있다 — 3203(computeYongShin), 3406, 3688, 3757(renderDaewoon). 3907은 pillars[1]로 올바르게 읽는다. 무료운세의 용신·신강신약·대운 십신이 월간 기준으로 계산되고 있을 가능성이 높다. 인포그래픽 쪽 normalize.js는 pillars[1]로 올바르게 구현했으므로 **사이트 결과와 카드 결과가 다를 수 있다**.
+
+## 2026-07-31 계산 버그 2건 수정
+
+### 1. 일간을 월주에서 읽던 버그 (fortune-free.js)
+엔진 `calculateSaju`는 pillars를 **[시,일,월,년]** 순으로 반환한다(`i===1`일 때 stemSipsin을 '本元'으로 박는 것이 근거). 그런데 4곳이 `pillars[2]`(월주)를 일간으로 읽고 있었다.
+- computeYongShin / renderBasicFortune / renderSijunseong → `pillars[1]`로 수정
+- renderDaewoon의 순행·역행은 일간이 아니라 **년간** 기준이다. 엔진 `getDaewoon`이 `yearStem`으로 판정하므로 `pillars[3]`으로 맞추고 변수명도 yearStem으로 바꿨다.
+- 서빙되는 사본 2곳(`app/sajusite/assets/`, `sajusite/assets/`)에 모두 적용. `saju-main/` 사본은 어떤 HTML도 참조하지 않아 건드리지 않았다.
+- 검증: 1971-09-22 20:00 남성 → 일간 庚, 신강, 용신 木, 희신 火. 카드와 사이트가 동일.
+
+### 2. 궁합 일주 기준값 오류 (goonghap.html, goonghap-ai.html)
+`REF_IDX = 43`(2000-01-01을 丁未로 가정)이 틀렸다. **실제는 戊午 = index 54**로, 60갑자에서 11칸 어긋나 있었다. 두 사람의 오행이 전부 틀리므로 궁합 결과 전체가 잘못 나오던 상태.
+- 근거 3중 확인: (1) 엔진이 戊午로 계산, (2) 하루 1칸씩 정확히 증가, (3) 독립 앵커 1900-01-01 甲戌(index 10) + 36524일 = 54.
+- 수정 후 궁합 페이지와 엔진의 일주가 모든 표본 날짜에서 일치.
+
+## 2026-07-31 카드 저장/공유 + 궁합 카드
+
+- `js/infographic/share.js` — **외부 CDN 없이** SVG foreignObject에 DOM을 넣고 canvas로 굽는다. html2canvas 같은 라이브러리를 안 쓰는 이유는 Cloudflare Pages 정적 배포에 의존성을 늘리지 않기 위해서.
+  - @font-face의 woff2를 fetch해 **base64 data URI로 인라인**해야 SVG 안에서 한글·한자가 렌더된다. 이걸 빼면 전부 기본 폰트로 떨어진다.
+  - 교차 출처 스타일시트는 `sheet.cssRules` 접근 시 예외가 나므로 try/catch로 건너뛴다.
+  - 공유 버튼은 `navigator.canShare({files})`가 true일 때만 노출(대부분 모바일). 데스크톱은 저장만.
+- 궁합 카드는 `card.html`에 상대 정보(`y2,m2,d2...` 또는 sessionStorage `honcheon_goonghap_partner`)가 있을 때만 붙는다. `CARD_DEFS`의 `needs` 필드로 제어.
+- 궁합 판정 규칙은 goonghap.html과 동일하게 맞췄다(상생/상극/비화 기본점 + 일지 합충 ±1 + 음양 보정). 단 **일주는 간이 계산이 아니라 엔진 `calculateSaju`로 뽑는다**.

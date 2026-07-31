@@ -1,0 +1,385 @@
+<!-- 사주 인포그래픽 1080×1920 렌더링 템플릿 — render.js가 스크립트의 데이터 플레이스홀더에 infographic.json을 주입한다 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wood: #2E9E6B; --fire: #D64545; --earth: #D9A441; --metal: #C9CDD2; --water: #1F3A5F;
+    --bg: #14171f; --bg2: #1c202b; --card: #202634; --line: #333b4d;
+    --ink: #f0ead8; --sub: #a8a291; --gold: #d9a441;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; }
+  body {
+    background: radial-gradient(1200px 800px at 50% -10%, #232a3a 0%, var(--bg) 55%);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex; flex-direction: column;
+    padding: 40px 56px 36px;
+    gap: 20px;
+  }
+  .serif { font-family: 'Noto Serif KR', 'Noto Serif TC', serif; }
+  .hanja { font-family: 'Noto Serif TC', 'Noto Serif KR', serif; }
+
+  /* ── 헤더 ─────────────────────────── */
+  header { text-align: center; }
+  .kicker { letter-spacing: 10px; font-size: 22px; color: var(--gold); font-weight: 500; }
+  .name { font-size: 54px; font-weight: 700; margin-top: 8px; }
+  .birth { font-size: 24px; color: var(--sub); margin-top: 8px; }
+
+  /* ── 일간 히어로 ───────────────────── */
+  .hero {
+    display: flex; align-items: center; gap: 36px;
+    background: linear-gradient(135deg, var(--card), var(--bg2));
+    border: 1px solid var(--line); border-radius: 28px;
+    padding: 26px 40px;
+  }
+  .dm-badge {
+    width: 160px; height: 160px; flex: none; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 68px; font-weight: 700;
+    background: rgba(217,164,65,.08);
+    border: 3px solid var(--dm-color, var(--gold));
+    color: var(--dm-color, var(--gold));
+    text-shadow: 0 0 30px rgba(217,164,65,.35);
+  }
+  .dm-title { font-size: 34px; font-weight: 700; line-height: 1.3; }
+  .dm-title em { font-style: normal; color: var(--gold); }
+  .dm-desc { font-size: 23px; color: var(--sub); line-height: 1.55; margin-top: 12px; }
+
+  /* ── 원국 4주 ─────────────────────── */
+  .section-title {
+    font-size: 25px; font-weight: 700; color: var(--gold);
+    letter-spacing: 4px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .pillar { text-align: center; }
+  .pillar .label { font-size: 22px; color: var(--sub); margin-bottom: 8px; }
+  .pillar .char {
+    border-radius: 16px; padding: 8px 0; font-size: 58px; font-weight: 700;
+    color: #fff; line-height: 1.15;
+  }
+  .pillar .char + .char { margin-top: 8px; }
+  .pillar .char.metal-fix { color: #2b2f38; }   /* 금(밝은 회색) 배경엔 어두운 글자 */
+  .pillar .sipsin { font-size: 20px; color: var(--sub); margin-top: 8px; }
+
+  /* ── 오행 분포 ─────────────────────── */
+  .elements { display: flex; flex-direction: column; gap: 10px; }
+  .el-row { display: flex; align-items: center; gap: 16px; }
+  .el-name { width: 96px; font-size: 27px; font-weight: 600; flex: none; }
+  .el-track { flex: 1; height: 26px; background: var(--bg2); border-radius: 15px; overflow: hidden; }
+  .el-fill { height: 100%; border-radius: 15px; }
+  .el-pct { width: 74px; text-align: right; font-size: 25px; color: var(--sub); flex: none; }
+  .el-mark { width: 76px; flex: none; text-align: center; font-size: 20px; border-radius: 12px; padding: 4px 0; }
+  .el-mark.과다 { background: rgba(214,69,69,.18); color: #e88; }
+  .el-mark.부족 { background: rgba(31,58,95,.5); color: #8ab; }
+
+  /* ── 영역별 카드 ───────────────────── */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+    padding: 20px 22px; min-height: 200px;
+  }
+  .card .icon { font-size: 34px; }
+  .card h3 { font-size: 25px; margin: 8px 0 8px; color: var(--gold); }
+  .card p { font-size: 21px; line-height: 1.55; color: var(--ink); word-break: keep-all; }
+
+  /* ── 대운 타임라인 ─────────────────── */
+  .timeline { position: relative; padding: 40px 10px 0; }
+  .timeline .axis { position: absolute; top: 60px; left: 30px; right: 30px; height: 3px; background: var(--line); }
+  .tl-items { display: flex; justify-content: space-between; position: relative; }
+  .tl-item { text-align: center; width: 100px; }
+  .tl-dot {
+    width: 18px; height: 18px; border-radius: 50%; background: var(--line);
+    margin: 12px auto 12px; position: relative; z-index: 1;
+  }
+  .tl-item .age { font-size: 22px; color: var(--sub); }
+  .tl-item .gz { font-size: 30px; font-weight: 600; margin-top: 4px; }
+  .tl-item.current .tl-dot { background: var(--gold); box-shadow: 0 0 0 8px rgba(217,164,65,.22); }
+  .tl-item.current .gz, .tl-item.current .age { color: var(--gold); font-weight: 700; }
+  .tl-item.current::before {
+    content: '현재'; display: inline-block; font-size: 19px; color: #14171f;
+    background: var(--gold); border-radius: 10px; padding: 2px 12px; margin-bottom: 2px;
+  }
+  .tl-item:not(.current)::before { content: ''; display: block; height: 27px; }
+
+  /* ── 결론 + CTA ───────────────────── */
+  footer { margin-top: auto; text-align: center; }
+  .conclusion {
+    font-size: 33px; font-weight: 700; line-height: 1.4; word-break: keep-all;
+    color: var(--ink);
+  }
+  .conclusion::before, .conclusion::after { content: ' ❝ '; color: var(--gold); }
+  .conclusion::after { content: ' ❞ '; }
+  .yongsin { font-size: 24px; color: var(--sub); margin-top: 14px; }
+  .cta {
+    display: inline-block; margin-top: 18px; font-size: 22px; letter-spacing: 2px;
+    color: var(--gold); border: 1px solid var(--gold); border-radius: 999px; padding: 12px 38px;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="kicker">四柱命理</div>
+    <div class="name serif" id="name"></div>
+    <div class="birth" id="birth"></div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="dm-badge hanja" id="dm-char"></div>
+    <div>
+      <div class="dm-title serif" id="dm-title"></div>
+      <div class="dm-desc" id="dm-desc"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">원국 사주</div>
+    <div class="pillars" id="pillars"></div>
+  </section>
+
+  <section>
+    <div class="section-title">오행 분포</div>
+    <div class="elements" id="elements"></div>
+  </section>
+
+  <section>
+    <div class="section-title">영역별 흐름</div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section>
+    <div class="section-title">대운 타임라인</div>
+    <div class="timeline">
+      <div class="axis"></div>
+      <div class="tl-items" id="timeline"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="conclusion serif" id="conclusion"></div>
+    <div class="yongsin" id="yongsin"></div>
+    <div class="cta">saju0523.pages.dev</div>
+  </footer>
+
+<script>
+const DATA = {
+  "meta": {
+    "name": "홍길동",
+    "birth": "1971년 9월 22일 (양력) 20시 00분",
+    "place": "서울특별시",
+    "gender": "남성"
+  },
+  "pillars": [
+    {
+      "label": "시주",
+      "gan": "丙",
+      "ji": "戌",
+      "gan_el": "화",
+      "ji_el": "토",
+      "gan_color": "#D64545",
+      "ji_color": "#D9A441",
+      "sipsin_top": "겁재",
+      "sipsin_bot": "상관"
+    },
+    {
+      "label": "일주",
+      "gan": "庚",
+      "ji": "戌",
+      "gan_el": "금",
+      "ji_el": "토",
+      "gan_color": "#C9CDD2",
+      "ji_color": "#D9A441",
+      "sipsin_top": "일간",
+      "sipsin_bot": "상관"
+    },
+    {
+      "label": "월주",
+      "gan": "丁",
+      "ji": "酉",
+      "gan_el": "화",
+      "ji_el": "금",
+      "gan_color": "#D64545",
+      "ji_color": "#C9CDD2",
+      "sipsin_top": "정인",
+      "sipsin_bot": "정관"
+    },
+    {
+      "label": "연주",
+      "gan": "辛",
+      "ji": "亥",
+      "gan_el": "금",
+      "ji_el": "수",
+      "gan_color": "#C9CDD2",
+      "ji_color": "#1F3A5F",
+      "sipsin_top": "겁재",
+      "sipsin_bot": "편인"
+    }
+  ],
+  "elements": [
+    {
+      "kor": "목",
+      "hanja": "木",
+      "pct": 10,
+      "color": "#2E9E6B",
+      "mark": "부족"
+    },
+    {
+      "kor": "화",
+      "hanja": "火",
+      "pct": 25,
+      "color": "#D64545",
+      "mark": ""
+    },
+    {
+      "kor": "토",
+      "hanja": "土",
+      "pct": 30,
+      "color": "#D9A441",
+      "mark": "과다"
+    },
+    {
+      "kor": "금",
+      "hanja": "金",
+      "pct": 25,
+      "color": "#C9CDD2",
+      "mark": ""
+    },
+    {
+      "kor": "수",
+      "hanja": "水",
+      "pct": 10,
+      "color": "#1F3A5F",
+      "mark": "부족"
+    }
+  ],
+  "day_master": {
+    "char": "庚金",
+    "element": "금",
+    "color": "#C9CDD2",
+    "title": "단단하게 벼려진 강철과 보검",
+    "desc": "庚金(경금)은 강철·보검의 기운입니다. 원칙과 결단력이 강하며, 한번 정한 목표는 끝까지 밀어붙이는 뚝심이…"
+  },
+  "sections": [
+    {
+      "icon": "💰",
+      "heading": "재물",
+      "body": "재성이 시주·년주에 위치하여 말년에 재물이 모이는 구조입니다."
+    },
+    {
+      "icon": "❤️",
+      "heading": "애정",
+      "body": "배우자 자리에 정관이 위치하여 원칙적이고 책임감 강한 배우자와의 인연입니다."
+    },
+    {
+      "icon": "💼",
+      "heading": "직업",
+      "body": "庚金의 결단력과 丁火 용신의 창의성이 결합되어 전문직·기술직에서 두각을 나타냅니다."
+    }
+  ],
+  "luck_cycle": [
+    {
+      "age": 3,
+      "gz": "戊戌",
+      "current": false
+    },
+    {
+      "age": 13,
+      "gz": "己亥",
+      "current": false
+    },
+    {
+      "age": 23,
+      "gz": "庚子",
+      "current": true
+    },
+    {
+      "age": 33,
+      "gz": "辛丑",
+      "current": false
+    },
+    {
+      "age": 43,
+      "gz": "壬寅",
+      "current": false
+    },
+    {
+      "age": 53,
+      "gz": "癸卯",
+      "current": false
+    },
+    {
+      "age": 63,
+      "gz": "甲辰",
+      "current": false
+    },
+    {
+      "age": 73,
+      "gz": "乙巳",
+      "current": false
+    }
+  ],
+  "yongsin": "丁火 (정화) 정인",
+  "conclusion": "庚金 일간의 가장 큰 강점은 결단력과 실행력입니다."
+};
+
+document.getElementById('name').textContent = DATA.meta.name;
+document.getElementById('birth').textContent =
+  `${DATA.meta.birth} · ${DATA.meta.place} · ${DATA.meta.gender}`;
+
+// 일간 히어로
+const dm = DATA.day_master;
+const badge = document.getElementById('dm-char');
+badge.textContent = dm.char;
+document.getElementById('hero').style.setProperty('--dm-color', dm.color === '#C9CDD2' ? '#dfe3e8' : dm.color);
+document.getElementById('dm-title').innerHTML =
+  `당신은 <em>${dm.char}</em>, ${dm.title}`;
+document.getElementById('dm-desc').textContent = dm.desc;
+
+// 원국 4주
+const isMetal = c => c === '#C9CDD2';
+document.getElementById('pillars').innerHTML = DATA.pillars.map(p => `
+  <div class="pillar">
+    <div class="label">${p.label}</div>
+    <div class="char hanja ${isMetal(p.gan_color) ? 'metal-fix' : ''}" style="background:${p.gan_color}">${p.gan}</div>
+    <div class="char hanja ${isMetal(p.ji_color) ? 'metal-fix' : ''}" style="background:${p.ji_color}">${p.ji}</div>
+    <div class="sipsin">${p.sipsin_top} · ${p.sipsin_bot}</div>
+  </div>`).join('');
+
+// 오행 바
+const maxPct = Math.max(...DATA.elements.map(e => e.pct));
+document.getElementById('elements').innerHTML = DATA.elements.map(e => `
+  <div class="el-row">
+    <div class="el-name"><span class="hanja">${e.hanja}</span> ${e.kor}</div>
+    <div class="el-track"><div class="el-fill" style="width:${(e.pct / maxPct) * 100}%;background:${e.color}"></div></div>
+    <div class="el-pct">${e.pct}%</div>
+    <div class="el-mark ${e.mark}">${e.mark}</div>
+  </div>`).join('');
+
+// 영역별 카드
+document.getElementById('cards').innerHTML = DATA.sections.map(s => `
+  <div class="card">
+    <div class="icon">${s.icon}</div>
+    <h3>${s.heading}</h3>
+    <p>${s.body}</p>
+  </div>`).join('');
+
+// 대운 타임라인
+document.getElementById('timeline').innerHTML = DATA.luck_cycle.map(l => `
+  <div class="tl-item ${l.current ? 'current' : ''}">
+    <div class="tl-dot"></div>
+    <div class="age">${l.age}세</div>
+    <div class="gz hanja">${l.gz}</div>
+  </div>`).join('');
+
+// 결론
+document.getElementById('conclusion').textContent = DATA.conclusion;
+document.getElementById('yongsin').textContent = DATA.yongsin ? `용신 · ${DATA.yongsin}` : '';
+</script>
+</body>
+</html>

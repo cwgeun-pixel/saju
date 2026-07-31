@@ -4,6 +4,8 @@ import {
   DAYMASTER, SIPSIN_GROUPS, SINSAL_INFO, SINSAL_TYPE_COLOR,
   UNSEONG_KO, SIPSIN_KO, PALACE_KO, BRANCH_GRID, SIHUA_COLORS, MAIN_STARS,
   SIGN_KO, SIGN_SYMBOL, SIGN_COLOR, SIGN_TRAIT, PLANET_INFO, ASPECT_INFO, HOUSE_KEY,
+  OHAENG_GEN, OHAENG_CTRL, BRANCH_IDX, YUKHAP, SAMHAP,
+  STEM_REL_INFO, BRANCH_REL_INFO, GOONGHAP_SCORE,
 } from './interpret-data.js';
 
 // 엔진의 pillars 배열은 [시주, 일주, 월주, 년주] 순서다. 일간은 pillars[1].
@@ -303,6 +305,81 @@ function cardYear(liunian, seyunGanzi, thisYear) {
       lu ? `${lu.star} 화록이 ${lu.palace}에 들어 ${lu.palace} 영역이 열립니다.` : '',
       gi ? `${gi.star} 화기는 ${gi.palace}에 있어 이 부분은 속도를 늦추는 편이 좋습니다.` : '',
     ].filter(Boolean).join(' '),
+  };
+}
+
+// ── 카드 7: 궁합 ──────────────────────────────
+function stemRel(a, b) {
+  if (a === b) return 'SAME';
+  if (OHAENG_GEN[a] === b) return 'A_GEN_B';
+  if (OHAENG_GEN[b] === a) return 'B_GEN_A';
+  if (OHAENG_CTRL[a] === b) return 'A_CTRL_B';
+  return 'B_CTRL_A';
+}
+
+function branchRel(ai, bi) {
+  if (ai === bi) return 'NEUTRAL';
+  if (YUKHAP.some(([x, y]) => (x === ai && y === bi) || (y === ai && x === bi))) return 'HEX';
+  if (Math.abs(ai - bi) === 6) return 'CLASH';
+  if (SAMHAP.some((t) => t.includes(ai) && t.includes(bi))) return 'TRIO';
+  return 'NEUTRAL';
+}
+
+/** 두 사람의 일주(일간 오행 + 일지 관계)로 궁합 카드를 만든다. goonghap.html과 동일한 규칙. */
+export function cardGoonghap(sajuA, sajuB, nameA, nameB) {
+  const person = (saju, name, fallback) => {
+    const p = saju.pillars[IDX.day];
+    const el = STEM_ELEM[p.pillar.stem];
+    return {
+      name: name || fallback,
+      gan: p.pillar.stem, ji: p.pillar.branch,
+      elem: el, hanja: ELEMENT_HANJA[el], color: ELEMENT_COLORS[el],
+      title: (DAYMASTER[p.pillar.stem] || {}).title || '',
+    };
+  };
+  const A = person(sajuA, nameA, '본인');
+  const B = person(sajuB, nameB, '상대');
+
+  const sRel = stemRel(A.elem, B.elem);
+  const bRel = branchRel(BRANCH_IDX[A.ji], BRANCH_IDX[B.ji]);
+  const sInfo = STEM_REL_INFO[sRel];
+  const bInfo = BRANCH_REL_INFO[bRel];
+
+  // 일지 합/충으로 총점을 1점 보정한다
+  let score = sInfo.base;
+  if (bRel === 'HEX' || bRel === 'TRIO') score = Math.min(5, score + 1);
+  if (bRel === 'CLASH') score = Math.max(1, score - 1);
+
+  // 영역별 점수 (일지 관계와 음양 차이로 보정)
+  const yangA = '甲丙戊庚壬'.includes(A.gan);
+  const yangB = '甲丙戊庚壬'.includes(B.gan);
+  const complementary = yangA !== yangB;
+  const clamp = (v) => Math.max(1, Math.min(5, v));
+  const bonus = (bRel === 'HEX' || bRel === 'TRIO') ? 1 : bRel === 'CLASH' ? -1 : 0;
+
+  const BASE = {
+    SAME: [3, 4, 4], A_GEN_B: [4, 3, 3], B_GEN_A: [4, 3, 4],
+    A_CTRL_B: [2, 2, 2], B_CTRL_A: [2, 2, 2],
+  }[sRel];
+  const areas = [
+    { label: '감정·교감', score: clamp(BASE[0] + bonus), color: '#D64545' },
+    { label: '소통·대화', score: clamp(BASE[1] + (complementary ? 1 : 0)), color: '#4A90D9' },
+    { label: '현실·안정', score: clamp(BASE[2] + bonus), color: '#2E9E6B' },
+  ];
+
+  return {
+    a: A, b: B,
+    symbol: sInfo.symbol,
+    relLabel: sInfo.label,
+    title: sInfo.title,
+    desc: sInfo.desc,
+    flow: `${A.hanja}${A.elem} ${sInfo.symbol} ${B.hanja}${B.elem}`,
+    score,
+    stars: GOONGHAP_SCORE[score].stars,
+    scoreLabel: GOONGHAP_SCORE[score].label,
+    branch: { tag: `${A.ji}${B.ji} ${bInfo.tag}`, color: bInfo.color, desc: bInfo.desc },
+    yinyang: complementary ? '음양이 달라 서로의 시각이 대화를 풍부하게 만듭니다.' : '같은 음양이라 공감이 빠른 대신 다른 의견을 수용하는 연습이 필요합니다.',
+    areas,
   };
 }
 

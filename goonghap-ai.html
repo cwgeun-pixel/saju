@@ -308,7 +308,8 @@ const OHAENG_FULL= ['목(木)','화(火)','토(土)','금(金)','수(水)'];
 const YANG_YIN   = ['양(陽)','음(陰)'];
 
 const REF = new Date('2000-01-01T00:00:00');
-const REF_IDX = 43;
+/* 2000-01-01 = 戊午(무오) = 60갑자 index 54 */
+const REF_IDX = 54;
 
 function getIlju(y, m, d) {
   const date = new Date(y, m - 1, d);
