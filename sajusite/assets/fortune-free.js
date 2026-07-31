@@ -1846,6 +1846,42 @@ const HC_CSS = `<style>
   .hc-yong-desc{font-size:14px;line-height:1.75;padding:12px}
 }
 
+/* 12운성: 좁은 화면에서 4열을 유지하면 칸이 66px로 줄어 설명이 서너 글자씩 끊긴다.
+   1열로 내리고 카드를 가로로 눕혀 설명이 전체 폭을 쓰게 한다. */
+.hc-sjs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:640px){
+  .hc-sjs-grid{grid-template-columns:1fr;gap:10px}
+  .hc-sjs-card{text-align:left!important;padding:14px 16px!important}
+  .hc-sjs-top{display:flex;align-items:center;gap:14px}
+  .hc-sjs-orb{width:52px!important;height:52px!important;margin:0!important;flex-shrink:0}
+  .hc-sjs-orb span{font-size:26px!important}
+  .hc-sjs-name{font-size:22px!important;margin-bottom:0!important}
+  .hc-sjs-hanja{margin-bottom:0!important}
+  .hc-sjs-meta{flex:1;min-width:0;text-align:left;display:flex;align-items:baseline;gap:8px}
+  .hc-sjs-foot{border-top:none!important;padding-top:10px!important;margin-bottom:0!important}
+  .hc-sjs-pillar{display:inline;margin-bottom:0!important}
+  .hc-sjs-age{display:inline;margin-bottom:0!important}
+  .hc-sjs-desc{font-size:14px!important;margin-top:6px}
+  .hc-sjs-grade{position:static!important;display:inline-block;margin-left:8px;vertical-align:middle}
+}
+
+/* 대운 10칸: 고정 10열이라 425px를 차지해 페이지 전체를 가로로 밀어내고 있었다.
+   칸을 읽을 수 있는 폭으로 고정하고 가로 스크롤로 넘긴다. */
+.hc-dw-track{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+@media (max-width:760px){
+  .hc-dw-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
+    margin:0 -4px;padding:2px 4px 10px}
+  .hc-dw-track{grid-template-columns:repeat(10,86px);gap:8px}
+  .hc-dw-track>div{scroll-snap-align:center}
+  .hc-dw-scroll::-webkit-scrollbar{height:5px}
+  .hc-dw-scroll::-webkit-scrollbar-thumb{background:rgba(212,175,55,0.35);border-radius:3px}
+  .hc-dw-hint{display:block!important}
+}
+.hc-dw-hint{display:none;font-size:12px;color:#6b7280;text-align:right;margin-top:-4px;margin-bottom:6px}
+
+/* 일진 7일 스트립: 칸이 35px인데 이모지가 40px라 넘치던 것 */
+@media (max-width:640px){ .hc-week-cell{overflow:hidden} .hc-week-cell *{max-width:100%} }
+
 /* 띠 블록: 이모지 원 + 설명이 한 줄에 갇혀 카드 밖으로 넘쳐 잘리던 것을 막는다 */
 .hc-zodiac{display:flex;align-items:center;gap:16px}
 .hc-zodiac-body{flex:1;min-width:0}
@@ -1887,6 +1923,25 @@ function scoreColor(pct) {
 function scoreBadge(pct) {
   const c = scoreColor(pct);
   return `<span style="background:${c}18;color:${c};font-size:15px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid ${c}50;box-shadow:0 0 8px ${c}30">${Math.round(pct)}점</span>`;
+}
+
+// 대운 타임라인은 좁은 화면에서 가로 스크롤이라, 열었을 때 현재 대운이 보이도록 맞춰준다.
+function centerCurrentDaewoon() {
+  // 주입한 style 반영과 웹폰트 로드로 폭이 두 번 바뀐다. 확정될 때까지 잠깐 재시도한다.
+  let tries = 0;
+  const place = () => {
+    // 요소가 아직 없거나(재렌더 직후) 폭이 확정되지 않았으면 다시 시도한다
+    // 재렌더로 gf-body 노드가 교체될 수 있어 전달받은 참조가 아니라 문서에서 다시 찾는다
+    const box = document.querySelector('.hc-dw-scroll');
+    const cell = box && box.querySelector('.hc-dw-track')?.children[Number(box.dataset.current || 0)];
+    if (box && cell && box.scrollWidth > box.clientWidth) {
+      box.scrollLeft = cell.offsetLeft - (box.clientWidth - cell.offsetWidth) / 2;
+      return;
+    }
+    if (++tries < 20) setTimeout(place, 100);
+  };
+  // rAF는 배경 탭이나 비합성 상태에서 발화하지 않으므로 타이머로 시작한다
+  setTimeout(place, 0);
 }
 
 function sectionHeader(letter, title, subtitle) {
@@ -2223,25 +2278,28 @@ function renderSijunseong(saju) {
     const hanja = SJS_HANJA[sjs.name] || sjs.name;
     const grade = SJS_GRADE[sjs.name] || '중';
     const gradeStyle = GRADE_STYLE[grade];
-    return `<div style="position:relative;background:linear-gradient(160deg,#13162a,#0e1020);border:1px solid ${pc}30;border-radius:16px;padding:20px 14px 18px;text-align:center;overflow:hidden;transition:transform 0.2s;">
+    return `<div class="hc-sjs-card" style="position:relative;background:linear-gradient(160deg,#13162a,#0e1020);border:1px solid ${pc}30;border-radius:16px;padding:20px 14px 18px;text-align:center;overflow:hidden;transition:transform 0.2s;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${pc}80,transparent)"></div>
-      <div style="position:absolute;top:10px;right:10px;${gradeStyle};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em">${grade}</div>
-      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,${bg}cc,${bg}66);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px ${bg}50,inset 0 1px 0 rgba(255,255,255,0.15);border:2px solid ${pc}40">
-        <span style="font-size:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))">${sjs.emoji}</span>
+      <div class="hc-sjs-top">
+        <div class="hc-sjs-orb" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,${bg}cc,${bg}66);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px ${bg}50,inset 0 1px 0 rgba(255,255,255,0.15);border:2px solid ${pc}40">
+          <span style="font-size:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))">${sjs.emoji}</span>
+        </div>
+        <div class="hc-sjs-meta">
+          <div class="hc-sjs-name" style="font-weight:800;font-size:26px;color:#f0e6d0;font-family:'Cormorant Garamond',serif;margin-bottom:2px;letter-spacing:0.02em">${sjs.name}<span class="hc-sjs-grade" style="${gradeStyle};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em;position:absolute;top:10px;right:10px">${grade}</span></div>
+          <div class="hc-sjs-hanja" style="color:#8a7fa8;font-size:13px;margin-bottom:12px;letter-spacing:0.05em">(${hanja})</div>
+        </div>
       </div>
-      <div style="font-weight:800;font-size:26px;color:#f0e6d0;font-family:'Cormorant Garamond',serif;margin-bottom:2px;letter-spacing:0.02em">${sjs.name}</div>
-      <div style="color:#8a7fa8;font-size:13px;margin-bottom:12px;letter-spacing:0.05em">(${hanja})</div>
-      <div style="border-top:1px solid ${pc}20;padding-top:12px;margin-bottom:6px">
-        <div style="font-weight:700;font-size:14px;color:${pc};margin-bottom:2px">${PILLAR_NAMES[i]}</div>
-        <div style="font-size:11px;color:#6b7280;margin-bottom:8px">${PILLAR_AGE[i]}</div>
-        <div style="font-size:12px;color:#9da8c0;line-height:1.6">${sjs.desc || t('sjs.'+sjsIdx)}</div>
+      <div class="hc-sjs-foot" style="border-top:1px solid ${pc}20;padding-top:12px;margin-bottom:6px">
+        <div class="hc-sjs-pillar" style="font-weight:700;font-size:14px;color:${pc};margin-bottom:2px">${PILLAR_NAMES[i]}</div>
+        <div class="hc-sjs-age" style="font-size:11px;color:#6b7280;margin-bottom:8px"> · ${PILLAR_AGE[i]}</div>
+        <div class="hc-sjs-desc" style="font-size:12px;color:#9da8c0;line-height:1.6">${sjs.desc || t('sjs.'+sjsIdx)}</div>
       </div>
     </div>`;
   }).join('');
 
   return `<div style="${D.wrap}">
     ${sectionHeader('D', t('12운성'), t('생애 에너지 흐름'))}
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="hc-sjs-grid">
       ${cards}
     </div>
   </div>`;
@@ -2391,10 +2449,13 @@ function renderDaewoon(saju) {
 
   return `<div style="${D.wrap}">
     ${sectionHeader('D2', t('대운 (大運)'), `현재 나이: ${currentAge}세 · ${flowLabel}`)}
-    <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + 양년 = ${flowLabel} · 대운수 ${cur.age}세</div>
+    <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${genderLabel} + ${isYang ? '양년' : '음년'} = ${flowLabel} · 대운수 ${cur.age}세</div>
     ${currentCard}
-    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px">
-      ${timelineCards}
+    <div class="hc-dw-hint">옆으로 밀어서 전체 보기 →</div>
+    <div class="hc-dw-scroll" data-current="${currentIdx}">
+      <div class="hc-dw-track">
+        ${timelineCards}
+      </div>
     </div>
     ${legend}
   </div>`;
@@ -3091,6 +3152,8 @@ async function runFortune(preInput = null) {
         ${t('※ 사주·자미두수·점성학 원국과 현재 날짜를 기반으로 자동 계산됩니다. 참고용으로 활용하세요.')}
       </p>
     </div>`;
+
+    centerCurrentDaewoon();
 
     document.getElementById('gf-reset')?.addEventListener('click', () => {
       if (bodyEl) bodyEl.innerHTML = inputHtml();

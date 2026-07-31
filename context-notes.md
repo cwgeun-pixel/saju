@@ -204,3 +204,17 @@ fortune-free.js는 스타일시트 없이 인라인 스타일만 쓰던 파일�
 - `YONG_CSS` -> `HC_CSS`로 승격해 `bodyEl.innerHTML` 최상단에 1회만 주입한다. 섹션마다 style을 넣던 방식보다 관리가 쉽고, innerHTML 통째 교체라 중복도 없다.
 - 띠 블록: flex 자식에 `min-width:0`을 줘야 축소가 시작된다(기본 `min-width:auto`가 min-content로 버팀). 년생 문자열은 `·`로만 이어져 있어 `overflow-wrap:anywhere`가 필요했다.
 - `sectionHeader`에 `flex-wrap:wrap` + 모바일에서 부제 `flex-basis:100%;order:3`. '오늘의 운세'는 sectionHeader를 안 쓰고 같은 마크업을 하드코딩해 둔 별도 헤더였어서 따로 맞췄다.
+
+## 2026-07-31 12운성·대운 모바일 레이아웃
+
+- **12운성**: 4열 고정 -> 640px 이하 1열. 카드를 가로로 눕혀 [원형 아이콘][운성명·등급][주·나이대][설명] 순으로 읽히게 했다. 설명이 전체 폭을 쓴다.
+- **대운**: 10열 고정 -> 760px 이하에서 칸 폭을 86px로 고정하고 `.hc-dw-scroll`로 가로 스크롤. `scroll-snap-type:x proximity`로 칸에 맞춰 멈춘다. 페이지 전체 가로 넘침(466px)이 이걸로 해소돼 375/375가 됐다.
+- 열었을 때 현재 대운이 보이도록 `centerCurrentDaewoon()`이 스크롤 위치를 맞춘다.
+
+### centerCurrentDaewoon에서 겪은 함정 3가지 (같은 실수 반복 금지)
+1. **호출 위치**: 처음에 `bodyEl.innerHTML` 대입보다 *앞*에 삽입돼 아무것도 못 찾았다. 대입이 끝나는 `</div>\`;` 뒤에 놓아야 한다.
+2. **stale 노드**: `centerCurrentDaewoon(bodyEl)`처럼 노드를 넘기면, 재렌더로 `#gf-body`가 교체됐을 때 분리된 옛 노드를 계속 조회한다. 인자를 없애고 매번 `document`에서 찾도록 했다.
+3. **requestAnimationFrame**: rAF는 페이지가 합성되지 않는 상태(배경 탭, 미표시 패널)에서 발화하지 않는다. 디버깅 중 브라우저 패널이 안 보여 콜백이 아예 안 돌았다. `setTimeout(place, 0)`으로 시작하고, 폭이 확정될 때까지 100ms 간격으로 최대 20회 재시도한다(주입 style 반영 + 웹폰트 로드로 폭이 두 번 바뀐다).
+
+### 덤으로 고친 것
+`남 + 양년 = 역행` 문구의 '양년'이 **하드코딩**돼 있어 음간 해에도 '양년'으로 표시됐다. `isYang`에 따라 양년/음년을 고르도록 바꾸고 5개 언어 테이블에 '음년'을 추가했다.
