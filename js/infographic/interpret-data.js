@@ -1,10 +1,11 @@
-// 인포그래픽 카드에 쓰이는 고정 해석 카피 테이블 (LLM 없이 결정적으로 문구를 뽑기 위한 상수 모음)
+// 카드에 쓰이는 언어 무관 상수 모음 (색·기호·격자 위치 등). 표시 문구는 i18n/ 언어팩이 담당한다.
 
 // ── 오행 ─────────────────────────────────────
 export const ELEMENT_COLORS = {
   목: '#2E9E6B', 화: '#D64545', 토: '#D9A441', 금: '#C9CDD2', 수: '#1F3A5F',
 };
 export const ELEMENT_HANJA = { 목: '木', 화: '火', 토: '土', 금: '金', 수: '水' };
+export const ELEMENT_KEYS = ['목', '화', '토', '금', '수'];
 export const STEM_ELEM = {
   甲: '목', 乙: '목', 丙: '화', 丁: '화', 戊: '토',
   己: '토', 庚: '금', 辛: '금', 壬: '수', 癸: '수',
@@ -13,67 +14,34 @@ export const BRANCH_ELEM = {
   子: '수', 丑: '토', 寅: '목', 卯: '목', 辰: '토', 巳: '화',
   午: '화', 未: '토', 申: '금', 酉: '금', 戌: '토', 亥: '수',
 };
+export const YANG_STEMS = '甲丙戊庚壬';
 
-// ── 일간 10종 ─────────────────────────────────
-export const DAYMASTER = {
-  甲: { title: '곧게 뻗는 큰 나무', desc: '위로 곧게 자라는 기운입니다. 리더십과 추진력이 강하고, 한번 세운 방향은 좀처럼 꺾지 않습니다.' },
-  乙: { title: '유연하게 감아 오르는 덩굴', desc: '부드럽지만 끈질긴 기운입니다. 환경에 잘 적응하며 사람 사이를 자연스럽게 이어냅니다.' },
-  丙: { title: '만물을 비추는 태양', desc: '밝고 거침없이 퍼지는 기운입니다. 표현력이 뛰어나고 주변을 환하게 만드는 존재감이 있습니다.' },
-  丁: { title: '어둠을 밝히는 촛불', desc: '은은하지만 깊게 스미는 기운입니다. 섬세한 통찰로 사람의 속마음을 읽어냅니다.' },
-  戊: { title: '우직하게 자리를 지키는 큰 산', desc: '묵직하고 흔들리지 않는 기운입니다. 신뢰가 두텁고 주변이 기대는 중심축이 됩니다.' },
-  己: { title: '만물을 길러내는 기름진 땅', desc: '품고 키워내는 기운입니다. 포용력이 넓고 실속을 챙기는 현실 감각이 뛰어납니다.' },
-  庚: { title: '단단하게 벼려진 강철과 보검', desc: '강철·보검의 기운입니다. 원칙과 결단력이 강하며 한번 정한 목표는 끝까지 밀어붙입니다.' },
-  辛: { title: '정교하게 다듬어진 보석', desc: '맑고 예리하게 빛나는 기운입니다. 미적 감각과 완성도에 대한 기준이 남다릅니다.' },
-  壬: { title: '넓고 깊게 흐르는 바다', desc: '거침없이 흐르는 기운입니다. 사고의 폭이 넓고 변화를 두려워하지 않습니다.' },
-  癸: { title: '만물을 적시는 이슬비', desc: '조용히 스며드는 기운입니다. 직관이 예민하고 상황의 흐름을 먼저 감지합니다.' },
-};
-
-// ── 십신 5분류 ────────────────────────────────
+// ── 십신 5분류 (구성만; 라벨·설명은 언어팩) ────
 export const SIPSIN_GROUPS = [
-  { key: '비겁', label: '비겁', hanja: '比劫', members: ['比肩', '劫財', '本元'], color: '#2E9E6B',
-    desc: '자립과 경쟁의 힘입니다. 강하면 독립심이 크고, 과하면 고집과 마찰로 나타납니다.' },
-  { key: '식상', label: '식상', hanja: '食傷', members: ['食神', '傷官'], color: '#D64545',
-    desc: '표현과 생산의 힘입니다. 강하면 재능과 창의성이 뛰어나고, 과하면 규칙을 답답해합니다.' },
-  { key: '재성', label: '재성', hanja: '財星', members: ['偏財', '正財'], color: '#D9A441',
-    desc: '재물과 현실 감각의 힘입니다. 강하면 실리에 밝고, 과하면 일을 벌이다 소모됩니다.' },
-  { key: '관성', label: '관성', hanja: '官星', members: ['偏官', '正官'], color: '#8B7BC7',
-    desc: '책임과 통제의 힘입니다. 강하면 조직에서 인정받고, 과하면 압박과 스트레스가 큽니다.' },
-  { key: '인성', label: '인성', hanja: '印星', members: ['偏印', '正印'], color: '#4A90D9',
-    desc: '배움과 보호의 힘입니다. 강하면 학문·자격에 유리하고, 과하면 실행이 늦어집니다.' },
+  { key: '비겁', hanja: '比劫', members: ['比肩', '劫財', '本元'], color: '#2E9E6B' },
+  { key: '식상', hanja: '食傷', members: ['食神', '傷官'], color: '#D64545' },
+  { key: '재성', hanja: '財星', members: ['偏財', '正財'], color: '#D9A441' },
+  { key: '관성', hanja: '官星', members: ['偏官', '正官'], color: '#8B7BC7' },
+  { key: '인성', hanja: '印星', members: ['偏印', '正印'], color: '#4A90D9' },
 ];
 
-// ── 신살 (engine specialSals 키 기준) ──────────
-export const SINSAL_INFO = {
-  cheonul: { name: '천을귀인', hanja: '天乙貴人', type: '길신', desc: '위기마다 사람이 돕습니다. 결정적 순간의 귀인 인연.' },
-  munchang: { name: '문창귀인', hanja: '文昌貴人', type: '길신', desc: '학문·시험·글쓰기의 별. 배움이 성취로 이어집니다.' },
-  cheonduk: { name: '천덕귀인', hanja: '天德貴人', type: '길신', desc: '흉을 덜어내는 덕의 별. 큰 화를 비켜갑니다.' },
-  wolduk: { name: '월덕귀인', hanja: '月德貴人', type: '길신', desc: '주변의 음덕이 두텁습니다. 인복이 받쳐주는 자리.' },
-  geumyeo: { name: '금여록', hanja: '金輿祿', type: '길신', desc: '안락과 배우자 복의 별. 생활의 기반이 편안합니다.' },
-  yangin: { name: '양인살', hanja: '羊刃殺', type: '중성', desc: '칼처럼 날선 추진력. 전문 기술로 쓰면 큰 무기가 됩니다.' },
-  goegang: { name: '괴강살', hanja: '魁罡殺', type: '중성', desc: '극단적으로 강한 기질. 리더 아니면 고립, 중간이 없습니다.' },
-  dohwa: { name: '도화살', hanja: '桃花殺', type: '중성', desc: '사람을 끄는 매력. 예술·연예·대인 분야에 유리합니다.' },
-  hongyeom: { name: '홍염살', hanja: '紅艶殺', type: '중성', desc: '은근한 색기와 인기. 이성 인연이 끊이지 않습니다.' },
-  baekho: { name: '백호살', hanja: '白虎殺', type: '흉신', desc: '급작스런 사고·혈광 주의. 안전과 건강 관리가 핵심.' },
+// ── 신살 (엔진 specialSals 키 → 한자·분류) ─────
+export const SINSAL_META = {
+  cheonul: { hanja: '天乙貴人', type: '길신' },
+  munchang: { hanja: '文昌貴人', type: '길신' },
+  cheonduk: { hanja: '天德貴人', type: '길신' },
+  wolduk: { hanja: '月德貴人', type: '길신' },
+  geumyeo: { hanja: '金輿祿', type: '길신' },
+  yangin: { hanja: '羊刃殺', type: '중성' },
+  goegang: { hanja: '魁罡殺', type: '중성' },
+  dohwa: { hanja: '桃花殺', type: '중성' },
+  hongyeom: { hanja: '紅艶殺', type: '중성' },
+  baekho: { hanja: '白虎殺', type: '흉신' },
 };
 export const SINSAL_TYPE_COLOR = { 길신: '#2E9E6B', 중성: '#D9A441', 흉신: '#D64545' };
-
-// ── 12운성 ────────────────────────────────────
-export const UNSEONG_KO = {
-  長生: '장생', 沐浴: '목욕', 冠帶: '관대', 乾祿: '건록', 帝旺: '제왕', 衰: '쇠',
-  病: '병', 死: '사', 墓: '묘', 絕: '절', 胎: '태', 養: '양',
-};
-
-// ── 십신 한자→한글 ────────────────────────────
-export const SIPSIN_KO = {
-  本元: '일간', 比肩: '비견', 劫財: '겁재', 食神: '식신', 傷官: '상관',
-  偏財: '편재', 正財: '정재', 偏官: '편관', 正官: '정관', 偏印: '편인', 正印: '정인',
-};
+export const SINSAL_TYPE_ORDER = ['길신', '중성', '흉신'];
 
 // ── 자미두수 ──────────────────────────────────
-export const PALACE_KO = {
-  命宮: '명궁', 兄弟: '형제궁', 夫妻: '부처궁', 子女: '자녀궁', 財帛: '재백궁', 疾厄: '질액궁',
-  遷移: '천이궁', 交友: '교우궁', 官祿: '관록궁', 田宅: '전택궁', 福德: '복덕궁', 父母: '부모궁',
-};
 // 명반 4×4 격자에서 지지별 고정 위치 (row, col)
 export const BRANCH_GRID = {
   巳: [0, 0], 午: [0, 1], 未: [0, 2], 申: [0, 3],
@@ -82,29 +50,16 @@ export const BRANCH_GRID = {
   寅: [3, 0], 丑: [3, 1], 子: [3, 2], 亥: [3, 3],
 };
 export const SIHUA_COLORS = { 化祿: '#2E9E6B', 化權: '#D9A441', 化科: '#4A90D9', 化忌: '#D64545' };
-export const MAIN_STARS = {
-  紫微: '제왕의 별. 중심에 서서 이끄는 자리입니다.',
-  天機: '지혜와 기획의 별. 머리 쓰는 일에 강합니다.',
-  太陽: '베푸는 빛의 별. 공적인 활동에서 빛납니다.',
-  武曲: '재물과 실행의 별. 뚝심 있게 밀어붙입니다.',
-  天同: '복과 여유의 별. 온화하게 흐름을 탑니다.',
-  廉貞: '변화와 승부의 별. 굴곡 속에 성취합니다.',
-  天府: '창고의 별. 안정과 축적에 강합니다.',
-  太陰: '섬세한 달의 별. 내면과 재물 관리에 밝습니다.',
-  貪狼: '욕망과 재능의 별. 다재다능하고 사교적입니다.',
-  巨門: '언변의 별. 말과 논리로 승부합니다.',
-  天相: '보좌의 별. 조율하고 중재하는 자리입니다.',
-  天梁: '어른의 별. 원칙과 보호의 기운입니다.',
-  七殺: '개척의 별. 정면 돌파로 판을 엽니다.',
-  破軍: '파괴와 재건의 별. 낡은 것을 부수고 새로 세웁니다.',
-};
+export const MAIN_STAR_KEYS = [
+  '紫微', '天機', '太陽', '武曲', '天同', '廉貞', '天府',
+  '太陰', '貪狼', '巨門', '天相', '天梁', '七殺', '破軍',
+];
 
 // ── 점성술 ────────────────────────────────────
-export const SIGN_KO = {
-  Aries: '양자리', Taurus: '황소자리', Gemini: '쌍둥이자리', Cancer: '게자리',
-  Leo: '사자자리', Virgo: '처녀자리', Libra: '천칭자리', Scorpio: '전갈자리',
-  Sagittarius: '사수자리', Capricorn: '염소자리', Aquarius: '물병자리', Pisces: '물고기자리',
-};
+export const SIGN_KEYS = [
+  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
+];
 export const SIGN_SYMBOL = {
   Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋', Leo: '♌', Virgo: '♍',
   Libra: '♎', Scorpio: '♏', Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓',
@@ -116,72 +71,34 @@ export const SIGN_COLOR = {
   Gemini: '#C9CDD2', Libra: '#C9CDD2', Aquarius: '#C9CDD2',
   Cancer: '#4A90D9', Scorpio: '#4A90D9', Pisces: '#4A90D9',
 };
-export const SIGN_TRAIT = {
-  Aries: '앞장서서 부딪히는 개척자', Taurus: '흔들리지 않는 안정의 수호자',
-  Gemini: '호기심으로 연결하는 전달자', Cancer: '품고 지켜내는 보호자',
-  Leo: '무대 중앙에서 빛나는 주인공', Virgo: '빈틈을 메우는 완성의 장인',
-  Libra: '균형을 맞추는 조율자', Scorpio: '끝까지 파고드는 탐구자',
-  Sagittarius: '경계를 넘는 탐험가', Capricorn: '정상까지 오르는 등반가',
-  Aquarius: '틀을 깨는 혁신가', Pisces: '경계를 녹이는 몽상가',
+export const PLANET_SYMBOL = {
+  Sun: '☉', Moon: '☽', Mercury: '☿', Venus: '♀', Mars: '♂', Jupiter: '♃', Saturn: '♄',
+  Uranus: '♅', Neptune: '♆', Pluto: '♇', Chiron: '⚷', NorthNode: '☊', SouthNode: '☋', Fortuna: '⊗',
 };
-export const PLANET_INFO = {
-  Sun: { ko: '태양', sym: '☉', key: '정체성·핵심 자아' },
-  Moon: { ko: '달', sym: '☽', key: '감정·무의식' },
-  Mercury: { ko: '수성', sym: '☿', key: '사고·소통' },
-  Venus: { ko: '금성', sym: '♀', key: '애정·미감' },
-  Mars: { ko: '화성', sym: '♂', key: '추진력·욕구' },
-  Jupiter: { ko: '목성', sym: '♃', key: '확장·행운' },
-  Saturn: { ko: '토성', sym: '♄', key: '책임·시련' },
-  Uranus: { ko: '천왕성', sym: '♅', key: '변혁·독창' },
-  Neptune: { ko: '해왕성', sym: '♆', key: '이상·영감' },
-  Pluto: { ko: '명왕성', sym: '♇', key: '변형·재생' },
-  Chiron: { ko: '카이런', sym: '⚷', key: '상처·치유' },
-  NorthNode: { ko: '북교점', sym: '☊', key: '생의 과제' },
-  SouthNode: { ko: '남교점', sym: '☋', key: '타고난 습관' },
-  Fortuna: { ko: '행운점', sym: '⊗', key: '복의 자리' },
+// 카드에 싣는 주요 행성 (교점·소행성은 제외)
+export const MAJOR_PLANETS = [
+  'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto',
+];
+export const ASPECT_META = {
+  conjunction: { sym: '☌', color: '#D9A441' },
+  trine: { sym: '△', color: '#2E9E6B' },
+  sextile: { sym: '✶', color: '#2E9E6B' },
+  square: { sym: '□', color: '#D64545' },
+  opposition: { sym: '☍', color: '#D64545' },
 };
-export const ASPECT_INFO = {
-  conjunction: { ko: '컨정션', sym: '☌', color: '#D9A441', tone: '결합' },
-  trine: { ko: '트라인', sym: '△', color: '#2E9E6B', tone: '조화' },
-  sextile: { ko: '섹스타일', sym: '✶', color: '#2E9E6B', tone: '기회' },
-  square: { ko: '스퀘어', sym: '□', color: '#D64545', tone: '긴장' },
-  opposition: { ko: '어포지션', sym: '☍', color: '#D64545', tone: '대립' },
-};
+
 // ── 궁합 (goonghap.html의 판정 규칙과 동일하게 유지) ──
 export const OHAENG_GEN = { 목: '화', 화: '토', 토: '금', 금: '수', 수: '목' };
 export const OHAENG_CTRL = { 목: '토', 화: '금', 토: '수', 금: '목', 수: '화' };
 export const BRANCH_IDX = { 子: 0, 丑: 1, 寅: 2, 卯: 3, 辰: 4, 巳: 5, 午: 6, 未: 7, 申: 8, 酉: 9, 戌: 10, 亥: 11 };
 export const YUKHAP = [[0, 1], [2, 11], [3, 10], [4, 9], [5, 8], [6, 7]];
 export const SAMHAP = [[8, 0, 4], [11, 3, 7], [2, 6, 10], [5, 9, 1]];
-
-export const STEM_REL_INFO = {
-  SAME: { base: 3, symbol: '≡', label: '비화(比和)', title: '편안하고 닮은 인연',
-    desc: '같은 기운이라 말이 잘 통하고 처음부터 편안합니다. 다만 장단점도 함께 닮아 서로를 보완할 유연함이 필요합니다.' },
-  A_GEN_B: { base: 4, symbol: '→', label: '상생(相生)', title: '이끌고 키워주는 인연',
-    desc: '앞사람의 기운이 뒷사람을 살려주는 흐름입니다. 주는 쪽이 지치지 않도록 균형을 의식하면 오래갑니다.' },
-  B_GEN_A: { base: 4, symbol: '←', label: '상생(相生)', title: '받쳐주고 채워주는 인연',
-    desc: '뒷사람의 기운이 앞사람을 살려주는 흐름입니다. 든든한 지지가 정서적 안정으로 이어집니다.' },
-  A_CTRL_B: { base: 2, symbol: '⊃', label: '상극(相剋)', title: '강렬하고 역동적인 인연',
-    desc: '끌림이 강한 만큼 주도권 마찰도 생깁니다. 통제보다 동행으로 방향을 잡으면 추진력이 됩니다.' },
-  B_CTRL_A: { base: 2, symbol: '⊂', label: '상극(相剋)', title: '강렬하고 역동적인 인연',
-    desc: '끌림이 강한 만큼 주도권 마찰도 생깁니다. 서로의 페이스를 존중하면 가장 단단한 유대가 됩니다.' },
+export const STEM_REL_BASE = { SAME: 3, A_GEN_B: 4, B_GEN_A: 4, A_CTRL_B: 2, B_CTRL_A: 2 };
+export const STEM_REL_SYMBOL = { SAME: '≡', A_GEN_B: '→', B_GEN_A: '←', A_CTRL_B: '⊃', B_CTRL_A: '⊂' };
+export const BRANCH_REL_COLOR = { HEX: '#2E9E6B', TRIO: '#2E9E6B', CLASH: '#D64545', NEUTRAL: '#C9CDD2' };
+// 영역별 기본 점수 [감정, 소통, 안정]
+export const GOONGHAP_AREA_BASE = {
+  SAME: [3, 4, 4], A_GEN_B: [4, 3, 3], B_GEN_A: [4, 3, 4],
+  A_CTRL_B: [2, 2, 2], B_CTRL_A: [2, 2, 2],
 };
-export const BRANCH_REL_INFO = {
-  HEX: { tag: '육합(六合)', color: '#2E9E6B', desc: '일지가 합을 이루어 일상의 결이 잘 맞습니다.' },
-  TRIO: { tag: '삼합(三合)', color: '#2E9E6B', desc: '같은 삼합국에 속해 방향이 자연스럽게 모입니다.' },
-  CLASH: { tag: '충(沖)', color: '#D64545', desc: '일지가 충이라 예상 못한 마찰이 생길 수 있습니다.' },
-  NEUTRAL: { tag: '중립', color: '#C9CDD2', desc: '일지 간 특별한 합·충이 없는 담백한 관계입니다.' },
-};
-export const GOONGHAP_SCORE = {
-  5: { stars: '★★★★★', label: '금상첨화 — 일지까지 조화를 이룹니다.' },
-  4: { stars: '★★★★☆', label: '좋은 인연입니다.' },
-  3: { stars: '★★★☆☆', label: '무난하고 안정적인 인연입니다.' },
-  2: { stars: '★★☆☆☆', label: '노력이 필요한 인연입니다.' },
-  1: { stars: '★☆☆☆☆', label: '많은 인내와 이해가 필요합니다.' },
-};
-
-// 하우스 12종 키워드
-export const HOUSE_KEY = [
-  '자아·외모', '재물·소유', '소통·형제', '가정·뿌리', '연애·창작', '일상·건강',
-  '관계·배우자', '변형·공유', '확장·철학', '커리어·명예', '인맥·이상', '내면·비밀',
-];
+export const GOONGHAP_AREA_COLOR = { emotion: '#D64545', comm: '#4A90D9', stability: '#2E9E6B' };

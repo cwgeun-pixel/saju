@@ -1,7 +1,14 @@
-// 정규화된 카드 데이터를 1080×1920 고정 레이아웃 HTML 카드 6종으로 렌더링하는 모듈
+// 정규화된 카드 데이터를 1080×1920 고정 레이아웃 HTML 카드로 렌더링하는 모듈
+// 라벨은 data.pack(언어팩)에서 꺼내므로 이 파일에는 한국어를 직접 쓰지 않는다.
+import { pick } from './i18n.js';
+// 언어팩에서 라벨을 꺼내는 단축 헬퍼
+const L = (d, path, fb = '') => pick(d.pack, path, fb);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 // 밝은 회색(금 오행)은 어두운 글자로 대비 확보
 const onLight = (c) => c === '#C9CDD2';
+// 한자권 언어는 이름이 곧 한자라 병기하지 않는다 (언어팩의 showHanja가 결정)
+const dual = (d, name, hanja, cls = 'b-sub hanja') =>
+  (!L(d, 'ui.showHanja', true) || name === hanja) ? '' : ` <span class="${cls}">${esc(hanja)}</span>`;
 const vs = (sym) => `${esc(sym)}︎`; // 별자리·행성 기호를 이모지가 아닌 텍스트 글리프로
 
 function shell(id, kicker, meta, body, footer) {
@@ -9,8 +16,8 @@ function shell(id, kicker, meta, body, footer) {
 <article class="card" id="card-${id}" data-card="${id}">
   <header class="c-head">
     <div class="kicker">${esc(kicker)}</div>
-    <div class="c-name">${esc(meta.name || '내 사주')}</div>
-    <div class="c-birth">${esc(meta.birth)} · ${esc(meta.gender)} · ${esc(meta.age)}세</div>
+    <div class="c-name">${esc(meta.name)}</div>
+    <div class="c-birth">${esc(meta.birth)} · ${esc(meta.gender)} · ${esc(meta.age)}</div>
   </header>
   <div class="c-body">${body}</div>
   <footer class="c-foot">
@@ -34,7 +41,7 @@ function renderSaju(d, meta) {
     </div>
   </section>
 
-  ${title('원국 사주')}
+  ${title(L(d,'ui.secWongook'))}
   <div class="pillars">
     ${s.pillars.map((p) => `
       <div class="pillar">
@@ -45,47 +52,47 @@ function renderSaju(d, meta) {
       </div>`).join('')}
   </div>
 
-  ${title('오행 분포')}
+  ${title(L(d,'ui.secElements'))}
   <div class="bars">
     ${s.elements.map((e) => `
       <div class="bar-row">
-        <div class="b-name"><span class="hanja">${esc(e.hanja)}</span> ${esc(e.kor)}</div>
+        <div class="b-name hanja">${esc(e.label)}</div>
         <div class="b-track"><div class="b-fill" style="width:${(e.count / 8) * 100}%;background:${e.color}"></div></div>
         <div class="b-val">${e.count}</div>
-        <div class="b-mark ${e.mark ? (e.mark === '과다' ? 'over' : 'under') : ''}">${esc(e.mark)}</div>
+        <div class="b-mark ${e.markKey}">${esc(e.mark)}</div>
       </div>`).join('')}
   </div>
 
-  ${title('신강 · 신약')}
+  ${title(L(d,'ui.secStrength'))}
   <div class="strength">
     <div class="st-gauge"><div class="st-fill" style="width:${s.strength.gauge}%"></div>
       <div class="st-mid"></div></div>
     <div class="st-row">
       <span class="st-type">${esc(s.strength.type)}</span>
-      <span class="st-yong">용신 <b>${esc(s.strength.yong)}</b> · 희신 ${esc(s.strength.hee)} · 기신 ${esc(s.strength.gi)}</span>
+      <span class="st-yong">${esc(L(d,'ui.yong'))} <b>${esc(s.strength.yong)}</b> · ${esc(L(d,'ui.hee'))} ${esc(s.strength.hee)} · ${esc(L(d,'ui.gi'))} ${esc(s.strength.gi)}</span>
     </div>
     <div class="st-desc">${esc(s.strength.desc)}</div>
   </div>`;
-  return shell('saju', '四柱命理 · 원국', meta, body, esc(s.elementLine));
+  return shell('saju', L(d,'ui.kickerSaju'), meta, body, esc(s.elementLine));
 }
 
 // ── 2. 십신·신살 ──────────────────────────────
 function renderSipsin(d, meta) {
   const s = d.sipsin;
   const body = `
-  ${title('십신 강약')}
+  ${title(L(d,'ui.secSipsin'))}
   <div class="bars">
     ${s.bars.map((b) => `
       <div class="bar-row">
-        <div class="b-name">${esc(b.label)} <span class="b-sub hanja">${esc(b.hanja)}</span></div>
+        <div class="b-name">${esc(b.label)}${dual(d, b.label, b.hanja)}</div>
         <div class="b-track"><div class="b-fill" style="width:${b.pct}%;background:${b.color}"></div></div>
         <div class="b-val">${b.count}</div>
-        <div class="b-mark ${b.strongest ? 'over' : ''}">${b.strongest ? '최강' : ''}</div>
+        <div class="b-mark ${b.strongest ? 'over' : ''}">${b.strongest ? esc(L(d,'ui.strongest')) : ''}</div>
       </div>`).join('')}
   </div>
   <div class="note">${esc(s.topLine)}</div>
 
-  ${title('신살')}
+  ${title(L(d,'ui.secSinsal'))}
   <div class="sals">
     ${s.sals.length ? s.sals.map((x) => `
       <div class="sal" style="--sc:${x.color}">
@@ -93,56 +100,56 @@ function renderSipsin(d, meta) {
           <span class="sal-name">${esc(x.name)}</span>
           <span class="sal-type">${esc(x.type)}</span>
         </div>
-        <div class="sal-hanja hanja">${esc(x.hanja)}${x.where ? ` · ${esc(x.where)}` : ''}</div>
+<div class="sal-hanja hanja">${[L(d,'ui.showHanja',true) && x.name !== x.hanja ? esc(x.hanja) : '', x.where ? esc(x.where) : ''].filter(Boolean).join(' · ')}</div>
         <div class="sal-desc">${esc(x.desc)}</div>
-      </div>`).join('') : '<div class="note">두드러진 신살이 없는 담백한 명조입니다.</div>'}
+      </div>`).join('') : `<div class="note">${esc(L(d,'ui.noSinsal'))}</div>`}
   </div>
 
-  ${title('십이운성')}
+  ${title(L(d,'ui.secUnseong'))}
   <div class="unseong">
     ${s.unseong.map((u) => `
       <div class="un">
         <div class="un-label">${esc(u.label)}</div>
         <div class="un-ko">${esc(u.ko)}</div>
-        <div class="un-hanja hanja">${esc(u.hanja)}</div>
+        <div class="un-hanja hanja">${L(d,'ui.showHanja',true) && u.ko !== u.hanja ? esc(u.hanja) : ''}</div>
       </div>`).join('')}
   </div>`;
-  const foot = s.gongmang.length ? `공망 · ${s.gongmang.map(esc).join(' ')}` : '';
-  return shell('sipsin', '四柱命理 · 십신', meta, body, foot);
+  const foot = s.gongmang.length ? esc(L(d,'ui.gongmang')(s.gongmang.join(' '))) : '';
+  return shell('sipsin', L(d,'ui.kickerSipsin'), meta, body, foot);
 }
 
 // ── 3. 대운·세운 ──────────────────────────────
 function renderLuck(d, meta) {
   const l = d.luck;
   const body = `
-  ${title(`${l.seyun.year} 세운`)}
+  ${title(L(d,'ui.secSeyun')(l.seyun.year))}
   <div class="seyun">
     <div class="sy-gz hanja">${esc(l.seyun.gz)}</div>
     <div class="sy-txt">
-      <div class="sy-year">${esc(l.seyun.year)}년</div>
+      <div class="sy-year">${esc(L(d,'ui.yearLabel')(l.seyun.year))}</div>
       <div class="sy-desc">${esc(l.seyunDesc)}</div>
     </div>
   </div>
 
-  ${title('대운 10년 주기')}
+  ${title(L(d,'ui.secDaewoon'))}
   <div class="dw-list">
     ${l.daewoon.map((x) => `
       <div class="dw ${x.current ? 'now' : ''}">
-        <div class="dw-age">${x.age}세</div>
+        <div class="dw-age">${esc(L(d,'ui.ageFrom')(x.age))}</div>
         <div class="dw-gz hanja">${esc(x.gz)}</div>
         <div class="dw-sip">${esc(x.sipsin)}</div>
         <div class="dw-un">${esc(x.unseong)}</div>
-        ${x.current ? '<div class="dw-badge">현재</div>' : ''}
+        ${x.current ? `<div class="dw-badge">${esc(L(d,'ui.now'))}</div>` : ''}
       </div>`).join('')}
   </div>`;
-  return shell('luck', '四柱命理 · 운의 흐름', meta, body, esc(l.currentDesc));
+  return shell('luck', L(d,'ui.kickerLuck'), meta, body, esc(l.currentDesc));
 }
 
 // ── 4. 자미두수 명반 ──────────────────────────
 function renderZiwei(d, meta) {
   const z = d.ziwei;
   const body = `
-  ${title('십이궁 명반')}
+  ${title(L(d,'ui.secPalaces'))}
   <div class="chart">
     ${z.palaces.map((p) => `
       <div class="palace ${p.isMing ? 'ming' : ''}" style="grid-row:${p.row + 1};grid-column:${p.col + 1}">
@@ -162,17 +169,17 @@ function renderZiwei(d, meta) {
     </div>
   </div>
 
-  ${title('대한 흐름')}
+  ${title(L(d,'ui.secDaxian'))}
   <div class="dx-list">
     ${z.daxian.slice(0, 8).map((x) => `
       <div class="dx ${x.current ? 'now' : ''}">
-        <div class="dx-age">${esc(x.age)}세</div>
+        <div class="dx-age">${esc(x.age)}</div>
         <div class="dx-gz hanja">${esc(x.gz)}</div>
         <div class="dx-pal">${esc(x.ko)}</div>
         <div class="dx-star hanja">${esc(x.stars)}</div>
       </div>`).join('')}
   </div>`;
-  return shell('ziwei', '紫微斗數 · 명반', meta, body, esc(z.currentDesc));
+  return shell('ziwei', L(d,'ui.kickerZiwei'), meta, body, esc(z.currentDesc));
 }
 
 // ── 5. 점성술 네이탈 ──────────────────────────
@@ -190,7 +197,7 @@ function renderNatal(d, meta) {
   </section>
   <div class="note center">${esc(n.overview)}</div>
 
-  ${title('행성 배치')}
+  ${title(L(d,'ui.secPlanets'))}
   <div class="pl-rows">
     ${n.planets.map((p) => `
       <div class="pr">
@@ -201,17 +208,17 @@ function renderNatal(d, meta) {
       </div>`).join('')}
   </div>
 
-  ${title('주요 어스펙트')}
+  ${title(L(d,'ui.secAspects'))}
   <div class="as-rows">
     ${n.aspects.map((a) => `
       <div class="as">
         <div class="as-pair">${vs(a.s1)} ${esc(a.p1)}<span class="as-sym" style="color:${a.color}">${vs(a.sym)}</span>${vs(a.s2)} ${esc(a.p2)}</div>
         <div class="as-type" style="color:${a.color}">${esc(a.ko)}</div>
-        <div class="as-orb">${esc(a.orb)}°</div>
+        <div class="as-orb">${esc(L(d,'ui.orb')(a.orb))}</div>
       </div>`).join('')}
   </div>`;
-  const foot = n.unknownTime ? '출생 시간 미상 — 상승궁과 하우스는 제외했습니다.' : '';
-  return shell('natal', 'NATAL CHART', meta, body, foot);
+  const foot = n.unknownTime ? esc(n.unknownNote) : '';
+  return shell('natal', L(d,'ui.kickerNatal'), meta, body, foot);
 }
 
 // ── 6. 올해 흐름 ──────────────────────────────
@@ -221,12 +228,12 @@ function renderYear(d, meta) {
   <section class="hero year-hero">
     <div class="yh-gz hanja">${esc(y.seyun)}</div>
     <div class="hero-txt">
-      <div class="dm-title serif">${esc(y.year)}년의 흐름</div>
+      <div class="dm-title serif">${esc(L(d,'ui.yearFlow')(y.year))}</div>
       <div class="dm-desc">${esc(y.summary)}</div>
     </div>
   </section>
 
-  ${title('유년 사화')}
+  ${title(L(d,'ui.secSihua'))}
   <div class="sihua">
     ${y.sihua.map((s) => `
       <div class="sh">
@@ -236,20 +243,20 @@ function renderYear(d, meta) {
       </div>`).join('')}
   </div>
 
-  ${title('월별 흐름')}
+  ${title(L(d,'ui.secMonths'))}
   <div class="months">
     ${y.months.map((m) => `
       <div class="mo ${m.tone}">
-        <div class="mo-n">${m.month}월</div>
+        <div class="mo-n">${esc(m.label)}</div>
         <div class="mo-p">${esc(m.ko)}</div>
       </div>`).join('')}
   </div>
   <div class="legend">
-    <span><i class="dot good"></i>기회</span>
-    <span><i class="dot flat"></i>평이</span>
-    <span><i class="dot watch"></i>주의</span>
+    <span><i class="dot good"></i>${esc(y.legend.good)}</span>
+    <span><i class="dot flat"></i>${esc(y.legend.flat)}</span>
+    <span><i class="dot watch"></i>${esc(y.legend.watch)}</span>
   </div>`;
-  return shell('year', `紫微斗數 · ${y.year} 유년`, meta, body, '');
+  return shell('year', L(d,'ui.kickerYear')(y.year), meta, body, '');
 }
 
 // ── 7. 궁합 ──────────────────────────────────
@@ -259,7 +266,7 @@ function renderGoonghap(d, meta) {
     <div class="gh-face">
       <div class="gh-badge hanja ${onLight(p.color) ? 'dark-ink' : ''}" style="background:${p.color}">${esc(p.gan)}${esc(p.ji)}</div>
       <div class="gh-name">${esc(p.name)}</div>
-      <div class="gh-elem"><span class="hanja">${esc(p.hanja)}</span> ${esc(p.elem)} 일간</div>
+      <div class="gh-elem">${esc(p.ganLabel)}</div>
       <div class="gh-trait">${esc(p.title)}</div>
     </div>`;
 
@@ -279,7 +286,7 @@ function renderGoonghap(d, meta) {
     <div class="gh-scorelabel">${esc(g.scoreLabel)}</div>
   </div>
 
-  ${title('영역별 궁합')}
+  ${title(L(d,'ui.secAreas'))}
   <div class="bars">
     ${g.areas.map((a) => `
       <div class="bar-row">
@@ -289,7 +296,7 @@ function renderGoonghap(d, meta) {
       </div>`).join('')}
   </div>
 
-  ${title('일지 관계')}
+  ${title(L(d,'ui.secBranchRel'))}
   <div class="gh-branch" style="--bc:${g.branch.color}">
     <div class="gh-btag hanja">${esc(g.branch.tag)}</div>
     <div class="gh-bdesc">${esc(g.branch.desc)}</div>
@@ -297,12 +304,11 @@ function renderGoonghap(d, meta) {
   <div class="note">${esc(g.desc)}</div>
   <div class="note">${esc(g.yinyang)}</div>`;
 
-  const head = { name: `${g.a.name} · ${g.b.name}`, birth: g.flow, gender: '궁합', age: g.score * 20 };
   return `
 <article class="card" id="card-goonghap" data-card="goonghap">
   <header class="c-head">
-    <div class="kicker">宮合 · 두 사람의 결</div>
-    <div class="c-name">${esc(head.name)}</div>
+    <div class="kicker">${esc(L(d,'ui.kickerGoonghap'))}</div>
+    <div class="c-name">${esc(g.a.name)} · ${esc(g.b.name)}</div>
     <div class="c-birth hanja">${esc(g.flow)}</div>
   </header>
   <div class="c-body">${body}</div>
@@ -313,13 +319,13 @@ function renderGoonghap(d, meta) {
 }
 
 export const CARD_DEFS = [
-  { id: 'saju', label: '사주 원국', render: renderSaju },
-  { id: 'sipsin', label: '십신·신살', render: renderSipsin },
-  { id: 'luck', label: '대운·세운', render: renderLuck },
-  { id: 'ziwei', label: '자미두수', render: renderZiwei },
-  { id: 'natal', label: '점성술', render: renderNatal },
-  { id: 'year', label: '올해 흐름', render: renderYear },
-  { id: 'goonghap', label: '궁합', render: renderGoonghap, needs: 'goonghap' },
+  { id: 'saju', labelKey: 'cardSaju', render: renderSaju },
+  { id: 'sipsin', labelKey: 'cardSipsin', render: renderSipsin },
+  { id: 'luck', labelKey: 'cardLuck', render: renderLuck },
+  { id: 'ziwei', labelKey: 'cardZiwei', render: renderZiwei },
+  { id: 'natal', labelKey: 'cardNatal', render: renderNatal },
+  { id: 'year', labelKey: 'cardYear', render: renderYear },
+  { id: 'goonghap', labelKey: 'cardGoonghap', render: renderGoonghap, needs: 'goonghap' },
 ];
 
 export function renderAll(data, ids) {

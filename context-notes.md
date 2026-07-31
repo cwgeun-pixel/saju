@@ -266,3 +266,22 @@ cards.css에는 `* { margin:0 }`, `body { ... }` 같은 전역 초기화가 있�
 
 ### 블러에 가려 있던 버그
 사주 미니차트의 `displayOrder = [0, 2, 1, 3]`과 `isDay = (idx === 2)`가 틀려 **일주와 월주 열이 서로 바뀌어** 표시되고 있었다. 코드 주석이 `0=시주 1=월주 2=일주`라고 잘못 적혀 있던 게 원인으로, 앞서 고친 `pillars[2]` 일간 버그와 같은 뿌리다. 엔진 순서는 [시,일,월,년]이므로 `[0,1,2,3]` + `idx===1`로 바로잡았다. 블러 때문에 그동안 아무도 확인할 수 없었다.
+
+## 2026-07-31 카드 다국어화
+
+사이트는 `localStorage['honcheon.lang']`로 언어를 관리하고(최초 방문 시 `navigator.languages`로 자동 감지), 선택기를 바꾸면 `honcheon:langchange` 이벤트가 나간다. fortune-free.js가 이걸 받아 `runFortune`을 다시 돌리므로 **카드도 자동으로 다시 그려진다** — 별도 처리 불필요.
+
+### 구조
+- `js/infographic/i18n/{ko,en,ja,zh,es}.js` — 언어팩. 필요한 언어만 동적 import.
+- `js/infographic/i18n.js` — `getLang()`, `loadPack()`, `pick(pack, path, fallback)`. 값이 없으면 ko로 폴백해 화면이 비지 않는다.
+- `interpret-data.js`에는 **언어 무관 상수만** 남겼다(색·기호·격자·판정 계수). 문구는 전부 언어팩.
+- `normalize(raw, pack)` / 카드 렌더러는 `data.pack`에서 라벨을 꺼낸다.
+
+### 조회 키는 번역하지 않는다
+`SINSAL_META.type`(길신/중성/흉신), `SIPSIN_GROUPS[].key`(비겁/식상…), `typeKey`(신강/신약/중화)는 **코드 상수로 조회하는 키**라 언어팩에서도 한국어 키를 유지해야 한다. 값만 번역한다. 번역 에이전트 3곳이 모두 이 지점을 짚어냈다.
+
+### 한자권 중복 표기
+카드가 "이름 + 한자"를 병기하는데 ja/zh는 이름이 곧 한자라 `木 木`, `比劫 比劫`처럼 겹쳤다. 언어팩에 `ui.showHanja` 플래그를 두고 ja/zh만 false로 했다. 오행/용신/궁합 흐름 표기도 이름과 한자가 같으면 하나만 쓰도록 normalize에서 처리한다.
+
+### card.html에는 사이트 i18n.js를 싣지 않는다
+`i18n.js`는 `document.body`에 MutationObserver를 걸어 추가되는 텍스트 노드를 자체 사전으로 번역한다. 결과 페이지의 카드는 **shadow DOM 안이라 옵저버가 닿지 않아 안전**하지만, card.html은 카드가 light DOM이라 사전이 카드 문구를 건드릴 수 있다. 그래서 card.html에는 자체 `<select>`를 붙이고 변경 시 다시 그린다.

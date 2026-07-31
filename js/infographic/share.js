@@ -124,7 +124,11 @@ function download(blob, filename) {
  * 카드에 저장/공유 버튼을 붙인다.
  * 공유 API를 지원하는 기기(대부분의 모바일)면 공유 시트를, 아니면 저장만 노출한다.
  */
-export function attachShareButtons(root, { name = '운세', css = null } = {}) {
+export function attachShareButtons(root, { name = 'card', css = null, labels = {} } = {}) {
+  const L = {
+    save: labels.save || 'Save image', share: labels.share || 'Share',
+    making: labels.making || '...', done: labels.done || 'OK', failed: labels.failed || 'Failed',
+  };
   const canShare = typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [new File([''], 'x.png', { type: 'image/png' })] });
 
@@ -134,8 +138,8 @@ export function attachShareButtons(root, { name = '운세', css = null } = {}) {
     const bar = document.createElement('div');
     bar.className = 'card-actions';
     bar.innerHTML = `
-      <button type="button" data-act="save">이미지 저장</button>
-      ${canShare ? '<button type="button" data-act="share">공유</button>' : ''}`;
+      <button type="button" data-act="save">${L.save}</button>
+      ${canShare ? `<button type="button" data-act="share">${L.share}</button>` : ''}`;
     slot.after(bar);
 
     bar.addEventListener('click', async (e) => {
@@ -144,18 +148,18 @@ export function attachShareButtons(root, { name = '운세', css = null } = {}) {
       const act = btn.dataset.act;
       const original = btn.textContent;
       btn.disabled = true;
-      btn.textContent = '만드는 중…';
+      btn.textContent = L.making;
       try {
         const blob = await cardToBlob(card, { css });
         if (!blob) throw new Error('이미지 변환에 실패했습니다.');
         const filename = `${name}_${label}.png`;
         if (act === 'share') {
           const file = new File([blob], filename, { type: 'image/png' });
-          await navigator.share({ files: [file], title: `${name}의 운세 카드` });
+          await navigator.share({ files: [file], title: name });
         } else {
           download(blob, filename);
         }
-        btn.textContent = '완료';
+        btn.textContent = L.done;
       } catch (err) {
         if (err && err.name === 'AbortError') {
           btn.textContent = original; // 사용자가 공유 시트를 닫은 경우
@@ -163,7 +167,7 @@ export function attachShareButtons(root, { name = '운세', css = null } = {}) {
           return;
         }
         console.error(err);
-        btn.textContent = '실패';
+        btn.textContent = L.failed;
       }
       setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1600);
     });

@@ -1,9 +1,10 @@
 // 무료운세 결과 페이지의 각 섹션 끝에 인포그래픽 카드를 shadow DOM으로 끼워 넣는 모듈
 import { normalize } from './normalize.js';
+import { loadPack, getLang, pick } from './i18n.js';
 import { renderAll } from './cards.js';
 import { attachShareButtons } from './share.js';
 
-const CSS_URL = '/js/infographic/cards.css?v=20260731b';
+const CSS_URL = '/js/infographic/cards.css?v=20260731c';
 const FONT_URL = 'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700'
   + '&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap';
 
@@ -51,7 +52,13 @@ async function mount(host, data, ids, title) {
       ${cards}
     </div>`;
 
-  attachShareButtons(shadow, { name: data.meta.name || '내운세', css });
+  attachShareButtons(shadow, {
+    name: data.meta.name, css,
+    labels: {
+      save: pick(data.pack, 'ui.save'), share: pick(data.pack, 'ui.share'),
+      making: pick(data.pack, 'ui.making'), done: pick(data.pack, 'ui.done'), failed: pick(data.pack, 'ui.failed'),
+    },
+  });
   fitScale(host, shadow);
   return shadow;
 }
@@ -66,7 +73,7 @@ export async function mountSectionCards(raw) {
   if (!hosts.length) return;
 
   ensureFonts();
-  const data = normalize(raw);
+  const data = normalize(raw, await loadPack(getLang()));
   const mounted = [];
   for (const host of hosts) {
     host.setAttribute('data-mounted', '1');

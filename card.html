@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/js/infographic/cards.css?v=20260731b">
+<link rel="stylesheet" href="/js/infographic/cards.css?v=20260731c">
 <style>
   /* 이 페이지 전용 골격. 카드 자체 스타일은 cards.css가 담당한다. */
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,6 +24,10 @@
     border: 1px solid #333b4d; background: #202634; color: #a8a291; cursor: pointer;
   }
   #bar button.on { border-color: #d9a441; color: #d9a441; background: rgba(217,164,65,.12); }
+  #bar select {
+    flex: none; margin-left: auto; font: inherit; font-size: 13px; padding: 7px 10px;
+    border-radius: 999px; border: 1px solid #333b4d; background: #202634; color: #e8dfc8; cursor: pointer;
+  }
   #msg { padding: 40px 24px; text-align: center; color: #a8a291; font-size: 15px; line-height: 1.7; }
   body.export #bar { display: none; }
   body.export #deck { padding: 0; }
@@ -40,6 +44,7 @@ import { createChart, getDaxianList, calculateLiunian } from '/app/sajusite/asse
 import { calculateNatal } from '/app/sajusite/assets/orrery-core/natal.js';
 import { getFourPillars } from '/app/sajusite/assets/orrery-core/pillars.js';
 import { normalize, cardGoonghap } from '/js/infographic/normalize.js';
+import { loadPack, getLang, pick } from '/js/infographic/i18n.js';
 import { availableCards, renderAll } from '/js/infographic/cards.js';
 import { attachShareButtons } from '/js/infographic/share.js';
 
@@ -114,11 +119,12 @@ async function main() {
   const liunian = calculateLiunian(ziwei, thisYear);
   const [seyunGanzi] = getFourPillars(thisYear, 7, 1, 12, 0, false);
 
+  const pack = await loadPack(getLang());
   const data = normalize({
     saju, ziwei, natalChart, daxian, liunian,
     input: { year, month, day, hour, minute, gender, unknownTime },
     seyunGanzi, name: input.name, thisYear,
-  });
+  }, pack);
 
   const partner = readPartner();
   if (partner) {
@@ -127,7 +133,7 @@ async function main() {
       hour: partner.hour, minute: partner.minute,
       gender: partner.gender, unknownTime: partner.unknownTime,
     });
-    data.goonghap = cardGoonghap(saju, sajuB, input.name, partner.name);
+    data.goonghap = cardGoonghap(saju, sajuB, input.name, partner.name, pack);
   }
 
   const only = qs.get('card') ? qs.get('card').split(',') : null;
@@ -139,7 +145,13 @@ async function main() {
 
   if (!isExport) {
     buildNav(data, only);
-    attachShareButtons(deck, { name: data.meta.name || '내운세' });
+    attachShareButtons(deck, {
+      name: data.meta.name,
+      labels: {
+        save: pick(pack, 'ui.save'), share: pick(pack, 'ui.share'),
+        making: pick(pack, 'ui.making'), done: pick(pack, 'ui.done'), failed: pick(pack, 'ui.failed'),
+      },
+    });
   }
   applyScale();
   document.body.dataset.ready = '1';
@@ -147,9 +159,23 @@ async function main() {
 
 function buildNav(data, only) {
   const bar = document.getElementById('bar');
+  bar.innerHTML = '';
   const defs = availableCards(data, only);
-  bar.innerHTML = defs.map((c, i) =>
-    `<button data-go="card-${c.id}" class="${i === 0 ? 'on' : ''}">${c.label}</button>`).join('');
+  bar.insertAdjacentHTML('beforeend', defs.map((c, i) =>
+    `<button data-go="card-${c.id}" class="${i === 0 ? 'on' : ''}">${pick(data.pack, 'ui.' + c.labelKey, c.id)}</button>`).join(''));
+  // 이 페이지에는 사이트 i18n 스크립트를 싣지 않으므로(카드 문구까지 건드릴 수 있음)
+  // 언어 선택기를 직접 붙이고, 바꾸면 카드를 다시 그린다.
+  const sel = document.createElement('select');
+  sel.innerHTML = [['ko','한국어'],['en','English'],['ja','日本語'],['zh','中文'],['es','Español']]
+    .map(([v, n]) => `<option value="${v}">${n}</option>`).join('');
+  sel.value = getLang();
+  sel.addEventListener('change', () => {
+    try { localStorage.setItem('honcheon.lang', sel.value); } catch (_) { /* 저장 실패는 무시 */ }
+    document.body.dataset.ready = '';
+    main().catch(console.error);
+  });
+  bar.appendChild(sel);
+
   bar.addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
