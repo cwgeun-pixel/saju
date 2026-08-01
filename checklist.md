@@ -203,3 +203,11 @@
 - [x] 약관 조문 번호 결손(제5조 누락) 수정, 전 언어팩에 반영.
 - [x] scripts/fix-legal-articles.js — 조문 번호 순차 재부여(멱등).
 - [x] 5개 언어 x 3개 문서 렌더링 + HTML 구조·링크 일치 검증.
+
+## 2026-07-31 도메인 이전 (trinityofdestiny.com).
+
+- [x] scripts/swap-domain.py — 전역 도메인 표기 일괄 교체.
+- [x] 카드 CTA, canonical 12곳, sitemap 9곳, robots Sitemap, auth 리디렉트 2곳.
+- [x] 카드 렌더로 CTA 문구 확인.
+- [ ] Cloudflare Pages 커스텀 도메인 연결 및 구 도메인 리디렉트 설정 (사용자 작업).
+- [ ] Search Console에 새 도메인 등록 + sitemap 제출.

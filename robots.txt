@@ -28,4 +28,4 @@ Allow: /
 User-agent: AdsBot-Google-Mobile
 Allow: /
 
-Sitemap: https://saju0523.pages.dev/sitemap.xml
+Sitemap: https://www.trinityofdestiny.com/sitemap.xml

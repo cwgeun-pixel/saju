@@ -4,7 +4,7 @@ import { loadPack, getLang, pick } from './i18n.js';
 import { renderAll } from './cards.js';
 import { attachShareButtons } from './share.js';
 
-const CSS_URL = '/js/infographic/cards.css?v=20260731c';
+const CSS_URL = '/js/infographic/cards.css?v=20260731e';
 const FONT_URL = 'https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700'
   + '&family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap';
 

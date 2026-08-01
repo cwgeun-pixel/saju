@@ -336,7 +336,7 @@
       email, password: pw,
       options: {
         data: { full_name: name },
-        emailRedirectTo: 'https://saju0523.pages.dev/auth-callback.html'
+        emailRedirectTo: 'https://www.trinityofdestiny.com/auth-callback.html'
       }
     });
     if (error) {
@@ -355,7 +355,7 @@
     const email = document.getElementById('loginEmail').value;
     if (!email) { showMsg('이메일을 먼저 입력해 주세요.'); return; }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://saju0523.pages.dev/auth-callback.html?type=recovery'
+      redirectTo: 'https://www.trinityofdestiny.com/auth-callback.html?type=recovery'
     });
     if (error) { showMsg(error.message); }
     else { showMsg('비밀번호 재설정 이메일을 발송했습니다.', 'success'); }

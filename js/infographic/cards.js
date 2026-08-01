@@ -22,7 +22,7 @@ function shell(id, kicker, meta, body, footer) {
   <div class="c-body">${body}</div>
   <footer class="c-foot">
     ${footer ? `<div class="c-concl">${footer}</div>` : ''}
-    <div class="cta">saju0523.pages.dev</div>
+    <div class="cta">www.trinityofdestiny.com</div>
   </footer>
 </article>`;
 }
@@ -313,7 +313,7 @@ function renderGoonghap(d, meta) {
   </header>
   <div class="c-body">${body}</div>
   <footer class="c-foot">
-    <div class="cta">saju0523.pages.dev</div>
+    <div class="cta">www.trinityofdestiny.com</div>
   </footer>
 </article>`;
 }
