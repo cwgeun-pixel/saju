@@ -1,6 +1,15 @@
 /* 전 페이지 공용 푸터 스타일
    모든 페이지에 실리므로 .site-footer 밖으로 새는 규칙을 절대 두지 않는다.
    (전역 *, body, nav, h1 같은 선택자를 쓰면 SPA 홈·계산기 화면이 통째로 덮어써진다) */
+
+/* 앱이 마운트되기 전에는 컨테이너가 비어 있어 푸터가 화면 맨 위에 잠깐 그려진다.
+   그 동안 한 화면 높이를 확보해 푸터를 접힘선 아래로 밀어둔다.
+   내용이 채워지면 :empty가 풀려 자동으로 해제되므로 JS가 필요 없다. */
+#root:empty,
+#fortune-root:empty {
+  display: block;
+  min-height: 100vh;
+}
 .site-footer {
   --f-gold: #C9A84C;
   --f-text: rgba(232, 224, 204, 0.6);

@@ -234,3 +234,9 @@
 - [x] legal-style.css는 문서 3개(privacy/terms/contact)에만 유지.
 - [x] 중복된 푸터 규칙을 legal-style.css에서 제거 (단일 출처).
 - [x] 홈·계산기·결과 화면의 body 규칙 오염 해소 확인.
+
+## 2026-08-08 마운트 전 푸터 노출 수정.
+
+- [x] /app/, /fortune/에서 앱 마운트 전 푸터가 화면 상단에 보이던 문제.
+- [x] #root:empty / #fortune-root:empty에 min-height:100vh로 접힘선 아래로 밀어둠.
+- [x] 마운트 전 가려짐 / 마운트 후 정상 위치 양쪽 검증.
