@@ -183,7 +183,7 @@ export default {
   <p>Actualmente el Servicio se ofrece de forma totalmente gratuita y no dispone de funciones de pago. Si nos deja una consulta sobre la fecha de apertura de la membresía o sobre las funciones previstas, le informaremos al respecto.</p>
 
   <h3>Solicitudes relativas a datos personales</h3>
-  <p>Atendemos las solicitudes de acceso, rectificación, supresión y limitación del tratamiento de los datos personales. Puede consultar más información en la <a href="/privacy.html">Política de Privacidad</a>.</p>
+  <p>Atendemos las solicitudes de acceso, rectificación, supresión y limitación del tratamiento de los datos personales. Puede consultar más información en la <a href="/privacy">Política de Privacidad</a>.</p>
 
   <h3>Opiniones sobre las interpretaciones</h3>
   <p>Si considera que alguna interpretación es inexacta o puede inducir a confusión, indíquenoslo y lo revisaremos para incorporarlo. Dado que en el estudio de los cuatro pilares las interpretaciones pueden variar según la escuela, tenemos muy en cuenta las opiniones de los usuarios.</p>

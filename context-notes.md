@@ -378,3 +378,20 @@ auth.html 모달 안에 5개 언어로 작성돼 있었지만 독립 URL이 없�
 
 ### robots.txt 참고
 Cloudflare가 관리 블록을 앞에 넣으면서 `User-agent: *` 그룹이 두 개가 됐다. 구글은 같은 user-agent 그룹을 병합하므로 우리 Disallow는 유효하다. `Mediapartners-Google` / `AdsBot-Google`은 별도 그룹으로 전체 허용돼 있어 `Disallow: /fortune/`과 무관하게 광고가 게재된다.
+
+## 2026-08-08 "Page with redirect" 원인 — Cloudflare Pages의 clean URL
+
+Search Console이 색인 보류 사유로 "Page with redirect"를 보고했다. 원인은 **Cloudflare Pages가 `/foo.html` 요청을 `/foo`로 308 리디렉트**하는 기본 동작이었다.
+
+    /saju-about.html  -> 308 -> /saju-about (200)
+
+그런데 sitemap과 canonical이 전부 `.html`을 가리키고 있었다. 구글 입장에서는 "sitemap이 알려준 주소가 리디렉트된다"가 되어 색인을 보류한다. canonical도 리디렉트되는 주소를 가리켜 신호가 엇갈렸다.
+
+`scripts/clean-urls.py`로 sitemap·canonical·내부 링크의 `.html`을 걷어냈다. **Cloudflare Pages에 올리는 정적 사이트는 처음부터 확장자 없는 주소를 정본으로 잡아야 한다.**
+
+### 나머지 색인 보류 사유는 정상이다
+- `Excluded by 'noindex' tag` — `pricing.html` 하나. 결제를 안 받으므로 의도적으로 뺐다.
+- `Alternate page with proper canonical tag` — 구 도메인(`saju0523.pages.dev`)과 apex가 www로 canonical을 걸고 있어서 나오는 정상 신호다.
+
+### 참고
+`landing-assets/index-Thu9hj-U.js`(빌드 산출물)의 `window.location.href` 3곳도 함께 정리했다. 소스 `.tsx`는 이 저장소에 없어 재빌드 위험은 없지만, 나중에 번들을 교체하면 `.html`로 되돌아간다. 되돌아가도 308로 동작은 한다.

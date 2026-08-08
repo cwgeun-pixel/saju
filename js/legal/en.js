@@ -181,7 +181,7 @@ export default {
   <p>The Service is currently operated entirely free of charge and has no payment function. If you leave an inquiry about the membership release schedule or future features, we will be glad to respond.</p>
 
   <h3>Privacy-related requests</h3>
-  <p>We accept requests to access, correct, delete, or suspend the processing of personal information. Further details are available in our <a href="/privacy.html">Privacy Policy</a>.</p>
+  <p>We accept requests to access, correct, delete, or suspend the processing of personal information. Further details are available in our <a href="/privacy">Privacy Policy</a>.</p>
 
   <h3>Feedback on interpretations</h3>
   <p>If you find an interpretation inaccurate or open to misunderstanding, let us know and we will review and reflect your feedback. Because readings can differ between schools of Eastern destiny studies, we regard user feedback as an important reference.</p>
