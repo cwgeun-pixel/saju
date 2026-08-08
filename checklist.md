@@ -226,3 +226,11 @@
 - [x] canonical 전 페이지를 최종 주소로 변경.
 - [x] 내부 링크(푸터·언어팩·번들)의 .html 제거.
 - [ ] 배포 후 Search Console에서 sitemap 재제출 + 색인 재요청.
+
+## 2026-08-08 전역 CSS 오염 수정.
+
+- [x] site-footer.css 신설 — .site-footer 안으로만 한정된 푸터 전용 스타일.
+- [x] 일반 페이지 14곳에서 legal-style.css 제거, 푸터 전용 CSS로 교체.
+- [x] legal-style.css는 문서 3개(privacy/terms/contact)에만 유지.
+- [x] 중복된 푸터 규칙을 legal-style.css에서 제거 (단일 출처).
+- [x] 홈·계산기·결과 화면의 body 규칙 오염 해소 확인.

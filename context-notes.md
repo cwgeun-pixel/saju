@@ -395,3 +395,20 @@ Search Console이 색인 보류 사유로 "Page with redirect"를 보고했다. 
 
 ### 참고
 `landing-assets/index-Thu9hj-U.js`(빌드 산출물)의 `window.location.href` 3곳도 함께 정리했다. 소스 `.tsx`는 이 저장소에 없어 재빌드 위험은 없지만, 나중에 번들을 교체하면 `.html`로 되돌아간다. 되돌아가도 308로 동작은 한다.
+
+## 2026-08-08 전역 CSS 오염 — 내가 만든 버그
+
+푸터를 전 페이지에 넣으면서 `legal-style.css`를 함께 링크했는데, 이 파일에는 문서 페이지용 **전역 규칙**이 들어 있었다.
+
+    * { margin:0; padding:0; box-sizing:border-box }
+    body { background; font-family; line-height:1.8 }
+    nav { position:sticky; height:64px; ... }
+    h1, h2, h3, p, ul, li, a, strong, table, th, td { ... }
+
+그 결과 홈(SPA)·계산기·결과 화면의 body 배경·폰트·줄간격, h1 색, nav 위치까지 덮어썼다. 링크를 `</body>` 근처에 넣어 로드 순서상 나중이라 우선순위까지 이겼다. 사용자가 "한글 뭐가 뜨고 첫화면으로 간다"고 한 게 이 증상이다.
+
+### 해결
+`site-footer.css`를 새로 만들고 **모든 규칙을 `.site-footer` 안으로 한정**했다. 색상 변수도 `--f-*`로 푸터 안에서만 정의해 페이지의 `:root` 변수와 충돌하지 않게 했다. `legal-style.css`는 문서 3개에만 남긴다.
+
+### 교훈
+전 페이지에 실리는 CSS에는 **요소 선택자(`body`, `nav`, `h1`, `p`, `table`)와 전역 `*`를 절대 두지 않는다.** 컴포넌트 스타일은 반드시 루트 클래스 하위로 한정할 것. 이번엔 `.site-footer *`까지만 두었다.

@@ -1,0 +1,53 @@
+/* 전 페이지 공용 푸터 스타일
+   모든 페이지에 실리므로 .site-footer 밖으로 새는 규칙을 절대 두지 않는다.
+   (전역 *, body, nav, h1 같은 선택자를 쓰면 SPA 홈·계산기 화면이 통째로 덮어써진다) */
+.site-footer {
+  --f-gold: #C9A84C;
+  --f-text: rgba(232, 224, 204, 0.6);
+  --f-border: rgba(201, 168, 76, 0.2);
+
+  box-sizing: border-box;
+  border-top: 1px solid var(--f-border);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: 'Noto Sans KR', system-ui, sans-serif;
+  font-size: .78rem;
+  line-height: 1.7;
+  color: var(--f-text);
+}
+.site-footer * { box-sizing: border-box; }
+
+/* 페이지의 nav 스타일이 푸터 안쪽 nav에 새어 들어오지 않게 초기화 */
+.site-footer nav {
+  all: unset;
+  display: block;
+  margin-bottom: .8rem;
+}
+.site-footer a {
+  color: var(--f-text);
+  text-decoration: none;
+  margin: 0 .55rem;
+}
+.site-footer a:hover { color: var(--f-gold); }
+
+.site-footer p { margin: 0; font-size: inherit; }
+.site-footer p + p { margin-top: .8rem; }
+
+.site-footer .free-notice {
+  max-width: 640px;
+  margin: 0 auto .8rem;
+  color: var(--f-gold);
+  opacity: .9;
+  word-break: keep-all;
+}
+.site-footer .disclaimer {
+  max-width: 640px;
+  margin: .9rem auto 0;
+  opacity: .85;
+  word-break: keep-all;
+}
+.site-footer strong { color: #E8C870; }
+
+@media (max-width: 520px) {
+  .site-footer a { display: inline-block; margin: .25rem .5rem; }
+}

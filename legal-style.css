@@ -60,29 +60,12 @@ th { background: var(--bg2); color: var(--gold); font-weight: 600; }
 .back-link { display: inline-block; margin-top: 2.5rem; color: var(--text-muted); text-decoration: none; font-size: .88rem; }
 .back-link:hover { color: var(--gold); }
 
-/* 전 페이지 공용 푸터 */
-.site-footer {
-  border-top: 1px solid var(--border); padding: 2rem 1.5rem;
-  text-align: center; font-size: .78rem; color: var(--text-muted);
-}
-.site-footer nav { all: unset; display: block; margin-bottom: .8rem; }
-.site-footer a { color: var(--text-muted); text-decoration: none; margin: 0 .55rem; }
-.site-footer a:hover { color: var(--gold); }
-.site-footer .disclaimer {
-  max-width: 640px; margin: .9rem auto 0; line-height: 1.7; opacity: .85; word-break: keep-all;
-}
 @media (max-width: 520px) {
   nav { padding: 0 1rem; }
   main { padding: 2rem 1.1rem 3rem; }
   h1 { font-size: 1.5rem; }
-  .site-footer a { display: inline-block; margin: .25rem .5rem; }
 }
 
-/* 무료 전용 운영 안내 (유료화 시 이 문구와 관련 표기를 함께 정리할 것) */
-.site-footer .free-notice {
-  max-width: 640px; margin: 0 auto .8rem; color: var(--gold);
-  opacity: .9; line-height: 1.7; word-break: keep-all;
-}
 
 /* 법적 문서 페이지의 언어 선택기 (사이트 i18n 스크립트를 싣지 않으므로 자체 제공) */
 #legal-lang {
